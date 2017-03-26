@@ -11,7 +11,8 @@ import java.util.Scanner;
 /**
  * A client class for file upload/download operations.
  * @author Emin Bahadir Tuluce
- * @version 1.0
+ * @version 1.01
+ *         little fix, Mahmud Sami Aydin, suitable directory paths added for bsd and linux.
  */
 public class FileClient {
     static Socket socket = null;
@@ -109,6 +110,7 @@ public class FileClient {
     public static void uploadFolder( int uploadID, String folderPath) throws Exception {
         String fileName = (new File( folderPath)).getName();
         String randomPath = "D://" + fileName + ".zip";
+        //String randomPath = "//var//tmp//" + fileName + ".zip";
         ZipMaker.makeZip( folderPath, randomPath);
         System.out.println( "Compressing files...");
         uploadFile( uploadID, randomPath);
@@ -119,7 +121,10 @@ public class FileClient {
     public static void main(String[] args) throws Exception {
         connect( "localhost", 8888);
         download(2, "D://Downfolder//");
+        //download(2, "//var//tmp//Downfolder//");
         uploadFile(3, "D://Folder//text2.txt");
+        //uploadFile(3, "//var//tmp//Folder//text2.txt");
         uploadFolder(4, "D://Folder//");
+        //uploadFolder(4, "//var//tmp//Folder//");
     }
 }
