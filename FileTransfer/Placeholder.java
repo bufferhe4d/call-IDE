@@ -1,7 +1,8 @@
 /** 
  * A placeholder class for handling directories and download/upload ID numbers for the server
  * @author Emin Bahadir Tuluce
- * @version 0
+ * @version 0.01
+ *         little fix, Mahmud Sami Aydin, suitable file path added for bsd and linux.
  */
 public class Placeholder {
     /**
@@ -23,7 +24,9 @@ public class Placeholder {
     public static String getUploadPath( int uploadID) {
         if (uploadID == 3)
             return "D://UpFolder1//";
+            //return "//var//tmp//UpFolder1//"; 
         else
             return "D://UpFolder//";
+            // return "//var//tmp//UpFolder//";
     }
 }
