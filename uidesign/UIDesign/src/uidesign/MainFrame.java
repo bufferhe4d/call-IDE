@@ -49,7 +49,7 @@ public class MainFrame extends javax.swing.JFrame {
         divLoc1 = 200;
         setTitle("Call-IDE");
         setIconImage(ImageIO.read(MainFrame.class.getResource("icon.jpg")));
-        setSize(new Dimension(1000, 600));
+        setSize(new Dimension(1400, 700));
         setLocationRelativeTo(null);
         arrangeComponents();
         addComponentListener(new MyComponentListener());
@@ -86,7 +86,7 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jCheckBox1 = new javax.swing.JCheckBox();
-        jComboBox1 = new javax.swing.JComboBox<String>();
+        jComboBox1 = new javax.swing.JComboBox<>();
         jButton28 = new javax.swing.JButton();
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
@@ -197,7 +197,6 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuItem35 = new javax.swing.JMenuItem();
 
         jFrame1.setTitle("Preferences");
-        jFrame1.setResizable(false);
 
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder("Toolbar"));
         jPanel10.setLayout(new java.awt.GridLayout(4, 4));
@@ -270,7 +269,7 @@ public class MainFrame extends javax.swing.JFrame {
         jCheckBox1.setText("Display Line Numbers");
         jCheckBox1.setVerifyInputWhenFocusTarget(false);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Default" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Default" }));
 
         jButton28.setText("Select Font");
 
@@ -336,10 +335,11 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jButton28)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jCheckBox16)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jCheckBox16, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jCheckBox1)
@@ -371,7 +371,6 @@ public class MainFrame extends javax.swing.JFrame {
         );
 
         jFrame2.setTitle("Find / Replace");
-        jFrame2.setResizable(false);
 
         jLabel6.setText("Find what:");
 
@@ -437,8 +436,10 @@ public class MainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jSplitPane2.setDividerLocation(300);
         jSplitPane2.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
+        jSplitPane1.setDividerLocation(200);
         jSplitPane1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 jSplitPane1PropertyChange(evt);
@@ -465,7 +466,25 @@ public class MainFrame extends javax.swing.JFrame {
         treeNode2.add(treeNode3);
         treeNode1.add(treeNode2);
         treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("lab03");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Files");
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("src");
+        treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Person.java");
+        treeNode3.add(treeNode4);
+        treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Student.java");
+        treeNode3.add(treeNode4);
+        treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Test.java");
+        treeNode3.add(treeNode4);
+        treeNode2.add(treeNode3);
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("classes");
+        treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Person.class");
+        treeNode3.add(treeNode4);
+        treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Student.class");
+        treeNode3.add(treeNode4);
+        treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Test.class");
+        treeNode3.add(treeNode4);
+        treeNode2.add(treeNode3);
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("doc");
+        treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Files");
+        treeNode3.add(treeNode4);
         treeNode2.add(treeNode3);
         treeNode1.add(treeNode2);
         treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("lab04");
@@ -501,15 +520,17 @@ public class MainFrame extends javax.swing.JFrame {
 
         jSplitPane1.setLeftComponent(jScrollPane1);
 
+        jSplitPane3.setDividerLocation(700);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 352, Short.MAX_VALUE)
+            .addGap(0, 694, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 48, Short.MAX_VALUE)
+            .addGap(0, 261, Short.MAX_VALUE)
         );
 
         jTabbedPane2.addTab("HelloWorld.java [x]", jPanel3);
@@ -518,11 +539,11 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 352, Short.MAX_VALUE)
+            .addGap(0, 694, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 48, Short.MAX_VALUE)
+            .addGap(0, 261, Short.MAX_VALUE)
         );
 
         jTabbedPane2.addTab("Person.java [x]", jPanel6);
@@ -531,11 +552,11 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 352, Short.MAX_VALUE)
+            .addGap(0, 694, Short.MAX_VALUE)
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 48, Short.MAX_VALUE)
+            .addGap(0, 261, Short.MAX_VALUE)
         );
 
         jTabbedPane2.addTab("Readable.java [x]", jPanel7);
@@ -544,11 +565,11 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 352, Short.MAX_VALUE)
+            .addGap(0, 694, Short.MAX_VALUE)
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 48, Short.MAX_VALUE)
+            .addGap(0, 261, Short.MAX_VALUE)
         );
 
         jTabbedPane2.addTab("[+]", jPanel8);
@@ -570,11 +591,11 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1112, Short.MAX_VALUE)
+            .addComponent(jSplitPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 919, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
+            .addComponent(jSplitPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
         );
 
         jSplitPane1.setRightComponent(jPanel2);
@@ -592,13 +613,13 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 1190, Short.MAX_VALUE)
+            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 1120, Short.MAX_VALUE)
             .addComponent(jScrollPane3)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
                 .addGap(1, 1, 1)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -609,11 +630,11 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1190, Short.MAX_VALUE)
+            .addGap(0, 1120, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 392, Short.MAX_VALUE)
+            .addGap(0, 126, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Compiler Output", jPanel5);
@@ -626,40 +647,40 @@ public class MainFrame extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
         );
 
         jTabbedPane1.getAccessibleContext().setAccessibleName("t3");
 
         jSplitPane2.setRightComponent(jPanel1);
 
-        jButton1.setIcon(new javax.swing.ImageIcon("H:\\private\\cs102_project\\uidesign\\UIDesign\\icons\\new.png")); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/new.png"))); // NOI18N
 
-        jButton8.setIcon(new javax.swing.ImageIcon("H:\\private\\cs102_project\\uidesign\\UIDesign\\icons\\open.png")); // NOI18N
+        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/open.png"))); // NOI18N
 
-        jButton9.setIcon(new javax.swing.ImageIcon("H:\\private\\cs102_project\\uidesign\\UIDesign\\icons\\save.png")); // NOI18N
+        jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/save.png"))); // NOI18N
 
-        jButton2.setIcon(new javax.swing.ImageIcon("H:\\private\\cs102_project\\uidesign\\UIDesign\\icons\\undo.png")); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/undo.png"))); // NOI18N
 
-        jButton10.setIcon(new javax.swing.ImageIcon("H:\\private\\cs102_project\\uidesign\\UIDesign\\icons\\redo.png")); // NOI18N
+        jButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/redo.png"))); // NOI18N
 
-        jButton11.setIcon(new javax.swing.ImageIcon("H:\\private\\cs102_project\\uidesign\\UIDesign\\icons\\reset.png")); // NOI18N
+        jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/reset.png"))); // NOI18N
 
-        jButton12.setIcon(new javax.swing.ImageIcon("H:\\private\\cs102_project\\uidesign\\UIDesign\\icons\\doc.png")); // NOI18N
+        jButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/doc.png"))); // NOI18N
 
-        jButton13.setIcon(new javax.swing.ImageIcon("H:\\private\\cs102_project\\uidesign\\UIDesign\\icons\\jar.png")); // NOI18N
+        jButton13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/jar.png"))); // NOI18N
 
-        jButton3.setIcon(new javax.swing.ImageIcon("H:\\private\\cs102_project\\uidesign\\UIDesign\\icons\\compile.png")); // NOI18N
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/compile.png"))); // NOI18N
 
-        jButton14.setIcon(new javax.swing.ImageIcon("H:\\private\\cs102_project\\uidesign\\UIDesign\\icons\\run.png")); // NOI18N
+        jButton14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/run.png"))); // NOI18N
 
-        jButton4.setIcon(new javax.swing.ImageIcon("H:\\private\\cs102_project\\uidesign\\UIDesign\\icons\\comprun.png")); // NOI18N
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/comprun.png"))); // NOI18N
 
-        jButton15.setIcon(new javax.swing.ImageIcon("H:\\private\\cs102_project\\uidesign\\UIDesign\\icons\\api.png")); // NOI18N
+        jButton15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/api.png"))); // NOI18N
 
-        jButton19.setIcon(new javax.swing.ImageIcon("H:\\private\\cs102_project\\uidesign\\UIDesign\\icons\\help.png")); // NOI18N
+        jButton19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/help.png"))); // NOI18N
 
-        jButton18.setIcon(new javax.swing.ImageIcon("H:\\private\\cs102_project\\uidesign\\UIDesign\\icons\\login.png")); // NOI18N
+        jButton18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/login.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -894,7 +915,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
-                .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 507, Short.MAX_VALUE)
+                .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE)
                 .addGap(1, 1, 1))
         );
 

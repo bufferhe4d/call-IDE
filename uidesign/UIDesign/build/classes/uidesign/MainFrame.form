@@ -5,7 +5,6 @@
     <Container class="javax.swing.JFrame" name="jFrame1">
       <Properties>
         <Property name="title" type="java.lang.String" value="Preferences"/>
-        <Property name="resizable" type="boolean" value="false"/>
       </Properties>
 
       <Layout>
@@ -204,10 +203,12 @@
                           <Component id="jTextField2" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jCheckBox16" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jTextField3" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jTextField3" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace pref="11" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -300,7 +301,6 @@
     <Container class="javax.swing.JFrame" name="jFrame2">
       <Properties>
         <Property name="title" type="java.lang.String" value="Find / Replace"/>
-        <Property name="resizable" type="boolean" value="false"/>
       </Properties>
 
       <Layout>
@@ -712,7 +712,7 @@
           <Group type="102" alignment="1" attributes="0">
               <Component id="jPanel9" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
-              <Component id="jSplitPane2" pref="507" max="32767" attributes="0"/>
+              <Component id="jSplitPane2" pref="466" max="32767" attributes="0"/>
               <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -721,12 +721,16 @@
   <SubComponents>
     <Container class="javax.swing.JSplitPane" name="jSplitPane2">
       <Properties>
+        <Property name="dividerLocation" type="int" value="300"/>
         <Property name="orientation" type="int" value="0"/>
       </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
       <SubComponents>
         <Container class="javax.swing.JSplitPane" name="jSplitPane1">
+          <Properties>
+            <Property name="dividerLocation" type="int" value="200"/>
+          </Properties>
           <Events>
             <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="jSplitPane1PropertyChange"/>
           </Events>
@@ -753,7 +757,7 @@
                 <Component class="javax.swing.JTree" name="jTree1">
                   <Properties>
                     <Property name="model" type="javax.swing.tree.TreeModel" editor="org.netbeans.modules.form.editors2.TreeModelEditor">
-                      <TreeModel code="workspace&#xa; lab01&#xa;  src&#xa;   HelloWorld.java&#xa;  classes&#xa;   HelloWorld.class&#xa;  doc&#xa;   Files&#xa; lab02&#xa;  Files&#xa; lab03&#xa;  Files&#xa; lab04&#xa;  Files&#xa; lab05&#xa;  Files&#xa; lab06&#xa;  Files&#xa; lab07&#xa;  Files&#xa; lab08&#xa;  Files&#xa; lab09&#xa;  Files&#xa; lab10&#xa;  Files"/>
+                      <TreeModel code="workspace&#xa; lab01&#xa;  src&#xa;   HelloWorld.java&#xa;  classes&#xa;   HelloWorld.class&#xa;  doc&#xa;   Files&#xa; lab02&#xa;  Files&#xa; lab03&#xa;  src&#xa;   Person.java&#xa;   Student.java&#xa;   Test.java&#xa;  classes&#xa;   Person.class&#xa;   Student.class&#xa;   Test.class&#xa;  doc&#xa;   Files&#xa; lab04&#xa;  Files&#xa; lab05&#xa;  Files&#xa; lab06&#xa;  Files&#xa; lab07&#xa;  Files&#xa; lab08&#xa;  Files&#xa; lab09&#xa;  Files&#xa; lab10&#xa;  Files"/>
                     </Property>
                   </Properties>
                 </Component>
@@ -769,17 +773,20 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jSplitPane3" alignment="0" pref="1112" max="32767" attributes="0"/>
+                      <Component id="jSplitPane3" alignment="0" pref="919" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jSplitPane3" alignment="0" pref="78" max="32767" attributes="0"/>
+                      <Component id="jSplitPane3" alignment="0" pref="297" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
               </Layout>
               <SubComponents>
                 <Container class="javax.swing.JSplitPane" name="jSplitPane3">
+                  <Properties>
+                    <Property name="dividerLocation" type="int" value="700"/>
+                  </Properties>
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
                   <SubComponents>
@@ -804,12 +811,12 @@
                           <Layout>
                             <DimensionLayout dim="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <EmptySpace min="0" pref="352" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="694" max="32767" attributes="0"/>
                               </Group>
                             </DimensionLayout>
                             <DimensionLayout dim="1">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <EmptySpace min="0" pref="48" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="261" max="32767" attributes="0"/>
                               </Group>
                             </DimensionLayout>
                           </Layout>
@@ -826,12 +833,12 @@
                           <Layout>
                             <DimensionLayout dim="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <EmptySpace min="0" pref="352" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="694" max="32767" attributes="0"/>
                               </Group>
                             </DimensionLayout>
                             <DimensionLayout dim="1">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <EmptySpace min="0" pref="48" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="261" max="32767" attributes="0"/>
                               </Group>
                             </DimensionLayout>
                           </Layout>
@@ -848,12 +855,12 @@
                           <Layout>
                             <DimensionLayout dim="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <EmptySpace min="0" pref="352" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="694" max="32767" attributes="0"/>
                               </Group>
                             </DimensionLayout>
                             <DimensionLayout dim="1">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <EmptySpace min="0" pref="48" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="261" max="32767" attributes="0"/>
                               </Group>
                             </DimensionLayout>
                           </Layout>
@@ -870,12 +877,12 @@
                           <Layout>
                             <DimensionLayout dim="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <EmptySpace min="0" pref="352" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="694" max="32767" attributes="0"/>
                               </Group>
                             </DimensionLayout>
                             <DimensionLayout dim="1">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <EmptySpace min="0" pref="48" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="261" max="32767" attributes="0"/>
                               </Group>
                             </DimensionLayout>
                           </Layout>
@@ -927,7 +934,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jTabbedPane1" alignment="0" max="32767" attributes="0"/>
+                  <Component id="jTabbedPane1" alignment="0" pref="160" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -956,14 +963,14 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jTextField1" alignment="0" pref="1190" max="32767" attributes="0"/>
+                          <Component id="jTextField1" alignment="0" pref="1120" max="32767" attributes="0"/>
                           <Component id="jScrollPane3" alignment="0" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="jScrollPane3" pref="366" max="32767" attributes="0"/>
+                              <Component id="jScrollPane3" pref="100" max="32767" attributes="0"/>
                               <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                               <Component id="jTextField1" min="-2" pref="25" max="-2" attributes="0"/>
                           </Group>
@@ -1005,12 +1012,12 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <EmptySpace min="0" pref="1190" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="1120" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <EmptySpace min="0" pref="392" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="126" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                   </Layout>
@@ -1081,98 +1088,98 @@
         <Component class="javax.swing.JButton" name="jButton1">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="H:\private\cs102_project\uidesign\UIDesign\icons\new.png"/>
+              <Image iconType="3" name="/uidesign/new.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton8">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="H:\private\cs102_project\uidesign\UIDesign\icons\open.png"/>
+              <Image iconType="3" name="/uidesign/open.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton9">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="H:\private\cs102_project\uidesign\UIDesign\icons\save.png"/>
+              <Image iconType="3" name="/uidesign/save.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton2">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="H:\private\cs102_project\uidesign\UIDesign\icons\undo.png"/>
+              <Image iconType="3" name="/uidesign/undo.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton10">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="H:\private\cs102_project\uidesign\UIDesign\icons\redo.png"/>
+              <Image iconType="3" name="/uidesign/redo.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton11">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="H:\private\cs102_project\uidesign\UIDesign\icons\reset.png"/>
+              <Image iconType="3" name="/uidesign/reset.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton12">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="H:\private\cs102_project\uidesign\UIDesign\icons\doc.png"/>
+              <Image iconType="3" name="/uidesign/doc.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton13">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="H:\private\cs102_project\uidesign\UIDesign\icons\jar.png"/>
+              <Image iconType="3" name="/uidesign/jar.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton3">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="H:\private\cs102_project\uidesign\UIDesign\icons\compile.png"/>
+              <Image iconType="3" name="/uidesign/compile.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton14">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="H:\private\cs102_project\uidesign\UIDesign\icons\run.png"/>
+              <Image iconType="3" name="/uidesign/run.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton4">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="H:\private\cs102_project\uidesign\UIDesign\icons\comprun.png"/>
+              <Image iconType="3" name="/uidesign/comprun.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton15">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="H:\private\cs102_project\uidesign\UIDesign\icons\api.png"/>
+              <Image iconType="3" name="/uidesign/api.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton19">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="H:\private\cs102_project\uidesign\UIDesign\icons\help.png"/>
+              <Image iconType="3" name="/uidesign/help.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton18">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="H:\private\cs102_project\uidesign\UIDesign\icons\login.png"/>
+              <Image iconType="3" name="/uidesign/login.png"/>
             </Property>
           </Properties>
         </Component>
