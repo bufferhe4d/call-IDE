@@ -1,7 +1,6 @@
 import java.io.IOException;
 import java.io.File;
 import java.io.PrintWriter;
-import java.util.Scanner;
 
 /**
  * A class to save text files.
@@ -43,13 +42,9 @@ public class FileSaver {
      * @throws IOException if the writing is failed
      */
     public void saveAs( String content, String diffPath) throws IOException {
-        Scanner input = new Scanner( content);
         File file = new File( diffPath);
         PrintWriter output = new PrintWriter( file);
-        while (input.hasNext())
-            output.println( input.nextLine());
-        input.close();
+        output.print( content);
         output.close();
     }
 }
-    
