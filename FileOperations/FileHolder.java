@@ -40,7 +40,7 @@ public class FileHolder {
         Scanner input = new Scanner( file);
         content = "";
         while( input.hasNext())
-            content += input.nextLine() + "\n\r";
+            content += input.nextLine() + "\r\n";
         input.close();
         return content;
     }
