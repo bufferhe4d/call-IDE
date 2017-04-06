@@ -41,6 +41,7 @@ public class FileHolder {
         content = "";
         while( input.hasNext())
             content += input.nextLine() + "\n\r";
+        input.close();
         return content;
     }
     

@@ -48,6 +48,7 @@ public class FileSaver {
         PrintWriter output = new PrintWriter( file);
         while (input.hasNext())
             output.println( input.nextLine());
+        input.close();
         output.close();
     }
 }
