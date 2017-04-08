@@ -25,12 +25,12 @@ public class FileNode extends DefaultMutableTreeNode
       {
          
          
-            temp = new FileNode (  new PathedFile ( file.listFiles()[i].toString(), file.path )  );
-            if( getIndex( temp ) == -1 )
-            {
-               add( temp );
-            }
-        
+         temp = new FileNode (  new PathedFile ( file.listFiles()[i].toString(), file.path )  );
+         if( getIndex( temp ) == -1 )
+         {
+            add( temp );
+         }
+         
       }
    }
    //------------------
@@ -77,6 +77,22 @@ public class FileNode extends DefaultMutableTreeNode
       return file.delete();
       
    }
+   
+   /**
+    * This method add the folder a file
+    * 
+    */
+   public void createFile( String fileName)
+   {
+      if( getAllowsChildren() )
+      {
+         add( new FileNode( new PathedFile( file.getAbsolutePath() + "/" 
+                                             + fileName ,  file.path )) );
+         
+      }
+      
+   }
+   
 }
 
 
