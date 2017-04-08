@@ -1,96 +1,45 @@
 import java.util.*;
 import javax.swing.tree.*;
 
-public class FileNode implements TreeNode, Enumeration
+public class FileNode extends DefaultMutableTreeNode
 {
-   //Properties
-   ArrayList<FileNode> children;
-   int enumIndex;
-   PathedFile file;
    
+   PathedFile file;
    
    
    public FileNode( PathedFile file )
    {
+      super();
       this. file = file;
-      children = new ArrayList<FileNode>();
-      enumIndex= 0;
+      
       if( getAllowsChildren() )
       {
-         addChildrens();
+         addChildren();
       }
    }
    
-   public void addChildrens()
+   public void addChildren()
    {  
       FileNode temp;
-      for( int i = 0; i < file.list().length; i++)   
+      for( int i = 0; i < file.listFiles().length; i++)   
       {
-         temp = new FileNode (  new PathedFile ( file.listFiles()[i].toString(), file.path )  );
-         if( getIndex( temp ) == -1 )
-         {
-            enumIndex = 0;
-            children.add( temp );
-         }
+         
+         
+            temp = new FileNode (  new PathedFile ( file.listFiles()[i].toString(), file.path )  );
+            if( getIndex( temp ) == -1 )
+            {
+               add( temp );
+            }
+        
       }
    }
-   
-   
-   public boolean hasMoreElements() 
-   {
-      return enumIndex < children.size();
-   }
-   
-   public Enumeration nextElement()
-   {
-      return children.get( enumIndex++);
-   }
-   
-   
-   public Enumeration children()
-   {
-      return this;
-   }
-   
+   //------------------
    public boolean getAllowsChildren()
    {
       return file.isDirectory();
    }
    
-   public TreeNode getChildAt(int childIndex)
-   {
-      return children.get(childIndex);
-   }
-   
-   public int   getChildCount()
-   {
-      return  children.size();
-   }
-   
-   public TreeNode getParent() 
-   {
-      return  new FileNode ( file.path[ file.path.length - 2  ] );
-      
-   }
-   
-   public boolean isLeaf()
-   {
-      return getChildCount() == 0;
-   }
-   
-   public int getIndex( TreeNode node )
-   {
-      while( hasMoreElements()  )
-      {
-         if( ((FileNode)node).equals( (FileNode)nextElement() ) )
-         {
-            return enumIndex-1;
-         }
-      }
-      
-      return -1;
-   }
-   
+   //------------------------------------------------------------
    @Override
    public String toString()
    {
@@ -102,14 +51,32 @@ public class FileNode implements TreeNode, Enumeration
       return file.getPath().equals( n.file.getPath() );
    }
    
+   /**
+    *  This method get the parents tree of node
+    *  @return tree path for node
+    */
+   protected TreePath getTree()
+   {
+      FileNode[] tempNodes;
+      tempNodes = new FileNode[ file.path.length ];
+      for ( int i = 0 ; i < file.path.length ; i ++ )
+      {
+         tempNodes[i] = new FileNode(  file.path[i]  );
+      }
+      
+      return new TreePath( tempNodes );
+   }
    
-   
-   
-   
-   
-   
-   
-   
+   /**
+    * This method delete the node from jtree
+    * 
+    */
+   public boolean delete()
+   {
+      removeFromParent();
+      return file.delete();
+      
+   }
 }
 
 
