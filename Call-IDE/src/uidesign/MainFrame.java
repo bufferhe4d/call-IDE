@@ -18,6 +18,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 import java.util.ArrayList;
 import FileOperations.*;
 import RunUtils.*;
+import FileExplorer.*;
 
 /**
  *
@@ -32,6 +33,7 @@ public class MainFrame extends javax.swing.JFrame {
         untitledCount = 1;
         initComponents();
         newFile();
+        addExplorer();
         initFrame();
     }
 
@@ -84,8 +86,8 @@ public class MainFrame extends javax.swing.JFrame {
         jButton16 = new javax.swing.JButton();
         jSplitPane2 = new javax.swing.JSplitPane();
         jSplitPane1 = new javax.swing.JSplitPane();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTree1 = new javax.swing.JTree();
+        explorerScrollPane = new javax.swing.JScrollPane();
+        placeHolderTree = new javax.swing.JTree();
         jPanel2 = new javax.swing.JPanel();
         jSplitPane3 = new javax.swing.JSplitPane();
         textTabs = new javax.swing.JTabbedPane();
@@ -118,6 +120,7 @@ public class MainFrame extends javax.swing.JFrame {
         apiTool = new javax.swing.JButton();
         helpTool = new javax.swing.JButton();
         loginTool = new javax.swing.JButton();
+        closeTool = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         newFileButton = new javax.swing.JMenuItem();
@@ -495,10 +498,10 @@ public class MainFrame extends javax.swing.JFrame {
         treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Files");
         treeNode2.add(treeNode3);
         treeNode1.add(treeNode2);
-        jTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
-        jScrollPane1.setViewportView(jTree1);
+        placeHolderTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        explorerScrollPane.setViewportView(placeHolderTree);
 
-        jSplitPane1.setLeftComponent(jScrollPane1);
+        jSplitPane1.setLeftComponent(explorerScrollPane);
 
         jSplitPane3.setDividerLocation(700);
         jSplitPane3.setLeftComponent(textTabs);
@@ -523,7 +526,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
+            .addComponent(jSplitPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
         );
 
         jSplitPane1.setRightComponent(jPanel2);
@@ -543,7 +546,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+            .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
         );
 
         outputTabs.addTab("Status", jPanel3);
@@ -565,7 +568,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
                 .addGap(1, 1, 1)
                 .addComponent(consoleInputField, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -585,7 +588,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
         );
 
         outputTabs.addTab("Compiler Output", jPanel5);
@@ -598,7 +601,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(outputTabs, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+            .addComponent(outputTabs, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
         );
 
         outputTabs.getAccessibleContext().setAccessibleName("t3");
@@ -648,6 +651,14 @@ public class MainFrame extends javax.swing.JFrame {
 
         loginTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/login.png"))); // NOI18N
 
+        closeTool.setText("X");
+        closeTool.setToolTipText("");
+        closeTool.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeToolActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
@@ -678,9 +689,10 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(apiTool, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
                 .addComponent(helpTool, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(closeTool)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(loginTool, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1))
+                .addComponent(loginTool, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -698,6 +710,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addComponent(newTool, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(helpTool, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(loginTool, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(closeTool, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
         fileMenu.setText("File");
@@ -912,6 +925,10 @@ public class MainFrame extends javax.swing.JFrame {
         newFile();
     }//GEN-LAST:event_newToolActionPerformed
 
+    private void closeToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeToolActionPerformed
+        closeActiveFile();
+    }//GEN-LAST:event_closeToolActionPerformed
+
     /** Sets LookAndFeel to the given name.*/
     public static void setLookAndFeel (String lookAndFeel) {
         try {
@@ -965,6 +982,8 @@ public class MainFrame extends javax.swing.JFrame {
         addComponentListener(new MyComponentListener());
         setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+        
+        
     }
     
     /** Arranges the split pane divider locations for a better look. */
@@ -998,6 +1017,7 @@ public class MainFrame extends javax.swing.JFrame {
                     FileSaver saver = new FileSaver(file);
                     saver.save( getActiveContent());
                     printStatus("File saved as: " + file.getAbsolutePath());
+                    textTabs.setTitleAt(textTabs.getSelectedIndex(), file.getName());
                 }
             }
             else {
@@ -1049,9 +1069,26 @@ public class MainFrame extends javax.swing.JFrame {
         return textArea.getText();
     }
     
+    private RSyntaxTextArea getActiveTextArea() {
+        int index = textTabs.getSelectedIndex();
+        return textAreas.get(index);
+    }
+    
     private void printStatus( String status) {
         statusArea.setText( statusArea.getText() + status + "\n");
         outputTabs.setSelectedIndex(0);
+    }
+    
+    private void addExplorer() {
+        placeHolderTree.setVisible( false);
+        // explorerScrollPane.setViewportView(new FileNavigator( "D:\\BAHADIR"));
+    }
+    
+    private void closeActiveFile() {
+        int index = textTabs.getSelectedIndex();
+        files.remove( index);
+        textAreas.remove( index);
+        textTabs.remove( index);
     }
     
     // Other Variables
@@ -1064,6 +1101,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem aboutButton;
     private javax.swing.JMenuItem apiButton;
     private javax.swing.JButton apiTool;
+    private javax.swing.JButton closeTool;
     private javax.swing.JMenuItem compileButton;
     private javax.swing.JMenuItem compileRunButton;
     private javax.swing.JButton compileRunTool;
@@ -1074,6 +1112,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem copyButton;
     private javax.swing.JMenuItem cutButton;
     private javax.swing.JMenu editMenu;
+    private javax.swing.JScrollPane explorerScrollPane;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JCheckBoxMenuItem fileTrackerButton;
     private javax.swing.JMenuItem findReplaceButton;
@@ -1122,7 +1161,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -1147,7 +1185,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
-    private javax.swing.JTree jTree1;
     private javax.swing.JTree jTree2;
     private javax.swing.JMenuItem jarButton;
     private javax.swing.JButton jarTool;
@@ -1168,6 +1205,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTabbedPane outputTabs;
     private javax.swing.JCheckBoxMenuItem outputsPaneButton;
     private javax.swing.JMenuItem pasteButton;
+    private javax.swing.JTree placeHolderTree;
     private javax.swing.JMenuItem preferencesButton;
     private javax.swing.JFrame propertiesFrame;
     private javax.swing.JMenuItem quitButton;
