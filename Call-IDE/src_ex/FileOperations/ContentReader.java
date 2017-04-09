@@ -17,7 +17,7 @@ public class ContentReader {
         Scanner input = new Scanner( file);
         String content = "";
         while( input.hasNext())
-            content += input.nextLine() + "\r\n";
+            content += input.nextLine() + "\n";
         input.close();
         return content;
     }

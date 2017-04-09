@@ -1,1 +1,0 @@
-Testing paths are in Placeholder.java and in the main method of the FileClient class.

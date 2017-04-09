@@ -19,6 +19,7 @@ public class Preferences implements Serializable {
     private int autosaveIn; // autosave period in minutes
     private int indentLevel; // number of spaces for the indentation
     private String theme; // the name of the xml theme file to load
+    private String workspace; // the path to the folder of the root of the projects
     
     /** Creates a Preferences object with the given propreties. */
     public Preferences(boolean autosave, boolean bracketMatching, boolean displayLineNumbers,
@@ -61,6 +62,9 @@ public class Preferences implements Serializable {
     }
     public String getTheme() {
         return theme;
+    }
+    public String getWorkspace() {
+        return workspace;
     }
     
     /** Empty constructor which is needed for serialization */

@@ -20,11 +20,11 @@ public class FileConfigurer {
      * Use this method to get the save path of the properties and templates of the user.
      * This path info is stored on a hidden file ".callide" on the user.home
      * This path is specified as "user.home\Call-IDE" by default
-     * @return (content of .callide) + "\\Call-IDE\\"
+     * @return (content of .callide) + "/Call-IDE/"
      */
     public static String getPath() throws IOException {
         String userHome = System.getProperty("user.home");
-        String configPath = userHome + "\\.callide";
+        String configPath = userHome + "/.callide";
         File configFile = new File( configPath);
         
         if (configFile.exists()) { // If the user has a specified a path from before,
@@ -32,7 +32,7 @@ public class FileConfigurer {
             Scanner input = new Scanner( configFile);
             String userPath = input.nextLine();
             input.close();
-            return userPath + "\\Call-IDE\\";
+            return userPath + "/Call-IDE/";
         }
         
         else { // If the user opened the program first time,
@@ -40,8 +40,8 @@ public class FileConfigurer {
             PrintWriter output = new PrintWriter( configFile);
             output.println( userHome);
             output.close();
-            (new File(userHome + "\\Call-IDE")).mkdir();
-            return userHome + "\\Call-IDE\\";
+            (new File(userHome + "/Call-IDE")).mkdir();
+            return userHome + "/Call-IDE/";
         }
     }
     
@@ -59,23 +59,23 @@ public class FileConfigurer {
             return false;
         
         // Create a Call-IDE folder inside the given path.
-        (new File( userPath + "\\Call-IDE\\")).mkdir(); 
+        (new File( userPath + "/Call-IDE/")).mkdir(); 
         
         // Getting the old path from .callide ...
         String userHome = System.getProperty("user.home");
-        String configPath = userHome + "\\.callide";
+        String configPath = userHome + "/.callide";
         File configFile = new File( configPath);
         Scanner input = new Scanner( configFile);
         String oldPath = input.nextLine();
         input.close();
         
         // Moving old files one by one...
-        File oldDir = new File( oldPath + "\\Call-IDE\\");
+        File oldDir = new File( oldPath + "/Call-IDE/");
         if(oldDir.isDirectory()) {
             File[] content = oldDir.listFiles();
             for (int f = 0; f < content.length; f++) {
                 Files.move((content[f].toPath()),
-                           (new File( userPath + "\\Call-IDE\\" + content[f].getName())).toPath(),
+                           (new File( userPath + "/Call-IDE/" + content[f].getName())).toPath(),
                            StandardCopyOption.REPLACE_EXISTING);
             }
         }
