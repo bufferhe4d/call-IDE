@@ -11,10 +11,8 @@ import java.awt.event.*;
 import java.io.*;
 import javax.swing.*;
 import javax.imageio.ImageIO;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
-import org.fife.ui.rsyntaxtextarea.Theme;
-import org.fife.ui.rtextarea.RTextScrollPane;
+import org.fife.ui.rsyntaxtextarea.*;
+import org.fife.ui.rtextarea.*;
 import java.util.ArrayList;
 import FileOperations.*;
 import RunUtils.*;
@@ -25,6 +23,9 @@ import FileExplorer.*;
  * @author bahadir.tuluce-ug
  */
 public class MainFrame extends javax.swing.JFrame {
+    
+    private int wordCounter;
+    private SearchResult searchResult;  
     
     /** Creates new form MainFrame. */
     public MainFrame() throws IOException {
@@ -985,6 +986,10 @@ public class MainFrame extends javax.swing.JFrame {
         
         
     }
+   /*rivate void findAndReplace()
+    {
+       
+    }*/
     
     /** Arranges the split pane divider locations for a better look. */
     private void arrangeComponents() {
@@ -999,9 +1004,170 @@ public class MainFrame extends javax.swing.JFrame {
         propertiesFrame.setVisible(true);
     }
     
-    private void showFindAndReplace() {
+    private int getWordCounter( )
+    {
+        return this.wordCounter;
+    }
+    private void setWordCounter( int counter)
+    {
+        wordCounter = counter;
+    }
+     
+    private void setSearchResult( SearchResult result)
+    {
+        searchResult = result;
+    }
+    private void showFindAndReplace()
+    {
+        
+        SearchContext searchContext = new SearchContext("");
+        
+        jTextField5.setText("");
+        jTextField6.setText("");
+        JButton[] buttons = new JButton[4];
+        buttons[0] = jButton5;
+        buttons[1] = jButton6;
+        buttons[2] = jButton7;
+        buttons[3] = jButton16;
+        setWordCounter( 0);
+        
+        jButton5.addActionListener(new ActionListener(){
+                        int counter2;
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+                               counter2 = getWordCounter();
+                               searchContext.setSearchForward(true);
+                               if(!jTextField5.getText().equals(searchContext.getSearchFor()))
+                               {
+                                    counter2 = 1;
+                                    getActiveTextArea().setCaretPosition(0);
+                                    searchContext.setSearchFor(jTextField5.getText());
+                                    searchResult = SearchEngine.find(getActiveTextArea(), searchContext);
+                                    System.out.println( searchResult.getMarkedCount()+ " " + counter2 + "1ilk if " + getActiveTextArea().getCaretPosition());
+                               }
+                               else
+                               {
+                                    if (!searchContext.getSearchFor().isEmpty()) {
+                                        
+                                        if( searchResult.getMarkedCount() == counter2)
+                                        {
+                                           
+                                            getActiveTextArea().setCaretPosition(0);
+                                            SearchEngine.find(getActiveTextArea(), searchContext);
+                                            counter2 = 1;
+                                            System.out.println( searchResult.getMarkedCount()+ " " + counter2 + "1iki if " + getActiveTextArea().getCaretPosition());
+                                        }
+                                        else
+                                        {                                            
+                                            getActiveTextArea().setCaretPosition(getActiveTextArea().getCaretPosition());
+                                            SearchEngine.find(getActiveTextArea(), searchContext);
+                                            counter2++;
+                                            System.out.println( searchResult.getMarkedCount()+ " " + counter2 + "1üç if " + getActiveTextArea().getCaretPosition());
+                                        }  
+                                    }
+                               }
+                               setSearchResult( searchResult);
+                               setWordCounter( counter2);
+			}
+                        
+                          	
+        });
+        jButton6.addActionListener(new ActionListener(){
+                        
+                        
+                        int counter;
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+                               counter = getWordCounter();
+                               searchContext.setSearchForward(false);
+                               if(!jTextField5.getText().equals(searchContext.getSearchFor()))
+                               {
+                                    searchContext.setSearchFor(jTextField5.getText());
+                                    getActiveTextArea().setCaretPosition(getActiveTextArea().getText().length());
+                                    searchResult = SearchEngine.find(getActiveTextArea(), searchContext);
+                                    counter = searchResult.getMarkedCount();
+                                    System.out.println( searchResult.getMarkedCount()+ " " + counter + "2ilk if " +getActiveTextArea().getCaretPosition());
+                               }
+                               else
+                               {
+                                    if (!searchContext.getSearchFor().isEmpty()) {
+                                        if( 1 == counter)
+                                        {
+                                            getActiveTextArea().setCaretPosition(getActiveTextArea().getText().length());
+                                            searchResult = SearchEngine.find(getActiveTextArea(), searchContext);
+                                            
+                                            counter = searchResult.getMarkedCount();
+                                            System.out.println( searchResult.getMarkedCount()+ " " + counter + "2iki if "+ getActiveTextArea().getCaretPosition());
+                                        }
+                                        else
+                                        {                                            
+                                            getActiveTextArea().setCaretPosition(getActiveTextArea().getCaretPosition() - 1);
+                                            searchResult = SearchEngine.find(getActiveTextArea(), searchContext);
+                                            counter--;
+                                            System.out.println( searchResult.getMarkedCount()+ " " + counter + "2üç if " + getActiveTextArea().getCaretPosition());
+                                        }  
+                                    }
+                               }
+                               setSearchResult( searchResult);
+                               setWordCounter(counter);
+				
+			}
+        	
+        });
+        jButton7.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				searchContext.setReplaceWith( jTextField6.getText());
+				searchContext.setSearchFor(jTextField5.getText());
+				if( !searchContext.getSearchFor().isEmpty() && !searchContext.getReplaceWith().isEmpty())
+                                {
+                                    SearchEngine.replace(getActiveTextArea(),searchContext);
+                                    setWordCounter( getWordCounter()-1);
+                                    System.out.println(getWordCounter());
+                                    System.out.println(searchResult.getMarkedCount());
+                                    searchResult.setMarkedCount(searchResult.getMarkedCount() - 1);
+                                    getActiveTextArea().setCaretPosition( getActiveTextArea().getCaretPosition() - 1);
+                                }
+				
+			}
+        	
+        });
+        jButton16.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				searchContext.setReplaceWith( jTextField6.getText());
+				searchContext.setSearchFor(jTextField5.getText());
+				if( !searchContext.getSearchFor().isEmpty() && !searchContext.getReplaceWith().isEmpty())
+				{
+                                    getActiveTextArea().setCaretPosition(0);
+                                    SearchEngine.replaceAll(getActiveTextArea(), searchContext);
+                                    setWordCounter( 0);
+                                    System.out.println(getWordCounter());
+				}
+                                
+			}
+        	
+        });
         findReplaceFrame.pack();
         findReplaceFrame.setLocationRelativeTo(this);
+        findReplaceFrame.addWindowListener(new WindowAdapter(){
+            
+            @Override
+            public void	windowClosing(WindowEvent e)
+            {
+                
+                for( JButton currentButton: buttons)
+                        for( ActionListener al : currentButton.getActionListeners() ) {
+                         currentButton.removeActionListener( al );
+                        }
+            }
+        
+    });
+    
+        
+    
         findReplaceFrame.setVisible(true);
     }
     
