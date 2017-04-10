@@ -1115,7 +1115,7 @@
         <Component class="javax.swing.JButton" name="newTool">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/uidesign/new.png"/>
+              <Image iconType="3" name="/uidesign/icons/new.png"/>
             </Property>
           </Properties>
           <Events>
@@ -1125,7 +1125,7 @@
         <Component class="javax.swing.JButton" name="openTool">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/uidesign/open.png"/>
+              <Image iconType="3" name="/uidesign/icons/open.png"/>
             </Property>
           </Properties>
           <Events>
@@ -1135,7 +1135,7 @@
         <Component class="javax.swing.JButton" name="saveTool">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/uidesign/save.png"/>
+              <Image iconType="3" name="/uidesign/icons/save.png"/>
             </Property>
           </Properties>
           <Events>
@@ -1145,77 +1145,77 @@
         <Component class="javax.swing.JButton" name="undoTool">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/uidesign/undo.png"/>
+              <Image iconType="3" name="/uidesign/icons/undo.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="redoTool">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/uidesign/redo.png"/>
+              <Image iconType="3" name="/uidesign/icons/redo.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="resetTool">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/uidesign/reset.png"/>
+              <Image iconType="3" name="/uidesign/icons/reset.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="javadocTool">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/uidesign/doc.png"/>
+              <Image iconType="3" name="/uidesign/icons/doc.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jarTool">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/uidesign/jar.png"/>
+              <Image iconType="3" name="/uidesign/icons/jar.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="compileTool">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/uidesign/compile.png"/>
+              <Image iconType="3" name="/uidesign/icons/compile.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="runTool">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/uidesign/run.png"/>
+              <Image iconType="3" name="/uidesign/icons/run.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="compileRunTool">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/uidesign/comprun.png"/>
+              <Image iconType="3" name="/uidesign/icons/comprun.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="apiTool">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/uidesign/api.png"/>
+              <Image iconType="3" name="/uidesign/icons/api.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="helpTool">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/uidesign/help.png"/>
+              <Image iconType="3" name="/uidesign/icons/help.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="loginTool">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/uidesign/login.png"/>
+              <Image iconType="3" name="/uidesign/icons/login.png"/>
             </Property>
           </Properties>
         </Component>

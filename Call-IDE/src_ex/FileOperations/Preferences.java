@@ -10,6 +10,11 @@ import java.io.Serializable;
  */
 public class Preferences implements Serializable {
     
+    private static final Font DEF_FONT = new Font("Consolas", Font.PLAIN, 16);
+    private static final boolean[] DEF_TOOLBAR = {true, true, true};
+    private static final String DEF_THEME = "/org/fife/ui/rsyntaxtextarea/themes/default.xml";
+    public static final Preferences DEFAULT = new Preferences(false, true, true, true, DEF_TOOLBAR, DEF_FONT, 0, 4, DEF_THEME);
+    
     private boolean autosave;
     private boolean bracketMatching;
     private boolean displayLineNumbers; 
@@ -19,21 +24,20 @@ public class Preferences implements Serializable {
     private int autosaveIn; // autosave period in minutes
     private int indentLevel; // number of spaces for the indentation
     private String theme; // the name of the xml theme file to load
-    private String workspace; // the path to the folder of the root of the projects
     
     /** Creates a Preferences object with the given propreties. */
     public Preferences(boolean autosave, boolean bracketMatching, boolean displayLineNumbers,
                        boolean showHelpForErrors, boolean[] toolbar, Font font,
                        int autosaveIn, int indentLevel, String theme) {
-        autosave = this.autosave;
-        bracketMatching = this.bracketMatching;
-        displayLineNumbers = this.displayLineNumbers;
-        showHelpForErrors = this.showHelpForErrors;
-        toolbar = this.toolbar; 
-        font = this.font;
-        autosaveIn = this.autosaveIn;
-        indentLevel = this.indentLevel;
-        theme = this.theme;
+        this.autosave = autosave;
+        this.bracketMatching = bracketMatching;
+        this.displayLineNumbers = displayLineNumbers;
+        this.showHelpForErrors = showHelpForErrors;
+        this.toolbar = toolbar; 
+        this.font = font;
+        this.autosaveIn = autosaveIn;
+        this.indentLevel = indentLevel;
+        this.theme = theme;
     }
     
     public boolean getAutosave() {
@@ -62,9 +66,6 @@ public class Preferences implements Serializable {
     }
     public String getTheme() {
         return theme;
-    }
-    public String getWorkspace() {
-        return workspace;
     }
     
     /** Empty constructor which is needed for serialization */

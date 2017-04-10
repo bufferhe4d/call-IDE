@@ -1,10 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package uidesign;
-
 
 import java.awt.*;
 import java.awt.event.*;
@@ -23,18 +17,16 @@ import FileExplorer.*;
  * @author bahadir.tuluce-ug
  */
 public class MainFrame extends javax.swing.JFrame {
-    
-    private int wordCounter;
-    private SearchResult searchResult;  
-    
+        
     /** Creates new form MainFrame. */
     public MainFrame() throws IOException {
         textAreas = new ArrayList<RSyntaxTextArea>();
         files = new ArrayList<File>();
         untitledCount = 1;
         initComponents();
+        initOtherComponents();
         newFile();
-        addExplorer();
+        loadProfile();
         initFrame();
     }
 
@@ -645,48 +637,48 @@ public class MainFrame extends javax.swing.JFrame {
 
         mainSplitPane.setRightComponent(outputsPanel);
 
-        newTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/new.png"))); // NOI18N
+        newTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/new.png"))); // NOI18N
         newTool.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newToolActionPerformed(evt);
             }
         });
 
-        openTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/open.png"))); // NOI18N
+        openTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/open.png"))); // NOI18N
         openTool.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openToolActionPerformed(evt);
             }
         });
 
-        saveTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/save.png"))); // NOI18N
+        saveTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/save.png"))); // NOI18N
         saveTool.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveToolActionPerformed(evt);
             }
         });
 
-        undoTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/undo.png"))); // NOI18N
+        undoTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/undo.png"))); // NOI18N
 
-        redoTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/redo.png"))); // NOI18N
+        redoTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/redo.png"))); // NOI18N
 
-        resetTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/reset.png"))); // NOI18N
+        resetTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/reset.png"))); // NOI18N
 
-        javadocTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/doc.png"))); // NOI18N
+        javadocTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/doc.png"))); // NOI18N
 
-        jarTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/jar.png"))); // NOI18N
+        jarTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/jar.png"))); // NOI18N
 
-        compileTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/compile.png"))); // NOI18N
+        compileTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/compile.png"))); // NOI18N
 
-        runTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/run.png"))); // NOI18N
+        runTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/run.png"))); // NOI18N
 
-        compileRunTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/comprun.png"))); // NOI18N
+        compileRunTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/comprun.png"))); // NOI18N
 
-        apiTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/api.png"))); // NOI18N
+        apiTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/api.png"))); // NOI18N
 
-        helpTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/help.png"))); // NOI18N
+        helpTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/help.png"))); // NOI18N
 
-        loginTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/login.png"))); // NOI18N
+        loginTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/login.png"))); // NOI18N
 
         closeTool.setText("X");
         closeTool.setToolTipText("");
@@ -990,6 +982,37 @@ public class MainFrame extends javax.swing.JFrame {
         public void componentShown(ComponentEvent e) {}
     }
     
+    private void initOtherComponents() {
+        clearPlaceHolders();
+        noWorkspacePanel = new JPanel();
+        workspaceButton = new JButton("Choose Workspace");
+        workspaceButton.addActionListener( new ActionListener() {
+            public void actionPerformed( ActionEvent e) {
+                setWorkspace();
+            }
+        });
+        noWorkspacePanel.add( workspaceButton);
+    }
+    
+    private void clearPlaceHolders() {
+        placeHolderFileExplorer.setVisible( false);
+        placeHolderMenu1.setVisible( false);
+        placeHolderMenu2.setVisible( false);
+        placeHolderMenu3.setVisible( false);
+    }
+    
+    private void initFrame() throws IOException {
+        divLoc1 = 200;
+        setTitle("Call-IDE");
+        setIconImage(ImageIO.read(getClass().getResource("/uidesign/icons/icon.jpg"))); 
+        setSize(new Dimension(1400, 700));
+        setLocationRelativeTo(null);
+        arrangeComponents();
+        addComponentListener(new MyComponentListener());
+        setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+    }
+    
     private void addTextArea( String tabName, String content) throws IOException {
         JPanel panel = new JPanel( new BorderLayout());
         RSyntaxTextArea textArea = new RSyntaxTextArea(20, 60);
@@ -999,33 +1022,13 @@ public class MainFrame extends javax.swing.JFrame {
         "/org/fife/ui/rsyntaxtextarea/themes/default.xml"));
         theme.apply(textArea);
         textArea.setFont(new Font("Consolas", Font.PLAIN, 16));
-        
-        textArea.setText( content);// + "" + System.getenv("JAVA_HOME") + "\n\r" + javax.tools.ToolProvider.getSystemJavaCompiler());
-        
+        textArea.setText( content);
         textAreas.add( textArea);
-        
         RTextScrollPane sp = new RTextScrollPane(textArea);
         panel.add( sp);
         textTabs.add(tabName, panel);
     }
-    
-    private void initFrame() throws IOException {
-        divLoc1 = 200;
-        setTitle("Call-IDE");
-        setIconImage(ImageIO.read(getClass().getResource("/uidesign/icon.jpg"))); 
-        setSize(new Dimension(1400, 700));
-        setLocationRelativeTo(null);
-        arrangeComponents();
-        addComponentListener(new MyComponentListener());
-        setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
         
-    }
-   /*rivate void findAndReplace()
-    {
-       
-    }*/
-    
     /** Arranges the split pane divider locations for a better look. */
     private void arrangeComponents() {
         topSplitPane.setDividerLocation(divLoc1);
@@ -1040,10 +1043,11 @@ public class MainFrame extends javax.swing.JFrame {
         preferencesFrame.pack();
     }
     
-    private int getWordCounter( )
+    private int getWordCounter()
     {
         return this.wordCounter;
     }
+    
     private void setWordCounter( int counter)
     {
         wordCounter = counter;
@@ -1053,9 +1057,9 @@ public class MainFrame extends javax.swing.JFrame {
     {
         searchResult = result;
     }
+    
     private void showFindAndReplace()
     {
-        
         SearchContext searchContext = new SearchContext("");
         
         findTextField.setText("");
@@ -1210,7 +1214,6 @@ public class MainFrame extends javax.swing.JFrame {
     private void saveCurrentFile() {
         try {
             File file = getActiveFile();
-
             if (file == null) {
                 JFileChooser chooser = new JFileChooser();
                 if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
@@ -1288,9 +1291,13 @@ public class MainFrame extends javax.swing.JFrame {
         outputTabs.setSelectedIndex(0);
     }
     
-    private void addExplorer() {
-        // placeHolderFileExplorer.setVisible( false);
-        // explorerScrollPane.setViewportView(new FileNavigator( "D:\\BAHADIR"));
+    private void addExplorer( String workspace) {
+        noWorkspacePanel.setVisible( false);
+        explorerScrollPane.setViewportView( new FileNavigator( workspace));
+    }
+    
+    private void addEmptyExplorer() {
+        explorerScrollPane.setViewportView( noWorkspacePanel);
     }
     
     private void closeActiveFile() {
@@ -1302,11 +1309,87 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
     
+    private void loadProfile() throws IOException {
+        config = new FileConfigurer();
+        if (!config.configExists())
+            config.configureDefault();
+        config.readConfigs();
+        config.checkFolders();
+        userPath = config.getUserPath();
+        Preferences preferences = PreferencesConfigurer.load( userPath);
+        applyPreferences( preferences);
+        loadTemplates();
+        loadWorkspace( config.getWorkspace());
+    }
+    
+    private void loadWorkspace( String workspace) {
+        if ( workspace == null)
+            addEmptyExplorer();
+        else
+            addExplorer(workspace);
+    }
+    
+    private void setWorkspace() {
+        try {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY);
+            if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                File file = chooser.getSelectedFile();
+                if (file.isDirectory()) {
+                    System.out.println( "Setting workspace: " + file.getAbsolutePath());
+                    addExplorer( file.getAbsolutePath());
+                    config.setWorkspace( file.getAbsolutePath());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void applyPreferences( Preferences preferences) {
+        // TODO : Apply preferences to the ui components.
+        System.out.println("Preferences applied.");
+    }
+    
+    private class TemplateButtonListener implements ActionListener {
+        int templateIndex;
+        public TemplateButtonListener( int templateIndex) {
+            this.templateIndex = templateIndex;
+        }
+        public void actionPerformed( ActionEvent e) {
+            insertTemplate( templateIndex);
+        }
+    }
+    
+    private void loadTemplates() throws IOException {
+        TemplateManager manager = new TemplateManager( userPath);
+        templates = manager.getTemplates();
+        templateNames = manager.getTemplateNames();
+        for (int i = 0; i < templates.length; i++) {
+            JMenuItem templateButton = new JMenuItem( templateNames[i]);
+            templatesMenu.add(templateButton);
+            templateButton.addActionListener( new TemplateButtonListener(i));
+        }
+        System.out.println("Templates loaded.");
+    }
+    
+    private void insertTemplate( int templateIndex) {
+        getActiveTextArea().insert(templates[templateIndex], getActiveTextArea().getCaretPosition());
+    }
+    
     // Other Variables
     private ArrayList<RSyntaxTextArea> textAreas;
     private ArrayList<File> files;
     private int divLoc1; // The divider location of the left split pane.
     private int untitledCount;
+    private int wordCounter;
+    private SearchResult searchResult;  
+    private String userPath;
+    private JButton workspaceButton;
+    private JPanel noWorkspacePanel;
+    private FileConfigurer config;
+    private String[] templates;
+    private String[] templateNames;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutButton;

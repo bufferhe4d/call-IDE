@@ -1,0 +1,24 @@
+import java.util.Scanner;
+
+/**
+ * __description__
+ * @author __name_surname__
+ * @version __date__
+ */
+public class ConsoleTemplate
+{
+    public static void main( String[] args)
+    {
+        Scanner scan = new Scanner( System.in);
+        
+        // CONSTANTS
+        
+        
+        // VARIABLES
+        
+        
+        // PROGRAM CODE
+        
+        
+    }
+}
