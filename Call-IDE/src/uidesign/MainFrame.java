@@ -12,7 +12,6 @@ import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rtextarea.*;
 
 import FileOperations.*;
-import RunUtils.*;
 import FileExplorer.*;
 import EditorOperations.*;
 import HelpOperations.*;
@@ -21,12 +20,13 @@ import HelpOperations.*;
  *
  * @author bahadir.tuluce-ug
  */
-public class MainFrame extends javax.swing.JFrame {
+public class MainFrame extends javax.swing.JFrame implements FileOpener {
             
     /** Creates new form MainFrame. */
     public MainFrame() throws IOException {
         textAreas = new ArrayList<RSyntaxTextArea>();
         files = new ArrayList<File>();
+        savedContents = new ArrayList<String>();
         tabTitles = new ArrayList<JLabel>();
         untitledCount = 1;
         loadIcons();
@@ -47,7 +47,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         preferencesFrame = new javax.swing.JFrame();
-        idePreferencesPanel = new javax.swing.JPanel();
+        toolbarPreferencesPanel = new javax.swing.JPanel();
         newCheck = new javax.swing.JCheckBox();
         openCheck = new javax.swing.JCheckBox();
         saveCheck = new javax.swing.JCheckBox();
@@ -62,14 +62,12 @@ public class MainFrame extends javax.swing.JFrame {
         apiCheck = new javax.swing.JCheckBox();
         helpCheck = new javax.swing.JCheckBox();
         loginCheck = new javax.swing.JCheckBox();
-        toolbarPreferencesPanel = new javax.swing.JPanel();
+        idePreferencesPanel = new javax.swing.JPanel();
         themeLabel = new javax.swing.JLabel();
-        fontLabel = new javax.swing.JLabel();
+        fontSizeLabel = new javax.swing.JLabel();
         indentLabel = new javax.swing.JLabel();
         lineNumbersCheck = new javax.swing.JCheckBox();
         themeComboBox = new javax.swing.JComboBox<>();
-        selectFontButton = new javax.swing.JButton();
-        fontTextField = new javax.swing.JTextField();
         indentTextField = new javax.swing.JTextField();
         autosaveTextField = new javax.swing.JTextField();
         minsLabel = new javax.swing.JLabel();
@@ -79,6 +77,9 @@ public class MainFrame extends javax.swing.JFrame {
         workspaceTextField = new javax.swing.JTextField();
         browseWorkspaceButton = new javax.swing.JButton();
         bracketMatchingCheck = new javax.swing.JCheckBox();
+        fontLabel = new javax.swing.JLabel();
+        fontSizeTextField = new javax.swing.JTextField();
+        fontChooser = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -189,70 +190,70 @@ public class MainFrame extends javax.swing.JFrame {
         preferencesFrame.setTitle("Preferences");
         preferencesFrame.setResizable(false);
 
-        idePreferencesPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Toolbar"));
-        idePreferencesPanel.setLayout(new java.awt.GridLayout(4, 4));
+        toolbarPreferencesPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Toolbar"));
+        toolbarPreferencesPanel.setLayout(new java.awt.GridLayout(4, 4));
 
         newCheck.setSelected(true);
         newCheck.setText("New");
-        idePreferencesPanel.add(newCheck);
+        toolbarPreferencesPanel.add(newCheck);
 
         openCheck.setSelected(true);
         openCheck.setText("Open");
-        idePreferencesPanel.add(openCheck);
+        toolbarPreferencesPanel.add(openCheck);
 
         saveCheck.setSelected(true);
         saveCheck.setText("Save");
-        idePreferencesPanel.add(saveCheck);
+        toolbarPreferencesPanel.add(saveCheck);
 
         undoCheck.setSelected(true);
         undoCheck.setText("Undo");
-        idePreferencesPanel.add(undoCheck);
+        toolbarPreferencesPanel.add(undoCheck);
 
         redoCheck.setSelected(true);
         redoCheck.setText("Redo");
-        idePreferencesPanel.add(redoCheck);
+        toolbarPreferencesPanel.add(redoCheck);
 
         compileCheck.setSelected(true);
         compileCheck.setText("Compile");
-        idePreferencesPanel.add(compileCheck);
+        toolbarPreferencesPanel.add(compileCheck);
 
         runCheck.setSelected(true);
         runCheck.setText("Run");
-        idePreferencesPanel.add(runCheck);
+        toolbarPreferencesPanel.add(runCheck);
 
         compileRunCheck.setSelected(true);
         compileRunCheck.setText("Compile&Run");
-        idePreferencesPanel.add(compileRunCheck);
+        toolbarPreferencesPanel.add(compileRunCheck);
 
         resetCheck.setSelected(true);
         resetCheck.setText("Reset");
-        idePreferencesPanel.add(resetCheck);
+        toolbarPreferencesPanel.add(resetCheck);
 
         jarCheck.setSelected(true);
         jarCheck.setText("Export Jar");
-        idePreferencesPanel.add(jarCheck);
+        toolbarPreferencesPanel.add(jarCheck);
 
         javadocCheck.setSelected(true);
         javadocCheck.setText("Javadoc");
-        idePreferencesPanel.add(javadocCheck);
+        toolbarPreferencesPanel.add(javadocCheck);
 
         apiCheck.setSelected(true);
         apiCheck.setText("API Link");
-        idePreferencesPanel.add(apiCheck);
+        toolbarPreferencesPanel.add(apiCheck);
 
         helpCheck.setSelected(true);
         helpCheck.setText("Help");
-        idePreferencesPanel.add(helpCheck);
+        toolbarPreferencesPanel.add(helpCheck);
 
         loginCheck.setSelected(true);
         loginCheck.setText("Login");
-        idePreferencesPanel.add(loginCheck);
+        toolbarPreferencesPanel.add(loginCheck);
 
-        toolbarPreferencesPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("IDE"));
+        idePreferencesPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("IDE"));
 
         themeLabel.setText("Editor Theme");
 
-        fontLabel.setText("Editor Font");
+        fontSizeLabel.setText("Size");
 
         indentLabel.setText("Indent Level:");
 
@@ -261,11 +262,6 @@ public class MainFrame extends javax.swing.JFrame {
         lineNumbersCheck.setVerifyInputWhenFocusTarget(false);
 
         themeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "default.xml", "dark.xml", "eclipse.xml", "idea.xml", "monokai.xml", "vs.xml" }));
-
-        selectFontButton.setText("Select Font");
-
-        fontTextField.setEditable(false);
-        fontTextField.setText("Consolas - 14");
 
         indentTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         indentTextField.setText("4");
@@ -292,83 +288,107 @@ public class MainFrame extends javax.swing.JFrame {
 
         bracketMatchingCheck.setText("Enable Bracketmatching");
 
-        javax.swing.GroupLayout toolbarPreferencesPanelLayout = new javax.swing.GroupLayout(toolbarPreferencesPanel);
-        toolbarPreferencesPanel.setLayout(toolbarPreferencesPanelLayout);
-        toolbarPreferencesPanelLayout.setHorizontalGroup(
-            toolbarPreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(toolbarPreferencesPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(toolbarPreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(toolbarPreferencesPanelLayout.createSequentialGroup()
-                        .addComponent(workspaceLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(workspaceTextField)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(browseWorkspaceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, toolbarPreferencesPanelLayout.createSequentialGroup()
-                        .addGroup(toolbarPreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(themeLabel)
-                            .addComponent(fontLabel)
-                            .addGroup(toolbarPreferencesPanelLayout.createSequentialGroup()
+        fontLabel.setText("Editor Font");
+
+        fontSizeTextField.setText("16");
+
+        fontChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Arial", "Calibri", "Consolas", "Courier New", "Lucida Console", "Times New Roman", "Tahoma" }));
+
+        javax.swing.GroupLayout idePreferencesPanelLayout = new javax.swing.GroupLayout(idePreferencesPanel);
+        idePreferencesPanel.setLayout(idePreferencesPanelLayout);
+        idePreferencesPanelLayout.setHorizontalGroup(
+            idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(workspaceLabel)
+                .addGap(9, 9, 9)
+                .addComponent(workspaceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(browseWorkspaceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(indentLabel)
+                        .addGap(7, 7, 7)
+                        .addComponent(indentTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(60, 60, 60))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, idePreferencesPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lineNumbersCheck)
+                            .addComponent(showHelpCheck)
+                            .addComponent(bracketMatchingCheck)
+                            .addGroup(idePreferencesPanelLayout.createSequentialGroup()
                                 .addComponent(autosaveCheck)
+                                .addGap(5, 5, 5)
+                                .addComponent(autosaveTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(autosaveTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(minsLabel))
-                            .addGroup(toolbarPreferencesPanelLayout.createSequentialGroup()
-                                .addComponent(indentLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(indentTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(toolbarPreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, toolbarPreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(themeComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, toolbarPreferencesPanelLayout.createSequentialGroup()
-                                    .addComponent(fontTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(selectFontButton, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, toolbarPreferencesPanelLayout.createSequentialGroup()
-                                .addGroup(toolbarPreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lineNumbersCheck)
-                                    .addComponent(showHelpCheck)
-                                    .addComponent(bracketMatchingCheck))
-                                .addGap(18, 18, 18)))))
-                .addContainerGap())
+                                .addComponent(minsLabel)))
+                        .addGap(3, 3, 3)))
+                .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                        .addGap(87, 87, 87)
+                        .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(themeLabel)
+                            .addComponent(themeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, idePreferencesPanelLayout.createSequentialGroup()
+                        .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                                .addGap(2, 2, 2)
+                                .addComponent(fontLabel))
+                            .addComponent(fontChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(6, 6, 6)
+                        .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(fontSizeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(fontSizeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap())))
         );
-        toolbarPreferencesPanelLayout.setVerticalGroup(
-            toolbarPreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(toolbarPreferencesPanelLayout.createSequentialGroup()
-                .addGroup(toolbarPreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(themeLabel)
-                    .addComponent(themeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(toolbarPreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(fontLabel)
-                    .addComponent(selectFontButton)
-                    .addComponent(fontTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(toolbarPreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(toolbarPreferencesPanelLayout.createSequentialGroup()
+        idePreferencesPanelLayout.setVerticalGroup(
+            idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                        .addComponent(themeLabel)
+                        .addGap(0, 0, 0)
+                        .addComponent(themeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(48, 48, 48)
+                        .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                                .addComponent(fontLabel)
+                                .addGap(0, 0, 0)
+                                .addComponent(fontChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                                .addComponent(fontSizeLabel)
+                                .addGap(0, 0, 0)
+                                .addComponent(fontSizeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(41, 41, 41))
+                    .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(indentLabel)
+                            .addComponent(indentTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lineNumbersCheck)
-                        .addGap(2, 2, 2)
+                        .addGap(1, 1, 1)
                         .addComponent(showHelpCheck)
-                        .addGap(2, 2, 2))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, toolbarPreferencesPanelLayout.createSequentialGroup()
-                        .addGroup(toolbarPreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(indentTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(indentLabel))
+                        .addGap(1, 1, 1)
+                        .addComponent(bracketMatchingCheck)
+                        .addGap(1, 1, 1)
+                        .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(autosaveCheck)
+                            .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(autosaveTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(minsLabel)))
                         .addGap(18, 18, 18)))
-                .addGroup(toolbarPreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bracketMatchingCheck)
-                    .addComponent(autosaveCheck)
-                    .addComponent(autosaveTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(minsLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
-                .addGroup(toolbarPreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(workspaceLabel)
                     .addComponent(workspaceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(browseWorkspaceButton))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jButton1.setText("OK");
@@ -411,19 +431,19 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(preferencesFrameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(preferencesFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(toolbarPreferencesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(idePreferencesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
+                    .addComponent(idePreferencesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(toolbarPreferencesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         preferencesFrameLayout.setVerticalGroup(
             preferencesFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(preferencesFrameLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(idePreferencesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 250, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(toolbarPreferencesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(idePreferencesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -812,9 +832,9 @@ public class MainFrame extends javax.swing.JFrame {
             .addComponent(compileRunTool, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(apiTool, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(runTool, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(newTool, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(helpTool, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(loginTool, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(newTool, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         fileMenu.setText("File");
@@ -1098,11 +1118,11 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_findReplaceButtonActionPerformed
 
     private void saveToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveToolActionPerformed
-        saveCurrentFile();
+        saveFile( getActiveFile(), getActiveContent());
     }//GEN-LAST:event_saveToolActionPerformed
 
     private void openToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openToolActionPerformed
-        openFile();
+        openFileDialog();
     }//GEN-LAST:event_openToolActionPerformed
 
     private void newToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newToolActionPerformed
@@ -1114,15 +1134,15 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_newFileButtonActionPerformed
 
     private void openFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileButtonActionPerformed
-        openFile();
+        openFileDialog();
     }//GEN-LAST:event_openFileButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        saveCurrentFile();
+        saveFile( getActiveFile(), getActiveContent());
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void saveAsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsButtonActionPerformed
-        saveAsCurrentFile();
+        saveAsFile( getActiveFile(), getActiveContent());
     }//GEN-LAST:event_saveAsButtonActionPerformed
 
     private void quitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitButtonActionPerformed
@@ -1183,7 +1203,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void browseWorkspaceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseWorkspaceButtonActionPerformed
-        // TODO : REVISE setWorkspace() METHOD AND IMPLEMENT HERE.
+        choosePreferredWorkspace();
     }//GEN-LAST:event_browseWorkspaceButtonActionPerformed
 
     /** Sets LookAndFeel to the given name.*/
@@ -1210,9 +1230,13 @@ public class MainFrame extends javax.swing.JFrame {
         public void componentShown(ComponentEvent e) {}
     }
     
+    // TODO : NEEDS DEBUGGING - CASES WITH YES_OPTION
     private void quit() {
-        // TODO : Ask for the unsaved pages.
-        System.exit(0);
+        boolean cancelled = false;
+        while (textAreas.size() > 0 && !cancelled)
+            cancelled = (checkTab(0) == JOptionPane.CANCEL_OPTION);
+        if (!cancelled)
+            System.exit(0);
     }
     
     private void loadIcons() {
@@ -1226,7 +1250,9 @@ public class MainFrame extends javax.swing.JFrame {
         workspaceButton = new JButton("Choose Workspace");
         workspaceButton.addActionListener( new ActionListener() {
             public void actionPerformed( ActionEvent e) {
-                setWorkspace();
+                chooseWorkspace();
+                if (workspace != null)
+                    addExplorer();
             }
         });
         noWorkspacePanel.add( workspaceButton);
@@ -1247,7 +1273,13 @@ public class MainFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         arrangeComponents();
         addComponentListener(new MyComponentListener());
-        setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation( JFrame.DO_NOTHING_ON_CLOSE);
+        addWindowListener( new WindowAdapter() {
+            @Override
+            public void windowClosing( WindowEvent e) {
+                quit();
+            }
+        });
         setVisible(true);
     }
     
@@ -1285,12 +1317,52 @@ public class MainFrame extends javax.swing.JFrame {
         }
         public void actionPerformed( ActionEvent e) {
             int index = tabTitles.indexOf( titleLabel);
+            checkTab( index);
+        }
+    }
+    
+    private int checkTab( int index) {
+        if (files.get(index) == null && !(textAreas.get(index).getText().isEmpty())) {
+            String fileName = tabTitles.get(index).getText();
+            int command = JOptionPane.showConfirmDialog( this, fileName + 
+                    " is not saved. Do you want to save it before closing?",
+                    "Call-IDE", JOptionPane.YES_NO_CANCEL_OPTION);
+            if (command == JOptionPane.YES_OPTION) {
+                if (saveFile( files.get(index), textAreas.get(index).getText()))
+                    closeTab( index);
+            }
+            else if (command == JOptionPane.NO_OPTION) {
+                closeTab( index);
+            }
+            else if (command == JOptionPane.CANCEL_OPTION || command == JOptionPane.CLOSED_OPTION) {
+                return JOptionPane.CANCEL_OPTION;
+            }
+        }
+        else if ( !textAreas.get(index).getText().equals(savedContents.get(index))) {
+            String fileName = tabTitles.get(index).getText();
+            int command = JOptionPane.showConfirmDialog( this, fileName + 
+                    " is changed. Do you want to save the changes before closing?",
+                    "Call-IDE", JOptionPane.YES_NO_CANCEL_OPTION);
+            if (command == JOptionPane.YES_OPTION) {
+                if (saveFile( files.get(index), textAreas.get(index).getText()));
+                    closeTab( index);
+            }
+            else if (command == JOptionPane.NO_OPTION) {
+                closeTab( index);
+            }
+            else if (command == JOptionPane.CANCEL_OPTION || command == JOptionPane.CLOSED_OPTION) {
+                return JOptionPane.CANCEL_OPTION;
+            }
+        }
+        else {
             closeTab( index);
         }
+        return JOptionPane.DEFAULT_OPTION;
     }
     
     private void closeTab( int index) {
         files.remove( index);
+        savedContents.remove( index);
         tabTitles.remove( index);
         textAreas.remove( index);
         textTabs.remove( index);
@@ -1304,10 +1376,29 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     private void showPreferences() {
-        workspaceTextField.setText( config.getWorkspace());
-        preferencesFrame.pack();
-        preferencesFrame.setLocationRelativeTo(this);
-        preferencesFrame.setVisible(true);
+        try {
+            boolean[] checkBoxValues = preferences.getToolbar();
+            JCheckBox[] checkBoxes = {newCheck, openCheck, saveCheck, undoCheck,
+                redoCheck, compileCheck, runCheck, compileRunCheck, resetCheck,
+                jarCheck, javadocCheck, apiCheck, helpCheck, loginCheck};
+            for (int i = 0; i < checkBoxes.length; i++) {
+                checkBoxes[i].setSelected(checkBoxValues[i]);
+            }
+            
+            fontSizeTextField.setText( "" + preferences.getFont().getSize());
+            fontChooser.setSelectedItem(preferences.getFont().getName());
+            workspaceTextField.setText( config.getWorkspace());
+            for (int i = 0; i < themeComboBox.getItemCount(); i++) {
+                String theme = themeComboBox.getItemAt(i);
+                if (preferences.getTheme().endsWith(theme))
+                    themeComboBox.setSelectedIndex(i);
+            }
+            preferencesFrame.pack();
+            preferencesFrame.setLocationRelativeTo(this);
+            preferencesFrame.setVisible(true);
+        } catch( IOException e) {
+            e.printStackTrace();
+        }
     }
     
     private int getWordCounter()
@@ -1478,57 +1569,69 @@ public class MainFrame extends javax.swing.JFrame {
         findReplaceFrame.setVisible(true);
     }
     
-    private void saveCurrentFile() {
+    private boolean saveFile( File file, String content) {
         try {
-            File file = getActiveFile();
             if (file == null) {
-                saveAsCurrentFile();
+                return saveAsFile( file, content);
             }
             else {
                 FileSaver saver = new FileSaver(file);
-                saver.save( getActiveContent());
+                saver.save( content);
+                savedContents.set(files.indexOf(file), content);
                 printStatus("File updated: " + file.getAbsolutePath());
+                return true;
             }
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
     }
     
-    private void saveAsCurrentFile() {
+    private boolean saveAsFile( File file, String content) {
         try {
-            File file = getActiveFile();
             JFileChooser chooser = new JFileChooser();
             if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
                 file = chooser.getSelectedFile();
                 files.set(textTabs.getSelectedIndex(), file);
                 FileSaver saver = new FileSaver(file);
                 saver.save( getActiveContent());
+                savedContents.set(files.indexOf(file), content);
                 printStatus("File saved as: " + file.getAbsolutePath());
                 textTabs.setTitleAt(textTabs.getSelectedIndex(), file.getName());
                 tabTitles.get( textTabs.getSelectedIndex()).setText( file.getName());
+                return true;
             }
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
+        return false;
     }
     
-    private void openFile() {
-        try {
+    private void openFileDialog() {
             JFileChooser chooser = new JFileChooser();
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 File file = chooser.getSelectedFile();
-                for (int i = 0; i < files.size(); i++) {
-                    File checkFile = files.get(i);
-                    if (checkFile != null && file.getAbsolutePath().equals(checkFile.getAbsolutePath())) {
-                        textTabs.setSelectedIndex(i);
-                        return;
-                    }
-                }
-                addTab( file.getName(), ContentReader.read( file));
-                files.add( file);
-                textTabs.setSelectedIndex(textAreas.size() - 1);
-                printStatus("File opened: " + file.getName());
+                openFile( file);
             }
+    }
+    
+    public void openFile( File file) {
+        try {
+            System.out.println("Attempting to open: " + file);
+            for (int i = 0; i < files.size(); i++) {
+                File checkFile = files.get(i);
+                if (checkFile != null && file.getAbsolutePath().equals(checkFile.getAbsolutePath())) {
+                    textTabs.setSelectedIndex(i);
+                    return;
+                }
+            }
+            String content = ContentReader.read( file);
+            addTab( file.getName(), content);
+            files.add( file);
+            savedContents.add( content);
+            textTabs.setSelectedIndex(textAreas.size() - 1);
+            printStatus("File opened: " + file.getName());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -1537,6 +1640,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void newFile() {
         try {
             files.add( null);
+            savedContents.add( "");
             addTab( "Untitled " + untitledCount, "");
             untitledCount++;
             textTabs.setSelectedIndex(textAreas.size() - 1);
@@ -1568,9 +1672,9 @@ public class MainFrame extends javax.swing.JFrame {
         outputTabs.setSelectedIndex(0);
     }
     
-    private void addExplorer( String workspace) {
+    private void addExplorer() {
         noWorkspacePanel.setVisible( false);
-        explorerScrollPane.setViewportView( new FileNavigator( workspace));
+        explorerScrollPane.setViewportView( new FileNavigator( workspace, this));
     }
     
     private void addEmptyExplorer() {
@@ -1587,17 +1691,18 @@ public class MainFrame extends javax.swing.JFrame {
         preferences = PreferencesConfigurer.load( userPath);
         applyPreferences();
         loadTemplates();
-        loadWorkspace( config.getWorkspace());
+        workspace = config.getWorkspace();
+        loadWorkspace( workspace);
     }
     
     private void loadWorkspace( String workspace) {
         if ( workspace == null)
             addEmptyExplorer();
         else
-            addExplorer(workspace);
+            addExplorer();
     }
     
-    private void setWorkspace() {
+    private void chooseWorkspace() {
         try {
             JFileChooser chooser = new JFileChooser();
             chooser.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY);
@@ -1605,8 +1710,8 @@ public class MainFrame extends javax.swing.JFrame {
                 File file = chooser.getSelectedFile();
                 if (file.isDirectory()) {
                     System.out.println( "Setting workspace: " + file.getAbsolutePath());
-                    addExplorer( file.getAbsolutePath());
-                    config.setWorkspace( file.getAbsolutePath());
+                    workspace = file.getAbsolutePath();
+                    config.setWorkspace( workspace);
                 }
             }
         } catch (IOException e) {
@@ -1632,6 +1737,9 @@ public class MainFrame extends javax.swing.JFrame {
             theme.apply(textArea);
             textArea.setFont( editorFont);
         }
+        
+        if (workspace != null && (new File(workspace)).isDirectory())
+            explorerScrollPane.setViewportView( new FileNavigator(workspace, this));
         
         System.out.println("Preferences applied.");
     }
@@ -1662,6 +1770,7 @@ public class MainFrame extends javax.swing.JFrame {
         getActiveTextArea().insert(templates[templateIndex], getActiveTextArea().getCaretPosition());
     }
     
+    // TODO : ADD OUTPUT PANE'S FONT TO THE Preferences.java AND IMPLEMENT.
     private void savePreferences() {
         try {
         boolean[] toolbarPrefs = {newCheck.isSelected(), openCheck.isSelected(),
@@ -1670,29 +1779,53 @@ public class MainFrame extends javax.swing.JFrame {
             resetCheck.isSelected(), jarCheck.isSelected(), javadocCheck.isSelected(),
             apiCheck.isSelected(), helpCheck.isSelected(), loginCheck.isSelected()};
         
-        Font fontPref = Preferences.DEF_FONT; // TODO : OPEN A FONT CHOOSER
         String theme = "/org/fife/ui/rsyntaxtextarea/themes/" + themeComboBox.getSelectedItem();
         
         int autosaveIn = -1;
+        int indentLevel = 3;
+        int fontSize = 16;
         if (autosaveCheck.isSelected()) {
             try {
                 autosaveIn = Integer.parseInt(autosaveTextField.getText());
             } catch( NumberFormatException e) {}
         }
-        int indentLevel = 3;
         try {
             indentLevel = Integer.parseInt(indentTextField.getText());
         } catch( NumberFormatException e) {}
+        try {
+            fontSize = Integer.parseInt(fontSizeTextField.getText());
+        } catch( NumberFormatException e) {}
+        if (indentLevel > 10)
+            indentLevel = 10;
+        if (fontSize > 72)
+            fontSize = 72;
+        
+        String fontName = fontChooser.getSelectedItem().toString();
+        Font preferredFont = new Font(fontName, Font.PLAIN, fontSize);
         
         preferences = new Preferences( autosaveCheck.isSelected(),
                 bracketMatchingCheck.isSelected(), lineNumbersCheck.isSelected(),
-                showHelpCheck.isSelected(), toolbarPrefs, fontPref,
+                showHelpCheck.isSelected(), toolbarPrefs, preferredFont,
                 autosaveIn, indentLevel, theme);
         
         PreferencesConfigurer.save( config.getUserPath(), preferences);
+        config.setWorkspace(workspace);
         applyPreferences();
+        
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    
+    public void choosePreferredWorkspace() {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY);
+        if (chooser.showOpenDialog( preferencesFrame) == JFileChooser.APPROVE_OPTION) {
+            File file = chooser.getSelectedFile();
+            if (file.isDirectory()) {
+                workspace = file.getAbsolutePath();
+                workspaceTextField.setText(workspace);
+            }
         }
     }
 
@@ -1700,10 +1833,11 @@ public class MainFrame extends javax.swing.JFrame {
     private ArrayList<RSyntaxTextArea> textAreas;
     private ArrayList<File> files;
     private ArrayList<JLabel> tabTitles;
+    private ArrayList<String> savedContents;
     private int divLoc1; // The divider location of the left split pane.
     private int untitledCount;
     private int wordCounter;
-    private SearchResult searchResult;  
+    private SearchResult searchResult;
     private String userPath;
     private JButton workspaceButton;
     private JPanel noWorkspacePanel;
@@ -1712,6 +1846,7 @@ public class MainFrame extends javax.swing.JFrame {
     private String[] templateNames;
     private ImageIcon closeIcon;
     private Preferences preferences;
+    private String workspace;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutButton;
@@ -1747,8 +1882,10 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JFrame findReplaceFrame;
     private javax.swing.JPanel findReplacePanel;
     private javax.swing.JTextField findTextField;
+    private javax.swing.JComboBox<String> fontChooser;
     private javax.swing.JLabel fontLabel;
-    private javax.swing.JTextField fontTextField;
+    private javax.swing.JLabel fontSizeLabel;
+    private javax.swing.JTextField fontSizeTextField;
     private javax.swing.JCheckBox helpCheck;
     private javax.swing.JMenuItem helpContentsButton;
     private javax.swing.JMenu helpMenu;
@@ -1820,7 +1957,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JCheckBox saveCheck;
     private javax.swing.JButton saveTool;
     private javax.swing.JMenuItem selectAllButton;
-    private javax.swing.JButton selectFontButton;
     private javax.swing.JPopupMenu.Separator seperator1;
     private javax.swing.JPopupMenu.Separator seperator10;
     private javax.swing.JPopupMenu.Separator seperator11;

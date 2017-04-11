@@ -44,7 +44,7 @@ public class FileConfigurer {
          userPath = input.nextLine() + "/Call-IDE/";          
          if (input.hasNextLine())
             workspace = input.nextLine();
-         input.close();  
+         input.close();
     }
     
     public void checkFolders() throws IOException {
@@ -59,8 +59,15 @@ public class FileConfigurer {
             PreferencesConfigurer.save( userPath, Preferences.DEFAULT);
     }
     
-    public String getUserPath() { return userPath; }
-    public String getWorkspace() { return workspace; }
+    public String getUserPath()throws IOException {
+        readConfigs();
+        return userPath; 
+    }
+    
+    public String getWorkspace() throws IOException {
+        readConfigs();
+        return workspace; 
+    }
     
     public void configureDefault() throws IOException {
         String userHome = System.getProperty("user.home");
@@ -75,13 +82,21 @@ public class FileConfigurer {
     }
     
     public void setWorkspace( String workspace) throws IOException {
+        if (!(workspace == null))
+        {
         String userHome = System.getProperty("user.home");
         String configPath = userHome + "/.callide";
         File configFile = new File( configPath);
         
-        PrintWriter output = new PrintWriter(new FileWriter(configFile, true));
-        output.println( workspace);
-        output.close();
+        Scanner reader = new Scanner(configFile);
+        String savedUserPath = reader.nextLine();
+        reader.close();
+        
+        PrintWriter writer = new PrintWriter( configFile);
+        writer.println(savedUserPath);
+        writer.println(workspace);
+        writer.close();
+        }
     }
     
 }

@@ -14,8 +14,8 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="toolbarPreferencesPanel" max="32767" attributes="0"/>
-                      <Component id="idePreferencesPanel" pref="569" max="32767" attributes="0"/>
+                      <Component id="idePreferencesPanel" max="32767" attributes="0"/>
+                      <Component id="toolbarPreferencesPanel" pref="622" max="32767" attributes="0"/>
                       <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -25,18 +25,18 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="idePreferencesPanel" pref="250" max="32767" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="toolbarPreferencesPanel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="idePreferencesPanel" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                   <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Container class="javax.swing.JPanel" name="idePreferencesPanel">
+        <Container class="javax.swing.JPanel" name="toolbarPreferencesPanel">
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -136,7 +136,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="toolbarPreferencesPanel">
+        <Container class="javax.swing.JPanel" name="idePreferencesPanel">
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -148,100 +148,123 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="14" pref="14" max="-2" attributes="0"/>
+                      <Component id="workspaceLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="9" pref="9" max="-2" attributes="0"/>
+                      <Component id="workspaceTextField" min="-2" pref="310" max="-2" attributes="0"/>
+                      <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+                      <Component id="browseWorkspaceButton" min="-2" pref="124" max="-2" attributes="0"/>
+                  </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Component id="workspaceLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="workspaceTextField" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="browseWorkspaceButton" min="-2" pref="124" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                              <Component id="indentLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="7" pref="7" max="-2" attributes="0"/>
+                              <Component id="indentTextField" min="-2" pref="41" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="themeLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="fontLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lineNumbersCheck" min="-2" max="-2" attributes="0"/>
+                                  <Component id="showHelpCheck" min="-2" max="-2" attributes="0"/>
+                                  <Component id="bracketMatchingCheck" min="-2" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="autosaveCheck" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="autosaveTextField" min="-2" pref="26" max="-2" attributes="0"/>
+                                      <EmptySpace min="5" pref="5" max="-2" attributes="0"/>
+                                      <Component id="autosaveTextField" min="-2" pref="30" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="minsLabel" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="indentLabel" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="indentTextField" min="-2" pref="41" max="-2" attributes="0"/>
-                                  </Group>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="themeComboBox" alignment="1" max="32767" attributes="0"/>
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <Component id="fontTextField" min="-2" pref="136" max="-2" attributes="0"/>
-                                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                                          <Component id="selectFontButton" min="-2" pref="124" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="lineNumbersCheck" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="showHelpCheck" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="bracketMatchingCheck" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
+                              <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="87" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="themeLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="themeComboBox" alignment="0" min="-2" pref="290" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
+                                      <Component id="fontLabel" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="fontChooser" min="-2" pref="230" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                                      <Component id="fontSizeLabel" min="-2" pref="50" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="fontSizeTextField" min="-2" pref="60" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="themeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="themeComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="fontLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="selectFontButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="fontTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Group type="102" attributes="0">
-                              <Component id="lineNumbersCheck" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
-                              <Component id="showHelpCheck" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="themeLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                              <Component id="themeComboBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="indentTextField" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="indentLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="fontLabel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                                      <Component id="fontChooser" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="fontSizeLabel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                                      <Component id="fontSizeTextField" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="8" pref="8" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="indentLabel" min="-2" max="-2" attributes="0"/>
+                                  <Component id="indentTextField" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="lineNumbersCheck" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
+                              <Component id="showHelpCheck" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
+                              <Component id="bracketMatchingCheck" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="autosaveCheck" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                                      <Component id="autosaveTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="minsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="bracketMatchingCheck" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="autosaveCheck" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="autosaveTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="minsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="workspaceLabel" min="-2" max="-2" attributes="0"/>
+                          <Component id="workspaceTextField" min="-2" max="-2" attributes="0"/>
+                          <Component id="browseWorkspaceButton" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="9" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="workspaceLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="workspaceTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="browseWorkspaceButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -252,9 +275,9 @@
                 <Property name="text" type="java.lang.String" value="Editor Theme"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="fontLabel">
+            <Component class="javax.swing.JLabel" name="fontSizeLabel">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Editor Font"/>
+                <Property name="text" type="java.lang.String" value="Size"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="indentLabel">
@@ -285,17 +308,6 @@
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
-            </Component>
-            <Component class="javax.swing.JButton" name="selectFontButton">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Select Font"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="fontTextField">
-              <Properties>
-                <Property name="editable" type="boolean" value="false"/>
-                <Property name="text" type="java.lang.String" value="Consolas - 14"/>
-              </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="indentTextField">
               <Properties>
@@ -346,6 +358,34 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Enable Bracketmatching"/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="fontLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Editor Font"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="fontSizeTextField">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="16"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JComboBox" name="fontChooser">
+              <Properties>
+                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                  <StringArray count="7">
+                    <StringItem index="0" value="Arial"/>
+                    <StringItem index="1" value="Calibri"/>
+                    <StringItem index="2" value="Consolas"/>
+                    <StringItem index="3" value="Courier New"/>
+                    <StringItem index="4" value="Lucida Console"/>
+                    <StringItem index="5" value="Times New Roman"/>
+                    <StringItem index="6" value="Tahoma"/>
+                  </StringArray>
+                </Property>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
@@ -1254,9 +1294,9 @@
               <Component id="compileRunTool" alignment="0" max="32767" attributes="0"/>
               <Component id="apiTool" alignment="0" max="32767" attributes="0"/>
               <Component id="runTool" alignment="0" max="32767" attributes="0"/>
-              <Component id="newTool" min="-2" pref="40" max="-2" attributes="0"/>
               <Component id="helpTool" alignment="0" max="32767" attributes="0"/>
               <Component id="loginTool" alignment="0" pref="0" max="32767" attributes="0"/>
+              <Component id="newTool" alignment="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
