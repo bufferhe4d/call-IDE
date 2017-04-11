@@ -3,30 +3,37 @@ package uidesign;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.*;
+
 import javax.swing.*;
-import javax.imageio.ImageIO;
+import javax.imageio.*;
+
 import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rtextarea.*;
-import java.util.ArrayList;
+
 import FileOperations.*;
 import RunUtils.*;
 import FileExplorer.*;
+import EditorOperations.*;
+import HelpOperations.*;
 
 /**
  *
  * @author bahadir.tuluce-ug
  */
 public class MainFrame extends javax.swing.JFrame {
-        
+            
     /** Creates new form MainFrame. */
     public MainFrame() throws IOException {
         textAreas = new ArrayList<RSyntaxTextArea>();
         files = new ArrayList<File>();
+        tabTitles = new ArrayList<JLabel>();
         untitledCount = 1;
+        loadIcons();
         initComponents();
         initOtherComponents();
-        newFile();
         loadProfile();
+        newFile();
         initFrame();
     }
 
@@ -68,9 +75,13 @@ public class MainFrame extends javax.swing.JFrame {
         minsLabel = new javax.swing.JLabel();
         showHelpCheck = new javax.swing.JCheckBox();
         autosaveCheck = new javax.swing.JCheckBox();
-        jLabel1 = new javax.swing.JLabel();
-        fontTextField1 = new javax.swing.JTextField();
-        selectFontButton1 = new javax.swing.JButton();
+        workspaceLabel = new javax.swing.JLabel();
+        workspaceTextField = new javax.swing.JTextField();
+        browseWorkspaceButton = new javax.swing.JButton();
+        bracketMatchingCheck = new javax.swing.JCheckBox();
+        jPanel1 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         findReplaceFrame = new javax.swing.JFrame();
         findReplacePanel = new javax.swing.JPanel();
         replaceButton = new javax.swing.JButton();
@@ -117,7 +128,6 @@ public class MainFrame extends javax.swing.JFrame {
         apiTool = new javax.swing.JButton();
         helpTool = new javax.swing.JButton();
         loginTool = new javax.swing.JButton();
-        closeTool = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         newFileButton = new javax.swing.JMenuItem();
@@ -250,7 +260,7 @@ public class MainFrame extends javax.swing.JFrame {
         lineNumbersCheck.setText("Display Line Numbers");
         lineNumbersCheck.setVerifyInputWhenFocusTarget(false);
 
-        themeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Default" }));
+        themeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "default.xml", "dark.xml", "eclipse.xml", "idea.xml", "monokai.xml", "vs.xml" }));
 
         selectFontButton.setText("Select Font");
 
@@ -268,12 +278,19 @@ public class MainFrame extends javax.swing.JFrame {
 
         autosaveCheck.setText("Autosave in");
 
-        jLabel1.setText("Workspace Folder:");
+        workspaceLabel.setText("Workspace Folder:");
 
-        fontTextField1.setEditable(false);
-        fontTextField1.setText("C:\\Users\\User\\Documents");
+        workspaceTextField.setEditable(false);
+        workspaceTextField.setText("C:\\Users\\User\\Documents");
 
-        selectFontButton1.setText("Browse");
+        browseWorkspaceButton.setText("Browse");
+        browseWorkspaceButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                browseWorkspaceButtonActionPerformed(evt);
+            }
+        });
+
+        bracketMatchingCheck.setText("Enable Bracketmatching");
 
         javax.swing.GroupLayout toolbarPreferencesPanelLayout = new javax.swing.GroupLayout(toolbarPreferencesPanel);
         toolbarPreferencesPanel.setLayout(toolbarPreferencesPanelLayout);
@@ -282,39 +299,40 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(toolbarPreferencesPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(toolbarPreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(toolbarPreferencesPanelLayout.createSequentialGroup()
+                        .addComponent(workspaceLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(workspaceTextField)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(browseWorkspaceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, toolbarPreferencesPanelLayout.createSequentialGroup()
                         .addGroup(toolbarPreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(themeLabel)
+                            .addComponent(fontLabel)
+                            .addGroup(toolbarPreferencesPanelLayout.createSequentialGroup()
+                                .addComponent(autosaveCheck)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(autosaveTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(minsLabel))
                             .addGroup(toolbarPreferencesPanelLayout.createSequentialGroup()
                                 .addComponent(indentLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(indentTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(themeLabel)
-                            .addComponent(fontLabel))
+                                .addComponent(indentTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(toolbarPreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, toolbarPreferencesPanelLayout.createSequentialGroup()
-                                .addComponent(showHelpCheck)
-                                .addGap(5, 5, 5))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, toolbarPreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(themeComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, toolbarPreferencesPanelLayout.createSequentialGroup()
                                     .addComponent(fontTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
-                                    .addComponent(selectFontButton, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(toolbarPreferencesPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fontTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(selectFontButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(toolbarPreferencesPanelLayout.createSequentialGroup()
-                        .addComponent(lineNumbersCheck)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(autosaveCheck)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(autosaveTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(minsLabel)))
+                                    .addComponent(selectFontButton, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, toolbarPreferencesPanelLayout.createSequentialGroup()
+                                .addGroup(toolbarPreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lineNumbersCheck)
+                                    .addComponent(showHelpCheck)
+                                    .addComponent(bracketMatchingCheck))
+                                .addGap(18, 18, 18)))))
                 .addContainerGap())
         );
         toolbarPreferencesPanelLayout.setVerticalGroup(
@@ -330,22 +348,60 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(fontTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(toolbarPreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(toolbarPreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(showHelpCheck, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(indentTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(indentLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(toolbarPreferencesPanelLayout.createSequentialGroup()
+                        .addComponent(lineNumbersCheck)
+                        .addGap(2, 2, 2)
+                        .addComponent(showHelpCheck)
+                        .addGap(2, 2, 2))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, toolbarPreferencesPanelLayout.createSequentialGroup()
+                        .addGroup(toolbarPreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(indentTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(indentLabel))
+                        .addGap(18, 18, 18)))
                 .addGroup(toolbarPreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lineNumbersCheck)
+                    .addComponent(bracketMatchingCheck)
                     .addComponent(autosaveCheck)
                     .addComponent(autosaveTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(minsLabel))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addGroup(toolbarPreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(fontTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(selectFontButton1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(workspaceLabel)
+                    .addComponent(workspaceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(browseWorkspaceButton))
+                .addContainerGap())
+        );
+
+        jButton1.setText("OK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Cancel");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton1))
+                .addGap(0, 12, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout preferencesFrameLayout = new javax.swing.GroupLayout(preferencesFrame.getContentPane());
@@ -355,18 +411,20 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(preferencesFrameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(preferencesFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(toolbarPreferencesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(idePreferencesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(toolbarPreferencesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(idePreferencesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         preferencesFrameLayout.setVerticalGroup(
             preferencesFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(preferencesFrameLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(toolbarPreferencesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(toolbarPreferencesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(idePreferencesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(5, 5, 5)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         findReplaceFrame.setTitle("Find / Replace");
@@ -638,6 +696,7 @@ public class MainFrame extends javax.swing.JFrame {
         mainSplitPane.setRightComponent(outputsPanel);
 
         newTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/new.png"))); // NOI18N
+        newTool.setToolTipText("New File");
         newTool.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newToolActionPerformed(evt);
@@ -645,6 +704,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         openTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/open.png"))); // NOI18N
+        openTool.setToolTipText("Open File");
         openTool.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openToolActionPerformed(evt);
@@ -652,6 +712,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         saveTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/save.png"))); // NOI18N
+        saveTool.setToolTipText("Save");
         saveTool.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveToolActionPerformed(evt);
@@ -659,34 +720,51 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         undoTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/undo.png"))); // NOI18N
-
-        redoTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/redo.png"))); // NOI18N
-
-        resetTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/reset.png"))); // NOI18N
-
-        javadocTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/doc.png"))); // NOI18N
-
-        jarTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/jar.png"))); // NOI18N
-
-        compileTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/compile.png"))); // NOI18N
-
-        runTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/run.png"))); // NOI18N
-
-        compileRunTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/comprun.png"))); // NOI18N
-
-        apiTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/api.png"))); // NOI18N
-
-        helpTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/help.png"))); // NOI18N
-
-        loginTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/login.png"))); // NOI18N
-
-        closeTool.setText("X");
-        closeTool.setToolTipText("");
-        closeTool.addActionListener(new java.awt.event.ActionListener() {
+        undoTool.setToolTipText("Undo");
+        undoTool.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                closeToolActionPerformed(evt);
+                undoToolActionPerformed(evt);
             }
         });
+
+        redoTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/redo.png"))); // NOI18N
+        redoTool.setToolTipText("Redo");
+        redoTool.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                redoToolActionPerformed(evt);
+            }
+        });
+
+        resetTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/reset.png"))); // NOI18N
+        resetTool.setToolTipText("Reset Interactions");
+
+        javadocTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/doc.png"))); // NOI18N
+        javadocTool.setToolTipText("Create Javadoc");
+
+        jarTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/jar.png"))); // NOI18N
+        jarTool.setToolTipText("Create Jar File");
+
+        compileTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/compile.png"))); // NOI18N
+        compileTool.setToolTipText("Compile");
+
+        runTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/run.png"))); // NOI18N
+        runTool.setToolTipText("Run");
+
+        compileRunTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/comprun.png"))); // NOI18N
+        compileRunTool.setToolTipText("Compile & Run");
+
+        apiTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/api.png"))); // NOI18N
+        apiTool.setToolTipText("Java API");
+        apiTool.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                apiToolActionPerformed(evt);
+            }
+        });
+
+        helpTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/help.png"))); // NOI18N
+        helpTool.setToolTipText("Help Contents");
+
+        loginTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uidesign/icons/login.png"))); // NOI18N
 
         javax.swing.GroupLayout toolbarPanelLayout = new javax.swing.GroupLayout(toolbarPanel);
         toolbarPanel.setLayout(toolbarPanelLayout);
@@ -718,8 +796,6 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(apiTool, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
                 .addComponent(helpTool, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(closeTool)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(loginTool, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -739,21 +815,34 @@ public class MainFrame extends javax.swing.JFrame {
             .addComponent(newTool, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(helpTool, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(loginTool, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-            .addComponent(closeTool, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
         fileMenu.setText("File");
 
-        newFileButton.setText("New Java Class");
+        newFileButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        newFileButton.setText("New File");
+        newFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newFileButtonActionPerformed(evt);
+            }
+        });
         fileMenu.add(newFileButton);
 
+        newProjectButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         newProjectButton.setText("New Project");
         fileMenu.add(newProjectButton);
         fileMenu.add(seperator1);
 
+        openFileButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         openFileButton.setText("Open File");
+        openFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openFileButtonActionPerformed(evt);
+            }
+        });
         fileMenu.add(openFileButton);
 
+        openProjectButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         openProjectButton.setText("Open Project");
         fileMenu.add(openProjectButton);
 
@@ -761,40 +850,95 @@ public class MainFrame extends javax.swing.JFrame {
         fileMenu.add(openFolderButton);
         fileMenu.add(seperator2);
 
+        saveButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         saveButton.setText("Save");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
         fileMenu.add(saveButton);
 
+        saveAsButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         saveAsButton.setText("Save As...");
+        saveAsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveAsButtonActionPerformed(evt);
+            }
+        });
         fileMenu.add(saveAsButton);
         fileMenu.add(seperator3);
 
+        quitButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
         quitButton.setText("Quit");
+        quitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quitButtonActionPerformed(evt);
+            }
+        });
         fileMenu.add(quitButton);
 
         menuBar.add(fileMenu);
 
         editMenu.setText("Edit");
 
+        undoButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
         undoButton.setText("Undo");
+        undoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                undoButtonActionPerformed(evt);
+            }
+        });
         editMenu.add(undoButton);
 
+        redoButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
         redoButton.setText("Redo");
+        redoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                redoButtonActionPerformed(evt);
+            }
+        });
         editMenu.add(redoButton);
         editMenu.add(seperator4);
 
+        selectAllButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         selectAllButton.setText("Select all");
+        selectAllButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectAllButtonActionPerformed(evt);
+            }
+        });
         editMenu.add(selectAllButton);
 
+        cutButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
         cutButton.setText("Cut");
+        cutButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cutButtonActionPerformed(evt);
+            }
+        });
         editMenu.add(cutButton);
 
+        copyButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
         copyButton.setText("Copy");
+        copyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                copyButtonActionPerformed(evt);
+            }
+        });
         editMenu.add(copyButton);
 
+        pasteButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
         pasteButton.setText("Paste");
+        pasteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pasteButtonActionPerformed(evt);
+            }
+        });
         editMenu.add(pasteButton);
         editMenu.add(seperator5);
 
+        findReplaceButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
         findReplaceButton.setText("Find/Replace");
         findReplaceButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -892,12 +1036,23 @@ public class MainFrame extends javax.swing.JFrame {
         helpMenu.setText("Help");
 
         apiButton.setText("Java API");
+        apiButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                apiButtonActionPerformed(evt);
+            }
+        });
         helpMenu.add(apiButton);
 
         tutorialsButton.setText("Java Tutorials");
+        tutorialsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tutorialsButtonActionPerformed(evt);
+            }
+        });
         helpMenu.add(tutorialsButton);
         helpMenu.add(seperator11);
 
+        helpContentsButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         helpContentsButton.setText("Help Contents");
         helpMenu.add(helpContentsButton);
 
@@ -954,9 +1109,82 @@ public class MainFrame extends javax.swing.JFrame {
         newFile();
     }//GEN-LAST:event_newToolActionPerformed
 
-    private void closeToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeToolActionPerformed
-        closeActiveFile();
-    }//GEN-LAST:event_closeToolActionPerformed
+    private void newFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newFileButtonActionPerformed
+        newFile();
+    }//GEN-LAST:event_newFileButtonActionPerformed
+
+    private void openFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileButtonActionPerformed
+        openFile();
+    }//GEN-LAST:event_openFileButtonActionPerformed
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        saveCurrentFile();
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void saveAsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsButtonActionPerformed
+        saveAsCurrentFile();
+    }//GEN-LAST:event_saveAsButtonActionPerformed
+
+    private void quitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitButtonActionPerformed
+        quit();
+    }//GEN-LAST:event_quitButtonActionPerformed
+
+    private void undoToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoToolActionPerformed
+        BasicOperations.undo( getActiveTextArea());
+    }//GEN-LAST:event_undoToolActionPerformed
+
+    private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoButtonActionPerformed
+        BasicOperations.undo( getActiveTextArea());
+    }//GEN-LAST:event_undoButtonActionPerformed
+
+    private void redoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoButtonActionPerformed
+        BasicOperations.redo( getActiveTextArea());
+    }//GEN-LAST:event_redoButtonActionPerformed
+
+    private void redoToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoToolActionPerformed
+        BasicOperations.redo( getActiveTextArea());
+    }//GEN-LAST:event_redoToolActionPerformed
+
+    private void selectAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectAllButtonActionPerformed
+        BasicOperations.selectAll( getActiveTextArea());
+    }//GEN-LAST:event_selectAllButtonActionPerformed
+
+    private void cutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutButtonActionPerformed
+        BasicOperations.cut( getActiveTextArea());
+    }//GEN-LAST:event_cutButtonActionPerformed
+
+    private void copyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyButtonActionPerformed
+        BasicOperations.copy( getActiveTextArea());
+    }//GEN-LAST:event_copyButtonActionPerformed
+
+    private void pasteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteButtonActionPerformed
+        BasicOperations.paste( getActiveTextArea());
+    }//GEN-LAST:event_pasteButtonActionPerformed
+
+    private void apiToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_apiToolActionPerformed
+        LinkOpener.openLink( LinkOpener.API_LINK);
+    }//GEN-LAST:event_apiToolActionPerformed
+
+    private void apiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_apiButtonActionPerformed
+        LinkOpener.openLink( LinkOpener.API_LINK);
+    }//GEN-LAST:event_apiButtonActionPerformed
+
+    private void tutorialsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tutorialsButtonActionPerformed
+        LinkOpener.openLink( LinkOpener.TUTORIALS_LINK);
+    }//GEN-LAST:event_tutorialsButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        savePreferences();
+        preferencesFrame.setVisible( false);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        preferencesFrame.setVisible( false);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void browseWorkspaceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseWorkspaceButtonActionPerformed
+        // TODO : REVISE setWorkspace() METHOD AND IMPLEMENT HERE.
+    }//GEN-LAST:event_browseWorkspaceButtonActionPerformed
 
     /** Sets LookAndFeel to the given name.*/
     public static void setLookAndFeel (String lookAndFeel) {
@@ -980,6 +1208,16 @@ public class MainFrame extends javax.swing.JFrame {
         public void componentHidden(ComponentEvent e) {}
         public void componentMoved(ComponentEvent e) {}
         public void componentShown(ComponentEvent e) {}
+    }
+    
+    private void quit() {
+        // TODO : Ask for the unsaved pages.
+        System.exit(0);
+    }
+    
+    private void loadIcons() {
+        closeIcon = new ImageIcon((new ImageIcon(getClass().getResource("/uidesign/icons/close.png"))).
+                getImage().getScaledInstance(16, 16, java.awt.Image.SCALE_SMOOTH));
     }
     
     private void initOtherComponents() {
@@ -1013,22 +1251,51 @@ public class MainFrame extends javax.swing.JFrame {
         setVisible(true);
     }
     
-    private void addTextArea( String tabName, String content) throws IOException {
+    private void addTab( String tabName, String content) throws IOException {
         JPanel panel = new JPanel( new BorderLayout());
         RSyntaxTextArea textArea = new RSyntaxTextArea(20, 60);
         textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
         textArea.setCodeFoldingEnabled(true);
-        Theme theme = Theme.load(getClass().getResourceAsStream(
-        "/org/fife/ui/rsyntaxtextarea/themes/default.xml"));
+        Theme theme = Theme.load(getClass().getResourceAsStream( preferences.getTheme()));
         theme.apply(textArea);
-        textArea.setFont(new Font("Consolas", Font.PLAIN, 16));
+        textArea.setFont( preferences.getFont());
         textArea.setText( content);
         textAreas.add( textArea);
         RTextScrollPane sp = new RTextScrollPane(textArea);
         panel.add( sp);
         textTabs.add(tabName, panel);
+        int index = textTabs.indexOfTab( tabName);
+        JPanel tabPanel = new JPanel();
+        JLabel titleLabel = new JLabel( tabName);
+        tabTitles.add( titleLabel);
+        JButton closeTabButton = new JButton();
+        closeTabButton.setIcon( closeIcon);
+        closeTabButton.setPreferredSize( new Dimension(24, 24));
+        closeTabButton.addActionListener( new CloseTabListener( titleLabel));
+        tabPanel.setOpaque( false);
+        tabPanel.add( titleLabel);
+        tabPanel.add( closeTabButton);
+        textTabs.setTabComponentAt( index, tabPanel);
     }
-        
+    
+    private class CloseTabListener implements ActionListener {
+        JLabel titleLabel;
+        public CloseTabListener( JLabel titleLabel) {
+            this.titleLabel = titleLabel;
+        }
+        public void actionPerformed( ActionEvent e) {
+            int index = tabTitles.indexOf( titleLabel);
+            closeTab( index);
+        }
+    }
+    
+    private void closeTab( int index) {
+        files.remove( index);
+        tabTitles.remove( index);
+        textAreas.remove( index);
+        textTabs.remove( index);
+    }
+    
     /** Arranges the split pane divider locations for a better look. */
     private void arrangeComponents() {
         topSplitPane.setDividerLocation(divLoc1);
@@ -1037,10 +1304,10 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     private void showPreferences() {
+        workspaceTextField.setText( config.getWorkspace());
         preferencesFrame.pack();
         preferencesFrame.setLocationRelativeTo(this);
         preferencesFrame.setVisible(true);
-        preferencesFrame.pack();
     }
     
     private int getWordCounter()
@@ -1215,20 +1482,30 @@ public class MainFrame extends javax.swing.JFrame {
         try {
             File file = getActiveFile();
             if (file == null) {
-                JFileChooser chooser = new JFileChooser();
-                if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-                    file = chooser.getSelectedFile();
-                    files.set(textTabs.getSelectedIndex(), file);
-                    FileSaver saver = new FileSaver(file);
-                    saver.save( getActiveContent());
-                    printStatus("File saved as: " + file.getAbsolutePath());
-                    textTabs.setTitleAt(textTabs.getSelectedIndex(), file.getName());
-                }
+                saveAsCurrentFile();
             }
             else {
                 FileSaver saver = new FileSaver(file);
                 saver.save( getActiveContent());
                 printStatus("File updated: " + file.getAbsolutePath());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void saveAsCurrentFile() {
+        try {
+            File file = getActiveFile();
+            JFileChooser chooser = new JFileChooser();
+            if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+                file = chooser.getSelectedFile();
+                files.set(textTabs.getSelectedIndex(), file);
+                FileSaver saver = new FileSaver(file);
+                saver.save( getActiveContent());
+                printStatus("File saved as: " + file.getAbsolutePath());
+                textTabs.setTitleAt(textTabs.getSelectedIndex(), file.getName());
+                tabTitles.get( textTabs.getSelectedIndex()).setText( file.getName());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -1247,7 +1524,7 @@ public class MainFrame extends javax.swing.JFrame {
                         return;
                     }
                 }
-                addTextArea( file.getName(), ContentReader.read( file));
+                addTab( file.getName(), ContentReader.read( file));
                 files.add( file);
                 textTabs.setSelectedIndex(textAreas.size() - 1);
                 printStatus("File opened: " + file.getName());
@@ -1260,7 +1537,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void newFile() {
         try {
             files.add( null);
-            addTextArea( "Untitled " + untitledCount, "// Enter code here...");
+            addTab( "Untitled " + untitledCount, "");
             untitledCount++;
             textTabs.setSelectedIndex(textAreas.size() - 1);
         } catch( IOException e) {
@@ -1300,15 +1577,6 @@ public class MainFrame extends javax.swing.JFrame {
         explorerScrollPane.setViewportView( noWorkspacePanel);
     }
     
-    private void closeActiveFile() {
-        int index = textTabs.getSelectedIndex();
-        if (index != -1) {
-            files.remove( index);
-            textAreas.remove( index);
-            textTabs.remove( index);
-        }
-    }
-    
     private void loadProfile() throws IOException {
         config = new FileConfigurer();
         if (!config.configExists())
@@ -1316,8 +1584,8 @@ public class MainFrame extends javax.swing.JFrame {
         config.readConfigs();
         config.checkFolders();
         userPath = config.getUserPath();
-        Preferences preferences = PreferencesConfigurer.load( userPath);
-        applyPreferences( preferences);
+        preferences = PreferencesConfigurer.load( userPath);
+        applyPreferences();
         loadTemplates();
         loadWorkspace( config.getWorkspace());
     }
@@ -1346,8 +1614,25 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
     
-    private void applyPreferences( Preferences preferences) {
-        // TODO : Apply preferences to the ui components.
+    // TODO : APPLY THE REMAINING PREFERENCES AS WELL.
+    private void applyPreferences() throws IOException {
+        boolean[] toolbarPrefs = preferences.getToolbar();
+        JButton[] currentToolbar = {newTool, openTool, saveTool,
+            undoTool, redoTool, compileTool, runTool, compileRunTool,
+            resetTool, jarTool, javadocTool, apiTool, helpTool, loginTool};
+        for (int i = 0; i < currentToolbar.length; i++) {
+            currentToolbar[i].setVisible( toolbarPrefs[i]);
+        }
+        
+        Font editorFont = preferences.getFont();
+        String themeName = preferences.getTheme();
+        System.out.println( "Applying theme: " + themeName);
+        for (RSyntaxTextArea textArea : textAreas) {
+            Theme theme = Theme.load(getClass().getResourceAsStream( themeName));
+            theme.apply(textArea);
+            textArea.setFont( editorFont);
+        }
+        
         System.out.println("Preferences applied.");
     }
     
@@ -1377,9 +1662,44 @@ public class MainFrame extends javax.swing.JFrame {
         getActiveTextArea().insert(templates[templateIndex], getActiveTextArea().getCaretPosition());
     }
     
+    private void savePreferences() {
+        try {
+        boolean[] toolbarPrefs = {newCheck.isSelected(), openCheck.isSelected(),
+            saveCheck.isSelected(), undoCheck.isSelected(), redoCheck.isSelected(),
+            compileCheck.isSelected(), runCheck.isSelected(), compileRunCheck.isSelected(),
+            resetCheck.isSelected(), jarCheck.isSelected(), javadocCheck.isSelected(),
+            apiCheck.isSelected(), helpCheck.isSelected(), loginCheck.isSelected()};
+        
+        Font fontPref = Preferences.DEF_FONT; // TODO : OPEN A FONT CHOOSER
+        String theme = "/org/fife/ui/rsyntaxtextarea/themes/" + themeComboBox.getSelectedItem();
+        
+        int autosaveIn = -1;
+        if (autosaveCheck.isSelected()) {
+            try {
+                autosaveIn = Integer.parseInt(autosaveTextField.getText());
+            } catch( NumberFormatException e) {}
+        }
+        int indentLevel = 3;
+        try {
+            indentLevel = Integer.parseInt(indentTextField.getText());
+        } catch( NumberFormatException e) {}
+        
+        preferences = new Preferences( autosaveCheck.isSelected(),
+                bracketMatchingCheck.isSelected(), lineNumbersCheck.isSelected(),
+                showHelpCheck.isSelected(), toolbarPrefs, fontPref,
+                autosaveIn, indentLevel, theme);
+        
+        PreferencesConfigurer.save( config.getUserPath(), preferences);
+        applyPreferences();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     // Other Variables
     private ArrayList<RSyntaxTextArea> textAreas;
     private ArrayList<File> files;
+    private ArrayList<JLabel> tabTitles;
     private int divLoc1; // The divider location of the left split pane.
     private int untitledCount;
     private int wordCounter;
@@ -1390,6 +1710,8 @@ public class MainFrame extends javax.swing.JFrame {
     private FileConfigurer config;
     private String[] templates;
     private String[] templateNames;
+    private ImageIcon closeIcon;
+    private Preferences preferences;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutButton;
@@ -1398,7 +1720,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton apiTool;
     private javax.swing.JCheckBox autosaveCheck;
     private javax.swing.JTextField autosaveTextField;
-    private javax.swing.JButton closeTool;
+    private javax.swing.JCheckBox bracketMatchingCheck;
+    private javax.swing.JButton browseWorkspaceButton;
     private javax.swing.JMenuItem compileButton;
     private javax.swing.JCheckBox compileCheck;
     private javax.swing.JMenuItem compileRunButton;
@@ -1426,7 +1749,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField findTextField;
     private javax.swing.JLabel fontLabel;
     private javax.swing.JTextField fontTextField;
-    private javax.swing.JTextField fontTextField1;
     private javax.swing.JCheckBox helpCheck;
     private javax.swing.JMenuItem helpContentsButton;
     private javax.swing.JMenu helpMenu;
@@ -1435,7 +1757,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel indentLabel;
     private javax.swing.JTextField indentTextField;
     private javax.swing.JMenuItem insertJavadocButton;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator6;
     private javax.swing.JMenuItem jarButton;
     private javax.swing.JCheckBox jarCheck;
@@ -1497,7 +1821,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton saveTool;
     private javax.swing.JMenuItem selectAllButton;
     private javax.swing.JButton selectFontButton;
-    private javax.swing.JButton selectFontButton1;
     private javax.swing.JPopupMenu.Separator seperator1;
     private javax.swing.JPopupMenu.Separator seperator10;
     private javax.swing.JPopupMenu.Separator seperator11;
@@ -1528,6 +1851,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JCheckBox undoCheck;
     private javax.swing.JButton undoTool;
     private javax.swing.JMenu windowMenu;
+    private javax.swing.JLabel workspaceLabel;
+    private javax.swing.JTextField workspaceTextField;
     // End of variables declaration//GEN-END:variables
 
 }

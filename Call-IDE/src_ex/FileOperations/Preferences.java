@@ -10,9 +10,10 @@ import java.io.Serializable;
  */
 public class Preferences implements Serializable {
     
-    private static final Font DEF_FONT = new Font("Consolas", Font.PLAIN, 16);
-    private static final boolean[] DEF_TOOLBAR = {true, true, true};
-    private static final String DEF_THEME = "/org/fife/ui/rsyntaxtextarea/themes/default.xml";
+    public static final Font DEF_FONT = new Font("Consolas", Font.PLAIN, 16);
+    public static final boolean[] DEF_TOOLBAR = {true, true, true,
+        true, true, true, true, true, true, true, true, true, true, true};
+    public static final String DEF_THEME = "/org/fife/ui/rsyntaxtextarea/themes/default.xml";
     public static final Preferences DEFAULT = new Preferences(false, true, true, true, DEF_TOOLBAR, DEF_FONT, 0, 4, DEF_THEME);
     
     private boolean autosave;
