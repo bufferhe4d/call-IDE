@@ -12,35 +12,35 @@ import java.io.PrintWriter;
 
 public class FileSaver {
     
-    /** The saving path of the contents */
-    private File path;
+    /** The saving file of the contents */
+    private File file;
     
     /**
-     * Creates an instance of FileSaver with the specified path.
-     * @param path the saving path of the contents
+     * Creates an instance of FileSaver with the specified file.
+     * @param file the saving file of the contents
      */
-    public FileSaver( File path) {
-        this.path = path;
+    public FileSaver( File file) {
+        this.file = file;
     }
     
-    /** @param path the saving path of the contents */
-    public void setPath( File path) {
-        this.path = path;
+    /** @param file the saving file of the contents */
+    public void setPath( File file) {
+        this.file = file;
     }
     
     /**
-     * Saves the contents to the specified path.
+     * Saves the contents to the specified file.
      * @param content the contents to save
      * @throws IOException if the writing is failed
      */
     public void save( String content) throws IOException {
-        saveAs( content, path);
+        saveAs(content, file);
     }
     
     /**
-     * Saves the contents to the given path.
+     * Saves the contents to the given file.
      * @param content the contents to save
-     * @param diffPath the different saving path of the contents
+     * @param diffPath the different saving file of the contents
      * @throws IOException if the writing is failed
      */
     public void saveAs( String content, File diffPath) throws IOException {
@@ -48,4 +48,9 @@ public class FileSaver {
         output.print( content);
         output.close();
     }
+    
+    public File getFile() {
+        return file;
+    }
+    
 }
