@@ -1,5 +1,6 @@
 import java.util.*;
 import javax.swing.tree.*;
+import java.io.*;
 
 public class FileNode extends DefaultMutableTreeNode
 {
@@ -91,6 +92,16 @@ public class FileNode extends DefaultMutableTreeNode
          
       }
       
+   }
+   
+   /**
+    * This method get the file of node
+    * 
+    * 
+    */
+   public File getFile()
+   {
+      return file;
    }
    
 }
