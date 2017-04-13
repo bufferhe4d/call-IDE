@@ -5,7 +5,6 @@
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
             <name>Call-IDE</name>
             <source-roots>
-                <root id="src.src_ex.dir"/>
                 <root id="src.dir"/>
             </source-roots>
             <test-roots>
