@@ -18,7 +18,7 @@ import HelpOperations.*;
 
 /**
  *
- * @author bahadir.tuluce-ug
+ * @author Emin Bahadır Tülüce & Halil Şahiner
  */
 public class MainFrame extends javax.swing.JFrame implements FileOpener, AutosaveHandler {
     
@@ -89,7 +89,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        findReplaceFrame = new javax.swing.JFrame();
+        findAndReplaceFrame = new javax.swing.JFrame();
         findReplacePanel = new javax.swing.JPanel();
         replaceButton = new javax.swing.JButton();
         replaceAllButton = new javax.swing.JButton();
@@ -99,6 +99,8 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         replaceTextField = new javax.swing.JTextField();
         nextButton = new javax.swing.JButton();
         previousButton = new javax.swing.JButton();
+        matchCase = new javax.swing.JCheckBox();
+        wholeWord = new javax.swing.JCheckBox();
         mainSplitPane = new javax.swing.JSplitPane();
         topSplitPane = new javax.swing.JSplitPane();
         explorerScrollPane = new javax.swing.JScrollPane();
@@ -505,8 +507,8 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        findReplaceFrame.setTitle("Find / Replace");
-        findReplaceFrame.setResizable(false);
+        findAndReplaceFrame.setTitle("Find / Replace");
+        findAndReplaceFrame.setResizable(false);
 
         replaceButton.setText("Replace");
 
@@ -571,15 +573,29 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout findReplaceFrameLayout = new javax.swing.GroupLayout(findReplaceFrame.getContentPane());
-        findReplaceFrame.getContentPane().setLayout(findReplaceFrameLayout);
-        findReplaceFrameLayout.setHorizontalGroup(
-            findReplaceFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        matchCase.setText("Match Case");
+
+        wholeWord.setText("Whole word");
+
+        javax.swing.GroupLayout findAndReplaceFrameLayout = new javax.swing.GroupLayout(findAndReplaceFrame.getContentPane());
+        findAndReplaceFrame.getContentPane().setLayout(findAndReplaceFrameLayout);
+        findAndReplaceFrameLayout.setHorizontalGroup(
+            findAndReplaceFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(findReplacePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(findAndReplaceFrameLayout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(matchCase)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(wholeWord))
         );
-        findReplaceFrameLayout.setVerticalGroup(
-            findReplaceFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(findReplacePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        findAndReplaceFrameLayout.setVerticalGroup(
+            findAndReplaceFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(findAndReplaceFrameLayout.createSequentialGroup()
+                .addComponent(findReplacePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(findAndReplaceFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(matchCase)
+                    .addComponent(wholeWord)))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -1199,7 +1215,8 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     }//GEN-LAST:event_topSplitPanePropertyChange
 
     private void findReplaceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findReplaceButtonActionPerformed
-        showFindAndReplace();
+        new FindAndReplace( findAndReplaceFrame, this, getActiveTextArea(), nextButton, previousButton, replaceButton,
+                           replaceAllButton, findTextField, replaceTextField, matchCase, wholeWord );
     }//GEN-LAST:event_findReplaceButtonActionPerformed
 
     private void saveToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveToolActionPerformed
@@ -1551,159 +1568,6 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     private void setSearchResult( SearchResult result)
     {
         searchResult = result;
-    }
-    
-    private void showFindAndReplace()
-    {
-        SearchContext searchContext = new SearchContext("");
-        
-        findTextField.setText("");
-        replaceTextField.setText("");
-        JButton[] buttons = new JButton[4];
-        buttons[0] = nextButton;
-        buttons[1] = previousButton;
-        buttons[2] = replaceButton;
-        buttons[3] = replaceAllButton;
-        setWordCounter( 0);
-        
-        nextButton.addActionListener(new ActionListener(){
-                        int counter2;
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-                               counter2 = getWordCounter();
-                               searchContext.setSearchForward(true);
-                               if(!findTextField.getText().equals(searchContext.getSearchFor()))
-                               {
-                                    counter2 = 1;
-                                    getActiveTextArea().setCaretPosition(0);
-                                    searchContext.setSearchFor(findTextField.getText());
-                                    searchResult = SearchEngine.find(getActiveTextArea(), searchContext);
-                                    System.out.println( searchResult.getMarkedCount()+ " " + counter2 + "1ilk if " + getActiveTextArea().getCaretPosition());
-                               }
-                               else
-                               {
-                                    if (!searchContext.getSearchFor().isEmpty()) {
-                                        
-                                        if( searchResult.getMarkedCount() == counter2)
-                                        {
-                                           
-                                            getActiveTextArea().setCaretPosition(0);
-                                            SearchEngine.find(getActiveTextArea(), searchContext);
-                                            counter2 = 1;
-                                            System.out.println( searchResult.getMarkedCount()+ " " + counter2 + "1iki if " + getActiveTextArea().getCaretPosition());
-                                        }
-                                        else
-                                        {                                            
-                                            getActiveTextArea().setCaretPosition(getActiveTextArea().getCaretPosition());
-                                            SearchEngine.find(getActiveTextArea(), searchContext);
-                                            counter2++;
-                                            System.out.println( searchResult.getMarkedCount()+ " " + counter2 + "1üç if " + getActiveTextArea().getCaretPosition());
-                                        }  
-                                    }
-                               }
-                               setSearchResult( searchResult);
-                               setWordCounter( counter2);
-			}
-                        
-                          	
-        });
-        previousButton.addActionListener(new ActionListener(){
-                        
-                        
-                        int counter;
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-                               counter = getWordCounter();
-                               searchContext.setSearchForward(false);
-                               if(!findTextField.getText().equals(searchContext.getSearchFor()))
-                               {
-                                    searchContext.setSearchFor(findTextField.getText());
-                                    getActiveTextArea().setCaretPosition(getActiveTextArea().getText().length());
-                                    searchResult = SearchEngine.find(getActiveTextArea(), searchContext);
-                                    counter = searchResult.getMarkedCount();
-                                    System.out.println( searchResult.getMarkedCount()+ " " + counter + "2ilk if " +getActiveTextArea().getCaretPosition());
-                               }
-                               else
-                               {
-                                    if (!searchContext.getSearchFor().isEmpty()) {
-                                        if( 1 == counter)
-                                        {
-                                            getActiveTextArea().setCaretPosition(getActiveTextArea().getText().length());
-                                            searchResult = SearchEngine.find(getActiveTextArea(), searchContext);
-                                            
-                                            counter = searchResult.getMarkedCount();
-                                            System.out.println( searchResult.getMarkedCount()+ " " + counter + "2iki if "+ getActiveTextArea().getCaretPosition());
-                                        }
-                                        else
-                                        {                                            
-                                            getActiveTextArea().setCaretPosition(getActiveTextArea().getCaretPosition() - 1);
-                                            searchResult = SearchEngine.find(getActiveTextArea(), searchContext);
-                                            counter--;
-                                            System.out.println( searchResult.getMarkedCount()+ " " + counter + "2üç if " + getActiveTextArea().getCaretPosition());
-                                        }  
-                                    }
-                               }
-                               setSearchResult( searchResult);
-                               setWordCounter(counter);
-				
-			}
-        	
-        });
-        replaceButton.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				searchContext.setReplaceWith( replaceTextField.getText());
-				searchContext.setSearchFor(findTextField.getText());
-				if( !searchContext.getSearchFor().isEmpty() && !searchContext.getReplaceWith().isEmpty())
-                                {
-                                    SearchEngine.replace(getActiveTextArea(),searchContext);
-                                    setWordCounter( getWordCounter()-1);
-                                    System.out.println(getWordCounter());
-                                    System.out.println(searchResult.getMarkedCount());
-                                    searchResult.setMarkedCount(searchResult.getMarkedCount() - 1);
-                                    getActiveTextArea().setCaretPosition( getActiveTextArea().getCaretPosition() - 1);
-                                }
-				
-			}
-        	
-        });
-        replaceAllButton.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				searchContext.setReplaceWith( replaceTextField.getText());
-				searchContext.setSearchFor(findTextField.getText());
-				if( !searchContext.getSearchFor().isEmpty() && !searchContext.getReplaceWith().isEmpty())
-				{
-                                    getActiveTextArea().setCaretPosition(0);
-                                    SearchEngine.replaceAll(getActiveTextArea(), searchContext);
-                                    setWordCounter( 0);
-                                    System.out.println(getWordCounter());
-				}
-                                
-			}
-        	
-        });
-        findReplaceFrame.pack();
-        findReplaceFrame.setLocationRelativeTo(this);
-        findReplaceFrame.addWindowListener(new WindowAdapter(){
-            
-            @Override
-            public void	windowClosing(WindowEvent e)
-            {
-                
-                for( JButton currentButton: buttons)
-                        for( ActionListener al : currentButton.getActionListeners() ) {
-                         currentButton.removeActionListener( al );
-                        }
-            }
-        
-    });
-    
-        
-    
-        findReplaceFrame.setVisible(true);
     }
     
     private boolean saveFile( File file, String content) {
@@ -2121,9 +1985,9 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     private javax.swing.JScrollPane explorerScrollPane;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JCheckBoxMenuItem fileTrackerButton;
+    private javax.swing.JFrame findAndReplaceFrame;
     private javax.swing.JLabel findLabel;
     private javax.swing.JMenuItem findReplaceButton;
-    private javax.swing.JFrame findReplaceFrame;
     private javax.swing.JPanel findReplacePanel;
     private javax.swing.JTextField findTextField;
     private javax.swing.JCheckBox helpCheck;
@@ -2150,6 +2014,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     private javax.swing.JCheckBox loginCheck;
     private javax.swing.JButton loginTool;
     private javax.swing.JSplitPane mainSplitPane;
+    private javax.swing.JCheckBox matchCase;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JTree methodSummary;
     private javax.swing.JCheckBoxMenuItem methodSummaryButton;
@@ -2231,6 +2096,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     private javax.swing.JMenuItem undoButton;
     private javax.swing.JCheckBox undoCheck;
     private javax.swing.JButton undoTool;
+    private javax.swing.JCheckBox wholeWord;
     private javax.swing.JMenu windowMenu;
     private javax.swing.JLabel workspaceLabel;
     private javax.swing.JTextField workspaceTextField;
