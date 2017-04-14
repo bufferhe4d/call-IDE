@@ -3,6 +3,13 @@ import javax.swing.event.*;
 import java.awt.event.*;
 import java.awt.*;
 
+
+/**
+ * 
+ * @author Mahmud Sami Aydin
+ * 
+ */
+
 public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
 {
    //properties
@@ -28,7 +35,6 @@ public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
       add(projectProperties);
       
       delete.addActionListener( this );
-      copy.addActionListener( this );
       createFile.addActionListener( this );
       createDirectory.addActionListener( this );
       projectProperties .addActionListener( this );

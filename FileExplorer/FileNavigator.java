@@ -3,9 +3,13 @@ import javax.swing.event.*;
 import javax.swing.tree.*;
 import java.io.*;
 import java.awt.event.*;
+import java.util.*;
+
 
 /**
- * Auto Generated Java Class.
+ * 
+ * @author Mahmud Sami Aydin
+ * 
  */
 public class FileNavigator extends JTree implements TreeSelectionListener
 {
@@ -14,7 +18,18 @@ public class FileNavigator extends JTree implements TreeSelectionListener
    File lastSelectedFile;
    TreeDirectoryPopupMenu directoryMenu;
    
-   public FileNavigator( String root )
+   public FileNavigator(  ArrayList<String> files  )
+   { 
+      super( new DefaultTreeModel(new FileNode(  files )) );
+      setRootVisible(false); 
+      directoryMenu = new TreeDirectoryPopupMenu();
+      if( getParent() != null )
+      getParent().add( directoryMenu );
+      addTreeSelectionListener( this );
+      addMouseListener( new treeMouseListener() );
+   }
+   
+    public FileNavigator(  String root  )
    { 
       super( new DefaultTreeModel(new FileNode( new PathedFile( root ))) );
       setRootVisible(false); 
@@ -25,9 +40,14 @@ public class FileNavigator extends JTree implements TreeSelectionListener
       addMouseListener( new treeMouseListener() );
    }
    
-   
    /* ADD YOUR CODE HERE */
    
+    public void  openFile( String file)
+    {
+       ((FileNode)getModel().getRoot()).openFile( file );
+        updateUI();
+    }
+    
    public void valueChanged(TreeSelectionEvent e)
    {  
       lastSelectedFile = ((FileNode) (((JTree)(e .getSource())).getLastSelectedPathComponent( ))).file;

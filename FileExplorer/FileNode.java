@@ -2,16 +2,38 @@ import java.util.*;
 import javax.swing.tree.*;
 import java.io.*;
 
+/**
+ * 
+ * @author Mahmud Sami Aydin
+ * 
+ */
 public class FileNode extends DefaultMutableTreeNode
 {
    
    PathedFile file;
+   boolean allowsChildren;
    
-   
+   public FileNode( ArrayList<String> files )
+   {
+      super();
+      FileNode temp;
+      allowsChildren = true;
+      for ( int i =0 ; i < files.size(); i++)
+      {
+         temp = new FileNode( new PathedFile (files.get(i) ) );
+         if( getIndex( temp ) == -1 )
+         {
+            add( temp );
+         }
+      }
+      file = new PathedFile("/Nowhere/it/is/not/a/real/file");
+      
+   }
    public FileNode( PathedFile file )
    {
       super();
       this. file = file;
+      allowsChildren = file.isDirectory();
       
       if( getAllowsChildren() )
       {
@@ -37,7 +59,7 @@ public class FileNode extends DefaultMutableTreeNode
    //------------------
    public boolean getAllowsChildren()
    {
-      return file.isDirectory();
+      return allowsChildren;
    }
    
    //------------------------------------------------------------
@@ -76,8 +98,8 @@ public class FileNode extends DefaultMutableTreeNode
    {
       removeFromParent();
       return file.delete();
-      
    }
+   
    
    /**
     * This method add the folder a file
@@ -103,7 +125,30 @@ public class FileNode extends DefaultMutableTreeNode
    {
       return file;
    }
+ 
    
+   /**
+    * This method open a file froom path
+    * 
+    * 
+    */
+   public void openFile( String filePath )
+   {
+      if( getAllowsChildren() )
+      {
+         add(new FileNode( new PathedFile ( filePath ) )); 
+      }
+   }
+   
+   /**
+    * This method remove file node from tree
+    * 
+    * 
+    */
+   public void closeFile()
+   {
+      removeFromParent();
+   }
 }
 
 

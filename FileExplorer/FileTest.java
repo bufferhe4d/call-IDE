@@ -2,7 +2,7 @@
 import java.util.*;
 import javax.swing.tree.*;
 import javax.swing.JTree;
-import javax.swing.JFrame;
+import javax.swing.*;
 
 public class FileTest
 {
@@ -11,19 +11,23 @@ public class FileTest
    
    public static void main( String[] args)
    {
+      ArrayList<String> ways = new ArrayList<String>();
+      ways.add(root);
+     // ways.add("/home/solledar/04_HW01_Aydin_MahmudSami");
       JFrame d = new JFrame();
-      PathedFile f = new PathedFile ( root );
-      FileNode n = new FileNode( f );
-      //new PathedFile( root + "/dasdas4 ");
-      n.addChildrens();
-      int indexPaths;
-      JTree tree;
-      tree = new JTree( n );
-      d.add( tree );
-      d.setVisible(true);
-      //directorySearch( f );
+      JPanel panel = new JPanel();
+      FileExplorer f = new FileExplorer ( ways  );
       
-
+      
+      panel.add( f );
+      d.add(panel);
+      
+      d.pack();
+      d.setVisible(true);
+      Scanner scan = new Scanner( System.in);
+      scan.next();
+      f.openFile( "/home/solledar/04_HW01_Aydin_MahmudSami" );
+      
 
    }
    
