@@ -1,3 +1,6 @@
+package FileExplorer;
+
+
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.*;
@@ -13,13 +16,16 @@ public class FileExplorer extends JPanel
 {
    //properties
    FileNavigator navigator;
+   
       
    public FileExplorer( String root )
    {
       super();
       navigator = new FileNavigator(  root );
       add(navigator);
-      //addMouseListener( new treeMouseListener() );
+      
+
+      
       setVisible(true);
    }
    
@@ -28,7 +34,7 @@ public class FileExplorer extends JPanel
       super();
       navigator = new FileNavigator(   files  );
       add(navigator);
-      //addMouseListener( new treeMouseListener() );
+     
       setVisible(true);
    }
    
@@ -44,5 +50,7 @@ public class FileExplorer extends JPanel
          navigator.openFile( files.get ( i ) );
       }
    }
+   
+  
    
 }

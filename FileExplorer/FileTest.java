@@ -1,3 +1,5 @@
+package FileExplorer;
+
 //import java.io.File;
 import java.util.*;
 import javax.swing.tree.*;
@@ -6,7 +8,7 @@ import javax.swing.*;
 
 public class FileTest
 {
-   final static String root = "/home/solledar/java/fileHiya";
+   final static String root = "D:\\test";
    static ArrayList<TreePath> treePaths;
    
    public static void main( String[] args)
@@ -26,7 +28,7 @@ public class FileTest
       d.setVisible(true);
       Scanner scan = new Scanner( System.in);
       scan.next();
-      f.openFile( "/home/solledar/04_HW01_Aydin_MahmudSami" );
+      f.openFile( "D:\\test2" );
       
 
    }

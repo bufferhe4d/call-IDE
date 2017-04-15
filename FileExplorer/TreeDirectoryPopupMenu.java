@@ -1,3 +1,5 @@
+package FileExplorer;
+
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.event.*;
@@ -53,7 +55,7 @@ public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
       {
          //delete directory..
          System.out.println(" Delete ");
-         file.delete();
+        // file.delete();
          
       }
       else if( e.getSource() == createFile )
