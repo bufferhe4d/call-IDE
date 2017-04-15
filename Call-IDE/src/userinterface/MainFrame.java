@@ -4,11 +4,14 @@ import filebrowser.*;
 import fileoperations.*;
 import helputils.*;
 import editor.*;
+import runutils.*;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.net.*;
 import java.util.*;
+import java.util.logging.*;
 
 import javax.swing.*;
 import javax.imageio.*;
@@ -16,12 +19,18 @@ import javax.imageio.*;
 import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rtextarea.*;
 
+import com.github.javaparser.*;
+import com.github.javaparser.ast.*;
+
+
 /**
  * The main frame of the IDE.
- * @author Emin Bahadır Tülüce & Halil Şahiner
+ * @author Emin Bahadır Tülüce, Halil Şahiner, Abdullah Talayhan
  */
 public class MainFrame extends javax.swing.JFrame implements FileOpener, AutosaveHandler {
     
+    JTextPane cons;
+    Executor ex;
     /** Creates new form MainFrame. */
     public MainFrame() throws IOException {
         textAreas = new ArrayList<RSyntaxTextArea>();
@@ -85,10 +94,10 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         outputFontLabel = new javax.swing.JLabel();
         outputFontSizeField = new javax.swing.JTextField();
         outputFontChooser = new javax.swing.JComboBox<>();
-        jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        preferecesButtonPanel = new javax.swing.JPanel();
+        preferencesOk = new javax.swing.JButton();
+        preferencesCancel = new javax.swing.JButton();
+        preferencesReset = new javax.swing.JButton();
         findAndReplaceFrame = new javax.swing.JFrame();
         findReplacePanel = new javax.swing.JPanel();
         replaceButton = new javax.swing.JButton();
@@ -118,7 +127,6 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         consoleOutputPanel = new javax.swing.JPanel();
         consoleOutputScrollPane = new javax.swing.JScrollPane();
         consoleOutputArea = new javax.swing.JTextArea();
-        consoleInputField = new javax.swing.JTextField();
         compilerOutputPanel = new javax.swing.JPanel();
         compilerOutputScrollPane = new javax.swing.JScrollPane();
         compilerOutputArea = new javax.swing.JTextArea();
@@ -442,45 +450,45 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton1.setText("OK");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        preferencesOk.setText("OK");
+        preferencesOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                preferencesOkActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Cancel");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        preferencesCancel.setText("Cancel");
+        preferencesCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                preferencesCancelActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Reset to Default");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        preferencesReset.setText("Reset to Default");
+        preferencesReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                preferencesResetActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(jButton3)
+        javax.swing.GroupLayout preferecesButtonPanelLayout = new javax.swing.GroupLayout(preferecesButtonPanel);
+        preferecesButtonPanel.setLayout(preferecesButtonPanelLayout);
+        preferecesButtonPanelLayout.setHorizontalGroup(
+            preferecesButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, preferecesButtonPanelLayout.createSequentialGroup()
+                .addComponent(preferencesReset)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(preferencesOk, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2))
+                .addComponent(preferencesCancel))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1)
-                    .addComponent(jButton3))
+        preferecesButtonPanelLayout.setVerticalGroup(
+            preferecesButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(preferecesButtonPanelLayout.createSequentialGroup()
+                .addGroup(preferecesButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(preferencesCancel)
+                    .addComponent(preferencesOk)
+                    .addComponent(preferencesReset))
                 .addGap(0, 12, Short.MAX_VALUE))
         );
 
@@ -493,7 +501,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
                 .addGroup(preferencesFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(idePreferencesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(toolbarPreferencesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(preferecesButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         preferencesFrameLayout.setVerticalGroup(
@@ -504,7 +512,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(toolbarPreferencesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(preferecesButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         findAndReplaceFrame.setTitle("Find / Replace");
@@ -700,7 +708,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         editorAndMethodSummaryPanel.setLayout(editorAndMethodSummaryPanelLayout);
         editorAndMethodSummaryPanelLayout.setHorizontalGroup(
             editorAndMethodSummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(topLeftSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 919, Short.MAX_VALUE)
+            .addComponent(topLeftSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 849, Short.MAX_VALUE)
         );
         editorAndMethodSummaryPanelLayout.setVerticalGroup(
             editorAndMethodSummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -720,11 +728,11 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         statusPanel.setLayout(statusPanelLayout);
         statusPanelLayout.setHorizontalGroup(
             statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(statusScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1020, Short.MAX_VALUE)
+            .addComponent(statusScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1050, Short.MAX_VALUE)
         );
         statusPanelLayout.setVerticalGroup(
             statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(statusScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+            .addComponent(statusScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
         );
 
         outputTabs.addTab("Status", statusPanel);
@@ -736,21 +744,15 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         consoleOutputArea.setRows(5);
         consoleOutputScrollPane.setViewportView(consoleOutputArea);
 
-        consoleInputField.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
-
         javax.swing.GroupLayout consoleOutputPanelLayout = new javax.swing.GroupLayout(consoleOutputPanel);
         consoleOutputPanel.setLayout(consoleOutputPanelLayout);
         consoleOutputPanelLayout.setHorizontalGroup(
             consoleOutputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(consoleInputField, javax.swing.GroupLayout.DEFAULT_SIZE, 1120, Short.MAX_VALUE)
-            .addComponent(consoleOutputScrollPane)
+            .addComponent(consoleOutputScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1050, Short.MAX_VALUE)
         );
         consoleOutputPanelLayout.setVerticalGroup(
             consoleOutputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(consoleOutputPanelLayout.createSequentialGroup()
-                .addComponent(consoleOutputScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
-                .addGap(1, 1, 1)
-                .addComponent(consoleInputField, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(consoleOutputScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
         );
 
         outputTabs.addTab("Console Output", consoleOutputPanel);
@@ -768,7 +770,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         );
         compilerOutputPanelLayout.setVerticalGroup(
             compilerOutputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(compilerOutputScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+            .addComponent(compilerOutputScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
         );
 
         outputTabs.addTab("Compiler Output", compilerOutputPanel);
@@ -781,7 +783,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         );
         outputsPanelLayout.setVerticalGroup(
             outputsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(outputTabs, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+            .addComponent(outputTabs, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
         );
 
         outputTabs.getAccessibleContext().setAccessibleName("t3");
@@ -830,21 +832,51 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
 
         resetTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/images/reset.png"))); // NOI18N
         resetTool.setToolTipText("Reset Interactions");
+        resetTool.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetToolActionPerformed(evt);
+            }
+        });
 
         javadocTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/images/doc.png"))); // NOI18N
         javadocTool.setToolTipText("Create Javadoc");
+        javadocTool.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                javadocToolActionPerformed(evt);
+            }
+        });
 
         jarTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/images/jar.png"))); // NOI18N
         jarTool.setToolTipText("Create Jar File");
+        jarTool.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jarToolActionPerformed(evt);
+            }
+        });
 
         compileTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/images/compile.png"))); // NOI18N
         compileTool.setToolTipText("Compile");
+        compileTool.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                compileToolActionPerformed(evt);
+            }
+        });
 
         runTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/images/run.png"))); // NOI18N
         runTool.setToolTipText("Run");
+        runTool.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                runToolActionPerformed(evt);
+            }
+        });
 
         compileRunTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/images/comprun.png"))); // NOI18N
         compileRunTool.setToolTipText("Compile & Run");
+        compileRunTool.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                compileRunToolActionPerformed(evt);
+            }
+        });
 
         apiTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/images/api.png"))); // NOI18N
         apiTool.setToolTipText("Java API");
@@ -1093,22 +1125,52 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         toolsMenu.add(separator8);
 
         javadocButton.setText("Create Javadoc");
+        javadocButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                javadocButtonActionPerformed(evt);
+            }
+        });
         toolsMenu.add(javadocButton);
 
         jarButton.setText("Create Jar File");
+        jarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jarButtonActionPerformed(evt);
+            }
+        });
         toolsMenu.add(jarButton);
         toolsMenu.add(separator9);
 
         compileButton.setText("Compile");
+        compileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                compileButtonActionPerformed(evt);
+            }
+        });
         toolsMenu.add(compileButton);
 
         runButton.setText("Run");
+        runButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                runButtonActionPerformed(evt);
+            }
+        });
         toolsMenu.add(runButton);
 
         compileRunButton.setText("Compile & Run");
+        compileRunButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                compileRunButtonActionPerformed(evt);
+            }
+        });
         toolsMenu.add(compileRunButton);
 
         resetButton.setText("Reset Interactions");
+        resetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetButtonActionPerformed(evt);
+            }
+        });
         toolsMenu.add(resetButton);
         toolsMenu.add(separator10);
 
@@ -1196,11 +1258,8 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(toolbarPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(mainSplitPane))
-                .addGap(1, 1, 1))
+            .addComponent(toolbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(mainSplitPane, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1227,19 +1286,20 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     }//GEN-LAST:event_findReplaceButtonActionPerformed
 
     private void saveToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveToolActionPerformed
-        saveFile( getActiveFile(), getActiveContent());
+        saveButtonActionPerformed(evt);
     }//GEN-LAST:event_saveToolActionPerformed
 
     private void openToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openToolActionPerformed
-        openFileDialog();
+        openFileButtonActionPerformed(evt);
     }//GEN-LAST:event_openToolActionPerformed
 
     private void newToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newToolActionPerformed
-        newFile();
+        newFileButtonActionPerformed(evt);
     }//GEN-LAST:event_newToolActionPerformed
 
     private void newFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newFileButtonActionPerformed
         newFile();
+        fileExplorer.updateUI();
     }//GEN-LAST:event_newFileButtonActionPerformed
 
     private void openFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileButtonActionPerformed
@@ -1259,7 +1319,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     }//GEN-LAST:event_quitButtonActionPerformed
 
     private void undoToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoToolActionPerformed
-        BasicOperations.undo( getActiveTextArea());
+        undoToolActionPerformed(evt);
     }//GEN-LAST:event_undoToolActionPerformed
 
     private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoButtonActionPerformed
@@ -1271,7 +1331,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     }//GEN-LAST:event_redoButtonActionPerformed
 
     private void redoToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoToolActionPerformed
-        BasicOperations.redo( getActiveTextArea());
+        redoButtonActionPerformed(evt);
     }//GEN-LAST:event_redoToolActionPerformed
 
     private void selectAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectAllButtonActionPerformed
@@ -1291,7 +1351,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     }//GEN-LAST:event_pasteButtonActionPerformed
 
     private void apiToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_apiToolActionPerformed
-        LinkOpener.openLink( LinkOpener.API_LINK);
+        apiButtonActionPerformed(evt);
     }//GEN-LAST:event_apiToolActionPerformed
 
     private void apiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_apiButtonActionPerformed
@@ -1302,14 +1362,14 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         LinkOpener.openLink( LinkOpener.TUTORIALS_LINK);
     }//GEN-LAST:event_tutorialsButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void preferencesOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preferencesOkActionPerformed
         savePreferences();
         preferencesFrame.setVisible( false);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_preferencesOkActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void preferencesCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preferencesCancelActionPerformed
         preferencesFrame.setVisible( false);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_preferencesCancelActionPerformed
 
     private void browseWorkspaceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseWorkspaceButtonActionPerformed
         choosePreferredWorkspace();
@@ -1339,9 +1399,9 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         arrangeWindowDefault();
     }//GEN-LAST:event_restoreButtonActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void preferencesResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preferencesResetActionPerformed
         resetPreferencesWindow();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_preferencesResetActionPerformed
 
     private void newTemplateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newTemplateButtonActionPerformed
         addNewTemplate();
@@ -1350,7 +1410,56 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     private void openFolderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFolderButtonActionPerformed
         openFolderDialog();
     }//GEN-LAST:event_openFolderButtonActionPerformed
-    
+
+    private void compileToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compileToolActionPerformed
+        compileButtonActionPerformed(evt);
+    }//GEN-LAST:event_compileToolActionPerformed
+
+    private void runToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runToolActionPerformed
+        runButtonActionPerformed(evt);
+    }//GEN-LAST:event_runToolActionPerformed
+        
+    private void resetToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetToolActionPerformed
+        resetButtonActionPerformed(evt);
+    }//GEN-LAST:event_resetToolActionPerformed
+
+    private void jarToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jarToolActionPerformed
+        jarButtonActionPerformed(evt);
+    }//GEN-LAST:event_jarToolActionPerformed
+
+    private void javadocToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_javadocToolActionPerformed
+        javadocButtonActionPerformed(evt);
+    }//GEN-LAST:event_javadocToolActionPerformed
+
+    private void compileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compileButtonActionPerformed
+        compileCurrentFile();
+    }//GEN-LAST:event_compileButtonActionPerformed
+
+    private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runButtonActionPerformed
+        runCurrentFile();
+    }//GEN-LAST:event_runButtonActionPerformed
+
+    private void javadocButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_javadocButtonActionPerformed
+        javadocCurrentProject();
+    }//GEN-LAST:event_javadocButtonActionPerformed
+
+    private void jarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jarButtonActionPerformed
+        jarCurrentProject();
+    }//GEN-LAST:event_jarButtonActionPerformed
+
+    private void compileRunToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compileRunToolActionPerformed
+        compileRunButtonActionPerformed(evt);
+    }//GEN-LAST:event_compileRunToolActionPerformed
+
+    private void compileRunButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compileRunButtonActionPerformed
+        compileButtonActionPerformed(evt);
+        runButtonActionPerformed(evt);
+    }//GEN-LAST:event_compileRunButtonActionPerformed
+
+    private void resetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetButtonActionPerformed
+        resetInteractions();
+    }//GEN-LAST:event_resetButtonActionPerformed
+
     /** Sets LookAndFeel to the given name.*/
     public static void setLookAndFeel (String lookAndFeel) {
         try {
@@ -1387,7 +1496,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     private void loadIcons() {
         closeIcon = new ImageIcon( (new ImageIcon( getClass().getResource( 
                 "/userinterface/images/close.png"))).getImage().getScaledInstance(
-                16, 16, java.awt.Image.SCALE_SMOOTH));
+                12, 12, java.awt.Image.SCALE_SMOOTH));
     }
     
     private void initOtherComponents() {
@@ -1427,6 +1536,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
                 quit();
             }
         });
+        arrangeWindow();
         setVisible(true);
     }
     
@@ -1599,7 +1709,8 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         try {
             JFileChooser chooser = new JFileChooser();
             if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-                file = chooser.getSelectedFile();
+                File selected = chooser.getSelectedFile();
+                file = new File(selected.getParent() + "/" + selected.getName() + ".java");
                 files.set( textTabs.getSelectedIndex(), file);
                 FileSaver saver = new FileSaver( file);
                 saver.save( getActiveContent());
@@ -1769,7 +1880,6 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         statusArea.setFont( outputFont);
         consoleOutputArea.setFont( outputFont);
         compilerOutputArea.setFont( outputFont);
-        consoleInputField.setFont( outputFont);
         
         if (workspaceChanged)
             if (workspace != null && (new File(workspace)).isDirectory()) {
@@ -1891,7 +2001,6 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
             checkBoxes[i].setSelected(checkBoxValues[i]);
         }
 
-
         autosaveCheck.setSelected( DEFAULT.getAutosaveIn() != -1);
         autosaveTextField.setEnabled( DEFAULT.getAutosaveIn() != -1);
         if (DEFAULT.getAutosaveIn() != -1)
@@ -1983,6 +2092,96 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
             }
         }
     }
+    
+    private void compileCurrentFile() {
+        int index = textTabs.getSelectedIndex();
+        if (getActiveFile() == null)
+            printStatus( "The file should be saved before compiling.");
+        else if ( !textAreas.get(index).getText().equals(savedContents.get(index)) )
+            printStatus( "The file should be saved to its modified version before compiling.");
+        else {
+            JTextPane insertedPane = new ConsoleBuilder().getOutErrConsole();
+            insertedPane.setFont( preferences.getOutputFont());
+            compilerOutputScrollPane.setViewportView( insertedPane);
+            BuildSys.setPropsForCompile(userPath + "/BuildConfigs/build.xml",
+                                        getActiveFile().getParent() + "\\classes", getActiveFile().getParent());
+            BuildSys.compile(userPath + "/BuildConfigs/build.xml");
+            outputTabs.setSelectedIndex(2);
+        }
+    }
+
+    private void runCurrentFile() {
+        File f = getActiveFile();
+        File build = new File(getActiveFile().getParent() + "\\classes");
+        
+        if (f == null || !build.exists()){
+            printStatus("The file should be saved and compiled before running.");
+            return;
+        }
+            
+        String packageName = "";
+        CompilationUnit cu;
+        try {
+            cu = JavaParser.parse( f );
+            if (cu.getPackage() != null)
+                packageName = cu.getPackage().getName().toString();
+        } catch (ParseException | IOException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+        cons = new ConsoleBuilder().getIOEConsole();
+        cons.setFont( preferences.getOutputFont());
+        consoleOutputScrollPane.setViewportView(cons);
+
+        try {
+            ex = new Executor(build.toURI().toURL());
+            if(packageName.equals(""))
+                ex.execute(f.getName().substring(0, f.getName().length() - 5));
+            else
+                ex.execute(packageName + "." + f.getName().substring(0, f.getName().length() - 5));
+            
+        } catch (MalformedURLException ex1) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex1);
+        }
+        
+        outputTabs.setSelectedIndex(1);
+    }
+    
+    // TODO : NOT WORKING PROPERLY WITHOUT PROJECT SYSTEM
+    private void javadocCurrentProject() {
+        JTextPane insertedPane = new ConsoleBuilder().getOutErrConsole();
+        insertedPane.setFont( preferences.getOutputFont());
+        compilerOutputScrollPane.setViewportView( insertedPane);
+        
+        // INPUTS: JAVADOC XML FILE, SOURCE DIR, TARGET DIR
+        BuildSys.setPropsForJavaDoc(userPath + "/BuildConfigs/buildJavadoc.xml", 
+                getActiveFile().getParent(), getActiveFile().getParent() + "/doc");
+        BuildSys.compile(userPath + "/BuildConfigs/buildJavadoc.xml");
+        
+        outputTabs.setSelectedIndex(2);
+    }
+
+    // TODO : NOT WORKING PROPERLY WITHOUT PROJECT SYSTEM
+    private void jarCurrentProject() {
+        JTextPane insertedPane = new ConsoleBuilder().getOutErrConsole();
+        insertedPane.setFont( preferences.getOutputFont());
+        compilerOutputScrollPane.setViewportView( insertedPane);
+        
+        // INPUTS: JAR XML FILE, BUILD DIR, TARGET DIR,  mainClass with Package Name
+        BuildSys.setPropsForJar(userPath + "/BuildConfigs/buildJar.xml",
+                getActiveFile().getParent() + "/classes",
+                getActiveFile().getParent() + "/dist", "myP.hello");
+        BuildSys.compile(userPath + "/BuildConfigs/buildJar.xml");
+        
+        outputTabs.setSelectedIndex(2);
+    }
+    
+    private void resetInteractions() {
+        // TODO add your handling code here:
+        //ex.stop();
+        //System.out.println(ex.getExecuteInstance().isAlive());
+        //ex.getExecuteInstance().stop();
+    }
 
     // Other Variables
     private ArrayList<RSyntaxTextArea> textAreas;
@@ -2022,7 +2221,6 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     private javax.swing.JTextArea compilerOutputArea;
     private javax.swing.JPanel compilerOutputPanel;
     private javax.swing.JScrollPane compilerOutputScrollPane;
-    private javax.swing.JTextField consoleInputField;
     private javax.swing.JTextArea consoleOutputArea;
     private javax.swing.JPanel consoleOutputPanel;
     private javax.swing.JScrollPane consoleOutputScrollPane;
@@ -2050,10 +2248,6 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     private javax.swing.JLabel indentLabel;
     private javax.swing.JTextField indentTextField;
     private javax.swing.JMenuItem insertJavadocButton;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuItem jarButton;
     private javax.swing.JCheckBox jarCheck;
     private javax.swing.JButton jarTool;
@@ -2094,8 +2288,12 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     private javax.swing.JMenuItem placeHolderMenu1;
     private javax.swing.JMenuItem placeHolderMenu2;
     private javax.swing.JMenuItem placeHolderMenu3;
+    private javax.swing.JPanel preferecesButtonPanel;
     private javax.swing.JMenuItem preferencesButton;
+    private javax.swing.JButton preferencesCancel;
     private javax.swing.JFrame preferencesFrame;
+    private javax.swing.JButton preferencesOk;
+    private javax.swing.JButton preferencesReset;
     private javax.swing.JButton previousButton;
     private javax.swing.JMenuItem quitButton;
     private javax.swing.JMenuItem redoButton;

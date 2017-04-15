@@ -51,12 +51,17 @@ public class FileConfigurer {
         File mainFolder = new File(userPath);
         File templateFolder = new File(userPath + "/Templates");
         File preferencesFile = new File(userPath + "/" + PreferencesConfigurer.FILE_NAME);
+        File buildConfigsFile = new File(userPath + "/BuildConfigs");
         if (!mainFolder.exists())
             mainFolder.mkdir();
         if (!templateFolder.exists())
             templateFolder.mkdir();
         if (!preferencesFile.exists())
             PreferencesConfigurer.save( userPath, Preferences.DEFAULT);
+        if (!buildConfigsFile.exists()) {
+            buildConfigsFile.mkdir();
+            (new BuildConfigurer()).exportConfigs( userPath + "/BuildConfigs");
+        }
     }
     
     public String getUserPath()throws IOException {
@@ -77,8 +82,10 @@ public class FileConfigurer {
         output.close();
         (new File(userHome + "/Call-IDE")).mkdir();
         (new File(userHome + "/Call-IDE/Templates")).mkdir();
+        (new File(userHome + "/Call-IDE/BuildConfigs")).mkdir();
         (new TemplateManager(userHome + "/Call-IDE")).createDefaults();
         PreferencesConfigurer.save( userHome + "/Call-IDE/", Preferences.DEFAULT);
+        (new BuildConfigurer()).exportConfigs( userHome + "/Call-IDE/BuildConfigs");
     }
     
     public void setWorkspace( String workspace) throws IOException {

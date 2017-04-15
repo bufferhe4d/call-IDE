@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="run" name="Ant-Test">
+        <!-- Sets variables which can later be used. -->
+        <!-- The value of a property is accessed via ${} -->
+        <property location="/Users/ATTJ/Desktop/code/joe" name="src.dir"/>
+        <property location="/Users/ATTJ/Desktop/code/classes" name="build.dir"/>
+
+
+        <!-- Creates the  build, docs and dist directory-->
+        <target name="run">
+                <java classname="myP.hello">
+                        <arg value="-h"/>
+                                <classpath>
+                                        <pathelement path="${build.dir}"/>
+                                </classpath>
+               </java>
+        </target>
+
+        
+        <!--
+        <target depends="run" name="main">
+                <description>Main target</description>
+        </target>
+        -->
+</project>

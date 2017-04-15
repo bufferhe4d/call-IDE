@@ -48,8 +48,8 @@ public class TemplateManager {
     }
     
     public void createDefaults() throws IOException {
-        importDefaults("/FileOperations/DefaultTemplates/ConsoleTemplate.dat", userPath + "/Templates/ConsoleTemplate");
-        importDefaults("/FileOperations/DefaultTemplates/FrameTemplate.dat", userPath + "/Templates/FrameTemplate");
+        importDefaults("/fileoperations/defaulttemplates/ConsoleTemplate.dat", userPath + "/Templates/ConsoleTemplate");
+        importDefaults("/fileoperations/defaulttemplates/FrameTemplate.dat", userPath + "/Templates/FrameTemplate");
     }
     
     private void importDefaults( String source, String target) throws IOException {

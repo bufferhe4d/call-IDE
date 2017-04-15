@@ -7,12 +7,15 @@ import java.net.URLClassLoader;
 
 public class Executor {
 	private URL codLoc;
-	
+	private Thread executeThread;
 	public Executor(URL codLoc) {
 		
 		this.codLoc = codLoc;
 	}
 	
+        public void altExecute() {
+            
+        }
 	public void execute(String mainName) {
 		
 		try {
@@ -30,7 +33,7 @@ public class Executor {
 			//System.out.println("mainClass:" + mainClass);
 			final Method main = mainClass.getMethod("main", new Class[]{args.getClass()});
 			//System.out.println("joe");
-			Thread executeThread = new Thread(
+			executeThread = new Thread(
 					new Runnable() {
 						public void run() {
 							Thread.currentThread().setContextClassLoader(classLoader);
@@ -52,6 +55,7 @@ public class Executor {
 			
 			executeThread.setDaemon(true);
 			executeThread.start();
+                        
 		} catch(ClassNotFoundException e) {
 			System.out.println("jdshgjhdsfg");
 			
@@ -63,5 +67,13 @@ public class Executor {
 			e.printStackTrace();
 		}
 	}
+        
+        public void stop() {
+            executeThread.interrupt();
+        }
+        
+        public Thread getExecuteInstance() {
+            return executeThread;
+        }
 	
 }

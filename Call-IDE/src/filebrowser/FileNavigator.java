@@ -64,7 +64,8 @@ public class FileNavigator extends JTree implements TreeSelectionListener
     
     public void valueChanged(TreeSelectionEvent e)
     {
-        lastSelectedFile = ((FileNode) (((JTree)(e .getSource())).getLastSelectedPathComponent( ))).file;
+        if ((((JTree)(e.getSource())).getLastSelectedPathComponent()) != null)
+            lastSelectedFile = ((FileNode) (((JTree)(e.getSource())).getLastSelectedPathComponent())).file;
     }
     
     
@@ -81,6 +82,9 @@ public class FileNavigator extends JTree implements TreeSelectionListener
         {
             directoryMenu.setVisible(false);
             fileMenu.setVisible(false);
+            
+            if (e == null)
+                return;
             
             if( e.getButton() == 1 && e.getClickCount() == 2 && lastSelectedFile.isFile()  )
             {
