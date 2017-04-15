@@ -1,17 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package editor;
 import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rtextarea.*;
 import java.awt.event.*;
 import javax.swing.*;
 /**
- *         A class to build the logic of find and replace methods by using the
- *         written methods in the RSyntax text editor
- * @author Halil Şahiner
+ *          A class to build the logic of find and replace methods by using the
+ *          written methods in the RSyntax text editor
+ * @author  Halil Şahiner
+ * @version 1.2
  */
 public class FindAndReplace {
     
@@ -24,10 +20,25 @@ public class FindAndReplace {
     private JFrame findAndReplaceFrame, mainFrame;
     private final SearchContext EMPTY_CONTEXT = new SearchContext("");
     
-            
-    
-    public FindAndReplace( JFrame  findAndReplaceFrame, JFrame mainFrame,RSyntaxTextArea textArea, JButton nextButton, JButton prevButton, JButton replButton,
-                           JButton replAllButton, JTextField findText, JTextField replaceText, JCheckBox matchCase, JCheckBox wholeWord )
+    /**
+     * A constructor to take the main frame objects from parameter to use for
+     * building find and replace logic
+     * @param findAndReplaceFrame take the find and replace frame to construct
+     * @param mainFrame     take the main frame to build find and replace frame 
+     *                      according to main frame place
+     * @param textArea      take text area of the text editor 
+     * @param nextButton    take next button of find and replace frame
+     * @param prevButton    take previous button of find and replace frame
+     * @param replButton    take replace button of find and replace frame
+     * @param replAllButton take replace all button of find and replace frame
+     * @param findText      take the text field which contains the text searched in text
+     * @param replaceText   take the text field which contains the text replaced with searched text
+     * @param matchCase     take the check box to indicate the case sensitivity of search
+     * @param wholeWord     take the check box to indicate the search type in terms of 
+     *                      in word or apart from other word conditions
+     */
+    protected FindAndReplace( JFrame  findAndReplaceFrame, JFrame mainFrame,RSyntaxTextArea textArea, JButton nextButton, JButton prevButton, JButton replButton,
+                              JButton replAllButton, JTextField findText, JTextField replaceText, JCheckBox matchCase, JCheckBox wholeWord )
     {
         this.mainFrame = mainFrame;
         this.findAndReplaceFrame = findAndReplaceFrame;
@@ -42,32 +53,51 @@ public class FindAndReplace {
         this.wholeWord = wholeWord;
         showFindAndReplace();
     }
+    /**
+     * A method to get the number of word which is passed while searching 
+     * in the text
+     * @return number of word which is passed while searching
+     */
     private int getWordCounter( )
     {
         return this.wordCounter;
     }  
+    /**
+     * A method to set the number of word counter to intended number
+     * @param counter take the number of word to set word counter in integer type
+     */
     private void setWordCounter( int counter)
     {
         wordCounter = counter;
     }
-
+    /**
+     * A method to set the search result to relate the search function's results
+     * @see   #showFindAndReplace() 
+     * @param result take the SearchResult object to set the search result
+     */
     private void setSearchResult( SearchResult result)
     {
         searchResult = result;
     }
+    /**
+     * A method to build the find and replace logic such as
+     * search forward and backward in text according to match case and whole word
+     * conditions, and replace or replace all the searched text with intended text
+     */
     private void showFindAndReplace()
     {
         
-        SearchContext searchContext = new SearchContext("");
-        
+        SearchContext searchContext = new SearchContext("");        
         findText.setText("");
         replaceText.setText("");
+        setWordCounter( 0);
+        
         JButton[] buttons = new JButton[4];
         buttons[0] = nextButton;
         buttons[1] = prevButton;
         buttons[2] = replButton;
         buttons[3] = replAllButton;
-        setWordCounter( 0);
+                       
         matchCase.setSelected(false);
         wholeWord.setSelected(false);
         
@@ -85,7 +115,6 @@ public class FindAndReplace {
                                     textArea.setCaretPosition(0);
                                     searchContext.setSearchFor(findText.getText());
                                     searchResult = SearchEngine.find(textArea, searchContext);
-                                    System.out.println( searchResult.getMarkedCount()+ " " + counter2 + "1ilk if " + textArea.getCaretPosition());
                                }
                                else
                                {
@@ -97,22 +126,18 @@ public class FindAndReplace {
                                             textArea.setCaretPosition(0);
                                             SearchEngine.find(textArea, searchContext);
                                             counter2 = 1;
-                                            System.out.println( searchResult.getMarkedCount()+ " " + counter2 + "1iki if " + textArea.getCaretPosition());
                                         }
                                         else
                                         {                                            
                                             textArea.setCaretPosition(textArea.getCaretPosition());
                                             SearchEngine.find(textArea, searchContext);
                                             counter2++;
-                                            System.out.println( searchResult.getMarkedCount()+ " " + counter2 + "1üç if " + textArea.getCaretPosition());
                                         }  
                                     }
                                }
                                setSearchResult( searchResult);
                                setWordCounter( counter2);
-			}
-                        
-                          	
+			}                                                  	
         });
         prevButton.addActionListener(new ActionListener(){
                         
@@ -129,7 +154,6 @@ public class FindAndReplace {
                                     textArea.setCaretPosition(textArea.getText().length());
                                     searchResult = SearchEngine.find(textArea, searchContext);
                                     counter = searchResult.getMarkedCount();
-                                    System.out.println( searchResult.getMarkedCount()+ " " + counter + "2ilk if " +textArea.getCaretPosition());
                                }
                                else
                                {
@@ -140,22 +164,18 @@ public class FindAndReplace {
                                             searchResult = SearchEngine.find(textArea, searchContext);
                                             
                                             counter = searchResult.getMarkedCount();
-                                            System.out.println( searchResult.getMarkedCount()+ " " + counter + "2iki if "+ textArea.getCaretPosition());
                                         }
                                         else
                                         {                                            
                                             textArea.setCaretPosition(textArea.getCaretPosition() - 1);
                                             searchResult = SearchEngine.find(textArea, searchContext);
-                                            counter--;
-                                            System.out.println( searchResult.getMarkedCount()+ " " + counter + "2üç if " + textArea.getCaretPosition());
+                                            counter--;                                            
                                         }  
                                     }
                                }
                                setSearchResult( searchResult);
-                               setWordCounter(counter);
-				
-			}
-        	
+                               setWordCounter(counter);				
+			}        	
         });
         replButton.addActionListener(new ActionListener(){
                        
@@ -169,35 +189,27 @@ public class FindAndReplace {
                                 searchContext.setSearchForward(true);
 				if( !searchContext.getSearchFor().isEmpty() && !searchContext.getReplaceWith().isEmpty())
                                 {
-                                    if( textArea.getCaretPosition() == position )
-                                        {
-                                            
+                                    if( textArea.getCaretPosition() + ( searchContext.getSearchFor().length() - searchContext.getReplaceWith().length() ) == position )
+                                    {                                            
                                             textArea.setCaretPosition(0);
                                             searchResult = SearchEngine.replace(textArea,searchContext);
                                             if(  searchResult.getMarkedCount() != 0 )
-                                                textArea.setCaretPosition( textArea.getCaretPosition() - 1);
-                                            
-                                        }
+                                                textArea.setCaretPosition( textArea.getCaretPosition() - searchContext.getSearchFor().length());                                           
+                                    }
                                     else
                                     {
                                         position = textArea.getCaretPosition();
                                         searchResult = SearchEngine.replace(textArea,searchContext);
                                         if(  searchResult.getMarkedCount() != 0 )
-                                            textArea.setCaretPosition( textArea.getCaretPosition() -  1);
-                                        
-                                        System.out.println(textArea.getCaretPosition() + "" + position);
+                                            textArea.setCaretPosition( textArea.getCaretPosition() -  searchContext.getSearchFor().length());                                       
                                     }
                                     setWordCounter( getWordCounter()-1);                              
                                     if( searchResult != null) 
-                                        searchResult.setMarkedCount(searchResult.getMarkedCount() - 1);
-                                    
-                                }
-				
-			}
-        	
+                                        searchResult.setMarkedCount(searchResult.getMarkedCount() - 1);                                    
+                                }				
+			}        	
         });
         replAllButton.addActionListener(new ActionListener(){
-
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				searchContext.setReplaceWith( replaceText.getText());
@@ -207,16 +219,11 @@ public class FindAndReplace {
                                     textArea.setCaretPosition(0);
                                     SearchEngine.replaceAll(textArea, searchContext);
                                     setWordCounter( 0);
-                                    System.out.println(getWordCounter());
 				}
-                                
 			}
-        	
         });
         
         matchCase.addActionListener(new ActionListener(){
-            
-                        
                         @Override
 			public void actionPerformed(ActionEvent arg0) {
                             JCheckBox cb = (JCheckBox) arg0.getSource();
@@ -225,15 +232,10 @@ public class FindAndReplace {
                                 searchContext.setMatchCase(true);
                             } else {
                                searchContext.setMatchCase(false);
-                            }
-                            
-                        }
-        
-            
+                            }   
+                        }   
         });
-        wholeWord.addActionListener(new ActionListener(){
-            
-                        
+        wholeWord.addActionListener(new ActionListener(){             
                         @Override
 			public void actionPerformed(ActionEvent arg0) {
                             JCheckBox cb = (JCheckBox) arg0.getSource();
@@ -242,15 +244,11 @@ public class FindAndReplace {
                             } 
                             else {
                                searchContext.setWholeWord(false);
-                            }
-                            
-                        }
-        
-            
+                            }  
+                        }           
         });
         
         findAndReplaceFrame.pack();
-       // findAndReplaceFrame.setLocationRelativeTo(this);
         findAndReplaceFrame.addWindowListener(new WindowAdapter(){
             
             @Override
@@ -266,7 +264,6 @@ public class FindAndReplace {
     });
     
         findAndReplaceFrame.setLocationRelativeTo( mainFrame);
-    
         findAndReplaceFrame.setVisible(true);
     }
 }
