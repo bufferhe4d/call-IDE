@@ -16,7 +16,6 @@ import javax.imageio.*;
 import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rtextarea.*;
 
-
 /**
  * The main frame of the IDE.
  * @author Emin Bahadır Tülüce & Halil Şahiner
@@ -100,8 +99,8 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         replaceTextField = new javax.swing.JTextField();
         nextButton = new javax.swing.JButton();
         previousButton = new javax.swing.JButton();
-        matchCase = new javax.swing.JCheckBox();
-        wholeWord = new javax.swing.JCheckBox();
+        matchCaseCheck = new javax.swing.JCheckBox();
+        wholeWordCheck = new javax.swing.JCheckBox();
         mainSplitPane = new javax.swing.JSplitPane();
         topSplitPane = new javax.swing.JSplitPane();
         explorerScrollPane = new javax.swing.JScrollPane();
@@ -527,32 +526,35 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
 
         previousButton.setText("Previous");
 
+        matchCaseCheck.setText("Match Case");
+
+        wholeWordCheck.setText("Whole word");
+
         javax.swing.GroupLayout findReplacePanelLayout = new javax.swing.GroupLayout(findReplacePanel);
         findReplacePanel.setLayout(findReplacePanelLayout);
         findReplacePanelLayout.setHorizontalGroup(
             findReplacePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(findReplacePanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(24, 24, 24)
                 .addGroup(findReplacePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(findReplacePanelLayout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addGroup(findReplacePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(findLabel)
-                            .addComponent(replaceLabel)))
-                    .addGroup(findReplacePanelLayout.createSequentialGroup()
-                        .addComponent(previousButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
+                    .addComponent(findLabel)
+                    .addComponent(replaceLabel)
+                    .addComponent(matchCaseCheck)
+                    .addComponent(wholeWordCheck))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
                 .addGroup(findReplacePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, findReplacePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(replaceTextField)
-                        .addComponent(findTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, findReplacePanelLayout.createSequentialGroup()
-                        .addComponent(replaceButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(replaceAllButton)))
-                .addContainerGap())
+                    .addComponent(replaceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(findTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, findReplacePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(findReplacePanelLayout.createSequentialGroup()
+                            .addComponent(previousButton, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(findReplacePanelLayout.createSequentialGroup()
+                            .addComponent(replaceAllButton)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(replaceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
         findReplacePanelLayout.setVerticalGroup(
             findReplacePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -566,37 +568,31 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
                     .addComponent(replaceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(replaceLabel))
                 .addGap(18, 18, 18)
-                .addGroup(findReplacePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(replaceButton)
-                    .addComponent(previousButton)
-                    .addComponent(replaceAllButton)
-                    .addComponent(nextButton))
+                .addGroup(findReplacePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(findReplacePanelLayout.createSequentialGroup()
+                        .addGroup(findReplacePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(nextButton)
+                            .addComponent(previousButton))
+                        .addGap(18, 18, 18)
+                        .addGroup(findReplacePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(replaceAllButton)
+                            .addComponent(replaceButton)))
+                    .addGroup(findReplacePanelLayout.createSequentialGroup()
+                        .addComponent(wholeWordCheck)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(matchCaseCheck)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        matchCase.setText("Match Case");
-
-        wholeWord.setText("Whole word");
 
         javax.swing.GroupLayout findAndReplaceFrameLayout = new javax.swing.GroupLayout(findAndReplaceFrame.getContentPane());
         findAndReplaceFrame.getContentPane().setLayout(findAndReplaceFrameLayout);
         findAndReplaceFrameLayout.setHorizontalGroup(
             findAndReplaceFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(findReplacePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGroup(findAndReplaceFrameLayout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(matchCase)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(wholeWord))
         );
         findAndReplaceFrameLayout.setVerticalGroup(
             findAndReplaceFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(findAndReplaceFrameLayout.createSequentialGroup()
-                .addComponent(findReplacePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(findAndReplaceFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(matchCase)
-                    .addComponent(wholeWord)))
+            .addComponent(findReplacePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -1536,7 +1532,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     
     private void showFindAndReplace() {
         new FindAndReplace( findAndReplaceFrame, this, getActiveTextArea(), nextButton, previousButton, replaceButton,
-                           replaceAllButton, findTextField, replaceTextField, matchCase, wholeWord );
+                           replaceAllButton, findTextField, replaceTextField, matchCaseCheck, wholeWordCheck );
     }
     
     private void showPreferences() {
@@ -1697,7 +1693,11 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     
     private void addExplorer() {
         noWorkspacePanel.setVisible( false);
-        explorerScrollPane.setViewportView( new FileNavigator( workspace, this));
+        ArrayList<String> projects = new ArrayList<String>();
+        projects.add(workspace);
+        fileExplorer = new FileExplorer( projects, this);
+        fileExplorer.setBackground(Color.WHITE);
+        explorerScrollPane.setViewportView( fileExplorer);
     }
     
     private void addEmptyExplorer() {
@@ -1772,8 +1772,13 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         consoleInputField.setFont( outputFont);
         
         if (workspaceChanged)
-            if (workspace != null && (new File(workspace)).isDirectory())
-                explorerScrollPane.setViewportView( new FileNavigator(workspace, this));
+            if (workspace != null && (new File(workspace)).isDirectory()) {
+                ArrayList<String> projects = new ArrayList<String>();
+                projects.add(workspace);
+                fileExplorer = new FileExplorer( projects, this);
+                fileExplorer.setBackground(Color.WHITE);
+                explorerScrollPane.setViewportView( fileExplorer);
+            }
     }
     
     private class TemplateButtonListener implements ActionListener {
@@ -1997,6 +2002,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     private Preferences preferences;
     private String workspace;
     private boolean workspaceChanged;
+    private FileExplorer fileExplorer;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutButton;
@@ -2059,7 +2065,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     private javax.swing.JCheckBox loginCheck;
     private javax.swing.JButton loginTool;
     private javax.swing.JSplitPane mainSplitPane;
-    private javax.swing.JCheckBox matchCase;
+    private javax.swing.JCheckBox matchCaseCheck;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JTree methodSummary;
     private javax.swing.JCheckBoxMenuItem methodSummaryButton;
@@ -2142,7 +2148,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     private javax.swing.JMenuItem undoButton;
     private javax.swing.JCheckBox undoCheck;
     private javax.swing.JButton undoTool;
-    private javax.swing.JCheckBox wholeWord;
+    private javax.swing.JCheckBox wholeWordCheck;
     private javax.swing.JMenu windowMenu;
     private javax.swing.JLabel workspaceLabel;
     private javax.swing.JTextField workspaceTextField;

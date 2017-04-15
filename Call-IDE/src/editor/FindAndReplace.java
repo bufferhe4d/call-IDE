@@ -37,7 +37,7 @@ public class FindAndReplace {
      * @param wholeWord     take the check box to indicate the search type in terms of 
      *                      in word or apart from other word conditions
      */
-    protected FindAndReplace( JFrame  findAndReplaceFrame, JFrame mainFrame,RSyntaxTextArea textArea, JButton nextButton, JButton prevButton, JButton replButton,
+    public FindAndReplace( JFrame  findAndReplaceFrame, JFrame mainFrame,RSyntaxTextArea textArea, JButton nextButton, JButton prevButton, JButton replButton,
                               JButton replAllButton, JTextField findText, JTextField replaceText, JCheckBox matchCase, JCheckBox wholeWord )
     {
         this.mainFrame = mainFrame;

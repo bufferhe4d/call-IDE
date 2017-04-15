@@ -4,6 +4,12 @@ import java.io.File;
 import java.util.*;
 import javax.swing.tree.*;
 
+
+/**
+ * 
+ * @author Mahmud Sami Aydin
+ * 
+ */
 public class PathedFile extends File 
 {
    //Property
