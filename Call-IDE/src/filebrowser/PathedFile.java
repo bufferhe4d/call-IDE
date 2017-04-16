@@ -31,6 +31,7 @@ public class PathedFile extends File
       }
 
       path[ parentPath.length ] = this;
+      
       extensionIndex = getName().lastIndexOf('.');
       if( extensionIndex > 0)
       {
@@ -58,8 +59,8 @@ public class PathedFile extends File
    {
       return path;
    }
-   
-   @Override
+      
+      @Override
    public String toString()
    {
       return fileName;

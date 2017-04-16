@@ -14,6 +14,7 @@ public class FileNode extends DefaultMutableTreeNode
    
    PathedFile file;
    boolean allowsChildren;
+   ArrayList<FileNode> projectRootNodes;
    
    public FileNode( ArrayList<String> files )
    {
@@ -29,7 +30,8 @@ public class FileNode extends DefaultMutableTreeNode
          }
       }
       file = new PathedFile("/Nowhere/it/is/not/a/real/file");
-      
+      projectRootNodes = new ArrayList<FileNode>();
+      projectRootNodes = searchProjRoots( projectRootNodes );
    }
    public FileNode( PathedFile file )
    {
@@ -130,7 +132,7 @@ public class FileNode extends DefaultMutableTreeNode
  
    
    /**
-    * This method open a file froom path
+    * This method open a file from path
     * 
     * 
     */
@@ -150,6 +152,32 @@ public class FileNode extends DefaultMutableTreeNode
    public void closeFile()
    {
       removeFromParent();
+   }
+   
+   public ArrayList<FileNode> searchProjRoots( ArrayList<FileNode> projRoots )
+   {
+       for( int i = getChildCount() ; i > 0 ; i --)
+       {
+           if( !getChildAt(i-1).isLeaf() )
+           {
+               projRoots = ((FileNode)getChildAt(i-1)).searchProjRoots( projRoots);
+           }
+           if( ((FileNode)getChildAt(i-1)).file.isCallideFile() )
+               projRoots.add( this );
+       }
+       return projRoots;
+   }
+           
+   public void updateChildren()
+   {
+       addChildren();
+       for (int i = getChildCount();  i > 0 ; i-- )
+       {
+           if( !getChildAt(i-1).isLeaf() )
+            {
+                ((FileNode)getChildAt(i-1)).updateChildren();
+            }
+       }
    }
 }
 
