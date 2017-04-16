@@ -168,17 +168,6 @@ public class FileNode extends DefaultMutableTreeNode
        return projRoots;
    }
            
-              public void updateChildren()
-   {
-       addChildren();
-       for (int i = getChildCount();  i > 0 ; i-- )
-       {
-           if( !getChildAt(i).isLeaf() )
-            {
-                ((FileNode)getChildAt(i)).updateChildren();
-            }
-       }
-   }
 }
 
 
