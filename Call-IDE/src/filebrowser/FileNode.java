@@ -68,7 +68,7 @@ public class FileNode extends DefaultMutableTreeNode
    @Override
    public String toString()
    {
-      return file.getName();
+      return file.toString();
    }
    
    public boolean equals( FileNode n )

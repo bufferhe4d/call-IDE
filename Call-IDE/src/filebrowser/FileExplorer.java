@@ -17,17 +17,7 @@ public class FileExplorer extends JPanel
    //properties
    FileNavigator navigator;
    
-      
-   public FileExplorer( String root )
-   {
-      super();
-      navigator = new FileNavigator(  root );
-      setLayout( new FlowLayout(FlowLayout.LEFT));
-      add(navigator);
 
-      setVisible(true);
-   }
-   
    public FileExplorer(  ArrayList<String> files  )
    {
       super();
@@ -38,6 +28,15 @@ public class FileExplorer extends JPanel
       setVisible(true);
    }
    
+   public FileExplorer( String root )
+   {
+      super();
+      navigator = new FileNavigator(  root );
+      setLayout( new FlowLayout(FlowLayout.LEFT));
+      add(navigator);
+
+      setVisible(true);
+   }
       
    public FileExplorer( String root, FileOpener opener) {
        this(root);
