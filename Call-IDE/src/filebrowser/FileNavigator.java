@@ -78,7 +78,7 @@ public class FileNavigator extends JTree implements TreeSelectionListener
          {
              if( projectRootPath.equals( projRoot.file.getAbsolutePath() ) )
              {
-                 projRoot.addChildren();
+                 projRoot.updateChildren();
              }
          }
     }
