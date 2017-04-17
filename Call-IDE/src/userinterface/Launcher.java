@@ -23,7 +23,7 @@ public class Launcher {
         MainFrame.setLookAndFeel("Windows"); // Metal, Nimbus, CDE/Motif, Windows, Windows Classic
         System.out.println("Instancinating the launcher...");
         new Launcher();
-         System.out.println("Main method ended.");
+        System.out.println("Main method ended.");
     }
 
 }
