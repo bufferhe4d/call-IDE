@@ -5,6 +5,7 @@
  */
 public class ExceptionHelper 
 {
+	private static String helperLink;
 	/**
 	 * this method compares run-time error names and 
 	 * directs users to solutions via links
@@ -13,8 +14,6 @@ public class ExceptionHelper
 	 */
 	public static String exceptionHelper(String exception) 
 	{
-		String helperLink;
-		helperLink = "";
 		if(exception.equals("ArrayIndexOutOfBoundsException"))
 		{
 			helperLink = "http://mindprod.com/jgloss/runerrormessages.html#ARRAYINDEXOUTOFBOUNDS";
