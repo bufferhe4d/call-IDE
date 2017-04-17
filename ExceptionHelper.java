@@ -7,7 +7,7 @@ public class ExceptionHelper
 {
 	private static String helperLink;
 	/**
-	 * this method compares run-time error names and 
+	 * This method compares run-time error names and 
 	 * directs users to solutions via links
 	 * @param   exception
 	 * @return  helperLink 
