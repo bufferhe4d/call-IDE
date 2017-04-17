@@ -11,7 +11,7 @@ import javax.swing.*;
  */
 public class FindAndReplace {
     
-    private int wordCounter;
+    private int tokenCounter;
     private SearchResult searchResult;
     private JButton nextButton, prevButton, replButton, replAllButton;
     private JCheckBox matchCase, wholeWord;
@@ -54,21 +54,21 @@ public class FindAndReplace {
         showFindAndReplace();
     }
     /**
-     * A method to get the number of word which is passed while searching 
+     * A method to get the number of tokens which is passed while searching 
      * in the text
      * @return number of word which is passed while searching
      */
-    private int getWordCounter( )
+    private int getTokenCounter( )
     {
-        return this.wordCounter;
+        return this.tokenCounter;
     }  
     /**
-     * A method to set the number of word counter to intended number
+     * A method to set the number of word tokens to intended number
      * @param counter take the number of word to set word counter in integer type
      */
-    private void setWordCounter( int counter)
+    private void setTokenCounter( int counter)
     {
-        wordCounter = counter;
+        tokenCounter = counter;
     }
     /**
      * A method to set the search result to relate the search function's results
@@ -90,7 +90,7 @@ public class FindAndReplace {
         SearchContext searchContext = new SearchContext("");        
         findText.setText("");
         replaceText.setText("");
-        setWordCounter( 0);
+        setTokenCounter( 0);
         
         JButton[] buttons = new JButton[4];
         buttons[0] = nextButton;
@@ -99,18 +99,18 @@ public class FindAndReplace {
         buttons[3] = replAllButton;
                        
         matchCase.setSelected(false);
-        wholeWord.setSelected(false);
+        wholeToken.setSelected(false);
         
         nextButton.addActionListener(new ActionListener(){
                         int counter2;
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-                               counter2 = getWordCounter();
+                               counter2 = getTokenCounter();
                                searchContext.setSearchForward(true);
                                if(!findText.getText().equals(searchContext.getSearchFor()))
                                {
-                                   if( matchCase.isSelected() || wholeWord.isSelected())
-                                        setWordCounter(0);
+                                   if( matchCase.isSelected() || wholeToken.isSelected())
+                                        setTokenCounter(0);
                                     counter2 = 1;
                                     textArea.setCaretPosition(0);
                                     searchContext.setSearchFor(findText.getText());
@@ -136,7 +136,7 @@ public class FindAndReplace {
                                     }
                                }
                                setSearchResult( searchResult);
-                               setWordCounter( counter2);
+                               setTokenCounter( counter2);
 			}                                                  	
         });
         prevButton.addActionListener(new ActionListener(){
@@ -145,11 +145,11 @@ public class FindAndReplace {
                         int counter;
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-                               counter = getWordCounter();
+                               counter = getTokenCounter();
                                searchContext.setSearchForward(false);
                                if(!findText.getText().equals(searchContext.getSearchFor()))
                                {
-                                    setWordCounter(0);
+                                    setTokenCounter(0);
                                     searchContext.setSearchFor(findText.getText());
                                     textArea.setCaretPosition(textArea.getText().length());
                                     searchResult = SearchEngine.find(textArea, searchContext);
@@ -174,7 +174,7 @@ public class FindAndReplace {
                                     }
                                }
                                setSearchResult( searchResult);
-                               setWordCounter(counter);				
+                               setTokenCounter(counter);				
 			}        	
         });
         replButton.addActionListener(new ActionListener(){
@@ -203,7 +203,7 @@ public class FindAndReplace {
                                         if(  searchResult.getMarkedCount() != 0 )
                                             textArea.setCaretPosition( textArea.getCaretPosition() -  searchContext.getSearchFor().length());                                       
                                     }
-                                    setWordCounter( getWordCounter()-1);                              
+                                    setTokenCounter( getTokenCounter()-1);                              
                                     if( searchResult != null) 
                                         searchResult.setMarkedCount(searchResult.getMarkedCount() - 1);                                    
                                 }				
@@ -218,7 +218,7 @@ public class FindAndReplace {
 				{
                                     textArea.setCaretPosition(0);
                                     SearchEngine.replaceAll(textArea, searchContext);
-                                    setWordCounter( 0);
+                                    setTokenCounter( 0);
 				}
 			}
         });
@@ -228,22 +228,22 @@ public class FindAndReplace {
 			public void actionPerformed(ActionEvent arg0) {
                             JCheckBox cb = (JCheckBox) arg0.getSource();
                             if (cb.isSelected()) {
-                                //setWordCounter(0);
+                                //setTokenCounter(0);
                                 searchContext.setMatchCase(true);
                             } else {
                                searchContext.setMatchCase(false);
                             }   
                         }   
         });
-        wholeWord.addActionListener(new ActionListener(){             
+        wholeToken.addActionListener(new ActionListener(){             
                         @Override
 			public void actionPerformed(ActionEvent arg0) {
                             JCheckBox cb = (JCheckBox) arg0.getSource();
                             if (cb.isSelected()) {
-                                searchContext.setWholeWord(true);
+                                searchContext.setWholeToken(true);
                             } 
                             else {
-                               searchContext.setWholeWord(false);
+                               searchContext.setWholeToken(false);
                             }  
                         }           
         });
@@ -267,3 +267,4 @@ public class FindAndReplace {
         findAndReplaceFrame.setVisible(true);
     }
 }
+
