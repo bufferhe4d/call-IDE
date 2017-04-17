@@ -97,6 +97,9 @@ public class FileNavigator extends JTree implements TreeSelectionListener
             directoryMenu.setVisible(false);
             fileMenu.setVisible(false);
             
+            if (e == null)
+                return;
+            
             if( e.getButton() == 1 && e.getClickCount() == 2 && lastSelectedFile.isFile()  )
             {
                 opener.openFile(lastSelectedFile);

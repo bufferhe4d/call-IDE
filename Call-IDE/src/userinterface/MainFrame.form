@@ -25,9 +25,9 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="idePreferencesPanel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
+                  <Component id="idePreferencesPanel" max="32767" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="toolbarPreferencesPanel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="preferecesButtonPanel" min="-2" max="-2" attributes="0"/>
@@ -152,7 +152,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="0" pref="4" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               <Component id="workspaceLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="9" pref="9" max="-2" attributes="0"/>
                               <Component id="workspaceTextField" min="-2" pref="310" max="-2" attributes="0"/>
@@ -233,6 +233,21 @@
                                   </Group>
                               </Group>
                           </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="submissionSelectLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="callideSubmissionRadio" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="externalSubmissionRadio" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="externalSubmissionField" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -299,7 +314,17 @@
                           <Component id="workspaceTextField" min="-2" max="-2" attributes="0"/>
                           <Component id="browseWorkspaceButton" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="submissionSelectLabel" min="-2" max="-2" attributes="0"/>
+                          <Component id="callideSubmissionRadio" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="externalSubmissionRadio" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="externalSubmissionField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -461,6 +486,26 @@
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
+            </Component>
+            <Component class="javax.swing.JLabel" name="submissionSelectLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Submission System:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JRadioButton" name="callideSubmissionRadio">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Default Call-IDE Submission System"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JRadioButton" name="externalSubmissionRadio">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="External System:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="externalSubmissionField">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="https://stars.bilkent.edu.tr/srs"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>
@@ -659,6 +704,179 @@
             <Component class="javax.swing.JCheckBox" name="wholeWordCheck">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Whole word"/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+      </SubComponents>
+    </Container>
+    <Container class="javax.swing.JFrame" name="projectFrame">
+      <Properties>
+        <Property name="title" type="java.lang.String" value="Project Properties"/>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Component id="projectPanel" min="-2" max="-2" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Component id="projectPanel" min="-2" max="-2" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Container class="javax.swing.JPanel" name="projectPanel">
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="mainClassLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="mainClassField" min="-2" pref="218" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="projectRootLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="projectRootField" min="-2" pref="218" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="projectNameLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="149" max="32767" attributes="0"/>
+                              <Component id="projectNameField" min="-2" pref="218" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="classPathLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="classPathButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="classPathScrollPane" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="projectOkButton" min="-2" pref="80" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="projectCancelButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="projectNameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="projectNameField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="projectRootLabel" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="projectRootField" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="mainClassLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="mainClassField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="classPathLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="classPathButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="classPathScrollPane" min="-2" pref="113" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="projectCancelButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="projectOkButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="projectNameLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Project Name:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="projectRootLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Project Root:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="mainClassField">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="/private/lab01/Test.java"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="mainClassLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Main Class:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="classPathLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="External Class Paths"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="projectOkButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="OK"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="projectCancelButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Cancel"/>
+              </Properties>
+            </Component>
+            <Container class="javax.swing.JScrollPane" name="classPathScrollPane">
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JList" name="classPathList">
+                  <Properties>
+                    <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
+                      <StringArray count="3">
+                        <StringItem index="0" value=" /cs101/sos/SOSGame.jar"/>
+                        <StringItem index="1" value=" /mypackage/Calculator.jar"/>
+                        <StringItem index="2" value=" /fileops/FileDownloader.jar"/>
+                      </StringArray>
+                    </Property>
+                  </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                  </AuxValues>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Component class="javax.swing.JButton" name="classPathButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Choose Path"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="projectNameField">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="lab01"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="projectRootField">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="/private/lab01"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -960,7 +1178,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="resetButton">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Reset Interactions"/>
+                <Property name="text" type="java.lang.String" value="Stop Program"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="resetButtonActionPerformed"/>
@@ -1495,7 +1713,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/userinterface/images/reset.png"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Reset Interactions"/>
+            <Property name="toolTipText" type="java.lang.String" value="Stop Program"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="resetToolActionPerformed"/>
@@ -1574,6 +1792,9 @@
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Help Contents"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="helpToolActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="loginTool">
           <Properties>

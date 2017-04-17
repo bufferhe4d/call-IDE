@@ -31,7 +31,7 @@ public class FileNode extends DefaultMutableTreeNode
       }
       file = new PathedFile("/Nowhere/it/is/not/a/real/file");
       projectRootNodes = new ArrayList<FileNode>();
-      projectRootNodes = searchProjRoots( projectRootNodes );
+     // projectRootNodes = searchProjRoots( projectRootNodes );
    }
    public FileNode( PathedFile file )
    {

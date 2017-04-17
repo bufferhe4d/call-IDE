@@ -94,6 +94,10 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         outputFontLabel = new javax.swing.JLabel();
         outputFontSizeField = new javax.swing.JTextField();
         outputFontChooser = new javax.swing.JComboBox<>();
+        submissionSelectLabel = new javax.swing.JLabel();
+        callideSubmissionRadio = new javax.swing.JRadioButton();
+        externalSubmissionRadio = new javax.swing.JRadioButton();
+        externalSubmissionField = new javax.swing.JTextField();
         preferecesButtonPanel = new javax.swing.JPanel();
         preferencesOk = new javax.swing.JButton();
         preferencesCancel = new javax.swing.JButton();
@@ -110,6 +114,20 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         previousButton = new javax.swing.JButton();
         matchCaseCheck = new javax.swing.JCheckBox();
         wholeWordCheck = new javax.swing.JCheckBox();
+        projectFrame = new javax.swing.JFrame();
+        projectPanel = new javax.swing.JPanel();
+        projectNameLabel = new javax.swing.JLabel();
+        projectRootLabel = new javax.swing.JLabel();
+        mainClassField = new javax.swing.JTextField();
+        mainClassLabel = new javax.swing.JLabel();
+        classPathLabel = new javax.swing.JLabel();
+        projectOkButton = new javax.swing.JButton();
+        projectCancelButton = new javax.swing.JButton();
+        classPathScrollPane = new javax.swing.JScrollPane();
+        classPathList = new javax.swing.JList<>();
+        classPathButton = new javax.swing.JButton();
+        projectNameField = new javax.swing.JTextField();
+        projectRootField = new javax.swing.JTextField();
         mainSplitPane = new javax.swing.JSplitPane();
         topSplitPane = new javax.swing.JSplitPane();
         explorerScrollPane = new javax.swing.JScrollPane();
@@ -327,6 +345,14 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
 
         outputFontChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Arial", "Calibri", "Consolas", "Courier New", "Lucida Console", "Times New Roman", "Tahoma" }));
 
+        submissionSelectLabel.setText("Submission System:");
+
+        callideSubmissionRadio.setText("Default Call-IDE Submission System");
+
+        externalSubmissionRadio.setText("External System:");
+
+        externalSubmissionField.setText("https://stars.bilkent.edu.tr/srs");
+
         javax.swing.GroupLayout idePreferencesPanelLayout = new javax.swing.GroupLayout(idePreferencesPanel);
         idePreferencesPanel.setLayout(idePreferencesPanelLayout);
         idePreferencesPanelLayout.setHorizontalGroup(
@@ -335,7 +361,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
                 .addContainerGap()
                 .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, idePreferencesPanelLayout.createSequentialGroup()
-                        .addGap(0, 4, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(workspaceLabel)
                         .addGap(9, 9, 9)
                         .addComponent(workspaceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -395,7 +421,18 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
                             .addGroup(idePreferencesPanelLayout.createSequentialGroup()
                                 .addGap(94, 94, 94)
                                 .addComponent(themeLabel)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                        .addComponent(submissionSelectLabel)
+                        .addGap(18, 18, 18)
+                        .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                                .addComponent(callideSubmissionRadio)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                                .addComponent(externalSubmissionRadio)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(externalSubmissionField)))))
                 .addContainerGap())
         );
         idePreferencesPanelLayout.setVerticalGroup(
@@ -447,7 +484,15 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
                     .addComponent(workspaceLabel)
                     .addComponent(workspaceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(browseWorkspaceButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(submissionSelectLabel)
+                    .addComponent(callideSubmissionRadio))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(externalSubmissionRadio)
+                    .addComponent(externalSubmissionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10))
         );
 
         preferencesOk.setText("OK");
@@ -507,9 +552,9 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         preferencesFrameLayout.setVerticalGroup(
             preferencesFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(preferencesFrameLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(idePreferencesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap()
+                .addComponent(idePreferencesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(toolbarPreferencesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(preferecesButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -601,6 +646,106 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         findAndReplaceFrameLayout.setVerticalGroup(
             findAndReplaceFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(findReplacePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        projectFrame.setTitle("Project Properties");
+
+        projectNameLabel.setText("Project Name:");
+
+        projectRootLabel.setText("Project Root:");
+
+        mainClassField.setText("/private/lab01/Test.java");
+
+        mainClassLabel.setText("Main Class:");
+
+        classPathLabel.setText("External Class Paths");
+
+        projectOkButton.setText("OK");
+
+        projectCancelButton.setText("Cancel");
+
+        classPathList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { " /cs101/sos/SOSGame.jar", " /mypackage/Calculator.jar", " /fileops/FileDownloader.jar" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        classPathScrollPane.setViewportView(classPathList);
+
+        classPathButton.setText("Choose Path");
+
+        projectNameField.setText("lab01");
+
+        projectRootField.setText("/private/lab01");
+
+        javax.swing.GroupLayout projectPanelLayout = new javax.swing.GroupLayout(projectPanel);
+        projectPanel.setLayout(projectPanelLayout);
+        projectPanelLayout.setHorizontalGroup(
+            projectPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, projectPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(projectPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(projectPanelLayout.createSequentialGroup()
+                        .addComponent(mainClassLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(mainClassField, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, projectPanelLayout.createSequentialGroup()
+                        .addComponent(projectRootLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(projectRootField, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, projectPanelLayout.createSequentialGroup()
+                        .addComponent(projectNameLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
+                        .addComponent(projectNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, projectPanelLayout.createSequentialGroup()
+                        .addComponent(classPathLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(classPathButton))
+                    .addComponent(classPathScrollPane)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, projectPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(projectOkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(projectCancelButton)))
+                .addContainerGap())
+        );
+        projectPanelLayout.setVerticalGroup(
+            projectPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(projectPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(projectPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(projectPanelLayout.createSequentialGroup()
+                        .addGroup(projectPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(projectNameLabel)
+                            .addComponent(projectNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(projectRootLabel))
+                    .addComponent(projectRootField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(projectPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(mainClassLabel)
+                    .addComponent(mainClassField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(projectPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(classPathLabel)
+                    .addComponent(classPathButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(classPathScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(projectPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(projectCancelButton)
+                    .addComponent(projectOkButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout projectFrameLayout = new javax.swing.GroupLayout(projectFrame.getContentPane());
+        projectFrame.getContentPane().setLayout(projectFrameLayout);
+        projectFrameLayout.setHorizontalGroup(
+            projectFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(projectPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        projectFrameLayout.setVerticalGroup(
+            projectFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(projectPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -831,7 +976,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         });
 
         resetTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/images/reset.png"))); // NOI18N
-        resetTool.setToolTipText("Reset Interactions");
+        resetTool.setToolTipText("Stop Program");
         resetTool.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 resetToolActionPerformed(evt);
@@ -888,6 +1033,11 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
 
         helpTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/images/help.png"))); // NOI18N
         helpTool.setToolTipText("Help Contents");
+        helpTool.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                helpToolActionPerformed(evt);
+            }
+        });
 
         loginTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/images/login.png"))); // NOI18N
 
@@ -1165,7 +1315,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         });
         toolsMenu.add(compileRunButton);
 
-        resetButton.setText("Reset Interactions");
+        resetButton.setText("Stop Program");
         resetButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 resetButtonActionPerformed(evt);
@@ -1460,6 +1610,12 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         resetInteractions();
     }//GEN-LAST:event_resetButtonActionPerformed
 
+    private void helpToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpToolActionPerformed
+        // TODO : remove here
+        projectFrame.pack();
+        projectFrame.setVisible(true);
+    }//GEN-LAST:event_helpToolActionPerformed
+
     /** Sets LookAndFeel to the given name.*/
     public static void setLookAndFeel (String lookAndFeel) {
         try {
@@ -1497,6 +1653,9 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         closeIcon = new ImageIcon( (new ImageIcon( getClass().getResource( 
                 "/userinterface/images/close.png"))).getImage().getScaledInstance(
                 12, 12, java.awt.Image.SCALE_SMOOTH));
+        detachIcon = new ImageIcon( (new ImageIcon( getClass().getResource( 
+                "/userinterface/images/detach.png"))).getImage().getScaledInstance(
+                16, 16, java.awt.Image.SCALE_SMOOTH));
     }
     
     private void initOtherComponents() {
@@ -1512,6 +1671,24 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
             }
         });
         noWorkspacePanel.add( workspaceButton);
+        
+        JPanel consoleTabPanel = new JPanel();
+        JLabel titleLabel = new JLabel( "Console Output");
+        JButton detachButton = new JButton();
+        detachButton.setIcon( detachIcon);
+        detachButton.setPreferredSize( new Dimension(24, 24));
+        detachButton.addActionListener( new DetachConsoleListener());
+        consoleTabPanel.setOpaque( false);
+        consoleTabPanel.add( titleLabel);
+        consoleTabPanel.add( detachButton);
+        outputTabs.setTabComponentAt( 1, consoleTabPanel);
+    }
+    
+    private class DetachConsoleListener implements ActionListener {
+        public void actionPerformed( ActionEvent e) {
+            ConsoleCore.dispatch(consoleOutputScrollPane, consoleOutputArea);
+            outputTabs.remove(1);
+        }
     }
     
     private void clearPlaceHolders() {
@@ -2202,6 +2379,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     private String workspace;
     private boolean workspaceChanged;
     private FileExplorer fileExplorer;
+    private ImageIcon detachIcon;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutButton;
@@ -2212,6 +2390,11 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     private javax.swing.JTextField autosaveTextField;
     private javax.swing.JCheckBox bracketMatchingCheck;
     private javax.swing.JButton browseWorkspaceButton;
+    private javax.swing.JRadioButton callideSubmissionRadio;
+    private javax.swing.JButton classPathButton;
+    private javax.swing.JLabel classPathLabel;
+    private javax.swing.JList<String> classPathList;
+    private javax.swing.JScrollPane classPathScrollPane;
     private javax.swing.JMenuItem compileButton;
     private javax.swing.JCheckBox compileCheck;
     private javax.swing.JMenuItem compileRunButton;
@@ -2233,6 +2416,8 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     private javax.swing.JTextField editorFontSizeField;
     private javax.swing.JLabel editorFontSizeLabel;
     private javax.swing.JScrollPane explorerScrollPane;
+    private javax.swing.JTextField externalSubmissionField;
+    private javax.swing.JRadioButton externalSubmissionRadio;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JCheckBoxMenuItem fileTrackerButton;
     private javax.swing.JFrame findAndReplaceFrame;
@@ -2258,6 +2443,8 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     private javax.swing.JMenuItem loginButton;
     private javax.swing.JCheckBox loginCheck;
     private javax.swing.JButton loginTool;
+    private javax.swing.JTextField mainClassField;
+    private javax.swing.JLabel mainClassLabel;
     private javax.swing.JSplitPane mainSplitPane;
     private javax.swing.JCheckBox matchCaseCheck;
     private javax.swing.JMenuBar menuBar;
@@ -2295,6 +2482,14 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     private javax.swing.JButton preferencesOk;
     private javax.swing.JButton preferencesReset;
     private javax.swing.JButton previousButton;
+    private javax.swing.JButton projectCancelButton;
+    private javax.swing.JFrame projectFrame;
+    private javax.swing.JTextField projectNameField;
+    private javax.swing.JLabel projectNameLabel;
+    private javax.swing.JButton projectOkButton;
+    private javax.swing.JPanel projectPanel;
+    private javax.swing.JTextField projectRootField;
+    private javax.swing.JLabel projectRootLabel;
     private javax.swing.JMenuItem quitButton;
     private javax.swing.JMenuItem redoButton;
     private javax.swing.JCheckBox redoCheck;
@@ -2333,6 +2528,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     private javax.swing.JPanel statusPanel;
     private javax.swing.JScrollPane statusScrollPane;
     private javax.swing.JMenu submissionMenu;
+    private javax.swing.JLabel submissionSelectLabel;
     private javax.swing.JMenu templatesMenu;
     private javax.swing.JTabbedPane textTabs;
     private javax.swing.JComboBox<String> themeComboBox;
