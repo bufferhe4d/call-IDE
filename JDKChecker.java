@@ -87,7 +87,8 @@ public class JDKChecker
          } 
       } catch( Exception e ) {}
       
-      re
+      return null;
+   }
    
    // check "path" variable
    public String checkPathVar()
