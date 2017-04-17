@@ -3,31 +3,31 @@ import java.util.ArrayList;
 
 public class JDKChecker
 {
-   private final String osName = System.getProperty("os.name").toLowerCase();
+   private final String OS_NAME = System.getProperty("os.name").toLowerCase();
    private String[] pathVarPaths;
    
    // check is os windows
    private boolean isWindows() 
    {
-      return (osName.indexOf("win") >= 0);
+      return (OS_NAME.indexOf("win") >= 0);
    }
    
    // check is os mac
    private boolean isMac() 
    {
-      return (osName.indexOf("mac") >= 0);
+      return (OS_NAME.indexOf("mac") >= 0);
    }
    
    // check is os unix
    private boolean isUnix() 
    {
-      return (osName.indexOf("nix") >= 0 || osName.indexOf("nux") >= 0 || osName.indexOf("aix") > 0 );
+      return (OS_NAME.indexOf("nix") >= 0 || OS_NAME.indexOf("nux") >= 0 || OS_NAME.indexOf("aix") > 0 );
    }
    
    // check is os solaris
    private boolean isSolaris() 
    {
-      return (osName.indexOf("sunos") >= 0);
+      return (OS_NAME.indexOf("sunos") >= 0);
    }
    
    // check default java path
