@@ -74,18 +74,20 @@ public class JDKChecker
    // check JAVA_HOME variable
    public String checkJAVA_HOME()
    {
-      File file = new File( System.getenv("JAVA_HOME") );
-      
-      if ( file != null && file.canRead() && file.isDirectory() ) 
-      {
-         if ( file.getName().indexOf("jdk") >= 0)
-         {
-            return file.getName();
-         }
+      try {
+         File file = new File( System.getenv("JAVA_HOME") );
          
-      } 
-      return null;
-   }
+         if ( file != null && file.canRead() && file.isDirectory() ) 
+         {
+            if ( file.getName().indexOf("jdk") >= 0)
+            {
+               return file.getName();
+            }
+            
+         } 
+      } catch( Exception e ) {}
+      
+      re
    
    // check "path" variable
    public String checkPathVar()
