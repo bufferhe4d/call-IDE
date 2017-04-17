@@ -235,15 +235,15 @@ public class FindAndReplace {
                             }   
                         }   
         });
-        wholeToken.addActionListener(new ActionListener(){             
+        wholeWord.addActionListener(new ActionListener(){             
                         @Override
 			public void actionPerformed(ActionEvent arg0) {
                             JCheckBox cb = (JCheckBox) arg0.getSource();
                             if (cb.isSelected()) {
-                                searchContext.setWholeToken(true);
+                                searchContext.setWholeWord(true);
                             } 
                             else {
-                               searchContext.setWholeToken(false);
+                               searchContext.setWholeWord(false);
                             }  
                         }           
         });
