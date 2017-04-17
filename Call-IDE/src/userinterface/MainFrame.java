@@ -1449,7 +1449,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
 
     private void newFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newFileButtonActionPerformed
         newFile();
-        fileExplorer.updateUI();
+        // fileExplorer.updateUI();
     }//GEN-LAST:event_newFileButtonActionPerformed
 
     private void openFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileButtonActionPerformed
