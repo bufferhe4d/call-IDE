@@ -47,7 +47,7 @@ public class JDKChecker
       }
       else if ( isUnix() )
       {
-         file = new File("/usr/java");
+         file = new File("/usr/bin/jvm");
          
       }
       else if ( isSolaris() )
@@ -67,7 +67,6 @@ public class JDKChecker
             } 
          }
       }
-      
       return jdkNames;   
    }
    
@@ -106,8 +105,8 @@ public class JDKChecker
                return file.getName();
             }
          }
-         
       }
+      
       return null;
    }
    
