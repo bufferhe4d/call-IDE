@@ -14,7 +14,7 @@ public class FindAndReplace {
     private int tokenCounter;
     private SearchResult searchResult;
     private JButton nextButton, prevButton, replButton, replAllButton;
-    private JCheckBox matchCase, wholeWord;
+    private JCheckBox matchCase, wholeToken;
     private JTextField findText, replaceText;
     private RSyntaxTextArea textArea;
     private JFrame findAndReplaceFrame, mainFrame;
@@ -34,11 +34,11 @@ public class FindAndReplace {
      * @param findText      take the text field which contains the text searched in text
      * @param replaceText   take the text field which contains the text replaced with searched text
      * @param matchCase     take the check box to indicate the case sensitivity of search
-     * @param wholeWord     take the check box to indicate the search type in terms of 
+     * @param wholeToken     take the check box to indicate the search type in terms of 
      *                      in word or apart from other word conditions
      */
     public FindAndReplace( JFrame  findAndReplaceFrame, JFrame mainFrame,RSyntaxTextArea textArea, JButton nextButton, JButton prevButton, JButton replButton,
-                              JButton replAllButton, JTextField findText, JTextField replaceText, JCheckBox matchCase, JCheckBox wholeWord )
+                              JButton replAllButton, JTextField findText, JTextField replaceText, JCheckBox matchCase, JCheckBox wholeToken )
     {
         this.mainFrame = mainFrame;
         this.findAndReplaceFrame = findAndReplaceFrame;
@@ -50,7 +50,7 @@ public class FindAndReplace {
         this.findText = findText;
         this.replaceText = replaceText;
         this.matchCase = matchCase;
-        this.wholeWord = wholeWord;
+        this.wholeToken = wholeToken;
         showFindAndReplace();
     }
     /**
@@ -235,7 +235,7 @@ public class FindAndReplace {
                             }   
                         }   
         });
-        wholeWord.addActionListener(new ActionListener(){             
+        wholeToken.addActionListener(new ActionListener(){             
                         @Override
 			public void actionPerformed(ActionEvent arg0) {
                             JCheckBox cb = (JCheckBox) arg0.getSource();

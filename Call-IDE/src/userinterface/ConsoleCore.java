@@ -28,6 +28,9 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
+import javax.swing.JTabbedPane;
+import java.awt.Component;
+
 /**
  *
  * @author abdullah.talayhan-ug
@@ -213,7 +216,7 @@ public class ConsoleCore {
     return style;
     }
     
-    public static void  dispatch(JScrollPane scrollPane, JTextArea cons) {                                         
+    public static void  dispatch(JScrollPane scrollPane, JTextArea cons, JTabbedPane outputTabs, Component tabComp) {
         // TODO add your handling code here:
         JFrame frame = new JFrame("\"Console\"");
         frame.add(cons);
@@ -224,6 +227,9 @@ public class ConsoleCore {
             public void windowClosing(WindowEvent e)
             {
                 scrollPane.setViewportView(cons);
+                outputTabs.setTabComponentAt( 2, tabComp);
+                outputTabs.removeChangeListener( outputTabs.getChangeListeners()[0]);
+                outputTabs.setSelectedIndex(2);
             }
         });
         //frame.setDefaultCloseOperation(putBack(frame));

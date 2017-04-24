@@ -100,7 +100,7 @@ public class FileNavigator extends JTree implements TreeSelectionListener
             if (e == null)
                 return;
             
-            if( e.getButton() == 1 && e.getClickCount() == 2 && lastSelectedFile.isFile()  )
+            if( e.getButton() == 1 && e.getClickCount() == 2 && lastSelectedFile != null && lastSelectedFile.isFile() )
             {
                 opener.openFile(lastSelectedFile);
             }

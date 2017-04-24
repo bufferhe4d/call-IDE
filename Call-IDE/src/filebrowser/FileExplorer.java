@@ -65,6 +65,8 @@ public class FileExplorer extends JPanel
    
     public void updateProjectFiles( String projectRootPath )
     {
+        // This method is not working...
+        System.out.println("updated " + projectRootPath);
         navigator.updateProjectFiles(  projectRootPath );
     }
    

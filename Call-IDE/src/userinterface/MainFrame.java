@@ -14,6 +14,7 @@ import java.util.*;
 import java.util.logging.*;
 
 import javax.swing.*;
+import javax.swing.event.*;
 import javax.imageio.*;
 
 import org.fife.ui.rsyntaxtextarea.*;
@@ -22,15 +23,14 @@ import org.fife.ui.rtextarea.*;
 import com.github.javaparser.*;
 import com.github.javaparser.ast.*;
 
+// TODO : TEST OTHER FRAME LAYOUTS IN THE LAB COMPUTERS
 
 /**
  * The main frame of the IDE.
- * @author Emin Bahadır Tülüce, Halil Şahiner, Abdullah Talayhan
+ * @author Emin Bahadir Tuluce, Halil Sahiner, Abdullah Talayhan
  */
 public class MainFrame extends javax.swing.JFrame implements FileOpener, AutosaveHandler {
     
-    JTextPane cons;
-    Executor ex;
     /** Creates new form MainFrame. */
     public MainFrame() throws IOException {
         textAreas = new ArrayList<RSyntaxTextArea>();
@@ -128,6 +128,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         classPathButton = new javax.swing.JButton();
         projectNameField = new javax.swing.JTextField();
         projectRootField = new javax.swing.JTextField();
+        submissionButtonGroup = new javax.swing.ButtonGroup();
         mainSplitPane = new javax.swing.JSplitPane();
         topSplitPane = new javax.swing.JSplitPane();
         explorerScrollPane = new javax.swing.JScrollPane();
@@ -142,12 +143,12 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         statusPanel = new javax.swing.JPanel();
         statusScrollPane = new javax.swing.JScrollPane();
         statusArea = new javax.swing.JTextArea();
-        consoleOutputPanel = new javax.swing.JPanel();
-        consoleOutputScrollPane = new javax.swing.JScrollPane();
-        consoleOutputArea = new javax.swing.JTextArea();
         compilerOutputPanel = new javax.swing.JPanel();
         compilerOutputScrollPane = new javax.swing.JScrollPane();
         compilerOutputArea = new javax.swing.JTextArea();
+        consoleOutputPanel = new javax.swing.JPanel();
+        consoleOutputScrollPane = new javax.swing.JScrollPane();
+        consoleOutputArea = new javax.swing.JTextArea();
         toolbarPanel = new javax.swing.JPanel();
         newTool = new javax.swing.JButton();
         openTool = new javax.swing.JButton();
@@ -347,8 +348,11 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
 
         submissionSelectLabel.setText("Submission System:");
 
+        submissionButtonGroup.add(callideSubmissionRadio);
+        callideSubmissionRadio.setSelected(true);
         callideSubmissionRadio.setText("Default Call-IDE Submission System");
 
+        submissionButtonGroup.add(externalSubmissionRadio);
         externalSubmissionRadio.setText("External System:");
 
         externalSubmissionField.setText("https://stars.bilkent.edu.tr/srs");
@@ -358,118 +362,112 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         idePreferencesPanelLayout.setHorizontalGroup(
             idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(idePreferencesPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(15, 15, 15)
                 .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, idePreferencesPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(workspaceLabel)
+                    .addGroup(idePreferencesPanelLayout.createSequentialGroup()
                         .addGap(9, 9, 9)
-                        .addComponent(workspaceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(indentLabel)
+                        .addGap(15, 15, 15)
+                        .addComponent(indentTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lineNumbersCheck)
+                    .addComponent(showHelpCheck))
+                .addGap(93, 93, 93)
+                .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(themeLabel))
+                    .addGroup(idePreferencesPanelLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addComponent(browseWorkspaceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(editorFontLabel)
+                        .addGap(162, 162, 162)
+                        .addComponent(editorFontSizeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(idePreferencesPanelLayout.createSequentialGroup()
-                        .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lineNumbersCheck)
-                            .addGroup(idePreferencesPanelLayout.createSequentialGroup()
-                                .addGap(9, 9, 9)
-                                .addComponent(indentLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(indentTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(idePreferencesPanelLayout.createSequentialGroup()
-                                .addComponent(autosaveCheck)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(autosaveTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(minsLabel))
-                            .addComponent(bracketMatchingCheck)
-                            .addComponent(showHelpCheck))
-                        .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, idePreferencesPanelLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(idePreferencesPanelLayout.createSequentialGroup()
-                                        .addGap(85, 85, 85)
-                                        .addComponent(editorFontLabel)
-                                        .addGap(156, 156, 156))
-                                    .addGroup(idePreferencesPanelLayout.createSequentialGroup()
-                                        .addGap(75, 75, 75)
-                                        .addComponent(editorFontChooser, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGap(6, 6, 6)))
-                                .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(idePreferencesPanelLayout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addComponent(editorFontSizeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(editorFontSizeField, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, idePreferencesPanelLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(idePreferencesPanelLayout.createSequentialGroup()
-                                        .addComponent(outputFontLabel)
-                                        .addGap(142, 142, 142))
-                                    .addGroup(idePreferencesPanelLayout.createSequentialGroup()
-                                        .addComponent(outputFontChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(6, 6, 6)))
-                                .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(idePreferencesPanelLayout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addComponent(outputFontSizeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(outputFontSizeField, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, idePreferencesPanelLayout.createSequentialGroup()
-                                .addGap(83, 83, 83)
-                                .addComponent(themeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(4, 4, 4))
-                            .addGroup(idePreferencesPanelLayout.createSequentialGroup()
-                                .addGap(94, 94, 94)
-                                .addComponent(themeLabel)
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(editorFontChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(editorFontSizeField, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(themeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bracketMatchingCheck)
                     .addGroup(idePreferencesPanelLayout.createSequentialGroup()
-                        .addComponent(submissionSelectLabel)
-                        .addGap(18, 18, 18)
-                        .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(idePreferencesPanelLayout.createSequentialGroup()
-                                .addComponent(callideSubmissionRadio)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(idePreferencesPanelLayout.createSequentialGroup()
-                                .addComponent(externalSubmissionRadio)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(externalSubmissionField)))))
-                .addContainerGap())
+                        .addComponent(autosaveCheck)
+                        .addGap(5, 5, 5)
+                        .addComponent(autosaveTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(minsLabel)))
+                .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                        .addGap(89, 89, 89)
+                        .addComponent(outputFontLabel))
+                    .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                        .addGap(79, 79, 79)
+                        .addComponent(outputFontChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(6, 6, 6)
+                .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(outputFontSizeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(outputFontSizeField, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(workspaceLabel)
+                .addGap(9, 9, 9)
+                .addComponent(workspaceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(browseWorkspaceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(submissionSelectLabel)
+                .addGap(18, 18, 18)
+                .addComponent(callideSubmissionRadio))
+            .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                .addGap(176, 176, 176)
+                .addComponent(externalSubmissionRadio)
+                .addGap(5, 5, 5)
+                .addComponent(externalSubmissionField, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         idePreferencesPanelLayout.setVerticalGroup(
             idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(idePreferencesPanelLayout.createSequentialGroup()
-                .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGap(16, 16, 16)
+                .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(idePreferencesPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(indentTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(indentLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                                .addGap(3, 3, 3)
+                                .addComponent(indentLabel))
+                            .addComponent(indentTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(12, 12, 12)
                         .addComponent(lineNumbersCheck)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(showHelpCheck)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(bracketMatchingCheck)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(autosaveCheck)
-                            .addComponent(autosaveTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(minsLabel)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, idePreferencesPanelLayout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(showHelpCheck))
+                    .addGroup(idePreferencesPanelLayout.createSequentialGroup()
                         .addComponent(themeLabel)
                         .addGap(0, 0, 0)
                         .addComponent(themeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(editorFontLabel)
+                            .addComponent(editorFontSizeLabel))
+                        .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(editorFontChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(editorFontSizeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(2, 2, 2)
+                .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                        .addComponent(bracketMatchingCheck)
+                        .addGap(4, 4, 4)
+                        .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(autosaveCheck)
                             .addGroup(idePreferencesPanelLayout.createSequentialGroup()
-                                .addComponent(editorFontLabel)
-                                .addGap(0, 0, 0)
-                                .addComponent(editorFontChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(1, 1, 1)
+                                .addComponent(autosaveTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(idePreferencesPanelLayout.createSequentialGroup()
-                                .addComponent(editorFontSizeLabel)
-                                .addGap(0, 0, 0)
-                                .addComponent(editorFontSizeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
+                                .addGap(4, 4, 4)
+                                .addComponent(minsLabel))))
+                    .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                        .addGap(16, 16, 16)
                         .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(idePreferencesPanelLayout.createSequentialGroup()
                                 .addComponent(outputFontLabel)
@@ -488,11 +486,12 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
                 .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(submissionSelectLabel)
                     .addComponent(callideSubmissionRadio))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(11, 11, 11)
+                .addGroup(idePreferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(externalSubmissionRadio)
-                    .addComponent(externalSubmissionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10))
+                    .addGroup(idePreferencesPanelLayout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(externalSubmissionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
         preferencesOk.setText("OK");
@@ -882,6 +881,24 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
 
         outputTabs.addTab("Status", statusPanel);
 
+        compilerOutputArea.setColumns(20);
+        compilerOutputArea.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
+        compilerOutputArea.setRows(5);
+        compilerOutputScrollPane.setViewportView(compilerOutputArea);
+
+        javax.swing.GroupLayout compilerOutputPanelLayout = new javax.swing.GroupLayout(compilerOutputPanel);
+        compilerOutputPanel.setLayout(compilerOutputPanelLayout);
+        compilerOutputPanelLayout.setHorizontalGroup(
+            compilerOutputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(compilerOutputScrollPane)
+        );
+        compilerOutputPanelLayout.setVerticalGroup(
+            compilerOutputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(compilerOutputScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
+        );
+
+        outputTabs.addTab("Compiler Output", compilerOutputPanel);
+
         consoleOutputPanel.setPreferredSize(new java.awt.Dimension(682, 200));
 
         consoleOutputArea.setColumns(20);
@@ -901,24 +918,6 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         );
 
         outputTabs.addTab("Console Output", consoleOutputPanel);
-
-        compilerOutputArea.setColumns(20);
-        compilerOutputArea.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
-        compilerOutputArea.setRows(5);
-        compilerOutputScrollPane.setViewportView(compilerOutputArea);
-
-        javax.swing.GroupLayout compilerOutputPanelLayout = new javax.swing.GroupLayout(compilerOutputPanel);
-        compilerOutputPanel.setLayout(compilerOutputPanelLayout);
-        compilerOutputPanelLayout.setHorizontalGroup(
-            compilerOutputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(compilerOutputScrollPane)
-        );
-        compilerOutputPanelLayout.setVerticalGroup(
-            compilerOutputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(compilerOutputScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
-        );
-
-        outputTabs.addTab("Compiler Output", compilerOutputPanel);
 
         javax.swing.GroupLayout outputsPanelLayout = new javax.swing.GroupLayout(outputsPanel);
         outputsPanel.setLayout(outputsPanelLayout);
@@ -1681,13 +1680,30 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         consoleTabPanel.setOpaque( false);
         consoleTabPanel.add( titleLabel);
         consoleTabPanel.add( detachButton);
-        outputTabs.setTabComponentAt( 1, consoleTabPanel);
+        outputTabs.setTabComponentAt( 2, consoleTabPanel);
+        outputTabs.addChangeListener( new ChangeListener() {
+            public void stateChanged( ChangeEvent evt) {
+                lastOutputTabIndex= outputTabs.getSelectedIndex();
+            }
+        });
     }
     
     private class DetachConsoleListener implements ActionListener {
         public void actionPerformed( ActionEvent e) {
-            ConsoleCore.dispatch(consoleOutputScrollPane, consoleOutputArea);
-            outputTabs.remove(1);
+            Component tabComp = outputTabs.getTabComponentAt(2);
+            ConsoleCore.dispatch(consoleOutputScrollPane, consoleOutputArea, outputTabs, tabComp);
+            outputTabs.getComponentAt(2).setVisible(false);
+            JPanel emptyPanel = new JPanel();
+            emptyPanel.setPreferredSize(new Dimension( 0, 1));
+            emptyPanel.setVisible(false);
+            outputTabs.setTabComponentAt( 2, emptyPanel);
+            outputTabs.setSelectedIndex(0);
+            outputTabs.addChangeListener(new ChangeListener() {
+            public void stateChanged( ChangeEvent evt) {
+                if (outputTabs.getSelectedIndex() == 2)
+                    outputTabs.setSelectedIndex( lastOutputTabIndex);
+            }
+        });
         }
     }
     
@@ -1900,6 +1916,12 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
                             new AutoFileSaver( new FileSaver(file),
                             textAreas.get( textAreas.size() - 1),
                             this, preferences.getAutosaveIn()));
+                
+                // TODO : NOT WORKING
+                if (fileExplorer != null) {
+                    fileExplorer.updateProjectFiles(selected.getParent());
+                }
+        
                 return true;
             }
         } catch (IOException e) {
@@ -2029,6 +2051,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         }
     }
     
+    // TODO : ADD SUBMISSION OPTION PROPERTY TO THE PREFERENCES CLASS.
     private void applyPreferences() throws IOException {
         boolean[] toolbarPrefs = preferences.getToolbar();
         JButton[] currentToolbar = {newTool, openTool, saveTool,
@@ -2380,6 +2403,9 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     private boolean workspaceChanged;
     private FileExplorer fileExplorer;
     private ImageIcon detachIcon;
+    private JTextPane cons;
+    private Executor ex;
+    private int lastOutputTabIndex;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutButton;
@@ -2527,6 +2553,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     private javax.swing.JTextArea statusArea;
     private javax.swing.JPanel statusPanel;
     private javax.swing.JScrollPane statusScrollPane;
+    private javax.swing.ButtonGroup submissionButtonGroup;
     private javax.swing.JMenu submissionMenu;
     private javax.swing.JLabel submissionSelectLabel;
     private javax.swing.JMenu templatesMenu;
