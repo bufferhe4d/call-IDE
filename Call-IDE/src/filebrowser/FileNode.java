@@ -25,7 +25,7 @@ public class FileNode extends DefaultMutableTreeNode
       
       file = new PathedFile("/Nowhere/it/is/not/a/real/file");
       
-      nodesAndPaths.put(file, this);
+      nodesAndPaths.put(file.getAbsolutePath() , this);
       
       for ( int i =0 ; i < files.size(); i++)
       {
@@ -48,7 +48,7 @@ public class FileNode extends DefaultMutableTreeNode
      
         this.nodesAndPaths =  nodesAndPaths;
       
-      nodesAndPaths.put(this.file, this);
+      nodesAndPaths.put(this.file.getAbsolutePath(), this);
       
       if( getAllowsChildren() )
       {
@@ -56,7 +56,7 @@ public class FileNode extends DefaultMutableTreeNode
       }
       
       
-      System.out.println(nodesAndPaths);//.keySet());
+      //System.out.println(nodesAndPaths);//.keySet());
    }
    
     public FileNode( PathedFile file  )
@@ -66,8 +66,7 @@ public class FileNode extends DefaultMutableTreeNode
       allowsChildren = this.file.isDirectory();
      
       
-      
-      nodesAndPaths.put(this.file, this);
+      nodesAndPaths.put(this.file.getAbsolutePath(), this);
       
       if( getAllowsChildren() )
       {
@@ -75,7 +74,7 @@ public class FileNode extends DefaultMutableTreeNode
       }
       
       
-      System.out.println(nodesAndPaths);//.keySet());
+      //System.out.println(nodesAndPaths);//.keySet());
    }
    
    public void addChildren()

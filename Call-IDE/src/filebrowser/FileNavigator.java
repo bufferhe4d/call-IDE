@@ -17,7 +17,7 @@ public class FileNavigator extends JTree implements TreeSelectionListener
 {
     
     //properties
-    File lastSelectedFile;   
+    FileNode               lastSelectedFile;   
     TreeDirectoryPopupMenu directoryMenu;
     TreeFilePopupMenu      fileMenu;
     TreeJavaFilePopupMenu  javaFileMenu;
@@ -49,7 +49,7 @@ public class FileNavigator extends JTree implements TreeSelectionListener
     
     public void valueChanged(TreeSelectionEvent e)
     {
-        lastSelectedFile = ((FileNode) (((JTree)(e .getSource())).getLastSelectedPathComponent( ))).file;
+        lastSelectedFile = ((FileNode) (((JTree)(e .getSource())).getLastSelectedPathComponent( )));
     }
     
     /**
@@ -78,26 +78,26 @@ public class FileNavigator extends JTree implements TreeSelectionListener
             if (e == null)
                 return;
             
-            if( e.getButton() == 1 && e.getClickCount() == 2 && lastSelectedFile != null && lastSelectedFile.isFile() )
+            if( e.getButton() == 1 && e.getClickCount() == 2 && lastSelectedFile != null && lastSelectedFile.file.isFile() )
             {
-                opener.openFile(lastSelectedFile);
+                opener.openFile(lastSelectedFile.file);
             }
             
             if(  e.getButton() == 3 )
             {
-                lastSelectedFile =   ((FileNode)getClosestPathForLocation(e.getX() , e.getY()).getLastPathComponent()).file;
+                lastSelectedFile =   ((FileNode)getClosestPathForLocation(e.getX() , e.getY()).getLastPathComponent());
                 
-                if( lastSelectedFile.isDirectory() )
+                if( lastSelectedFile.file.isDirectory() )
                 { 
                     System.out.println("Directory Menu");
-                    directoryMenu.setFile( new FileNode(((PathedFile) lastSelectedFile) ) );
+                    directoryMenu.setFile(  lastSelectedFile  );
                     directoryMenu.setLocation( (int)getLocationOnScreen().getX() + e.getX() ,  (int)getLocationOnScreen().getY() + e.getY());
                     directoryMenu.setVisible(true);
                 }
-                else if( ((PathedFile)lastSelectedFile).isJavaFile() )
+                else if( lastSelectedFile.file.isJavaFile() )
                 {
                    System.out.println("Java File Menu");
-                    javaFileMenu.setFile( new FileNode(((PathedFile) lastSelectedFile) ) );
+                    javaFileMenu.setFile(  lastSelectedFile  );
                     javaFileMenu.setLocation( (int)getLocationOnScreen().getX() + e.getX() ,  (int)getLocationOnScreen().getY() + e.getY()); 
                     javaFileMenu.setVisible(true);
                 
@@ -105,7 +105,7 @@ public class FileNavigator extends JTree implements TreeSelectionListener
                 else
                 {
                     System.out.println("File Menu");
-                    fileMenu.setFile( new FileNode(((PathedFile) lastSelectedFile) ) );
+                    fileMenu.setFile(  lastSelectedFile );
                     fileMenu.setLocation( (int)getLocationOnScreen().getX() + e.getX() ,  (int)getLocationOnScreen().getY() + e.getY());
                     fileMenu.setVisible(true);
                 }
