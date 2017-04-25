@@ -19,16 +19,6 @@ public class FileExplorer extends JPanel
    //properties
    FileNavigator navigator;
    
-      
-   public FileExplorer( String root )
-   {
-      super();
-      navigator = new FileNavigator(  root );
-      setLayout( new FlowLayout(FlowLayout.LEFT));
-      add(navigator);
-
-      setVisible(true);
-   }
    
    public FileExplorer(  ArrayList<String> files  )
    {
@@ -41,18 +31,21 @@ public class FileExplorer extends JPanel
       setVisible(true);
    }
    
-      
-   public FileExplorer( String root, FileOpener opener) {
-       this(root);
-       navigator.opener = opener;
-   }
    
       public FileExplorer(  ArrayList<String> files, FileOpener opener  )
    {
       this(files);
       navigator.opener = opener;
    }
+      
+   public void openProject( String root )
+   {
+       navigator.root.add( new FileNode( new PathedFile( root ) , navigator.root.nodesAndPaths ) );
+       navigator.updateUI();
+   }
    
+      
+      
    public void openFile( String file )
    {
       navigator.openFile( file );
@@ -66,11 +59,11 @@ public class FileExplorer extends JPanel
       }
    }
    
-    public void updateProjectFiles( String projectRootPath )
+    public void updateDirectory( String DirectoryPath )
     {
         // This method is not working...
-        System.out.println("updated " + projectRootPath);
-        navigator.updateProjectFiles(  projectRootPath );
+        System.out.println("updated " + DirectoryPath);
+        navigator.updateDirectory( DirectoryPath );
     }
    
    /**
@@ -82,8 +75,7 @@ public class FileExplorer extends JPanel
     {
       @Override
       public void mouseExited( MouseEvent e)
-      {
-        System.out.println("Exited");
+      {;
         navigator.directoryMenu.setVisible(false);
         navigator.fileMenu.setVisible(false);
         navigator.javaFileMenu.setVisible(false);
@@ -91,7 +83,6 @@ public class FileExplorer extends JPanel
       
        public void mouseClicked( MouseEvent e)
       {
-        System.out.println("Clicked");
         navigator.directoryMenu.setVisible(false);
         navigator.fileMenu.setVisible(false);
         navigator.javaFileMenu.setVisible(false);

@@ -14,35 +14,68 @@ public class FileNode extends DefaultMutableTreeNode
    
    PathedFile file;
    boolean allowsChildren;
-   ArrayList<FileNode> projectRootNodes;
+   HashMap nodesAndPaths;
    
    public FileNode( ArrayList<String> files )
    {
       super();
       FileNode temp;
       allowsChildren = true;
+      nodesAndPaths = new HashMap();
+      
+      file = new PathedFile("/Nowhere/it/is/not/a/real/file");
+      
+      nodesAndPaths.put(file, this);
+      
       for ( int i =0 ; i < files.size(); i++)
       {
-         temp = new FileNode( new PathedFile (files.get(i) ) );
-         if( getIndex( temp ) == -1 )
+         temp = new FileNode( new PathedFile ( files.get(i) , file.getObjPath() ) , nodesAndPaths );
+         if( getIndex( temp ) == -1 && temp != null)
          {
+             System.out.println(temp);
             add( temp );
          }
       }
-      file = new PathedFile("/Nowhere/it/is/not/a/real/file");
-      projectRootNodes = new ArrayList<FileNode>();
-     // projectRootNodes = searchProjRoots( projectRootNodes );
+      
+      
+      System.out.println(nodesAndPaths);//.keySet());
    }
-   public FileNode( PathedFile file )
+   public FileNode( PathedFile file, HashMap nodesAndPaths )
    {
       super();
       this. file = file;
-      allowsChildren = file.isDirectory();
+      allowsChildren = this.file.isDirectory();
+     
+        this.nodesAndPaths =  nodesAndPaths;
+      
+      nodesAndPaths.put(this.file, this);
       
       if( getAllowsChildren() )
       {
          addChildren();
       }
+      
+      
+      System.out.println(nodesAndPaths);//.keySet());
+   }
+   
+    public FileNode( PathedFile file  )
+   {
+      super();
+      this. file = file;
+      allowsChildren = this.file.isDirectory();
+     
+      
+      
+      nodesAndPaths.put(this.file, this);
+      
+      if( getAllowsChildren() )
+      {
+         addChildren();
+      }
+      
+      
+      System.out.println(nodesAndPaths);//.keySet());
    }
    
    public void addChildren()
@@ -52,7 +85,7 @@ public class FileNode extends DefaultMutableTreeNode
       {
          
          
-         temp = new FileNode (  new PathedFile ( file.listFiles()[i].toString(), file.path )  );
+         temp = new FileNode (  new PathedFile ( file.listFiles()[i].toString(), file.path ) , nodesAndPaths  );
          if( getIndex( temp ) == -1 )
          {
             add( temp );
@@ -70,6 +103,8 @@ public class FileNode extends DefaultMutableTreeNode
    @Override
    public String toString()
    {
+       if(file.equals(new PathedFile("/Nowhere/it/is/not/a/real/file")))
+           return "Files";
       return file.toString();
    }
    
@@ -154,19 +189,7 @@ public class FileNode extends DefaultMutableTreeNode
       removeFromParent();
    }
    
-   public ArrayList<FileNode> searchProjRoots( ArrayList<FileNode> projRoots )
-   {
-       for( int i = getChildCount() ; i > 0 ; i --)
-       {
-           if( !getChildAt(i-1).isLeaf() )
-           {
-               projRoots = ((FileNode)getChildAt(i-1)).searchProjRoots( projRoots);
-           }
-           if( ((FileNode)getChildAt(i-1)).file.isCallideFile() )
-               projRoots.add( this );
-       }
-       return projRoots;
-   }
+ 
            
    public void updateChildren()
    {

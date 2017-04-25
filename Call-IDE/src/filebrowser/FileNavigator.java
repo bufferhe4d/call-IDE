@@ -32,20 +32,6 @@ public class FileNavigator extends JTree implements TreeSelectionListener
         fileMenu      = new TreeFilePopupMenu();
         javaFileMenu  = new TreeJavaFilePopupMenu();
         root = ((FileNode)getModel().getRoot());
-        add( fileMenu );
-        add( directoryMenu );
-        
-        addTreeSelectionListener( this );
-        addMouseListener( new TreeMouseListener() );
-    }
-    
-    public FileNavigator(  String root  )
-    { 
-        super( new DefaultTreeModel(new FileNode( new PathedFile( root ))) );
-        setRootVisible(false); 
-        
-        directoryMenu = new TreeDirectoryPopupMenu();
-        fileMenu      = new TreeFilePopupMenu();
         
         add( fileMenu );
         add( directoryMenu );
@@ -54,10 +40,6 @@ public class FileNavigator extends JTree implements TreeSelectionListener
         addMouseListener( new TreeMouseListener() );
     }
     
-    public FileNavigator( String root, FileOpener opener) {
-        this( root);
-        this.opener = opener;
-    }
     
     public void  openFile( String file)
     {
@@ -74,15 +56,9 @@ public class FileNavigator extends JTree implements TreeSelectionListener
      * 
      * 
      */
-    public void updateProjectFiles( String projectRootPath )
+    public void updateDirectory( String DirectoryPath )
     {
-         for(FileNode projRoot : root.projectRootNodes)
-         {
-             if( projectRootPath.equals( projRoot.file.getAbsolutePath() ) )
-             {
-                 projRoot.updateChildren();
-             }
-         }
+        ((FileNode)root.nodesAndPaths.get(DirectoryPath)).updateChildren();
     }
     
     /**
