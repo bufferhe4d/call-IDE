@@ -29,6 +29,44 @@ public class TreeJavaFilePopupMenu extends TreeFilePopupMenu
     compile.addActionListener( this );
     run.addActionListener( this );
     
+    compile.setOpaque(true);
+      run.setOpaque(true);
+      
+      
+
+      
+      compile.addMouseListener( new  MouseAdapter()
+      {
+        public void mouseEntered( MouseEvent e)
+        { 
+            System.out.print("enter");
+            compile.setBackground( new Color( 145,201,247 ));
+        } 
+        
+         public void mouseExited( MouseEvent e)
+        { 
+            System.out.print("exit");
+            compile.setBackground( new Color(240,240,240));
+        } 
+        
+      }
+      );
+      
+      run.addMouseListener( new  MouseAdapter()
+      {
+        public void mouseEntered( MouseEvent e)
+        { 
+            run.setBackground( new Color( 145,201,247 ));
+        } 
+        
+         public void mouseExited( MouseEvent e)
+        { 
+            run.setBackground(new Color(240,240,240));
+        } 
+        
+      }
+      );
+    
   }
   
   @Override

@@ -36,6 +36,72 @@ public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
       addSeparator();
       add(projectProperties);
       
+      delete.setOpaque(true);
+      createFile.setOpaque(true);
+      createDirectory.setOpaque(true);
+      projectProperties.setOpaque(true);
+      
+       delete.addMouseListener( new  MouseAdapter()
+      {
+        public void mouseEntered( MouseEvent e)
+        { 
+            System.out.print("enter");
+            delete.setBackground( new Color( 145,201,247 ));
+        } 
+        
+         public void mouseExited( MouseEvent e)
+        { 
+            System.out.print("exit");
+            delete.setBackground( new Color(240,240,240));
+        } 
+        
+      }
+      );
+      
+      createFile.addMouseListener( new  MouseAdapter()
+      {
+        public void mouseEntered( MouseEvent e)
+        { 
+            createFile.setBackground( new Color( 145,201,247 ));
+        } 
+        
+         public void mouseExited( MouseEvent e)
+        { 
+            createFile.setBackground(new Color(240,240,240));
+        } 
+        
+      }
+      );
+      
+      createDirectory.addMouseListener( new  MouseAdapter()
+      {
+        public void mouseEntered( MouseEvent e)
+        { 
+            createDirectory.setBackground( new Color( 145,201,247 ));
+        } 
+        
+         public void mouseExited( MouseEvent e)
+        { 
+            createDirectory.setBackground( new Color(240,240,240) );
+        } 
+        
+      }
+      );
+      
+      projectProperties.addMouseListener( new  MouseAdapter()
+      {
+        public void mouseEntered( MouseEvent e)
+        { 
+            projectProperties.setBackground( new Color( 145,201,247 ));
+        } 
+        
+         public void mouseExited( MouseEvent e)
+        { 
+            projectProperties.setBackground( new Color(240,240,240) );
+        } 
+        
+      }
+      );
       delete.addActionListener( this );
       createFile.addActionListener( this );
       createDirectory.addActionListener( this );

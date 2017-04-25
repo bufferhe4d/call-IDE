@@ -21,6 +21,7 @@ public class TreeFilePopupMenu extends JPopupMenu implements ActionListener
    
    public TreeFilePopupMenu()
    {
+       super();
       delete = new  JMenuItem("Delete");
       copy   = new  JMenuItem("Copy");
       close = new JMenuItem( "Close");
@@ -29,6 +30,57 @@ public class TreeFilePopupMenu extends JPopupMenu implements ActionListener
       add(copy);
       add(close);
       
+      delete.setOpaque(true);
+      copy.setOpaque(true);
+      close.setOpaque(true);
+
+      
+      delete.addMouseListener( new  MouseAdapter()
+      {
+        public void mouseEntered( MouseEvent e)
+        { 
+            System.out.print("enter");
+            delete.setBackground( new Color( 145,201,247 ));
+        } 
+        
+         public void mouseExited( MouseEvent e)
+        { 
+            System.out.print("exit");
+            delete.setBackground( new Color(240,240,240));
+        } 
+        
+      }
+      );
+      
+      copy.addMouseListener( new  MouseAdapter()
+      {
+        public void mouseEntered( MouseEvent e)
+        { 
+            copy.setBackground( new Color( 145,201,247 ));
+        } 
+        
+         public void mouseExited( MouseEvent e)
+        { 
+            copy.setBackground(new Color(240,240,240));
+        } 
+        
+      }
+      );
+      
+      close.addMouseListener( new  MouseAdapter()
+      {
+        public void mouseEntered( MouseEvent e)
+        { 
+            close.setBackground( new Color( 145,201,247 ));
+        } 
+        
+         public void mouseExited( MouseEvent e)
+        { 
+            close.setBackground( new Color(240,240,240) );
+        } 
+        
+      }
+      );
       delete.addActionListener( this );
       copy.addActionListener( this );
       close.addActionListener( this );
@@ -74,5 +126,5 @@ public class TreeFilePopupMenu extends JPopupMenu implements ActionListener
       this.file = file;
    }
    
-   
+  
 }

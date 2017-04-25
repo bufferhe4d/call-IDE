@@ -2,6 +2,8 @@ package filebrowser;
 
 
 import java.awt.FlowLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.*;
 import java.util.*;
 
@@ -35,6 +37,7 @@ public class FileExplorer extends JPanel
       setLayout( new FlowLayout(FlowLayout.LEFT));
       add(navigator);
      
+      addMouseListener( new BrowserMouseListener() );
       setVisible(true);
    }
    
@@ -70,4 +73,28 @@ public class FileExplorer extends JPanel
         navigator.updateProjectFiles(  projectRootPath );
     }
    
+   /**
+    * 
+    * 
+    * 
+    */
+    class BrowserMouseListener extends MouseAdapter
+    {
+      @Override
+      public void mouseExited( MouseEvent e)
+      {
+        System.out.println("Exited");
+        navigator.directoryMenu.setVisible(false);
+        navigator.fileMenu.setVisible(false);
+        navigator.javaFileMenu.setVisible(false);
+      }
+      
+       public void mouseClicked( MouseEvent e)
+      {
+        System.out.println("Clicked");
+        navigator.directoryMenu.setVisible(false);
+        navigator.fileMenu.setVisible(false);
+        navigator.javaFileMenu.setVisible(false);
+      }
+    }
 }
