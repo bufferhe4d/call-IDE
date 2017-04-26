@@ -88,35 +88,30 @@ public class TreeFilePopupMenu extends JPopupMenu implements ActionListener
    
    public void actionPerformed( ActionEvent e)
    {
+       setVisible(false);
       if(e.getSource() == delete)
       {
          //delete directory..
          System.out.println(" Delete ");
-         //file.delete();
+         file.delete();
          
       }
       else if( e.getSource() == copy )
       {
          //copy the file
          System.out.println(" copy file ");
-
+         file.copyFile();
 
       }
       else if( e.getSource() == close )
       {
          //Close file
-         System.out.println(" create directory ");
-  
+         System.out.println(" close file ");
+         file.closeFile();
 
       }
-      else
-      {
-         //go to project properties..
-         System.out.println(" project properties ");
-
-         
-      }
-      setVisible(false);
+      
+      
      
    }
    

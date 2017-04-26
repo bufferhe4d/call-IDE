@@ -79,7 +79,7 @@ public class TreeJavaFilePopupMenu extends TreeFilePopupMenu
     }
     else if ( e.getSource() == run )
     {
-      System.out.println("file compiled");
+      System.out.println("file run");
     }
   }
 }
