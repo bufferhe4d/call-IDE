@@ -38,6 +38,8 @@ public class FileNavigator extends JTree implements TreeSelectionListener
         
         addTreeSelectionListener( this );
         addMouseListener( new TreeMouseListener() );
+        
+        
     }
     
     
@@ -59,6 +61,7 @@ public class FileNavigator extends JTree implements TreeSelectionListener
     public void updateDirectory( String DirectoryPath )
     {
         ((FileNode)root.nodesAndPaths.get(DirectoryPath)).updateChildren();
+        updateUI();
     }
     
     /**
@@ -74,6 +77,7 @@ public class FileNavigator extends JTree implements TreeSelectionListener
         {
             directoryMenu.setVisible(false);
             fileMenu.setVisible(false);
+            javaFileMenu.setVisible(false);
             
             if (e == null)
                 return;
