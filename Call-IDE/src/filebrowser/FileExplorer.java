@@ -61,7 +61,8 @@ public class FileExplorer extends JPanel
    
     public void updateDirectory( String DirectoryPath )
     {
-        // This method is not working...
+        // CREATES DUBLICATE FOLDERS/FILES
+        // DOES NOT REFRESHES AUTOMATICALLY WITHOUT CLOSING+OPENING THE NODE MANUALLY
         System.out.println("updated " + DirectoryPath);
         navigator.updateDirectory( DirectoryPath );
     }

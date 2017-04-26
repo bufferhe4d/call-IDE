@@ -1,7 +1,5 @@
 package userinterface;
 
-import runutils.ConsoleCore;
-import runutils.ConsoleBuilder;
 import filebrowser.*;
 import fileoperations.*;
 import helputils.*;
@@ -31,7 +29,7 @@ import com.github.javaparser.ast.*;
  * The main frame of the IDE.
  * @author Emin Bahadir Tuluce, Halil Sahiner, Abdullah Talayhan
  */
-public class MainFrame extends javax.swing.JFrame implements FileOpener, AutosaveHandler {
+public class MainFrame extends javax.swing.JFrame implements FileOpener, AutosaveHandler, Dispatchable {
     
     /** Creates new form MainFrame. */
     public MainFrame() throws IOException {
@@ -150,7 +148,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         compilerOutputArea = new javax.swing.JTextArea();
         consoleOutputPanel = new javax.swing.JPanel();
         consoleOutputScrollPane = new javax.swing.JScrollPane();
-        consoleOutputArea = new javax.swing.JTextArea();
+        placeholderOutputArea = new javax.swing.JTextArea();
         toolbarPanel = new javax.swing.JPanel();
         newTool = new javax.swing.JButton();
         openTool = new javax.swing.JButton();
@@ -903,10 +901,10 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
 
         consoleOutputPanel.setPreferredSize(new java.awt.Dimension(682, 200));
 
-        consoleOutputArea.setColumns(20);
-        consoleOutputArea.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
-        consoleOutputArea.setRows(5);
-        consoleOutputScrollPane.setViewportView(consoleOutputArea);
+        placeholderOutputArea.setColumns(20);
+        placeholderOutputArea.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
+        placeholderOutputArea.setRows(5);
+        consoleOutputScrollPane.setViewportView(placeholderOutputArea);
 
         javax.swing.GroupLayout consoleOutputPanelLayout = new javax.swing.GroupLayout(consoleOutputPanel);
         consoleOutputPanel.setLayout(consoleOutputPanelLayout);
@@ -1041,6 +1039,11 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         });
 
         loginTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/images/login.png"))); // NOI18N
+        loginTool.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginToolActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout toolbarPanelLayout = new javax.swing.GroupLayout(toolbarPanel);
         toolbarPanel.setLayout(toolbarPanelLayout);
@@ -1283,6 +1286,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         });
         toolsMenu.add(javadocButton);
 
+        jarButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F11, 0));
         jarButton.setText("Create Jar File");
         jarButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1292,6 +1296,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         toolsMenu.add(jarButton);
         toolsMenu.add(separator9);
 
+        compileButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, java.awt.event.InputEvent.CTRL_MASK));
         compileButton.setText("Compile");
         compileButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1300,6 +1305,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         });
         toolsMenu.add(compileButton);
 
+        runButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, java.awt.event.InputEvent.CTRL_MASK));
         runButton.setText("Run");
         runButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1308,6 +1314,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         });
         toolsMenu.add(runButton);
 
+        compileRunButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
         compileRunButton.setText("Compile & Run");
         compileRunButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1450,7 +1457,6 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
 
     private void newFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newFileButtonActionPerformed
         newFile();
-        // fileExplorer.updateUI();
     }//GEN-LAST:event_newFileButtonActionPerformed
 
     private void openFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileButtonActionPerformed
@@ -1470,7 +1476,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     }//GEN-LAST:event_quitButtonActionPerformed
 
     private void undoToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoToolActionPerformed
-        undoToolActionPerformed(evt);
+        undoButtonActionPerformed(evt);
     }//GEN-LAST:event_undoToolActionPerformed
 
     private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoButtonActionPerformed
@@ -1603,8 +1609,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     }//GEN-LAST:event_compileRunToolActionPerformed
 
     private void compileRunButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compileRunButtonActionPerformed
-        compileButtonActionPerformed(evt);
-        runButtonActionPerformed(evt);
+        compileRunCurrentFile();
     }//GEN-LAST:event_compileRunButtonActionPerformed
 
     private void resetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetButtonActionPerformed
@@ -1616,6 +1621,10 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         projectFrame.pack();
         projectFrame.setVisible(true);
     }//GEN-LAST:event_helpToolActionPerformed
+
+    private void loginToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginToolActionPerformed
+
+    }//GEN-LAST:event_loginToolActionPerformed
 
     /** Sets LookAndFeel to the given name.*/
     public static void setLookAndFeel (String lookAndFeel) {
@@ -1683,17 +1692,25 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         consoleTabPanel.add( titleLabel);
         consoleTabPanel.add( detachButton);
         outputTabs.setTabComponentAt( 2, consoleTabPanel);
+        tabComp = consoleTabPanel;
         outputTabs.addChangeListener( new ChangeListener() {
             public void stateChanged( ChangeEvent evt) {
                 lastOutputTabIndex= outputTabs.getSelectedIndex();
             }
         });
+        
+        consoleOutputArea = new JTextPane();
+        consoleOutputScrollPane.setViewportView(consoleOutputArea);
+        
+        consoleFrame = new JFrame("Console");
+        consoleFrame.setVisible(false);
+        consoleOut = false;
     }
     
     private class DetachConsoleListener implements ActionListener {
         public void actionPerformed( ActionEvent e) {
-            Component tabComp = outputTabs.getTabComponentAt(2);
-            ConsoleCore.dispatch(consoleOutputScrollPane, consoleOutputArea, outputTabs, tabComp);
+            ConsoleCore.dispatch(consoleOutputScrollPane, consoleOutputArea,
+                    outputTabs, tabComp, consoleFrame, consoleOut, MainFrame.this);
             outputTabs.getComponentAt(2).setVisible(false);
             JPanel emptyPanel = new JPanel();
             emptyPanel.setPreferredSize(new Dimension( 0, 1));
@@ -1704,8 +1721,9 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
             public void stateChanged( ChangeEvent evt) {
                 if (outputTabs.getSelectedIndex() == 2)
                     outputTabs.setSelectedIndex( lastOutputTabIndex);
-            }
-        });
+                }
+            });
+            consoleOut = true;
         }
     }
     
@@ -1919,9 +1937,9 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
                             textAreas.get( textAreas.size() - 1),
                             this, preferences.getAutosaveIn()));
                 
-                // TODO : NOT WORKING
+                // TODO : NOT WORKING PROPERLY
                 if (fileExplorer != null) {
-                    // fileExplorer.updateDirectory(selected.getParent());
+                    fileExplorer.updateDirectory(selected.getParent());
                 }
         
                 return true;
@@ -2295,12 +2313,16 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         }
     }
     
-    private void compileCurrentFile() {
+    private JTextPane compileCurrentFile() {
         int index = textTabs.getSelectedIndex();
-        if (getActiveFile() == null)
+        if (getActiveFile() == null) {
             printStatus( "The file should be saved before compiling.");
-        else if ( !textAreas.get(index).getText().equals(savedContents.get(index)) )
+            return null;
+        }
+        else if ( !textAreas.get(index).getText().equals(savedContents.get(index)) ) {
             printStatus( "The file should be saved to its modified version before compiling.");
+            return null;
+        }
         else {
             JTextPane insertedPane = new ConsoleBuilder().getOutErrConsole();
             insertedPane.setFont( preferences.getOutputFont());
@@ -2309,14 +2331,19 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
                                         getActiveFile().getParent() + "\\classes", getActiveFile().getParent());
             BuildSys.compile(userPath + "/BuildConfigs/build.xml");
             outputTabs.setSelectedIndex(1);
+            return insertedPane;
         }
     }
 
     private void runCurrentFile() {
         File f = getActiveFile();
-        File build = new File(getActiveFile().getParent() + "\\classes");
+        if (f == null) {
+             printStatus("The file should be saved and compiled before running.");
+             return;
+        }
         
-        if (f == null || !build.exists()){
+        File build = new File(f.getParent() + "\\classes");
+        if (!build.exists()){
             printStatus("The file should be saved and compiled before running.");
             return;
         }
@@ -2330,17 +2357,25 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         } catch (ParseException | IOException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
-        cons = new ConsoleBuilder().getIOEConsole();
-        cons.setFont( preferences.getOutputFont());
-        consoleOutputScrollPane.setViewportView(cons);
+        
+        if (consoleOut) {
+            consoleFrame.remove(consoleOutputArea);
+            consoleOutputArea = new ConsoleBuilder().getIOEConsole();
+            consoleOutputArea.setFont( preferences.getOutputFont());
+            consoleFrame.add(consoleOutputArea);
+        }
+        else {
+            consoleOutputArea = new ConsoleBuilder().getIOEConsole();
+            consoleOutputArea.setFont( preferences.getOutputFont());
+            consoleOutputScrollPane.setViewportView(consoleOutputArea);
+        }
 
         try {
-            ex = new Executor(build.toURI().toURL());
+            executor = new Executor(build.toURI().toURL());
             if(packageName.equals(""))
-                ex.execute(f.getName().substring(0, f.getName().length() - 5));
+                executor.execute(f.getName().substring(0, f.getName().length() - 5));
             else
-                ex.execute(packageName + "." + f.getName().substring(0, f.getName().length() - 5));
+                executor.execute(packageName + "." + f.getName().substring(0, f.getName().length() - 5));
             
         } catch (MalformedURLException ex1) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex1);
@@ -2379,10 +2414,32 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     }
     
     private void resetInteractions() {
-        // TODO add your handling code here:
+        // TODO
         //ex.stop();
-        //System.out.println(ex.getExecuteInstance().isAlive());
+        //System.out.println(executor.getExecuteInstance().isAlive());
         //ex.getExecuteInstance().stop();
+    }
+    
+    private void compileRunCurrentFile() {
+        JTextPane insertedPane = compileCurrentFile();
+        if (insertedPane != null) {
+            insertedPane.getDocument().addDocumentListener(new DocumentListener() {
+                public void changedUpdate(DocumentEvent e) {}
+                public void removeUpdate(DocumentEvent e) {}
+                public void insertUpdate(DocumentEvent e) {
+                    if (insertedPane.getText().contains("BUILD SUCCESSFUL"))
+                        runCurrentFile();
+                }
+            });
+        }
+    }
+    
+    public void dispatchConsole() {
+        consoleOut = false;
+        consoleOutputScrollPane.setViewportView(consoleOutputArea);
+        outputTabs.setTabComponentAt( 2, tabComp);
+        outputTabs.removeChangeListener( outputTabs.getChangeListeners()[0]);
+        outputTabs.setSelectedIndex(2);
     }
 
     // Other Variables
@@ -2405,9 +2462,12 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     private boolean workspaceChanged;
     private FileExplorer fileExplorer;
     private ImageIcon detachIcon;
-    private JTextPane cons;
-    private Executor ex;
+    private JTextPane consoleOutputArea;
+    private Executor executor;
     private int lastOutputTabIndex;
+    private JFrame consoleFrame;
+    private boolean consoleOut;
+    private Component tabComp;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutButton;
@@ -2432,7 +2492,6 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     private javax.swing.JTextArea compilerOutputArea;
     private javax.swing.JPanel compilerOutputPanel;
     private javax.swing.JScrollPane compilerOutputScrollPane;
-    private javax.swing.JTextArea consoleOutputArea;
     private javax.swing.JPanel consoleOutputPanel;
     private javax.swing.JScrollPane consoleOutputScrollPane;
     private javax.swing.JMenuItem copyButton;
@@ -2503,6 +2562,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     private javax.swing.JMenuItem placeHolderMenu1;
     private javax.swing.JMenuItem placeHolderMenu2;
     private javax.swing.JMenuItem placeHolderMenu3;
+    private javax.swing.JTextArea placeholderOutputArea;
     private javax.swing.JPanel preferecesButtonPanel;
     private javax.swing.JMenuItem preferencesButton;
     private javax.swing.JButton preferencesCancel;

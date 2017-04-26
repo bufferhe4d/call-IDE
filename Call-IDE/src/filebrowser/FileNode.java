@@ -32,13 +32,13 @@ public class FileNode extends DefaultMutableTreeNode
          temp = new FileNode( new PathedFile ( files.get(i) , file.getObjPath() ) , nodesAndPaths );
          if( getIndex( temp ) == -1 && temp != null)
          {
-             System.out.println(temp);
+            // System.out.println(temp);
             add( temp );
          }
       }
       
       
-      System.out.println(nodesAndPaths);//.keySet());
+      // System.out.println(nodesAndPaths);//.keySet());
    }
    public FileNode( PathedFile file, HashMap nodesAndPaths )
    {

@@ -1146,6 +1146,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jarButton">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="F11"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Create Jar File"/>
               </Properties>
               <Events>
@@ -1156,6 +1159,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="compileButton">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+F6"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Compile"/>
               </Properties>
               <Events>
@@ -1164,6 +1170,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="runButton">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+F5"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Run"/>
               </Properties>
               <Events>
@@ -1172,6 +1181,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="compileRunButton">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="F5"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Compile &amp; Run"/>
               </Properties>
               <Events>
@@ -1580,7 +1592,7 @@
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                       <SubComponents>
-                        <Component class="javax.swing.JTextArea" name="consoleOutputArea">
+                        <Component class="javax.swing.JTextArea" name="placeholderOutputArea">
                           <Properties>
                             <Property name="columns" type="int" value="20"/>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -1804,6 +1816,9 @@
               <Image iconType="3" name="/userinterface/images/login.png"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loginToolActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

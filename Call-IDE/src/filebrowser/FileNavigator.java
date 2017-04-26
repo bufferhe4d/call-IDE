@@ -111,7 +111,7 @@ public class FileNavigator extends JTree implements TreeSelectionListener
                 }
             }
             
-            System.out.println(lastSelectedFile);
+            // System.out.println(lastSelectedFile);
             updateUI();
         }
     }

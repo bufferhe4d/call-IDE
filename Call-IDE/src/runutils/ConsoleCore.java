@@ -224,25 +224,20 @@ public class ConsoleCore {
         return style;
     }
     
-    public static void  dispatch(JScrollPane scrollPane, JTextArea cons, JTabbedPane outputTabs, Component tabComp) {
-        // TODO add your handling code here:
-        JFrame frame = new JFrame("\"Console\"");
+    public static void  dispatch(JScrollPane scrollPane, JTextPane cons,
+            JTabbedPane outputTabs, Component tabComp, JFrame frame, Boolean consoleOut, Dispatchable mainFrame) {
         frame.add(cons);
         frame.setSize(400, 300);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.addWindowListener(new WindowAdapter()
-                                    {
+        if (frame.getWindowListeners().length > 0)
+            frame.removeWindowListener(frame.getWindowListeners()[0]);
+        frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e)
             {
-                scrollPane.setViewportView(cons);
-                outputTabs.setTabComponentAt( 2, tabComp);
-                outputTabs.removeChangeListener( outputTabs.getChangeListeners()[0]);
-                outputTabs.setSelectedIndex(2);
+                mainFrame.dispatchConsole();
             }
         });
-        //frame.setDefaultCloseOperation(putBack(frame));
         frame.setVisible(true);
-        
     }
-    
+
 }

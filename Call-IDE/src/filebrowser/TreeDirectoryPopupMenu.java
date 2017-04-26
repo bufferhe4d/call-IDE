@@ -45,13 +45,13 @@ public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
       {
         public void mouseEntered( MouseEvent e)
         { 
-            System.out.print("enter");
+            // System.out.print("enter");
             delete.setBackground( new Color( 145,201,247 ));
         } 
         
          public void mouseExited( MouseEvent e)
         { 
-            System.out.print("exit");
+            // System.out.print("exit");
             delete.setBackground( new Color(240,240,240));
         } 
         
