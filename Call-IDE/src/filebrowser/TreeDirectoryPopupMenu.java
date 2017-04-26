@@ -110,6 +110,7 @@ public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
    
    public void actionPerformed( ActionEvent e)
    {
+       setVisible(false);
       if(e.getSource() == delete)
       {
          //delete directory..
@@ -121,14 +122,19 @@ public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
       {
          //create file on directory
          System.out.println(" create file ");
-
-
+         
+         String fileName = JOptionPane.showInputDialog( SwingUtilities.getRoot(this), "What's file name?");
+         if(fileName.trim().length() > 0 )
+            file.createFile(fileName); 
       }
       else if( e.getSource() == createDirectory )
       {
          //create directory on directory
          System.out.println(" create directory ");
-  
+         
+         String fileName = JOptionPane.showInputDialog( SwingUtilities.getRoot(this), "What's directory name?");
+         if( fileName.trim().length() > 0 )
+            file.createDirectory(fileName); 
 
       }
       else
@@ -138,8 +144,6 @@ public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
 
          
       }
-      setVisible(false);
-     
    }
    
    
