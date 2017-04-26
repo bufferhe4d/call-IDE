@@ -3,15 +3,13 @@ package filebrowser;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
-import java.io.*;
 import java.awt.event.*;
 import java.util.*;
 
-
 /**
- * 
+ * A JTree component which can navigate through files on the disk.
  * @author Mahmud Sami Aydin
- * 
+ * @version 1.0
  */
 public class FileNavigator extends JTree implements TreeSelectionListener
 {
@@ -28,21 +26,18 @@ public class FileNavigator extends JTree implements TreeSelectionListener
     { 
         super( new DefaultTreeModel(new FileNode(  files )) );
         
-        directoryMenu = new TreeDirectoryPopupMenu();
-        fileMenu      = new TreeFilePopupMenu();
-        javaFileMenu  = new TreeJavaFilePopupMenu();
+        directoryMenu = new TreeDirectoryPopupMenu( this);
+        fileMenu      = new TreeFilePopupMenu( this);
+        javaFileMenu  = new TreeJavaFilePopupMenu( this);
         root = ((FileNode)getModel().getRoot());
         
-        add( fileMenu );
-        add( directoryMenu );
+        add( fileMenu);
+        add( directoryMenu);
         
         addTreeSelectionListener( this );
         addMouseListener( new TreeMouseListener() );
-        
-        
     }
-    
-    
+
     public void  openFile( String file)
     {
         root.openFile( file );
@@ -54,24 +49,14 @@ public class FileNavigator extends JTree implements TreeSelectionListener
         lastSelectedFile = ((FileNode) (((JTree)(e .getSource())).getLastSelectedPathComponent( )));
     }
     
-    /**
-     * 
-     * 
-     */
     public void updateDirectory( String DirectoryPath )
     {
         ((FileNode)root.nodesAndPaths.get(DirectoryPath)).updateChildren();
         updateUI();
     }
     
-    /**
-     * 
-     * 
-     * 
-     */
     class TreeMouseListener extends MouseAdapter
     {
-        
         @Override
         public void mouseClicked( MouseEvent e)
         {
@@ -90,32 +75,25 @@ public class FileNavigator extends JTree implements TreeSelectionListener
             if(  e.getButton() == 3 )
             {
                 lastSelectedFile =   ((FileNode)getClosestPathForLocation(e.getX() , e.getY()).getLastPathComponent());
+                FileNavigator.this.setSelectionPath(getClosestPathForLocation(e.getX() , e.getY()));
                 
                 if( lastSelectedFile.file.isDirectory() )
-                { 
-                    System.out.println("Directory Menu");
-                    directoryMenu.setFile(  lastSelectedFile  );
-                    directoryMenu.setLocation( (int)getLocationOnScreen().getX() + e.getX() ,  (int)getLocationOnScreen().getY() + e.getY());
-                    directoryMenu.setVisible(true);
+                {
+                    directoryMenu.setFile( lastSelectedFile);
+                    directoryMenu.show(FileNavigator.this, e.getX(), e.getY());
                 }
                 else if( lastSelectedFile.file.isJavaFile() )
                 {
-                   System.out.println("Java File Menu");
-                    javaFileMenu.setFile(  lastSelectedFile  );
-                    javaFileMenu.setLocation( (int)getLocationOnScreen().getX() + e.getX() ,  (int)getLocationOnScreen().getY() + e.getY()); 
-                    javaFileMenu.setVisible(true);
-                
+                    javaFileMenu.setFile( lastSelectedFile);
+                    javaFileMenu.show(FileNavigator.this, e.getX(), e.getY());
                 }  
                 else
                 {
-                    System.out.println("File Menu");
-                    fileMenu.setFile(  lastSelectedFile );
-                    fileMenu.setLocation( (int)getLocationOnScreen().getX() + e.getX() ,  (int)getLocationOnScreen().getY() + e.getY());
-                    fileMenu.setVisible(true);
+                    fileMenu.setFile( lastSelectedFile);
+                    fileMenu.show(FileNavigator.this, e.getX(), e.getY());
                 }
             }
             
-            // System.out.println(lastSelectedFile);
             updateUI();
         }
     }

@@ -1,85 +1,43 @@
 package filebrowser;
 
 import javax.swing.*;
-import javax.swing.event.*;
 import java.awt.event.*;
-import java.awt.*;
-
 
 /**
- * 
- * @Mahmud Sami Aydin
- * 
+ * The PopupMenu class for java source files in the file explorer.
+ * @author Mahmud Sami Aydin, Emin Bahadir Tuluce
+ * @version 1.0
  */
 public class TreeJavaFilePopupMenu extends TreeFilePopupMenu
 {
-  //properties
-  JMenuItem compile;
-  JMenuItem run;
-  
-  //constructor
-  public TreeJavaFilePopupMenu()
-  {
-    setVisible(false);
-    compile = new JMenuItem("Compile File");
-    run = new JMenuItem("Run File");
-    add( compile );
-    add( run );
-    
-    compile.addActionListener( this );
-    run.addActionListener( this );
-    
-    compile.setOpaque(true);
-      run.setOpaque(true);
-      
-      
+    JMenuItem compile;
+    JMenuItem run;
 
-      
-      compile.addMouseListener( new  MouseAdapter()
-      {
-        public void mouseEntered( MouseEvent e)
-        { 
-            System.out.print("enter");
-            compile.setBackground( new Color( 145,201,247 ));
-        } 
+    public TreeJavaFilePopupMenu( FileNavigator navigator)
+    {
+        super(navigator);
         
-         public void mouseExited( MouseEvent e)
-        { 
-            System.out.print("exit");
-            compile.setBackground( new Color(240,240,240));
-        } 
+        compile = new JMenuItem("Compile File");
+        run = new JMenuItem("Run File");
+        add( compile);
+        add( run);
         
-      }
-      );
-      
-      run.addMouseListener( new  MouseAdapter()
-      {
-        public void mouseEntered( MouseEvent e)
-        { 
-            run.setBackground( new Color( 145,201,247 ));
-        } 
-        
-         public void mouseExited( MouseEvent e)
-        { 
-            run.setBackground(new Color(240,240,240));
-        } 
-        
-      }
-      );
+        compile.addActionListener( this);
+        run.addActionListener( this);
+    }
     
-  }
-  
-  @Override
-   public void actionPerformed( ActionEvent e)
-   {
-    super.actionPerformed( e );
-    if( e.getSource() == compile )
+    public void actionPerformed( ActionEvent e)
     {
-      System.out.println("file compiled");
+        super.actionPerformed( e);
+        if( e.getSource() == compile)
+        {
+            System.out.println("Compile the file...");
+        }
+        else if ( e.getSource() == run)
+        {
+            System.out.println("Run the file...");
+        }
+        
+        navigator.updateUI();
     }
-    else if ( e.getSource() == run )
-    {
-      System.out.println("file run");
-    }
-  }
 }

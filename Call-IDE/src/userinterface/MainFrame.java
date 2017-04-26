@@ -2339,7 +2339,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
             insertedPane.setFont( preferences.getOutputFont());
             compilerOutputScrollPane.setViewportView( insertedPane);
             BuildSys.setPropsForCompile(userPath + "/BuildConfigs/build.xml",
-                                        getActiveFile().getParent() + "\\classes", getActiveFile().getParent());
+                                        getActiveFile().getParent() + "/classes", getActiveFile().getParent());
             BuildSys.compile(userPath + "/BuildConfigs/build.xml");
             outputTabs.setSelectedIndex(1);
             return insertedPane;
@@ -2353,7 +2353,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
              return;
         }
         
-        File build = new File(f.getParent() + "\\classes");
+        File build = new File(f.getParent() + "/classes");
         if (!build.exists()){
             printStatus("The file should be saved and compiled before running.");
             return;

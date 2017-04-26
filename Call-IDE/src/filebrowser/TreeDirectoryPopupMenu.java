@@ -1,155 +1,87 @@
 package filebrowser;
 
 import javax.swing.*;
-import javax.swing.event.*;
 import java.awt.event.*;
-import java.awt.*;
-
 
 /**
- * 
- * @author Mahmud Sami Aydin
- * 
+ * The PopupMenu class for folders in the file explorer.
+ * @author Mahmud Sami Aydin, Emin Bahadir Tuluce
+ * @version 1.0
  */
-
 public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
 {
-   //properties
-   JMenuItem delete;
-   JMenuItem createFile;
-   JMenuItem createDirectory;
-   JMenuItem projectProperties;
-   FileNode  file;
-   
-   public TreeDirectoryPopupMenu(  )
-   {
-      super();
-      
-      delete = new  JMenuItem("Delete");
-      createFile = new JMenuItem ( "Create File" );
-      createDirectory = new JMenuItem( "Create Directory");
-      projectProperties = new JMenuItem( "Project Properties");
-      
-      add( delete );
-      add(createFile);
-      add(createDirectory);
-      addSeparator();
-      add(projectProperties);
-      
-      delete.setOpaque(true);
-      createFile.setOpaque(true);
-      createDirectory.setOpaque(true);
-      projectProperties.setOpaque(true);
-      
-       delete.addMouseListener( new  MouseAdapter()
-      {
-        public void mouseEntered( MouseEvent e)
-        { 
-            // System.out.print("enter");
-            delete.setBackground( new Color( 145,201,247 ));
-        } 
+    //properties
+    JMenuItem deleteFolder;
+    JMenuItem createFile;
+    JMenuItem createFolder;
+    JMenuItem projectProperties;
+    FileNode  file;
+    FileNavigator navigator;
+    
+    public TreeDirectoryPopupMenu( FileNavigator navigator)
+    {
+        super();
         
-         public void mouseExited( MouseEvent e)
-        { 
-            // System.out.print("exit");
-            delete.setBackground( new Color(240,240,240));
-        } 
+        this.navigator = navigator;
         
-      }
-      );
-      
-      createFile.addMouseListener( new  MouseAdapter()
-      {
-        public void mouseEntered( MouseEvent e)
-        { 
-            createFile.setBackground( new Color( 145,201,247 ));
-        } 
+        deleteFolder = new  JMenuItem("Delete Folder");
+        createFile = new JMenuItem( "Create File");
+        createFolder = new JMenuItem( "Create Folder");
+        projectProperties = new JMenuItem( "Project Properties");
         
-         public void mouseExited( MouseEvent e)
-        { 
-            createFile.setBackground(new Color(240,240,240));
-        } 
+        add(deleteFolder);
+        add(createFile);
+        add(createFolder);
+        addSeparator();
+        add(projectProperties);
         
-      }
-      );
-      
-      createDirectory.addMouseListener( new  MouseAdapter()
-      {
-        public void mouseEntered( MouseEvent e)
-        { 
-            createDirectory.setBackground( new Color( 145,201,247 ));
-        } 
+        deleteFolder.addActionListener( this);
+        createFile.addActionListener( this);
+        createFolder.addActionListener( this);
+        projectProperties.addActionListener( this);
+    }
+    
+    public void actionPerformed( ActionEvent e)
+    {
         
-         public void mouseExited( MouseEvent e)
-        { 
-            createDirectory.setBackground( new Color(240,240,240) );
-        } 
+        if(e.getSource() == deleteFolder)
+        {
+            int option = JOptionPane.showConfirmDialog(SwingUtilities.getRoot(this),
+                    "Are you sure want to delete this folder?",  "Deleting Folder",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (option == JOptionPane.YES_OPTION)
+                file.delete();
+        }
+        else if( e.getSource() == createFile)
+        {
+            String fileName = JOptionPane.showInputDialog( null, "Enter file name:");
+            if (fileName == null)
+                return;
+            try {
+                if (fileName.trim().length() > 0)
+                    file.createFile(fileName); 
+            } catch(Exception exc) {
+                exc.printStackTrace();
+            }
+        }
+        else if( e.getSource() == createFolder )
+        {
+            String fileName = JOptionPane.showInputDialog( null, "Enter directory name:");
+            if (fileName == null)
+                return;
+            if (fileName.trim().length() > 0)
+                file.createDirectory(fileName);
+        }
+        else if (e.getSource() == projectProperties)
+        {
+            System.out.println("Show project properties...");
+        }
         
-      }
-      );
-      
-      projectProperties.addMouseListener( new  MouseAdapter()
-      {
-        public void mouseEntered( MouseEvent e)
-        { 
-            projectProperties.setBackground( new Color( 145,201,247 ));
-        } 
-        
-         public void mouseExited( MouseEvent e)
-        { 
-            projectProperties.setBackground( new Color(240,240,240) );
-        } 
-        
-      }
-      );
-      delete.addActionListener( this );
-      createFile.addActionListener( this );
-      createDirectory.addActionListener( this );
-      projectProperties .addActionListener( this );
-   }
-   
-   public void actionPerformed( ActionEvent e)
-   {
-       setVisible(false);
-      if(e.getSource() == delete)
-      {
-         //delete directory..
-         System.out.println(" Delete ");
-         file.delete();
-         
-      }
-      else if( e.getSource() == createFile )
-      {
-         //create file on directory
-         System.out.println(" create file ");
-         
-         String fileName = JOptionPane.showInputDialog( SwingUtilities.getRoot(this), "What's file name?");
-         if(fileName.trim().length() > 0 )
-            file.createFile(fileName); 
-      }
-      else if( e.getSource() == createDirectory )
-      {
-         //create directory on directory
-         System.out.println(" create directory ");
-         
-         String fileName = JOptionPane.showInputDialog( SwingUtilities.getRoot(this), "What's directory name?");
-         if( fileName.trim().length() > 0 )
-            file.createDirectory(fileName); 
-
-      }
-      else
-      {
-         //go to project properties..
-         System.out.println(" project properties ");
-
-         
-      }
-   }
-   
-   
-   public void setFile( FileNode file )
-   {
-      this.file = file;
-   }
-   
+        navigator.updateUI();
+    }
+    
+    public void setFile( FileNode file)
+    {
+        this.file = file;
+    }
 }
