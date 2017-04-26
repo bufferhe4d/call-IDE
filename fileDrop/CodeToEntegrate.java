@@ -1,3 +1,5 @@
+// http://www.iharder.net/current/java/filedrop/
+
 new FileDrop( /*component*/, new FileDrop.Listener()
    {
       @Override
