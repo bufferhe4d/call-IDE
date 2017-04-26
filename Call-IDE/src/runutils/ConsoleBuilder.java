@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package userinterface;
+package runutils;
 
 import java.io.IOException;
 import java.io.PipedInputStream;
@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
+import userinterface.MainFrame;
 
 /**
  *

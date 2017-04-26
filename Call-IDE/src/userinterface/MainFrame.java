@@ -1,5 +1,7 @@
 package userinterface;
 
+import runutils.ConsoleCore;
+import runutils.ConsoleBuilder;
 import filebrowser.*;
 import fileoperations.*;
 import helputils.*;
@@ -1919,7 +1921,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
                 
                 // TODO : NOT WORKING
                 if (fileExplorer != null) {
-                    fileExplorer.updateProjectFiles(selected.getParent());
+                    // fileExplorer.updateDirectory(selected.getParent());
                 }
         
                 return true;
@@ -2306,7 +2308,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
             BuildSys.setPropsForCompile(userPath + "/BuildConfigs/build.xml",
                                         getActiveFile().getParent() + "\\classes", getActiveFile().getParent());
             BuildSys.compile(userPath + "/BuildConfigs/build.xml");
-            outputTabs.setSelectedIndex(2);
+            outputTabs.setSelectedIndex(1);
         }
     }
 
@@ -2344,7 +2346,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex1);
         }
         
-        outputTabs.setSelectedIndex(1);
+        outputTabs.setSelectedIndex(2);
     }
     
     // TODO : NOT WORKING PROPERLY WITHOUT PROJECT SYSTEM
@@ -2358,7 +2360,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
                 getActiveFile().getParent(), getActiveFile().getParent() + "/doc");
         BuildSys.compile(userPath + "/BuildConfigs/buildJavadoc.xml");
         
-        outputTabs.setSelectedIndex(2);
+        outputTabs.setSelectedIndex(1);
     }
 
     // TODO : NOT WORKING PROPERLY WITHOUT PROJECT SYSTEM
@@ -2373,7 +2375,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
                 getActiveFile().getParent() + "/dist", "myP.hello");
         BuildSys.compile(userPath + "/BuildConfigs/buildJar.xml");
         
-        outputTabs.setSelectedIndex(2);
+        outputTabs.setSelectedIndex(1);
     }
     
     private void resetInteractions() {
