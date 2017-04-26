@@ -152,84 +152,93 @@
                       <EmptySpace min="15" pref="15" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
+                              <Component id="workspaceLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="9" pref="9" max="-2" attributes="0"/>
-                              <Component id="indentLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="15" pref="15" max="-2" attributes="0"/>
-                              <Component id="indentTextField" min="-2" pref="41" max="-2" attributes="0"/>
+                              <Component id="workspaceTextField" min="-2" pref="310" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                              <Component id="browseWorkspaceButton" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                           </Group>
-                          <Component id="lineNumbersCheck" min="-2" max="-2" attributes="0"/>
-                          <Component id="showHelpCheck" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="submissionSelectLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="18" pref="18" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="externalSubmissionRadio" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="externalSubmissionField" max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="callideSubmissionRadio" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" attributes="0">
+                                              <EmptySpace min="9" pref="9" max="-2" attributes="0"/>
+                                              <Component id="indentLabel" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace min="15" pref="15" max="-2" attributes="0"/>
+                                              <Component id="indentTextField" min="-2" pref="41" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Component id="lineNumbersCheck" min="-2" max="-2" attributes="0"/>
+                                          <Component id="showHelpCheck" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace min="93" pref="93" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" attributes="0">
+                                              <EmptySpace min="15" pref="15" max="-2" attributes="0"/>
+                                              <Component id="themeLabel" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" attributes="0">
+                                              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+                                              <Component id="editorFontLabel" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace min="162" pref="162" max="-2" attributes="0"/>
+                                              <Component id="editorFontSizeLabel" min="-2" pref="50" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" attributes="0">
+                                              <Component id="editorFontChooser" min="-2" pref="238" max="-2" attributes="0"/>
+                                              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                                              <Component id="editorFontSizeField" min="-2" pref="60" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Component id="themeComboBox" min="-2" pref="300" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="bracketMatchingCheck" min="-2" max="-2" attributes="0"/>
+                                          <Group type="102" attributes="0">
+                                              <Component id="autosaveCheck" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace min="5" pref="5" max="-2" attributes="0"/>
+                                              <Component id="autosaveTextField" min="-2" pref="30" max="-2" attributes="0"/>
+                                              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                                              <Component id="minsLabel" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" attributes="0">
+                                              <EmptySpace min="-2" pref="89" max="-2" attributes="0"/>
+                                              <Component id="outputFontLabel" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" attributes="0">
+                                              <EmptySpace min="-2" pref="79" max="-2" attributes="0"/>
+                                              <Component id="outputFontChooser" min="-2" pref="238" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" attributes="0">
+                                              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                                              <Component id="outputFontSizeLabel" min="-2" pref="50" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Component id="outputFontSizeField" min="-2" pref="60" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace min="93" pref="93" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="15" pref="15" max="-2" attributes="0"/>
-                              <Component id="themeLabel" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                              <Component id="editorFontLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="162" pref="162" max="-2" attributes="0"/>
-                              <Component id="editorFontSizeLabel" min="-2" pref="50" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <Component id="editorFontChooser" min="-2" pref="238" max="-2" attributes="0"/>
-                              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                              <Component id="editorFontSizeField" min="-2" pref="60" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="themeComboBox" min="-2" pref="300" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="15" pref="15" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="bracketMatchingCheck" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <Component id="autosaveCheck" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="5" pref="5" max="-2" attributes="0"/>
-                              <Component id="autosaveTextField" min="-2" pref="30" max="-2" attributes="0"/>
-                              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                              <Component id="minsLabel" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="89" max="-2" attributes="0"/>
-                              <Component id="outputFontLabel" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="79" max="-2" attributes="0"/>
-                              <Component id="outputFontChooser" min="-2" pref="238" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                              <Component id="outputFontSizeLabel" min="-2" pref="50" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="outputFontSizeField" min="-2" pref="60" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="15" pref="15" max="-2" attributes="0"/>
-                      <Component id="workspaceLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="9" pref="9" max="-2" attributes="0"/>
-                      <Component id="workspaceTextField" min="-2" pref="310" max="-2" attributes="0"/>
-                      <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                      <Component id="browseWorkspaceButton" min="-2" pref="124" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="15" pref="15" max="-2" attributes="0"/>
-                      <Component id="submissionSelectLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="18" pref="18" max="-2" attributes="0"/>
-                      <Component id="callideSubmissionRadio" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="176" pref="176" max="-2" attributes="0"/>
-                      <Component id="externalSubmissionRadio" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="5" pref="5" max="-2" attributes="0"/>
-                      <Component id="externalSubmissionField" min="-2" pref="267" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -310,14 +319,12 @@
                           <Component id="submissionSelectLabel" min="-2" max="-2" attributes="0"/>
                           <Component id="callideSubmissionRadio" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="11" pref="11" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="externalSubmissionRadio" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
-                              <Component id="externalSubmissionField" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                      <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="externalSubmissionField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="externalSubmissionRadio" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -601,16 +608,20 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="replaceTextField" alignment="0" min="-2" pref="300" max="-2" attributes="0"/>
                           <Component id="findTextField" min="-2" pref="300" max="-2" attributes="0"/>
-                          <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="previousButton" min="-2" pref="111" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="nextButton" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="replaceAllButton" max="32767" attributes="0"/>
+                                  <Component id="previousButton" max="32767" attributes="0"/>
                               </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="replaceAllButton" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="replaceButton" min="-2" pref="111" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="nextButton" min="-2" pref="110" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                                      <Component id="replaceButton" min="-2" pref="111" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
                       </Group>
@@ -638,7 +649,7 @@
                                   <Component id="nextButton" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="previousButton" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="replaceAllButton" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="replaceButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -650,7 +661,7 @@
                               <Component id="matchCaseCheck" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -761,7 +772,7 @@
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               <Component id="projectOkButton" min="-2" pref="80" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="projectCancelButton" min="-2" max="-2" attributes="0"/>
+                              <Component id="projectCancelButton" min="-2" pref="80" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
