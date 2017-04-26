@@ -65,6 +65,7 @@ public class FileExplorer extends JPanel
         // DOES NOT REFRESHES AUTOMATICALLY WITHOUT CLOSING+OPENING THE NODE MANUALLY
         System.out.println("updated " + DirectoryPath);
         navigator.updateDirectory( DirectoryPath );
+        navigator.updateUI();
     }
    
    /**
