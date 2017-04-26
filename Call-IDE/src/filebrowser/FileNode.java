@@ -1,5 +1,6 @@
 package filebrowser;
 
+import fileoperations.FileSaver;
 import java.util.*;
 import javax.swing.tree.*;
 import java.io.*;
@@ -79,15 +80,12 @@ public class FileNode extends DefaultMutableTreeNode
    
    public void addChildren()
    {  
-      FileNode temp;
       for( int i = 0; i < file.listFiles().length; i++)   
       {
          
-         
-         temp = new FileNode (  new PathedFile ( file.listFiles()[i].toString(), file.path ) , nodesAndPaths  );
-         if( getIndex( temp ) == -1 )
-         {
-            add( temp );
+         if(!nodesAndPaths.containsKey(file.listFiles()[i].getAbsolutePath()))
+          {
+            add( new FileNode( new PathedFile( file.listFiles()[i].getAbsolutePath(), file.path) , nodesAndPaths ) );
          }
          
       }
@@ -143,12 +141,32 @@ public class FileNode extends DefaultMutableTreeNode
     * This method add the folder a file
     * 
     */
-   public void createFile( String fileName)
+   public void createFile( String fileName) throws IOException
    {
+            FileNode temp;
       if( getAllowsChildren() )
       {
-         add( new FileNode( new PathedFile( file.getAbsolutePath() + "/" 
-                                             + fileName ,  file.path )) );
+           temp = new FileNode( new PathedFile( file.getAbsolutePath() + "/" 
+                                             + fileName +  "/" ,  file.path ) , nodesAndPaths);
+            add( temp  );
+           new FileSaver(file).save(fileName);
+      }
+      
+   }
+   
+   /**
+    * This method add the folder a folder
+    * 
+    */
+   public void createDirectory( String fileName)
+   {
+       FileNode temp;
+      if( getAllowsChildren() )
+      {
+          temp = new FileNode( new PathedFile( file.getAbsolutePath() + "/" 
+                                             + fileName +  "/" ,  file.path ) , nodesAndPaths);
+          temp.file.mkdir();
+         add( temp  );
          
       }
       
@@ -188,6 +206,16 @@ public class FileNode extends DefaultMutableTreeNode
       removeFromParent();
    }
    
+      /**
+    * This method remove file node from tree
+    * 
+    * 
+    */
+   public void copyFile()
+   {
+      new FileSaver(file).saveAs(file.fileName + "copy" + file.extension, file);
+      ((FileNode)getParent()).updateChildren();
+   }
  
            
    public void updateChildren()
