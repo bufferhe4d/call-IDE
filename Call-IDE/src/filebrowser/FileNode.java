@@ -32,14 +32,10 @@ public class FileNode extends DefaultMutableTreeNode
         {
             temp = new FileNode( new PathedFile ( files.get(i) , file.getObjPath() ) , nodesAndPaths );
             if( getIndex( temp ) == -1 && temp != null)
-            {
-                // System.out.println(temp);
                 add( temp );
-            }
         }
         
-        
-        // System.out.println(nodesAndPaths);//.keySet());
+        checkEmptyDir();
     }
     public FileNode( PathedFile file, HashMap nodesAndPaths )
     {
@@ -56,7 +52,7 @@ public class FileNode extends DefaultMutableTreeNode
             addChildren();
         }
         
-        //System.out.println(nodesAndPaths);//.keySet());
+        checkEmptyDir();
     }
     
     public FileNode( PathedFile file  )
@@ -72,32 +68,56 @@ public class FileNode extends DefaultMutableTreeNode
             addChildren();
         }
         
+        checkEmptyDir();
+    }
+    
+    // Creates an empty file node.
+    public FileNode( String emptyParent, HashMap nodesAndPaths)
+    {
+        super();
+        this.file = null;
         
-        //System.out.println(nodesAndPaths);//.keySet());
+        this.nodesAndPaths =  nodesAndPaths;
+        
+        nodesAndPaths.put(emptyParent + "<empty>", this);
+    }
+    
+    public void checkEmptyDir()
+    {
+        if (this.file.isDirectory() && this.file.list() != null && this.file.list().length == 0)
+            addEmptyChildren();
+    }
+    
+    public void addEmptyChildren()
+    {
+        add ( new FileNode( this.file.getAbsolutePath(), nodesAndPaths));
+        //updateChildren();
     }
     
     public void addChildren()
-    {  
-        for( int i = 0; i < file.listFiles().length; i++)   
+    {
+        if (file.listFiles() != null) 
         {
-            
-            if(!nodesAndPaths.containsKey(file.listFiles()[i].getAbsolutePath()))
+            for( int i = 0; i < file.listFiles().length; i++)
             {
-                add( new FileNode( new PathedFile( file.listFiles()[i].getAbsolutePath(), file.path) , nodesAndPaths ) );
+                if(!nodesAndPaths.containsKey(file.listFiles()[i].getAbsolutePath()))
+                {
+                    add( new FileNode( new PathedFile( file.listFiles()[i].getAbsolutePath(), file.path) , nodesAndPaths ) );
+                }
             }
-            
         }
     }
-    //------------------
+    
     public boolean getAllowsChildren()
     {
         return allowsChildren;
     }
     
-    //------------------------------------------------------------
     @Override
     public String toString()
     {
+        if(file == null)
+            return "<empty>";
         if(file.equals(new PathedFile("/Nowhere/it/is/not/a/real/file")))
             return "Workspace";
         return file.toString();
@@ -128,7 +148,9 @@ public class FileNode extends DefaultMutableTreeNode
     public boolean delete()
     {
         removeFromParent();
-        return file.delete();
+        if (file != null)
+            return file.delete();
+        return true;
     }
     
     public void createFile( String fileName) throws IOException
@@ -136,10 +158,11 @@ public class FileNode extends DefaultMutableTreeNode
         FileNode temp;
         //if( getAllowsChildren() )
         //{
-            temp = new FileNode( new PathedFile( file.getAbsolutePath() + "/" 
-                + fileName +  "/" ,  file.path ) , nodesAndPaths);
-            add( temp);
-            new FileSaver(new File(file.getAbsolutePath() + "/" + fileName)).save("");
+        temp = new FileNode( new PathedFile( file.getAbsolutePath() + "/" 
+                                                + fileName +  "/" ,  file.path ) , nodesAndPaths);
+        add( temp);
+        new FileSaver(new File(file.getAbsolutePath() + "/" + fileName)).save("");
+        ((FileNode)(this.parent)).updateChildren();
         //}
         
     }
@@ -147,14 +170,14 @@ public class FileNode extends DefaultMutableTreeNode
     public void createDirectory( String fileName)
     {
         FileNode temp;
-        System.out.println("creating dir");
         //if( getAllowsChildren() )
         //{
-            System.out.println("actually doing it");
-            temp = new FileNode( new PathedFile( file.getAbsolutePath() + "/" 
-             + fileName +  "/" ,  file.path ) , nodesAndPaths);
-            temp.file.mkdir();
-            add( temp  );
+        temp = new FileNode( new PathedFile( file.getAbsolutePath() + "/" 
+                                                + fileName +  "/" ,  file.path ) , nodesAndPaths);
+        temp.file.mkdir();
+        add(temp );
+        temp.checkEmptyDir();
+        ((FileNode)(this.parent)).updateChildren();
         //}
     }
     
@@ -182,9 +205,9 @@ public class FileNode extends DefaultMutableTreeNode
         for (int i = getChildCount();  i > 0 ; i-- )
         {
             if( !getChildAt(i-1).isLeaf() )
-            {
                 ((FileNode)getChildAt(i-1)).updateChildren();
-            }
+            else if (((FileNode) getChildAt(i-1)).file == null && ((FileNode) getChildAt(i-1)).getParent().getChildCount() > 1)
+                ((FileNode)getChildAt(i-1)).delete();
         }
     }
 }

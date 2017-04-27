@@ -59,7 +59,7 @@ public class PathedFile extends File
     @Override
     public String toString()
     {
-        if (extension.isEmpty())
+        if (extension == null || extension.isEmpty())
             return fileName;
         return fileName + "." + extension;
     }

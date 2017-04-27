@@ -37,7 +37,7 @@ public class FileNavigator extends JTree implements TreeSelectionListener
         addTreeSelectionListener( this );
         addMouseListener( new TreeMouseListener() );
     }
-
+    
     public void  openFile( String file)
     {
         root.openFile( file );
@@ -64,10 +64,8 @@ public class FileNavigator extends JTree implements TreeSelectionListener
             fileMenu.setVisible(false);
             javaFileMenu.setVisible(false);
             
-            if (e == null)
-                return;
-            
-            if( e.getButton() == 1 && e.getClickCount() == 2 && lastSelectedFile != null && lastSelectedFile.file.isFile() )
+            if( e.getButton() == 1 && e.getClickCount() == 2 && lastSelectedFile != null
+                   && lastSelectedFile.file != null && lastSelectedFile.file.isFile() )
             {
                 opener.openFile(lastSelectedFile.file);
             }
@@ -75,6 +73,9 @@ public class FileNavigator extends JTree implements TreeSelectionListener
             if(  e.getButton() == 3 )
             {
                 lastSelectedFile =   ((FileNode)getClosestPathForLocation(e.getX() , e.getY()).getLastPathComponent());
+                if( lastSelectedFile.file == null)
+                    return;
+                
                 FileNavigator.this.setSelectionPath(getClosestPathForLocation(e.getX() , e.getY()));
                 
                 if( lastSelectedFile.file.isDirectory() )
