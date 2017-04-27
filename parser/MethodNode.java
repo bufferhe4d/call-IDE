@@ -20,12 +20,18 @@ public class MethodNode extends DefaultMutableTreeNode {
     ArrayList<Parameter> parameters;
     Type                 type;
     String               nodeName;
-    
+    String               modifier;
     MethodNode( MethodDeclaration metDec )
     {
         super();
         type       = metDec.getType();
-        nodeName = metDec.getName() + " ( ";
+        if(metDec.isPrivate())
+            modifier = "-";
+        else if(metDec.isPublic())
+            modifier = "+";
+        else
+            modifier = "";
+        nodeName =  modifier + metDec.getName() + " ( ";
         if( metDec.getParameters() != null )
         {
             parameters = new ArrayList<Parameter>(metDec.getParameters());
@@ -34,7 +40,10 @@ public class MethodNode extends DefaultMutableTreeNode {
         {
             nodeName = nodeName + " " + p + ", ";
         }
-        nodeName = nodeName.substring(0, nodeName.lastIndexOf(','));
+        if( nodeName.lastIndexOf(',') > 0 )
+        {
+            nodeName = nodeName.substring(0, nodeName.lastIndexOf(','));
+        }
         }
         nodeName = nodeName + " ) : " + type.toString();
     }

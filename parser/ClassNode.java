@@ -9,6 +9,7 @@ import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseException;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import java.io.File;
@@ -35,7 +36,7 @@ public class ClassNode extends DefaultMutableTreeNode {
         methods = compUnit.getClass().getDeclaredMethods();
         
         
-        
+        new ConsturctorVisitor().visit(compUnit, null);
         new MethodVisitor().visit( compUnit, null);
     }
 
@@ -50,6 +51,19 @@ public class ClassNode extends DefaultMutableTreeNode {
              this method will be called for all methods in this 
              CompilationUnit, including inner class methods */
             add( new MethodNode(n));
+            System.out.println(n.getName());
+            super.visit(n, arg);
+        }
+    }
+    
+    private class ConsturctorVisitor extends VoidVisitorAdapter<Void> 
+    {
+        @Override
+        public void visit( ConstructorDeclaration n, Void arg) {
+            /* here you can access the attributes of the method.
+             this method will be called for all methods in this 
+             CompilationUnit, including inner class methods */
+            add( new ConstructorNode(n));
             System.out.println(n.getName());
             super.visit(n, arg);
         }
