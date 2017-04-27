@@ -5,6 +5,9 @@
  */
 package parser;
 
+import javax.swing.JFrame;
+import javax.swing.JTree;
+
 /**
  *
  * @author sami.aydin-ug
@@ -13,7 +16,13 @@ public class ParserTest {
     
     public static void main(String[] args)
     {
-        Parser p = new Parser( "H:\\private\\cs102\\Lab03\\lab03a\\src");
-        p.parseJavaFilesMethods();
+        Parser p = new Parser( "C:\\Users\\mahmudsami\\Desktop\\FileExplorer");
+        JFrame f = new JFrame();
+        f.add(new JTree( p.rootNode));
+               
+        f.setVisible(true);
+                
+                
+                
     }
 }
