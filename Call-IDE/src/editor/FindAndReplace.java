@@ -6,7 +6,7 @@ import javax.swing.*;
 /**
  *          A class to build the logic of find and replace methods by using the
  *          written methods in the RSyntax text editor
- * @author  Halil Şahiner
+ * @author  Halil Sahiner
  * @version 1.2
  */
 public class FindAndReplace {
