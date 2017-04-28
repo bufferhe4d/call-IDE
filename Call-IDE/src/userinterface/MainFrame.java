@@ -45,6 +45,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Di
         newFile();
         enableFileDrop();
         initFrame();
+        dragAndOpenFiles();
     }
 
     /**
@@ -2475,6 +2476,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Di
         outputTabs.setSelectedIndex(2);
     }
     
+<<<<<<< HEAD
     private void enableFileDrop() {
         new FileDrop( this,
         new FileDrop.Listener() {
@@ -2512,6 +2514,31 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Di
         textAreas.get(index).setCaretPosition(distance);
     }
 
+=======
+    public void dragAndOpenFiles()
+    {
+        new FileDrop( explorerScrollPane, new FileDrop.Listener()
+        {
+            @Override
+            public void filesDropped( java.io.File[] files )
+            {   
+                for( int i = 0; i < files.length; i++ )
+                {   
+                    if ( files[i].isDirectory() )
+                    {
+                        // add JTree as a folder in here **************************************************************************************************************************************
+                    }
+                    else if( files[i].getName().endsWith(".java") )
+                    {
+                        openFile( files[i] );
+                        // add JTree as a file in here ****************************************************************************************************************************************
+                    }
+                }  
+            }
+        } );
+    }
+    
+>>>>>>> origin/master
     // Other Variables
     private ArrayList<RSyntaxTextArea> textAreas;
     private ArrayList<File> files;
