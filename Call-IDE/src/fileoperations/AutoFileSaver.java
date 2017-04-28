@@ -10,7 +10,6 @@ import javax.swing.Timer;
  * @author Emin Bahadir Tuluce
  * @version 1.0
  */
-
 public class AutoFileSaver implements ActionListener {
     
     private JTextComponent contentSource;

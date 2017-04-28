@@ -67,12 +67,16 @@ public class PathedFile extends File
     /** This method determines file is java file */
     public boolean isJavaFile()
     {
+        if (extension == null)
+            return false;
         return extension.equals("java");
     }
     
     /** This method determines file is a callide project file  */
     public boolean isCallideFile()
     {
+        if (extension == null)
+            return false;
         return extension.equals("callide");
     }
 }

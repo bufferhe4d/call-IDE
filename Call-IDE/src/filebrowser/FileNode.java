@@ -147,6 +147,8 @@ public class FileNode extends DefaultMutableTreeNode
     // TODO : NOT WORKING FOR NON-EMPTY DIRECTORIES
     public boolean delete()
     {
+        if (getParent().getChildCount() == 1)
+            ((FileNode) getParent()).addEmptyChildren();
         removeFromParent();
         if (file != null)
             return file.delete();
@@ -186,11 +188,11 @@ public class FileNode extends DefaultMutableTreeNode
         return file;
     }
     
-    public void openFile( String filePath )
+    public void openFile( String filePath , HashMap map )
     {
         if( getAllowsChildren() )
         {
-            add(new FileNode( new PathedFile ( filePath ) )); 
+            add(new FileNode( new PathedFile ( filePath , file.path ) , map  )); 
         }
     }
     
@@ -209,5 +211,9 @@ public class FileNode extends DefaultMutableTreeNode
             else if (((FileNode) getChildAt(i-1)).file == null && ((FileNode) getChildAt(i-1)).getParent().getChildCount() > 1)
                 ((FileNode)getChildAt(i-1)).delete();
         }
+    }
+    
+    public boolean isEmpty() {
+        return file == null && isLeaf();
     }
 }

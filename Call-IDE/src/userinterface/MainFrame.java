@@ -5,6 +5,7 @@ import fileoperations.*;
 import helputils.*;
 import editor.*;
 import runutils.*;
+import methodsummary.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -23,13 +24,11 @@ import org.fife.ui.rtextarea.*;
 import com.github.javaparser.*;
 import com.github.javaparser.ast.*;
 
-// TODO : TEST OTHER FRAME LAYOUTS IN THE LAB COMPUTERS
-
 /**
  * The main frame of the IDE.
  * @author Emin Bahadir Tuluce, Halil Sahiner, Abdullah Talayhan
  */
-public class MainFrame extends javax.swing.JFrame implements FileOpener, AutosaveHandler, Dispatchable {
+public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Dispatchable, NodeVisitor {
     
     /** Creates new form MainFrame. */
     public MainFrame() throws IOException {
@@ -44,6 +43,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         initOtherComponents();
         loadProfile();
         newFile();
+        enableFileDrop();
         initFrame();
     }
 
@@ -137,7 +137,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         topLeftSplitPane = new javax.swing.JSplitPane();
         textTabs = new javax.swing.JTabbedPane();
         methodSummaryScrollPane = new javax.swing.JScrollPane();
-        methodSummary = new javax.swing.JTree();
+        placeholderMethodSummary = new javax.swing.JTree();
         outputsPanel = new javax.swing.JPanel();
         outputTabs = new javax.swing.JTabbedPane();
         statusPanel = new javax.swing.JPanel();
@@ -842,14 +842,14 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         topLeftSplitPane.setLeftComponent(textTabs);
         textTabs.getAccessibleContext().setAccessibleName("");
 
-        methodSummary.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
+        placeholderMethodSummary.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
         treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("HelloWorld.java");
         treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("main( String[]) : void");
         treeNode1.add(treeNode2);
         treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("greeting() : String");
         treeNode1.add(treeNode2);
-        methodSummary.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
-        methodSummaryScrollPane.setViewportView(methodSummary);
+        placeholderMethodSummary.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        methodSummaryScrollPane.setViewportView(placeholderMethodSummary);
 
         topLeftSplitPane.setRightComponent(methodSummaryScrollPane);
 
@@ -1445,7 +1445,8 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     }//GEN-LAST:event_topSplitPanePropertyChange
 
     private void findReplaceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findReplaceButtonActionPerformed
-        showFindAndReplace();
+        if (isEditing())
+            showFindAndReplace();
     }//GEN-LAST:event_findReplaceButtonActionPerformed
 
     private void saveToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveToolActionPerformed
@@ -1469,11 +1470,13 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     }//GEN-LAST:event_openFileButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        saveFile( getActiveFile(), getActiveContent());
+        if (isEditing())
+            saveFile( getActiveFile(), getActiveContent());
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void saveAsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsButtonActionPerformed
-        saveAsFile( getActiveFile(), getActiveContent());
+        if (isEditing())
+            saveAsFile( getActiveFile(), getActiveContent());
     }//GEN-LAST:event_saveAsButtonActionPerformed
 
     private void quitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitButtonActionPerformed
@@ -1485,11 +1488,13 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     }//GEN-LAST:event_undoToolActionPerformed
 
     private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoButtonActionPerformed
-        BasicOperations.undo( getActiveTextArea());
+        if (isEditing())
+            BasicOperations.undo( getActiveTextArea());
     }//GEN-LAST:event_undoButtonActionPerformed
 
     private void redoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoButtonActionPerformed
-        BasicOperations.redo( getActiveTextArea());
+        if (isEditing())
+            BasicOperations.redo( getActiveTextArea());
     }//GEN-LAST:event_redoButtonActionPerformed
 
     private void redoToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoToolActionPerformed
@@ -1497,19 +1502,23 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     }//GEN-LAST:event_redoToolActionPerformed
 
     private void selectAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectAllButtonActionPerformed
-        BasicOperations.selectAll( getActiveTextArea());
+        if (isEditing())
+            BasicOperations.selectAll( getActiveTextArea());
     }//GEN-LAST:event_selectAllButtonActionPerformed
 
     private void cutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutButtonActionPerformed
-        BasicOperations.cut( getActiveTextArea());
+        if (isEditing())
+            BasicOperations.cut( getActiveTextArea());
     }//GEN-LAST:event_cutButtonActionPerformed
 
     private void copyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyButtonActionPerformed
-        BasicOperations.copy( getActiveTextArea());
+        if (isEditing())
+            BasicOperations.copy( getActiveTextArea());
     }//GEN-LAST:event_copyButtonActionPerformed
 
     private void pasteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteButtonActionPerformed
-        BasicOperations.paste( getActiveTextArea());
+        if (isEditing())
+            BasicOperations.paste( getActiveTextArea());
     }//GEN-LAST:event_pasteButtonActionPerformed
 
     private void apiToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_apiToolActionPerformed
@@ -1542,7 +1551,8 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     }//GEN-LAST:event_autosaveCheckActionPerformed
 
     private void insertJavadocButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertJavadocButtonActionPerformed
-        insertJavadocComment();
+        if (isEditing())
+            insertJavadocComment();
     }//GEN-LAST:event_insertJavadocButtonActionPerformed
 
     private void fileTrackerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileTrackerButtonActionPerformed
@@ -1594,11 +1604,13 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     }//GEN-LAST:event_javadocToolActionPerformed
 
     private void compileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compileButtonActionPerformed
-        compileCurrentFile();
+        if (isEditing())    
+            compileCurrentFile();
     }//GEN-LAST:event_compileButtonActionPerformed
 
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runButtonActionPerformed
-        runCurrentFile();
+        if (isEditing())
+            runCurrentFile();
     }//GEN-LAST:event_runButtonActionPerformed
 
     private void javadocButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_javadocButtonActionPerformed
@@ -1614,11 +1626,13 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     }//GEN-LAST:event_compileRunToolActionPerformed
 
     private void compileRunButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compileRunButtonActionPerformed
-        compileRunCurrentFile();
+        if (isEditing())
+            compileRunCurrentFile();
     }//GEN-LAST:event_compileRunButtonActionPerformed
 
     private void resetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetButtonActionPerformed
-        resetInteractions();
+        if (isEditing())
+            resetInteractions();
     }//GEN-LAST:event_resetButtonActionPerformed
 
     private void helpToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpToolActionPerformed
@@ -1628,7 +1642,11 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     }//GEN-LAST:event_helpToolActionPerformed
 
     private void loginToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginToolActionPerformed
-
+        // TODO : remove here
+        addMethodSummary();
+        
+        // fileExplorer.openProject("C:\\Users\\User\\Documents\\emp2");
+        
     }//GEN-LAST:event_loginToolActionPerformed
 
     /** Sets LookAndFeel to the given name.*/
@@ -1743,6 +1761,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         placeHolderMenu1.setVisible( false);
         placeHolderMenu2.setVisible( false);
         placeHolderMenu3.setVisible( false);
+        placeholderMethodSummary.setVisible( false);
     }
     
     private void initFrame() throws IOException {
@@ -1775,7 +1794,8 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         textArea.setBracketMatchingEnabled( preferences.getBracketMatching());
         textArea.setText( content);
         textArea.setTabsEmulated( true);
-        textArea.setTabSize( preferences.getIndentLevel()); 
+        textArea.setTabSize( preferences.getIndentLevel());
+        textArea.discardAllEdits();
         textAreas.add( textArea);
         RTextScrollPane sp = new RTextScrollPane( textArea);
         sp.setLineNumbersEnabled( preferences.getDisplayLineNumbers());
@@ -2170,7 +2190,9 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         int outputFontSize = 16;
         if (autosaveCheck.isSelected()) {
             try {
-                autosaveIn = 60000 * Integer.parseInt(autosaveTextField.getText());
+                int minutes = Integer.parseInt(autosaveTextField.getText());
+                minutes = Math.min(minutes, 60);
+                autosaveIn = 60000 * minutes;
             } catch( NumberFormatException e) {}
         }
         try {
@@ -2363,9 +2385,9 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         CompilationUnit cu;
         try {
             cu = JavaParser.parse( f );
-            if (cu.getPackage() != null)
-                packageName = cu.getPackage().getName().toString();
-        } catch (ParseException | IOException ex) {
+            if (cu.getPackageDeclaration().isPresent())
+                packageName = cu.getPackageDeclaration().get().getName().toString();
+        } catch (IOException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         
@@ -2451,6 +2473,43 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         outputTabs.setTabComponentAt( 2, tabComp);
         outputTabs.removeChangeListener( outputTabs.getChangeListeners()[0]);
         outputTabs.setSelectedIndex(2);
+    }
+    
+    private void enableFileDrop() {
+        new FileDrop( this,
+        new FileDrop.Listener() {
+            @Override
+            public void filesDropped( java.io.File[] files ){   
+                for( int i = 0; i < files.length; i++ ){   
+                    openFile( files[i]);
+                }  
+            }
+        });
+    }
+    
+    private boolean isEditing() {
+        return textTabs.getSelectedIndex() != -1;
+    }
+    
+    private void addMethodSummary() {
+        //SummaryTree methodSummary = new SummaryTree( "C:\\Users\\User\\Documents\\hello", this);
+        //methodSummaryScrollPane.setViewportView(methodSummary);
+    }
+    
+    public void visitNode( File file, Position position) {
+        int index = -1;
+        for (int i = 0; i < files.size(); i++) {
+            if (file == files.get(i))
+                index = i;
+        }
+        if (index == -1) {
+            openFile(file);
+            index = files.size() - 1;
+        }
+        textTabs.setSelectedIndex(index);
+        int distance = PositionCalculator.calculate(textAreas.get(index).getText(), position);
+        textAreas.get(index).requestFocus();
+        textAreas.get(index).setCaretPosition(distance);
     }
 
     // Other Variables
@@ -2546,7 +2605,6 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     private javax.swing.JSplitPane mainSplitPane;
     private javax.swing.JCheckBox matchCaseCheck;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JTree methodSummary;
     private javax.swing.JCheckBoxMenuItem methodSummaryButton;
     private javax.swing.JScrollPane methodSummaryScrollPane;
     private javax.swing.JLabel minsLabel;
@@ -2573,6 +2631,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
     private javax.swing.JMenuItem placeHolderMenu1;
     private javax.swing.JMenuItem placeHolderMenu2;
     private javax.swing.JMenuItem placeHolderMenu3;
+    private javax.swing.JTree placeholderMethodSummary;
     private javax.swing.JTextArea placeholderOutputArea;
     private javax.swing.JPanel preferecesButtonPanel;
     private javax.swing.JMenuItem preferencesButton;
