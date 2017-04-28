@@ -26,32 +26,56 @@ import javax.swing.tree.DefaultMutableTreeNode;
 public class ClassNode extends DefaultMutableTreeNode {
     
     
-    String  nodeName;
+    CompilationUnit  compUnit;
+    ArrayList<MethodDeclaration>  innerClassMethods;
+    String             nodeName;
+    int                innerMethodIndex;
     
     ClassNode( File classFile ) throws ParseException, IOException
     {
         super(classFile.getName());
-        CompilationUnit  compUnit;
-        
+        innerClassMethods = new ArrayList<MethodDeclaration>();
         nodeName = classFile.getName();
         compUnit = JavaParser.parse(classFile); 
+        innerMethodIndex = 0;
         
+        
+        new FindInnerMethods().visit(compUnit, null);
         new ConsturctorVisitor().visit(compUnit, null);
         new MethodVisitor().visit( compUnit, null);        
         new InnerClassVisitor().visit(compUnit, null);
     }
 
+    private class FindInnerMethods extends VoidVisitorAdapter<Void> 
+    {
+        @Override
+        public void visit(ClassOrInterfaceDeclaration n, Void arg) {
+            /* here you can access the attributes of the method.
+             this method will be called for all methods in this 
+             CompilationUnit, including inner class methods */
+            
+            
+            if( !nodeName.equals(n.getNameAsString()+ ".java"))
+                innerClassMethods.addAll(n.getMethods());
+            
+            super.visit(n, arg);
+        }
+    }
 
   
     
     class MethodVisitor extends VoidVisitorAdapter<Void> 
     {
+        
         @Override
         public void visit(MethodDeclaration n, Void arg) {
             /* here you can access the attributes of the method.
              this method will be called for all methods in this 
              CompilationUnit, including inner class methods */
-            add( new MethodNode(n));
+            if( innerClassMethods.size() > innerMethodIndex && n.getDeclarationAsString().equals(innerClassMethods.get(innerMethodIndex).getDeclarationAsString()))
+                innerMethodIndex++;
+            else
+                add( new MethodNode(n));
             //System.out.println(n.getName());
             super.visit(n, arg);
         }
@@ -65,6 +89,7 @@ public class ClassNode extends DefaultMutableTreeNode {
              this method will be called for all methods in this 
              CompilationUnit, including inner class methods */
             add( new ConstructorNode(n));
+            
             //System.out.println(n.getName());
             super.visit(n, arg);
         }
@@ -77,9 +102,11 @@ public class ClassNode extends DefaultMutableTreeNode {
             /* here you can access the attributes of the method.
              this method will be called for all methods in this 
              CompilationUnit, including inner class methods */
-            System.out.println(n.getNameAsString());
+            //System.out.println(n.getNameAsString());
             if( !nodeName.equals(n.getNameAsString()+ ".java"))
+            {
                 add( new InnerNode(n));
+            }
             super.visit(n, arg);
         }
     }
