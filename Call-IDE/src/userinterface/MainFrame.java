@@ -45,6 +45,7 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         loadProfile();
         newFile();
         initFrame();
+        dragAndOpenFiles();
     }
 
     /**
@@ -2452,7 +2453,30 @@ public class MainFrame extends javax.swing.JFrame implements FileOpener, Autosav
         outputTabs.removeChangeListener( outputTabs.getChangeListeners()[0]);
         outputTabs.setSelectedIndex(2);
     }
-
+    
+    public void dragAndOpenFiles()
+    {
+        new FileDrop( explorerScrollPane, new FileDrop.Listener()
+        {
+            @Override
+            public void filesDropped( java.io.File[] files )
+            {   
+                for( int i = 0; i < files.length; i++ )
+                {   
+                    if ( files[i].isDirectory() )
+                    {
+                        // add JTree as a folder in here **************************************************************************************************************************************
+                    }
+                    else if( files[i].getName().endsWith(".java") )
+                    {
+                        openFile( files[i] );
+                        // add JTree as a file in here ****************************************************************************************************************************************
+                    }
+                }  
+            }
+        } );
+    }
+    
     // Other Variables
     private ArrayList<RSyntaxTextArea> textAreas;
     private ArrayList<File> files;
