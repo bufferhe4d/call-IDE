@@ -36,7 +36,7 @@ public class MethodNode extends DefaultMutableTreeNode implements VisitableNode,
         else if(metDec.isProtected())
             modifier = "# ";
         else
-            modifier = "";
+            modifier = "~ ";
         nodeName =  modifier + metDec.getName() + "(";
         if( metDec.getParameters() != null )
         {
@@ -52,8 +52,6 @@ public class MethodNode extends DefaultMutableTreeNode implements VisitableNode,
             }
         }
         nodeName = nodeName + ") : " + type.toString();
-        
-        System.out.println(type.toString());
     }
     
     public String toString()

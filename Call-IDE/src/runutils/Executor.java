@@ -57,7 +57,7 @@ public class Executor {
 			executeThread.start();
                         
 		} catch(ClassNotFoundException e) {
-			System.out.println("Class not found.");
+			System.out.println("Class file couldn't be found.");
 			
 		} catch (NoSuchMethodException e) {
 			// TODO Auto-generated catch block

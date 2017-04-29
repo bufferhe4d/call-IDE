@@ -47,14 +47,15 @@ public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
         if(e.getSource() == deleteFolder)
         {
             int option = JOptionPane.showConfirmDialog(SwingUtilities.getRoot(this),
-                    "Are you sure want to delete this folder?",  "Deleting Folder",
+                    "Are you sure want to delete the folder \"" + file + "\" ?",  "Deleting Folder",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (option == JOptionPane.YES_OPTION)
                 file.delete();
         }
         else if( e.getSource() == createFile)
         {
-            String fileName = JOptionPane.showInputDialog( null, "Enter file name:");
+            String fileName = JOptionPane.showInputDialog(null, "Enter file name: ",
+                    "Creating File", JOptionPane.INFORMATION_MESSAGE);
             if (fileName == null)
                 return;
             try {
@@ -66,7 +67,8 @@ public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
         }
         else if( e.getSource() == createFolder )
         {
-            String fileName = JOptionPane.showInputDialog( null, "Enter directory name:");
+            String fileName = JOptionPane.showInputDialog(null, "Enter folder name: ",
+                    "Creating Folder", JOptionPane.INFORMATION_MESSAGE);
             if (fileName == null)
                 return;
             if (fileName.trim().length() > 0)

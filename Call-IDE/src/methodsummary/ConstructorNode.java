@@ -32,7 +32,7 @@ public class ConstructorNode extends DefaultMutableTreeNode implements Visitable
         else if(conDec.isProtected())
             modifier = "# ";
         else
-            modifier = "";
+            modifier = "~ ";
         nodeName =  modifier + conDec.getName() + "(";
         if( conDec.getParameters() != null )
         {

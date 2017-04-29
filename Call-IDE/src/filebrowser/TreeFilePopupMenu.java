@@ -40,7 +40,7 @@ public class TreeFilePopupMenu extends JPopupMenu implements ActionListener
         if(e.getSource() == delete)
         {
             int option = JOptionPane.showConfirmDialog(SwingUtilities.getRoot(this),
-                    "Are you sure want to delete this file?",  "Deleting File",
+                    "Are you sure want to delete the file \"" + file + "\" ?",  "Deleting File",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (option == JOptionPane.YES_OPTION)
                 file.delete();

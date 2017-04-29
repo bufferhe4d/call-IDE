@@ -5,6 +5,7 @@ import javax.swing.*;
 import javax.swing.tree.*;
 import javax.swing.event.*;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 
 /**
@@ -16,15 +17,14 @@ public class SummaryTree extends JTree implements TreeSelectionListener {
 
     NodeVisitor visitor;
     
-    public SummaryTree( String root, NodeVisitor visitor) throws MalformedURLException {
-        super( (new Parser( root)).getRootNode());
+    public SummaryTree( Parser parser, NodeVisitor visitor) throws MalformedURLException, IOException {
+        super( parser.getRootNode());
         this.visitor = visitor;
         
-        configureNodes((TreeNode) treeModel.getRoot());
+        configureTree();
         setCellRenderer( new SummaryCellRenderer());
         addTreeSelectionListener( this);
     }
-    
     
     @Override
     public void valueChanged( TreeSelectionEvent e) {
@@ -43,5 +43,9 @@ public class SummaryTree extends JTree implements TreeSelectionListener {
         else
             for (int i = 0; i < node.getChildCount(); i++)
                 configureNodes( node.getChildAt(i));
+    }
+    
+    public void configureTree() {
+        configureNodes((TreeNode) treeModel.getRoot());
     }
 }

@@ -150,9 +150,28 @@ public class FileNode extends DefaultMutableTreeNode
         if (getParent().getChildCount() == 1)
             ((FileNode) getParent()).addEmptyChildren();
         removeFromParent();
-        if (file != null)
-            return file.delete();
+        if (file != null) {
+            if (file.isFile())
+                return file.delete();
+            else
+                return deleteFolder( file);
+        }
         return true;
+    }
+    
+    private boolean deleteFolder( File file)
+    {
+        boolean done = true;
+        File[] files = file.listFiles();
+        for (File subFile : files)
+        {
+            if (subFile.isFile())
+                subFile.delete();
+            else
+                done = done && deleteFolder( subFile);
+        }
+        file.delete();
+        return done;
     }
     
     public void createFile( String fileName) throws IOException

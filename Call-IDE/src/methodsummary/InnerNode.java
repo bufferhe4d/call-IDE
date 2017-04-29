@@ -85,7 +85,6 @@ public class InnerNode extends DefaultMutableTreeNode implements SummaryNode{
                 innerMethodIndex++;
             else
                 add( new MethodNode(n));
-            //System.out.println(n.getName());
             super.visit(n, arg);
         }
     }
@@ -94,12 +93,7 @@ public class InnerNode extends DefaultMutableTreeNode implements SummaryNode{
     {
         @Override
         public void visit( ConstructorDeclaration n, Void arg) {
-            /* here you can access the attributes of the method.
-             this method will be called for all methods in this 
-             CompilationUnit, including inner class methods */
             add( new ConstructorNode(n));
-            
-            //System.out.println(n.getName());
             super.visit(n, arg);
         }
     }
@@ -108,10 +102,6 @@ public class InnerNode extends DefaultMutableTreeNode implements SummaryNode{
     {
         @Override
         public void visit( ClassOrInterfaceDeclaration n, Void arg) {
-            /* here you can access the attributes of the method.
-             this method will be called for all methods in this 
-             CompilationUnit, including inner class methods */
-            //System.out.println(n.getNameAsString());
             if( !nodeName.equals(n.getNameAsString()))
             {
                 add( new InnerNode(n));

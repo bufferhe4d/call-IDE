@@ -6,8 +6,10 @@
 package methodsummary;
 
 import java.awt.Component;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JTree;
@@ -21,7 +23,7 @@ public class SummaryCellRenderer extends DefaultTreeCellRenderer{
     
     private Icon[] icons;
     
-    public SummaryCellRenderer() throws MalformedURLException
+    public SummaryCellRenderer() throws MalformedURLException, IOException
     {
         super();
         buildIcons();
@@ -47,30 +49,26 @@ public class SummaryCellRenderer extends DefaultTreeCellRenderer{
         setToolTipText( ((SummaryNode)value).getJavadoc() );
         }
         
-        
-        
         return this;
     }
 
-    private void buildIcons() throws MalformedURLException {
+    private void buildIcons() throws MalformedURLException, IOException {
+        ImageIcon logoIcon = new ImageIcon(ImageIO.read(getClass().getResource( "/userinterface/images/logoicon.png")));
         icons = new Icon[15];
-       
-            
-            icons[0] = new ImageIcon(new URL("http://icons.iconarchive.com/icons/julie-and-mark/star-trek-TNG/32/Data-icon.png") );
-            icons[1] = new ImageIcon( new URL("http://icons.iconarchive.com/icons/bo/dilbert/32/Alice-icon.png") );
-            icons[2] = new ImageIcon(new URL("http://www.iconninja.com/files/431/644/60/grey-jean-icon.png") );
-            icons[3] = new ImageIcon(new URL("http://www.iconninja.com/files/203/584/960/dr-xavier-icon.png") );
-            icons[4] = new ImageIcon(new URL("http://icons.iconarchive.com/icons/mad-science/yellow-submarine/32/GEORGE-icon.png") );
-            icons[5] = new ImageIcon(new URL("http://icons.iconarchive.com/icons/julie-and-mark/star-trek-TNG/32/Data-icon.png") );
-            icons[6] = new ImageIcon( new URL("http://icons.iconarchive.com/icons/julie-and-mark/star-trek-TNG/32/Data-icon.png") );
-            icons[7] = new ImageIcon(new URL("http://icons.iconarchive.com/icons/julie-and-mark/star-trek-TNG/32/Data-icon.png") );
-            icons[8] = new ImageIcon(new URL("http://icons.iconarchive.com/icons/julie-and-mark/star-trek-TNG/32/Data-icon.png") );
-            icons[9] = new ImageIcon(new URL("http://icons.iconarchive.com/icons/julie-and-mark/star-trek-TNG/32/Data-icon.png") );
-            icons[10] = new ImageIcon(new URL("http://icons.iconarchive.com/icons/julie-and-mark/star-trek-TNG/32/Data-icon.png") );
-            icons[11] = new ImageIcon( new URL("http://icons.iconarchive.com/icons/julie-and-mark/star-trek-TNG/32/Data-icon.png") );
-            icons[12] = new ImageIcon(new URL("http://icons.iconarchive.com/icons/julie-and-mark/star-trek-TNG/32/Data-icon.png") );
-            icons[13] = new ImageIcon(new URL("http://www.iconninja.com/files/111/757/296/child-dr-foster-ned-s-shrink-icon.png") );
-            icons[14] = new ImageIcon(new URL("http://icons.iconarchive.com/icons/jeanette-foshee/simpsons-03/32/Guest-Stars-Johnny-Carson-icon.png") );
+        icons[SummaryNode.CLASS_NODE  ] = logoIcon;
+        icons[SummaryNode.INNER_NODE  ] = logoIcon;
+        icons[SummaryNode.INFACE_NODE ] = logoIcon;
+        icons[SummaryNode.BYTE_NODE   ] = logoIcon;
+        icons[SummaryNode.SHORT_NODE  ] = logoIcon;
+        icons[SummaryNode.INT_NODE    ] = logoIcon;
+        icons[SummaryNode.LONG_NODE   ] = logoIcon;
+        icons[SummaryNode.FLOAT_NODE  ] = logoIcon;
+        icons[SummaryNode.DOUBLE_NODE ] = logoIcon;
+        icons[SummaryNode.CHAR_NODE   ] = logoIcon;
+        icons[SummaryNode.OBJECT_NODE ] = logoIcon;
+        icons[SummaryNode.BOOLEAN_NODE] = logoIcon;
+        icons[SummaryNode.CONST_NODE  ] = logoIcon;
+        icons[SummaryNode.VOID_NODE   ] = logoIcon;
     }
-        
+    
 }

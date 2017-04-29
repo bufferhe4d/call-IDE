@@ -5,7 +5,6 @@ import java.io.*;
 import java.util.ArrayList;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
-import javax.swing.tree.TreeNode;
 
 /**
  *
@@ -33,6 +32,10 @@ public class Parser {
         }
         
         addJavaFilesandMethods();
+    }
+    
+    public Parser() {
+        rootNode = new DefaultMutableTreeNode("Method Summary");
     }
     
     /**
@@ -79,4 +82,29 @@ public class Parser {
         }
     }
     
+    public boolean contains( File file) {
+        for (int i = 0; i < rootNode.getChildCount(); i++)
+            if (((ClassNode) (rootNode.getChildAt(i))).file == file)
+                return true;
+        return false;
+    }
+    
+    public void refreshNode( File file) throws ParseException, IOException {
+        int index = getRow( file);
+        ((MutableTreeNode) rootNode.getChildAt(index)).removeFromParent();
+        rootNode.insert(new ClassNode(file), index);
+    }
+
+    public void removeNode( File file) {
+        int index = getRow( file);
+        if (index != -1)
+            ((MutableTreeNode) rootNode.getChildAt(index)).removeFromParent();
+    }
+    
+    private int getRow( File file) {
+        for (int i = 0; i < rootNode.getChildCount(); i++)
+            if (((ClassNode) (rootNode.getChildAt(i))).file == file)
+                return i;
+        return -1;
+    }
 }

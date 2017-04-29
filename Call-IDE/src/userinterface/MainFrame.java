@@ -1,11 +1,11 @@
 package userinterface;
 
+import editor.*;
 import filebrowser.*;
 import fileoperations.*;
 import helputils.*;
-import editor.*;
-import runutils.*;
 import methodsummary.*;
+import runutils.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -14,12 +14,12 @@ import java.net.*;
 import java.util.*;
 import java.util.logging.*;
 
+import javax.imageio.*;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.imageio.*;
 
-import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rtextarea.*;
+import org.fife.ui.rsyntaxtextarea.*;
 
 import com.github.javaparser.*;
 import com.github.javaparser.ast.*;
@@ -30,14 +30,9 @@ import com.github.javaparser.ast.*;
  */
 public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Dispatchable, NodeVisitor {
     
-    /** Creates new form MainFrame. */
+    /** The constructor for the MainFrame */
     public MainFrame() throws IOException {
-        textAreas = new ArrayList<RSyntaxTextArea>();
-        files = new ArrayList<File>();
-        savedContents = new ArrayList<String>();
-        tabTitles = new ArrayList<JLabel>();
-        autosavers = new ArrayList<AutoFileSaver>();
-        untitledCount = 1;
+        initProperties();
         loadIcons();
         initComponents();
         initOtherComponents();
@@ -1643,10 +1638,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Di
 
     private void loginToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginToolActionPerformed
         // TODO : remove here
-        addMethodSummary();
-        
         // fileExplorer.openProject("C:\\Users\\User\\Documents\\emp2");
-        
     }//GEN-LAST:event_loginToolActionPerformed
 
     /** Sets LookAndFeel to the given name.*/
@@ -1658,7 +1650,8 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Di
                     break;
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                IllegalAccessException |javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }        
     }
@@ -1689,6 +1682,15 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Di
         detachIcon = new ImageIcon( (new ImageIcon( getClass().getResource( 
                 "/userinterface/images/detach.png"))).getImage().getScaledInstance(
                 16, 16, java.awt.Image.SCALE_SMOOTH));
+    }
+    
+    private void initProperties() {
+        textAreas = new ArrayList<RSyntaxTextArea>();
+        files = new ArrayList<File>();
+        savedContents = new ArrayList<String>();
+        tabTitles = new ArrayList<JLabel>();
+        autosavers = new ArrayList<AutoFileSaver>();
+        untitledCount = 1;
     }
     
     private void initOtherComponents() {
@@ -1728,6 +1730,8 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Di
         consoleFrame = new JFrame("Console");
         consoleFrame.setVisible(false);
         consoleOut = false;
+        
+        insertMethodSummary();
     }
     
     private class DetachConsoleListener implements ActionListener {
@@ -1866,7 +1870,8 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Di
     }
     
     private void closeTab( int index) {
-        files.remove( index);
+        methodParser.removeNode( files.remove( index));
+        methodSummary.updateUI();
         savedContents.remove( index);
         tabTitles.remove( index);
         textAreas.remove( index);
@@ -1941,6 +1946,9 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Di
                 saver.save( content);
                 savedContents.set( files.indexOf( file), content);
                 printStatus( "File updated: " + file.getAbsolutePath());
+                
+                updateMethodSummary( file);
+                
                 return true;
             }
         } catch (IOException e) {
@@ -1953,8 +1961,16 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Di
         try {
             JFileChooser chooser = new JFileChooser();
             if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+                
                 File selected = chooser.getSelectedFile();
-                file = new File(selected.getParent() + "/" + selected.getName() + ".java");
+                
+                methodParser.removeNode( file);
+                
+                if (selected.getName().endsWith(".java"))
+                    file = new File(selected.getParent() + "/" + selected.getName());
+                else
+                    file = new File(selected.getParent() + "/" + selected.getName() + ".java");
+                
                 files.set( textTabs.getSelectedIndex(), file);
                 FileSaver saver = new FileSaver( file);
                 saver.save( getActiveContent());
@@ -1968,11 +1984,13 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Di
                             textAreas.get( textAreas.size() - 1),
                             this, preferences.getAutosaveIn()));
                 
-                // TODO : NOT WORKING PROPERLY
                 if (fileExplorer != null) {
                     fileExplorer.updateDirectory(selected.getParent());
                 }
-        
+                
+                updateMethodSummary( file);
+                methodSummary.updateUI();
+               
                 return true;
             }
         } catch (IOException e) {
@@ -1990,6 +2008,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Di
             }
     }
     
+    @Override
     public void openFile( File file) {
         try {
             for (int i = 0; i < files.size(); i++) {
@@ -2010,6 +2029,9 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Di
                         this, preferences.getAutosaveIn()));
             savedContents.add( content);
             textTabs.setSelectedIndex( textAreas.size() - 1);
+            
+            updateMethodSummary( file);
+            
             printStatus( "File opened: " + file.getName());
         } catch (IOException e) {
             e.printStackTrace();
@@ -2103,6 +2125,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Di
     }
     
     // TODO : ADD SUBMISSION OPTION PROPERTY TO THE PREFERENCES CLASS.
+    // TODO : ADD BROWSER & SUMMARY FONT TO THE PREFERENCES CLASS.
     private void applyPreferences() throws IOException {
         boolean[] toolbarPrefs = preferences.getToolbar();
         JButton[] currentToolbar = {newTool, openTool, saveTool,
@@ -2273,6 +2296,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Di
         }
     }
     
+    @Override
     public void report( File file, String content) {
         printStatus( "File saved automatically: " + file.getAbsolutePath());
         savedContents.set(files.indexOf(file), content);
@@ -2459,6 +2483,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Di
             insertedPane.getDocument().addDocumentListener(new DocumentListener() {
                 public void changedUpdate(DocumentEvent e) {}
                 public void removeUpdate(DocumentEvent e) {}
+                @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (insertedPane.getText().contains("BUILD SUCCESSFUL"))
                         runCurrentFile();
@@ -2467,6 +2492,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Di
         }
     }
     
+    @Override
     public void dispatchConsole() {
         consoleOut = false;
         consoleOutputScrollPane.setViewportView(consoleOutputArea);
@@ -2491,11 +2517,34 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Di
         return textTabs.getSelectedIndex() != -1;
     }
     
-    private void addMethodSummary() {
-        //SummaryTree methodSummary = new SummaryTree( "C:\\Users\\User\\Documents\\hello", this);
-        //methodSummaryScrollPane.setViewportView(methodSummary);
+    private void insertMethodSummary() {
+        try {
+            methodParser = new Parser();
+            methodSummary = new SummaryTree( methodParser, this);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        methodSummaryScrollPane.setViewportView(methodSummary);
     }
     
+    private void updateMethodSummary( File file) {
+        try {
+            if (!methodParser.contains(file))
+                methodParser.addNode( file);
+            else {
+                methodParser.refreshNode( file);
+            }
+        } catch (ParseException | IOException ex ) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        methodSummary.configureTree();
+        methodSummary.expandRow(0);
+        methodSummary.updateUI();
+    }
+    
+    @Override
     public void visitNode( File file, Position position) {
         int index = -1;
         for (int i = 0; i < files.size(); i++) {
@@ -2538,6 +2587,8 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Di
     private JFrame consoleFrame;
     private boolean consoleOut;
     private Component tabComp;
+    private SummaryTree methodSummary;
+    private Parser methodParser;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutButton;

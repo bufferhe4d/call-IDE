@@ -11,7 +11,6 @@ package methodsummary;
  */
 interface SummaryNode {
     
-    
     final int CLASS_NODE = 0;
     final int INNER_NODE = 1;
     final int INFACE_NODE = 2;
@@ -26,8 +25,6 @@ interface SummaryNode {
     final int BOOLEAN_NODE = 11;
     final int CONST_NODE  = 12;
     final int VOID_NODE   = 13;
-    
-    
     
     /**
      * This method give node type 
