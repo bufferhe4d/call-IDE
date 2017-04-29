@@ -2,7 +2,9 @@ package fileoperations;
 
 import java.io.IOException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.Scanner;
 
 /**
  * A class to save text files.
@@ -51,6 +53,17 @@ public class FileSaver {
     
     public File getFile() {
         return file;
+    }
+    
+    public String getContent() throws FileNotFoundException
+    {
+        Scanner scan = new Scanner(  file );
+        String content = "";
+        while( scan.hasNext() )
+        {
+            content.concat(scan.nextLine() + "\n");
+        }
+        return content;        
     }
     
 }

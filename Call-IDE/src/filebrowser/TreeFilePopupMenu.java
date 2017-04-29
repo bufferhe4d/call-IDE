@@ -2,6 +2,9 @@ package filebrowser;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The PopupMenu class for files in the file explorer.
@@ -13,6 +16,7 @@ public class TreeFilePopupMenu extends JPopupMenu implements ActionListener
     // PROPERTIES
     JMenuItem delete;
     JMenuItem copy;
+    JMenuItem paste;
     FileNode file;
     FileNavigator navigator;
     
@@ -25,12 +29,15 @@ public class TreeFilePopupMenu extends JPopupMenu implements ActionListener
         
         delete = new JMenuItem("Delete File");
         copy = new JMenuItem("Copy File");
+        paste = new JMenuItem("Paste Here...");
         
         add( delete );
         add(copy);
+        add( paste );
         
         delete.addActionListener( this);
         copy.addActionListener( this);
+        paste.addActionListener(this);
     }
     
     // METHODS
@@ -48,7 +55,16 @@ public class TreeFilePopupMenu extends JPopupMenu implements ActionListener
         else if( e.getSource() == copy )
         {
             System.out.println(" copy file ");
-            file.copyFile();
+            copyFile();
+        }
+        else if( e.getSource() == paste )
+        {
+            try {
+                ((FileNode)file.getParent()).pasteFile( navigator.clipboardNode );
+                System.out.println(" paste here ");
+            } catch (IOException ex) {
+                Logger.getLogger(TreeFilePopupMenu.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
         navigator.updateUI();
@@ -57,5 +73,10 @@ public class TreeFilePopupMenu extends JPopupMenu implements ActionListener
     public void setFile( FileNode file )
     {
         this.file = file;
+    }
+    
+    public void copyFile()
+    {
+        navigator.clipboardNode = file;
     }
 }

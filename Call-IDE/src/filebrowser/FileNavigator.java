@@ -19,8 +19,9 @@ public class FileNavigator extends JTree implements TreeSelectionListener
     TreeDirectoryPopupMenu directoryMenu;
     TreeFilePopupMenu      fileMenu;
     TreeJavaFilePopupMenu  javaFileMenu;
-    FileOpener opener;
-    FileNode root;
+    FileOpener             opener;
+    FileNode               root;
+    FileNode               clipboardNode;
     
     public FileNavigator(  ArrayList<String> files  )
     { 
@@ -53,6 +54,11 @@ public class FileNavigator extends JTree implements TreeSelectionListener
     {
         ((FileNode)root.nodesAndPaths.get(DirectoryPath)).updateChildren();
         updateUI();
+    }
+    
+    public boolean clipboradIsEmpty()
+    {
+        return clipboardNode == null ;
     }
     
     class TreeMouseListener extends MouseAdapter
@@ -105,4 +111,5 @@ public class FileNavigator extends JTree implements TreeSelectionListener
             updateUI();
         }
     }
+    
 }

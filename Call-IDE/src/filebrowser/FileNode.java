@@ -205,7 +205,7 @@ public class FileNode extends DefaultMutableTreeNode
         add(temp );
         temp.checkEmptyDir();
         ((FileNode)(this.parent)).updateChildren();
-        //}
+        //}p
     }
     
     public File getFile()
@@ -221,9 +221,12 @@ public class FileNode extends DefaultMutableTreeNode
         }
     }
     
-    public void copyFile()
+    public void pasteFile( FileNode sourceNode ) throws IOException
     {
-        // copy file...
+        File temp =  new File( file.getAbsolutePath() + "\\" + sourceNode.toString() );
+        FileSaver filePaster = new FileSaver(sourceNode.getFile());
+        filePaster.saveAs( filePaster.getContent(), temp);
+        updateChildren();
     }
     
     public void updateChildren()

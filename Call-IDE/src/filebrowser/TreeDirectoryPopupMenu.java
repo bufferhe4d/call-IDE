@@ -2,6 +2,9 @@ package filebrowser;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The PopupMenu class for folders in the file explorer.
@@ -14,6 +17,7 @@ public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
     JMenuItem deleteFolder;
     JMenuItem createFile;
     JMenuItem createFolder;
+    JMenuItem paste;
     JMenuItem projectProperties;
     FileNode  file;
     FileNavigator navigator;
@@ -27,17 +31,20 @@ public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
         deleteFolder = new  JMenuItem("Delete Folder");
         createFile = new JMenuItem( "Create File");
         createFolder = new JMenuItem( "Create Folder");
+        paste = new JMenuItem("Paste Here");
         projectProperties = new JMenuItem( "Project Properties");
         
         add(deleteFolder);
         add(createFile);
         add(createFolder);
+        add(paste);
         addSeparator();
         add(projectProperties);
         
         deleteFolder.addActionListener( this);
         createFile.addActionListener( this);
         createFolder.addActionListener( this);
+        paste.addActionListener(this);
         projectProperties.addActionListener( this);
     }
     
@@ -77,6 +84,15 @@ public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
         else if (e.getSource() == projectProperties)
         {
             System.out.println("Show project properties...");
+        }
+        else if( e.getSource() == paste )
+        {
+            System.out.print("paste..");
+            try {
+                file.pasteFile( navigator.clipboardNode );
+            } catch (IOException ex) {
+                Logger.getLogger(TreeFilePopupMenu.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
         navigator.updateUI();
