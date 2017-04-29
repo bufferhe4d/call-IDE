@@ -3,8 +3,9 @@ package filebrowser;
 import java.io.File;
 
 /**
- * 
+ * This class present files for file node with contains references itself, parent and grandparents
  * @author Mahmud Sami Aydin
+ * version 1.03, 29/04/2017
  */
 public class PathedFile extends File 
 {
@@ -14,6 +15,11 @@ public class PathedFile extends File
     String       extension;
     
     // Constructors
+    /**
+     * This consturctor make child file, path getter from parent
+     *
+     *
+     */
     public PathedFile( String pathname, PathedFile[] parentPath )
     {
         super( pathname );
