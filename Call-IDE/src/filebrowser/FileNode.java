@@ -118,8 +118,13 @@ public class FileNode extends DefaultMutableTreeNode
     {
         if(file == null)
             return "<empty>";
-        if(file.equals(new PathedFile("/Nowhere/it/is/not/a/real/file")))
-            return "Workspace";
+        if(isRoot())
+        {
+            if( isWorkspace)
+                return "Workspace";
+            else
+                return "Recent Files";
+        }
         return file.toString();
     }
     
@@ -235,4 +240,21 @@ public class FileNode extends DefaultMutableTreeNode
     public boolean isEmpty() {
         return file == null && isLeaf();
     }
+    
+       public void    setWorkspace( boolean workspace)
+    {
+        if( isRoot() )
+        {
+            isWorkspace = workspace;
+        }
+    }
+    public boolean isWorkspace()
+    {
+        return isRoot() && isWorkspace;
+    }
+    
+    public boolean isRoot(){
+        return file.equals(new PathedFile("/Nowhere/it/is/not/a/real/file"));
+    }
+    
 }
