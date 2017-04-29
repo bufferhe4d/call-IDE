@@ -16,6 +16,7 @@ public class FileNode extends DefaultMutableTreeNode
     PathedFile file;
     boolean allowsChildren;
     HashMap nodesAndPaths;
+    boolean isWorkspace;
     
     public FileNode( ArrayList<String> files )
     {
