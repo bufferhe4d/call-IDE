@@ -2521,6 +2521,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Di
         try {
             methodParser = new Parser();
             methodSummary = new SummaryTree( methodParser, this);
+            ToolTipManager.sharedInstance().registerComponent( methodSummary ) ;
         } catch (MalformedURLException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
