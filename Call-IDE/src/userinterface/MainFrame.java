@@ -2393,22 +2393,33 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Di
     }
 
     private void runCurrentFile() {
-        File f = getActiveFile();
-        if (f == null) {
+        File file = getActiveFile();
+        if (file == null) {
              printStatus("The file should be saved and compiled before running.");
              return;
         }
         
-        File build = new File(f.getParent() + "/classes");
+        File build = new File(file.getParent() + "/classes");
         if (!build.exists()){
             printStatus("The file should be saved and compiled before running.");
+            return;
+        }
+        
+        Parser mainChecker = new Parser();
+        try {
+            mainChecker.addNode(file);
+        } catch (ParseException | IOException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (!mainChecker.hasMain(file)) {
+            printStatus("The class does not have a proper main method.");
             return;
         }
             
         String packageName = "";
         CompilationUnit cu;
         try {
-            cu = JavaParser.parse( f );
+            cu = JavaParser.parse(file );
             if (cu.getPackageDeclaration().isPresent())
                 packageName = cu.getPackageDeclaration().get().getName().toString();
         } catch (IOException ex) {
@@ -2430,9 +2441,9 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Di
         try {
             executor = new Executor(build.toURI().toURL());
             if(packageName.equals(""))
-                executor.execute(f.getName().substring(0, f.getName().length() - 5));
+                executor.execute(file.getName().substring(0, file.getName().length() - 5));
             else
-                executor.execute(packageName + "." + f.getName().substring(0, f.getName().length() - 5));
+                executor.execute(packageName + "." + file.getName().substring(0, file.getName().length() - 5));
             
         } catch (MalformedURLException ex1) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex1);
@@ -2537,8 +2548,8 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Di
             else {
                 methodParser.refreshNode( file);
             }
-        } catch (ParseException | IOException ex ) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException | IOException | ParseProblemException ex ) {
+            // Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         methodSummary.configureTree();
         methodSummary.expandRow(0);

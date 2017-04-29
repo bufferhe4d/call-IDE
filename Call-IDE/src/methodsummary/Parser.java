@@ -1,6 +1,8 @@
 package methodsummary;
 
 import com.github.javaparser.*;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.Parameter;
 import java.io.*;
 import java.util.ArrayList;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -99,6 +101,25 @@ public class Parser {
         int index = getRow( file);
         if (index != -1)
             ((MutableTreeNode) rootNode.getChildAt(index)).removeFromParent();
+    }
+    
+    public boolean hasMain( File file) {
+        int index = getRow( file);
+        if (index != -1) {
+            MutableTreeNode node = ((MutableTreeNode) rootNode.getChildAt(index));
+            if (node instanceof ClassNode) {
+                for (int i = 0; i < ((ClassNode) node).getChildCount(); i++) {
+                    MethodDeclaration metDec = ((MethodNode) (((ClassNode) node).getChildAt(i))).metDec;
+                    if (metDec.getNameAsString().equals("main") &&
+                        metDec.isPublic() && metDec.isStatic()) {
+                        ArrayList<Parameter> parameters = new ArrayList<Parameter>(metDec.getParameters());
+                        if (parameters.size() == 1 && parameters.get(0).toString().equals("String[] args"))
+                            return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
     
     private int getRow( File file) {
