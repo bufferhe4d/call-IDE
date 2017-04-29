@@ -43,6 +43,8 @@ public class SummaryCellRenderer extends DefaultTreeCellRenderer{
             setFont(getFont().deriveFont(2));
         else
             setFont(getFont().deriveFont(0));
+        
+        setToolTipText( ((SummaryNode)value).getJavadoc() );
         }
         
         

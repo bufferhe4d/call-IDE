@@ -78,4 +78,24 @@ public class ConstructorNode extends DefaultMutableTreeNode implements Visitable
     public int nodeType() {
         return SummaryNode.CONST_NODE;
     }
+
+    @Override
+    public String getJavadoc() {
+        String javadoc;
+        if (conDec.getJavadoc().isPresent())
+        {
+             javadoc = "<html>" + conDec.getJavadoc().get().toText() + "</html>" ;
+            
+            for( int i = 0; i < javadoc.length(); i++ )
+            {
+                if( javadoc.charAt(i) == '@' )
+                {
+                    javadoc = javadoc.substring(0, i) + "<br/>" + javadoc.substring(i);
+                    i= i+5;
+                }
+            }
+            return javadoc;
+        }
+        return "Javadoc not Found";
+    }
 }

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import java.io.File;
+import java.util.Scanner;
 
 /**
  *
@@ -97,5 +98,26 @@ public class MethodNode extends DefaultMutableTreeNode implements VisitableNode,
             return SummaryNode.VOID_NODE;
         return SummaryNode.OBJECT_NODE;
         
+    }
+
+    @Override
+    public String getJavadoc() {
+        String javadoc;
+        
+        if( metDec.getJavadoc().isPresent())
+        {
+            javadoc = "<html>" + metDec.getJavadoc().get().toText() + "</html>" ;
+            
+            for( int i = 0; i < javadoc.length(); i++ )
+            {
+                if( javadoc.charAt(i) == '@' )
+                {
+                    javadoc = javadoc.substring(0, i) + "<br/>" + javadoc.substring(i);
+                    i= i+5;
+                }
+            }
+            return javadoc;
+        }
+        return "Javadoc not Found";
     }
 }

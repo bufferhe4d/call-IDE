@@ -49,6 +49,27 @@ public class ClassNode extends DefaultMutableTreeNode implements SummaryNode {
         return SummaryNode.CLASS_NODE;
     }
 
+    @Override
+    public String getJavadoc() {
+         String javadoc;
+        
+        if ( !compUnit.getComments().isEmpty() )
+        {
+             javadoc = "<html>" + compUnit.getComments().iterator().next().getContent().substring(5) + "</html>" ;
+            
+            for( int i = 0; i < javadoc.length(); i++ )
+            {
+                if( javadoc.charAt(i) == '*' )
+                {
+                    javadoc = javadoc.substring(0, i) + "<br/>" + javadoc.substring(i+1);
+                    i= i+5;
+                }
+            }
+            return javadoc;
+        }
+        return "Javadoc not Found";
+    }
+
     private class FindInnerMethods extends VoidVisitorAdapter<Void> 
     {
         @Override

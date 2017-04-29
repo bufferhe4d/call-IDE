@@ -34,4 +34,6 @@ interface SummaryNode {
      * @return type of node 
      */
     public int nodeType();
+    
+    public String getJavadoc();
 }
