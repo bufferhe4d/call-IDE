@@ -16,14 +16,15 @@ import javax.swing.tree.DefaultMutableTreeNode;
  *
  * @author mahmudsami
  */
-public class ClassNode extends DefaultMutableTreeNode {
+public class ClassNode extends DefaultMutableTreeNode implements SummaryNode {
     
     
-    CompilationUnit  compUnit;
+    CompilationUnit               compUnit;
     ArrayList<MethodDeclaration>  innerClassMethods;
-    String             nodeName;
-    int                innerMethodIndex;
-    File file;
+    String                        nodeName;
+    int                           innerMethodIndex;
+    boolean                       isInterface;
+    File                          file;
     
     ClassNode( File classFile ) throws ParseException, IOException
     {
@@ -39,6 +40,13 @@ public class ClassNode extends DefaultMutableTreeNode {
         new MethodVisitor().visit( compUnit, null);        
         new InnerClassVisitor().visit(compUnit, null);
         
+    }
+
+    @Override
+    public int nodeType() {
+         if(isInterface)
+            return SummaryNode.INFACE_NODE;
+        return SummaryNode.CLASS_NODE;
     }
 
     private class FindInnerMethods extends VoidVisitorAdapter<Void> 
@@ -95,6 +103,10 @@ public class ClassNode extends DefaultMutableTreeNode {
             if( !nodeName.equals(n.getNameAsString()+ ".java"))
             {
                 add( new InnerNode(n));
+            }
+            else
+            {
+                isInterface = n.isInterface();
             }
             super.visit(n, arg);
         }

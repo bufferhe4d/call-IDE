@@ -12,7 +12,7 @@ import javax.swing.tree.TreeNode;
  *
  * @author mahmudsami
  */
-public class ConstructorNode extends DefaultMutableTreeNode implements VisitableNode {
+public class ConstructorNode extends DefaultMutableTreeNode implements VisitableNode, SummaryNode {
     
     ArrayList<Parameter> parameters;
     String               nodeName;
@@ -72,5 +72,10 @@ public class ConstructorNode extends DefaultMutableTreeNode implements Visitable
         file = ((ClassNode) parent).file;
         
         position = conDec.getBegin().get();
+    }
+
+    @Override
+    public int nodeType() {
+        return SummaryNode.CONST_NODE;
     }
 }

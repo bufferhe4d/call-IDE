@@ -5,6 +5,7 @@ import javax.swing.*;
 import javax.swing.tree.*;
 import javax.swing.event.*;
 import java.io.File;
+import java.net.MalformedURLException;
 
 /**
  * The JTree component to visualise methods and constructors.
@@ -15,12 +16,12 @@ public class SummaryTree extends JTree implements TreeSelectionListener {
 
     NodeVisitor visitor;
     
-    public SummaryTree( String root, NodeVisitor visitor) {
+    public SummaryTree( String root, NodeVisitor visitor) throws MalformedURLException {
         super( (new Parser( root)).getRootNode());
         this.visitor = visitor;
         
         configureNodes((TreeNode) treeModel.getRoot());
-        
+        setCellRenderer( new SummaryCellRenderer());
         addTreeSelectionListener( this);
     }
     

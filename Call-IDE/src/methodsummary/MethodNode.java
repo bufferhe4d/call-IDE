@@ -13,7 +13,7 @@ import java.io.File;
  *
  * @author sami.aydin-ug
  */
-public class MethodNode extends DefaultMutableTreeNode implements VisitableNode {
+public class MethodNode extends DefaultMutableTreeNode implements VisitableNode, SummaryNode {
     
     ArrayList<Parameter> parameters;
     Type                 type;
@@ -52,7 +52,7 @@ public class MethodNode extends DefaultMutableTreeNode implements VisitableNode 
         }
         nodeName = nodeName + ") : " + type.toString();
         
-        
+        System.out.println(type.toString());
     }
     
     public String toString()
@@ -75,5 +75,26 @@ public class MethodNode extends DefaultMutableTreeNode implements VisitableNode 
         file = ((ClassNode) parent).file;
         
         position = metDec.getBegin().get();
+    }
+
+    @Override
+    public int nodeType() {
+        if(type.toString().equals("int"))
+            return SummaryNode.INT_NODE;
+        if(type.toString().equals("byte"))
+            return SummaryNode.BYTE_NODE;
+        if(type.toString().equals("boolean"))
+            return SummaryNode.BOOLEAN_NODE;
+        if(type.toString().equals("double"))
+            return SummaryNode.DOUBLE_NODE;
+        if(type.toString().equals("float"))
+            return SummaryNode.FLOAT_NODE;
+        if(type.toString().equals("long"))
+            return SummaryNode.LONG_NODE;
+        if(type.toString().equals("short"))
+            return SummaryNode.SHORT_NODE;
+        if(type.toString().equals("Object"))
+            return SummaryNode.OBJECT_NODE;
+        return SummaryNode.VOID_NODE;
     }
 }

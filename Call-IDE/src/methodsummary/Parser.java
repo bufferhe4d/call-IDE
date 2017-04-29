@@ -4,6 +4,8 @@ import com.github.javaparser.*;
 import java.io.*;
 import java.util.ArrayList;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreeNode;
 
 /**
  *
@@ -53,5 +55,28 @@ public class Parser {
         return rootNode;
     }
     
+    /**
+     * This method add a java file into method summary
+     * @param file java file which will be parsed
+     * @throws ParseException
+     * @throws IOException 
+     */
+    public void addNode( File file ) throws ParseException, IOException
+    {
+        rootNode.add(new ClassNode(file));
+    }
+    
+    /**
+     * This method clear tree
+     */
+    public void clearNodes()
+    {
+        ArrayList<MutableTreeNode> childrenOfRoot;
+        childrenOfRoot = (ArrayList<MutableTreeNode>) rootNode.children();
+        for( MutableTreeNode child : childrenOfRoot)
+        {
+            child.removeFromParent();
+        }
+    }
     
 }
