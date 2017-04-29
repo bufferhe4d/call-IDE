@@ -80,7 +80,7 @@ public class FileNavigator extends JTree implements TreeSelectionListener
                     return;
                 }
 
-                if (lastSelectedFile.file.equals(new PathedFile("/Nowhere/it/is/not/a/real/file")))
+                if (lastSelectedFile.isRoot())
                     return;
                 
                 FileNavigator.this.setSelectionPath(getClosestPathForLocation(e.getX() , e.getY()));
