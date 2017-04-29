@@ -93,8 +93,9 @@ public class MethodNode extends DefaultMutableTreeNode implements VisitableNode,
             return SummaryNode.LONG_NODE;
         if(type.toString().equals("short"))
             return SummaryNode.SHORT_NODE;
-        if(type.toString().equals("Object"))
-            return SummaryNode.OBJECT_NODE;
-        return SummaryNode.VOID_NODE;
+        if(type.toString().equals("void"))
+            return SummaryNode.VOID_NODE;
+        return SummaryNode.OBJECT_NODE;
+        
     }
 }
