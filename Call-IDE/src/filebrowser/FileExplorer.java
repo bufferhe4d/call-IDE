@@ -45,6 +45,11 @@ public class FileExplorer extends JPanel
         }
     }
     
+    public void convertToWorkspace( boolean makeWorkspace)
+    {
+            navigator.root.setWorkspace(makeWorkspace);
+    }
+    
     public void updateDirectory( String DirectoryPath )
     {
         navigator.updateDirectory( DirectoryPath );
