@@ -1790,6 +1790,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Di
     private void addTab( String tabName, String content) throws IOException {
         JPanel panel = new JPanel( new BorderLayout());
         RSyntaxTextArea textArea = new RSyntaxTextArea();
+        new CommentFunctionality( textArea);
         textArea.setSyntaxEditingStyle( SyntaxConstants.SYNTAX_STYLE_JAVA);
         textArea.setCodeFoldingEnabled( true);
         Theme theme = Theme.load( getClass().getResourceAsStream( preferences.getTheme()));
