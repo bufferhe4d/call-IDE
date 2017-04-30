@@ -87,7 +87,7 @@ public class CommentFunctionality{
         
         for( int i = 2; i < searchContext.getSearchFor().length(); i++)
         {
-            if( searchContext.getSearchFor().charAt( i ) == '\n' && searchContext.getSearchFor().length() - 3 > i)
+            if( searchContext.getSearchFor().charAt( i ) == '\n' && searchContext.getSearchFor().length() - 2 > i)
             {
                 changedText = changedText + searchContext.getSearchFor().charAt(i);
                 if( searchContext.getSearchFor().substring( i + 1, i + 3).equals("//") )
