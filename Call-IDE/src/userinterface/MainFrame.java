@@ -684,7 +684,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
 
         classPathButton.setText("Choose Path");
 
-        projectNameField.setText("Project1");
+        projectNameField.setText("Project2");
 
         projectLocationField.setText("C:\\Users\\User\\Documents\\hello\\proj\\");
 
@@ -695,7 +695,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
             projectRootLabel.setText("Project Root:");
 
             dd.setEditable(false);
-            dd.setText("C:\\Users\\User\\Documents\\hello\\proj\\Project1");
+            dd.setText("C:\\Users\\User\\Documents\\hello\\proj\\Project2");
 
             javax.swing.GroupLayout projectPanelLayout = new javax.swing.GroupLayout(projectPanel);
             projectPanel.setLayout(projectPanelLayout);
@@ -1070,11 +1070,6 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
             helpTool.setToolTipText("Help Contents");
 
             loginTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/images/login.png"))); // NOI18N
-            loginTool.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    loginToolActionPerformed(evt);
-                }
-            });
 
             javax.swing.GroupLayout toolbarPanelLayout = new javax.swing.GroupLayout(toolbarPanel);
             toolbarPanel.setLayout(toolbarPanelLayout);
@@ -1671,11 +1666,6 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
             resetInteractions();
     }//GEN-LAST:event_resetButtonActionPerformed
 
-    private void loginToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginToolActionPerformed
-        // TODO : remove here
-        // fileExplorer.openProject("C:\\Users\\User\\Documents\\emp2");
-    }//GEN-LAST:event_loginToolActionPerformed
-
     private void newProjectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newProjectButtonActionPerformed
         showCreateProject();
     }//GEN-LAST:event_newProjectButtonActionPerformed
@@ -2134,7 +2124,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         fileExplorer.setBackground( Color.WHITE);
         explorerScrollPane.setViewportView( fileExplorer);
     }
-
+    
     private void addEmptyExplorer() {
         explorerScrollPane.setViewportView( noWorkspacePanel);
     }
@@ -2660,6 +2650,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         }
     }
     
+    // TODO : WIRE UP THE PROPERTIES FRAME
     // TODO : CANT OPEN A PROJECT WHICH IS IN THE LEFT BROWSER
     // TODO : CHANGE THE CONVERTING WORKSPACE METHOD NAMES
     // TODO : CANT OPEN MULTPLE PROJECTS PROPERLY
@@ -2682,11 +2673,24 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (open) {
-            if (!fileExplorer.isWorkspace()) {
+            if (!fileExplorer.isProjectBrowser()) {
+                explorerScrollPane.remove(fileExplorer);
+                addExplorerWith( handler.getPath());
+                fileExplorer.setIsProjectBrowser(true);
+            }
+            else {
                 fileExplorer.openProject(handler.getPath());
-                fileExplorer.convertToWorkspace(true);
             }
         }
+    }
+    
+    private void addExplorerWith( String rootString) {
+        noWorkspacePanel.setVisible( false);
+        ArrayList<String> projects = new ArrayList<String>();
+        projects.add( rootString);
+        fileExplorer = new FileExplorer( projects, this);
+        fileExplorer.setBackground( Color.WHITE);
+        explorerScrollPane.setViewportView( fileExplorer);
     }
 
     // Other Variables

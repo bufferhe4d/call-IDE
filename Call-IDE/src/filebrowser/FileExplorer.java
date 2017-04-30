@@ -64,21 +64,17 @@ public class FileExplorer extends JPanel
     }
     
     /**
-     * This method converts explorer workspace if parameter true otherwise it make explorer recent files
-     * @param makeWorkspace if true make workspace
+     * @param isProjectBrowser
      */
-    public void convertToWorkspace( boolean makeWorkspace)
+    public void setIsProjectBrowser( boolean isProjectBrowser)
     {
-        navigator.root.setWorkspace( makeWorkspace);
-        if (makeWorkspace) { // clear the old browser node
-            ((DefaultMutableTreeNode) navigator.root.getChildAt(0)).removeFromParent();
-        }
+        navigator.root.setIsBrowsingProjects( isProjectBrowser);        
         navigator.updateUI();
     }
     
-    public boolean isWorkspace()
+    public boolean isProjectBrowser()
     {
-        return navigator.root.isWorkspace();
+        return navigator.root.isBrowsingProjects();
     }
     
     /**

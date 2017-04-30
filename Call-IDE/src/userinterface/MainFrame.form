@@ -905,7 +905,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="projectNameField">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Project1"/>
+                <Property name="text" type="java.lang.String" value="Project2"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="projectLocationField">
@@ -931,7 +931,7 @@
             <Component class="javax.swing.JTextField" name="dd">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
-                <Property name="text" type="java.lang.String" value="C:\u005cUsers\u005cUser\u005cDocuments\u005chello\u005cproj\u005cProject1" containsInvalidXMLChars="true"/>
+                <Property name="text" type="java.lang.String" value="C:\u005cUsers\u005cUser\u005cDocuments\u005chello\u005cproj\u005cProject2" containsInvalidXMLChars="true"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -1874,9 +1874,6 @@
               <Image iconType="3" name="/userinterface/images/login.png"/>
             </Property>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loginToolActionPerformed"/>
-          </Events>
         </Component>
       </SubComponents>
     </Container>

@@ -58,7 +58,7 @@ public class ClassNode extends DefaultMutableTreeNode implements SummaryNode {
         
         if (!compUnit.getComments().isEmpty())
         {
-            javadoc = "<html>" + compUnit.getComments().iterator().next().getContent().substring(5) + "</html>" ;
+            javadoc = "<html>" + compUnit.getComments().iterator().next().getContent().substring(0) + "</html>" ;
             
             for( int i = 0; i < javadoc.length(); i++ )
             {

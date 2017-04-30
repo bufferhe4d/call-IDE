@@ -21,7 +21,7 @@ public class FileNode extends DefaultMutableTreeNode
     PathedFile file;
     boolean    allowsChildren;
     HashMap    nodesAndPaths;
-    boolean    isWorkspace;
+    boolean    isBrowsingProjects;
     
     public FileNode( ArrayList<String> files )
     {
@@ -123,7 +123,7 @@ public class FileNode extends DefaultMutableTreeNode
             return "<empty>";
         if (isRoot())
         {
-            if (isWorkspace)
+            if (isBrowsingProjects)
                 return "Active Projects";
             else
                 return "File Explorer";
@@ -241,21 +241,25 @@ public class FileNode extends DefaultMutableTreeNode
         return file == null && isLeaf();
     }
     
-    public void setWorkspace( boolean workspace)
+    public void setIsBrowsingProjects( boolean isBrowsingProjects)
     {
-        if( isRoot() )
+        if( isRoot())
         {
-            isWorkspace = workspace;
+            this.isBrowsingProjects = isBrowsingProjects;
         }
     }
     
-    public boolean isWorkspace()
+    public boolean isBrowsingProjects()
     {
-        return isRoot() && isWorkspace;
+        return isRoot() && isBrowsingProjects;
     }
     
     public boolean isRoot(){
         return file.equals( new PathedFile( "/DEFAULT_PATH/"));
+    }
+    
+    public void clearNodesAndPaths() {
+        nodesAndPaths = new HashMap();
     }
     
 }
