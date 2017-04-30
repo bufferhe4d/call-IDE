@@ -1,9 +1,10 @@
 package editor;
 
-import org.fife.ui.rsyntaxtextarea.*;
-import org.fife.ui.rtextarea.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import org.fife.ui.rsyntaxtextarea.*;
+import org.fife.ui.rtextarea.*;
 
 /**
  * A class to build the logic of find and replace methods by using the

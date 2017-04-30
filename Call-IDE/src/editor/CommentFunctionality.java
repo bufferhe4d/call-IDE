@@ -1,20 +1,23 @@
 package editor;
-import org.fife.ui.rsyntaxtextarea.*;
-import org.fife.ui.rtextarea.*;
+
 import java.awt.event.*;
 import javax.swing.*;
 
+import org.fife.ui.rtextarea.*;
+import org.fife.ui.rsyntaxtextarea.*;
+
 /**
- * Desc     A class to implement the commenting and uncommenting functionality for
- *          text editor and add those functionality to the text editor's pop up
- *          menu to provide menu items for doing functionalities in this class
- * @author  Halil Şahiner
+ * A class to implement the commenting and uncommenting functionality for
+ * text editor and add those functionality to the text editor's pop up
+ * menu to provide menu items for doing functionalities in this class
+ * @author  Halil Sahiner
  * @version 1.0 30.04.2017
  */
-public class CommentFunctionality{
+public class CommentFunctionality {
     
     private RSyntaxTextArea textArea;
-    private JMenuItem commentLines, uncommentLines;
+    private JMenuItem commentLines;
+    private JMenuItem uncommentLines;
     private SearchContext searchContext;
     private String changedText;
     
@@ -41,23 +44,23 @@ public class CommentFunctionality{
             
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                CommentLines();
+                commentLines();
             }
         });
         uncommentLines.addActionListener(new ActionListener(){
             
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                UncommentLines();
+                uncommentLines();
             }
         });
-        
     }
+    
     /**
      * A private method to implement a commenting functionality for the selected
      * texts in the text editor's text area
      */
-    private void CommentLines()
+    private void commentLines()
     {
         searchContext = new SearchContext ("");
         searchContext.setSearchFor(textArea.getSelectedText());
@@ -73,11 +76,12 @@ public class CommentFunctionality{
             SearchEngine.replace( textArea, searchContext);
         }
     }
+    
     /**
      * A private method to implement a uncommenting functionality for the selected
      * texts in the text editor's text area
      */
-    private void UncommentLines()
+    private void uncommentLines()
     {
         searchContext = new SearchContext ("");
         searchContext.setSearchFor(textArea.getSelectedText());

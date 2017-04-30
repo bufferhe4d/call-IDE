@@ -1,5 +1,6 @@
 package filebrowser;
 
+import fileoperations.ContentReader;
 import fileoperations.FileSaver;
 
 import java.io.File;
@@ -216,9 +217,9 @@ public class FileNode extends DefaultMutableTreeNode
     
     public void pasteFile( FileNode sourceNode) throws IOException
     {
-        File temp =  new File( file.getAbsolutePath() + "\\" + sourceNode.toString());
+        File temp =  new File( file.getAbsolutePath() + "/" + sourceNode.toString());
         FileSaver filePaster = new FileSaver( sourceNode.getFile());
-        filePaster.saveAs( filePaster.getContent(), temp);
+        filePaster.saveAs( ContentReader.read(sourceNode.getFile()), temp);
         updateChildren();
     }
     

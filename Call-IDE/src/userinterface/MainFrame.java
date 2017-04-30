@@ -1806,7 +1806,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         sp.setLineNumbersEnabled( preferences.getDisplayLineNumbers());
         panel.add( sp);
         textTabs.add(tabName, panel);
-        int index = textTabs.indexOfTab( tabName);
+        int index = textTabs.getTabCount() - 1;
         JPanel tabPanel = new JPanel();
         JLabel titleLabel = new JLabel( tabName);
         tabTitles.add( titleLabel);

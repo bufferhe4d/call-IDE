@@ -21,6 +21,8 @@ public class TreeJavaFilePopupMenu extends TreeFilePopupMenu
         
         compile = new JMenuItem( "Compile File");
         run = new JMenuItem( "Run File");
+        
+        addSeparator();
         add( compile);
         add( run);
         

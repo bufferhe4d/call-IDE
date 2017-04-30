@@ -31,8 +31,8 @@ public class TreeFilePopupMenu extends JPopupMenu implements ActionListener
         
         this.navigator = navigator;
         
-        delete = new JMenuItem( "Delete File");
-        copy = new JMenuItem( "Copy File");
+        delete = new JMenuItem( "Delete");
+        copy = new JMenuItem( "Copy");
         paste = new JMenuItem( "Paste");
         
         add( delete);

@@ -32,15 +32,16 @@ public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
         
         this.navigator = navigator;
         
-        deleteFolder = new  JMenuItem( "Delete Folder");
+        deleteFolder = new  JMenuItem( "Delete");
         createFile = new JMenuItem( "Create File");
         createFolder = new JMenuItem( "Create Folder");
-        paste = new JMenuItem( "Paste Here");
+        paste = new JMenuItem( "Paste");
         projectProperties = new JMenuItem( "Project Properties");
         
-        add( deleteFolder);
         add( createFile);
         add( createFolder);
+        addSeparator();
+        add( deleteFolder);
         add( paste);
         addSeparator();
         add( projectProperties);
