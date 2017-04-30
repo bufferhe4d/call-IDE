@@ -9,5 +9,11 @@ import java.io.File;
  * @version 1.0
  */
 public interface FileOpener {
+    
+    /**
+     * Opens the file in the editor.
+     * @param file the file to open
+     */
     void openFile( File file);
+    
 }

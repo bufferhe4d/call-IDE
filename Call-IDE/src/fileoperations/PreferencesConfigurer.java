@@ -11,7 +11,6 @@ import java.io.IOException;
  * @author Emin Bahadir Tuluce
  * @version 1.0
  */
-
 public class PreferencesConfigurer {
     
     public static String FILE_NAME = "preferences.dat";

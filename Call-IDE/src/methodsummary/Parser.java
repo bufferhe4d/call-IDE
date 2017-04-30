@@ -1,30 +1,33 @@
 package methodsummary;
 
-import com.github.javaparser.*;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.body.Parameter;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 
+import com.github.javaparser.ParseException;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.Parameter;
+
 /**
- *
- * @author sami.aydin-ug
+ * A class that can parse java source files.
+ * @author Mahmud Sami Aydin, Emin Bahadir Tuluce
+ * @version 1.0
  */
 public class Parser {
     
+    // PROPERTIES
     File root;
     ArrayList<File> javaFiles;
     DefaultMutableTreeNode rootNode;
     
+    // CONSTRUCTORS
     public Parser( String root)
     {
         this.root = new File ( root );
         javaFiles = new ArrayList<File>();
-        
         rootNode = new DefaultMutableTreeNode("Method Summary");
-        
         for( int i =0 ; i < this.root.listFiles().length ; i ++ )
         {
             if(this.root.listFiles()[i].toString().endsWith(".java"))
@@ -32,7 +35,6 @@ public class Parser {
                 javaFiles.add(this.root.listFiles()[i]);
             }
         }
-        
         addJavaFilesandMethods();
     }
     
@@ -40,12 +42,9 @@ public class Parser {
         rootNode = new DefaultMutableTreeNode("Method Summary");
     }
     
-    /**
-     * @param args the command line arguments
-     */
+    // METHODS
     public void addJavaFilesandMethods() 
     {
-
         for( File jFile : javaFiles )
         {
             try
@@ -61,7 +60,7 @@ public class Parser {
     }
     
     /**
-     * This method add a java file into method summary
+     * This method adds a java file into the method summary
      * @param file java file which will be parsed
      * @throws ParseException
      * @throws IOException 
@@ -71,9 +70,7 @@ public class Parser {
         rootNode.add(new ClassNode(file));
     }
     
-    /**
-     * This method clear tree
-     */
+    /** This method clears the tree */
     public void clearNodes()
     {
         ArrayList<MutableTreeNode> childrenOfRoot;
@@ -87,7 +84,7 @@ public class Parser {
     public boolean contains( File file) {
         for (int i = 0; i < rootNode.getChildCount(); i++)
             if (((ClassNode) (rootNode.getChildAt(i))).file == file)
-                return true;
+            return true;
         return false;
     }
     
@@ -96,7 +93,7 @@ public class Parser {
         ((MutableTreeNode) rootNode.getChildAt(index)).removeFromParent();
         rootNode.insert(new ClassNode(file), index);
     }
-
+    
     public void removeNode( File file) {
         int index = getRow( file);
         if (index != -1)
@@ -125,7 +122,8 @@ public class Parser {
     private int getRow( File file) {
         for (int i = 0; i < rootNode.getChildCount(); i++)
             if (((ClassNode) (rootNode.getChildAt(i))).file == file)
-                return i;
+            return i;
         return -1;
     }
+    
 }

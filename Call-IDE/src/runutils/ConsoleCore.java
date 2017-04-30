@@ -1,15 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package runutils;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.List;
@@ -18,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.SwingWorker;
 import javax.swing.text.BadLocationException;
@@ -28,77 +26,18 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
-import javax.swing.JTabbedPane;
-import java.awt.Component;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
 /**
- *
- * @author abdullah.talayhan-ug
+ * A class to build different consoles with the given streams.
+ * @author Abdullah Talayhan
  */
 public class ConsoleCore {
-    
-    public static JTextArea console(final InputStream out, final PrintWriter in) {
-        final JTextArea area = new JTextArea();
-        
-        
-        // handle "System.out"
-        new SwingWorker<Void, String>() {
-            @Override protected Void doInBackground() throws Exception {
-                Scanner s = new Scanner(out);
-                while (s.hasNextLine()) publish(s.nextLine() + "\n");
-                return null;
-            }
-            @Override protected void process(List<String> chunks) {
-                for (String line : chunks) area.append(line);
-            }
-        }.execute();
-        
-        // handle "System.in"
-        area.addKeyListener(new KeyAdapter() {
-            private StringBuffer line = new StringBuffer();
-            @Override public void keyTyped(KeyEvent e) {
-                char c = e.getKeyChar();
-                if (c == KeyEvent.VK_ENTER) {
-                    in.println(line);
-                    line.setLength(0); 
-                } else if (c == KeyEvent.VK_BACK_SPACE) { 
-                    line.setLength(line.length() - 1); 
-                } else if (!Character.isISOControl(c)) {
-                    line.append(e.getKeyChar());
-                }
-            }
-        });
-        
-        return area;
-    }
-    
-    public static JTextArea consoleOut(final InputStream out) {
-        
-        final JTextArea area = new JTextArea();
-        
-        // handle "System.out"
-        new SwingWorker<Void, String>() {
-            @Override protected Void doInBackground() throws Exception {
-                Scanner s = new Scanner(out);
-                while (s.hasNextLine()) publish(s.nextLine() + "\n");
-                return null;
-            }
-            @Override protected void process(List<String> chunks) {
-                for (String line : chunks) area.append(line);
-            }
-        }.execute();
-        
-        return area;
-    }
     
     public static JTextPane consoleOutErr(final InputStream out, final InputStream err) {
         
         DefaultStyledDocument document = new DefaultStyledDocument();
         final JTextPane area = new JTextPane(document);
         
-        // handle "System.out"
+        // Handle "System.out"
         new SwingWorker<Void, String>() {
             @Override protected Void doInBackground() throws Exception {
                 Scanner s = new Scanner(out);
@@ -144,7 +83,7 @@ public class ConsoleCore {
         DefaultStyledDocument document = new DefaultStyledDocument();
         final JTextPane area = new JTextPane(document);
         
-        // handle "System.out"
+        // Handle "System.out"
         new SwingWorker<Void, String>() {
             @Override protected Void doInBackground() throws Exception {
                 
@@ -157,6 +96,7 @@ public class ConsoleCore {
                 
                 return null;
             }
+            
             @Override protected void process(List<String> chunks) {
                 for (String line : chunks) try {
                     appendString(line,area);
@@ -166,7 +106,7 @@ public class ConsoleCore {
             }
         }.execute();
         
-        // handle "System.in"
+        // Handle "System.in"
         area.addKeyListener(new KeyAdapter() {
             private StringBuffer line = new StringBuffer();
             @Override public void keyTyped(KeyEvent e) {
@@ -174,18 +114,20 @@ public class ConsoleCore {
                 if (c == KeyEvent.VK_ENTER) {
                     in.println(line);
                     line.setLength(0); 
-                } else if (c == KeyEvent.VK_BACK_SPACE) { 
+                } else if (c == KeyEvent.VK_BACK_SPACE && line.length() > 0) { 
                     line.setLength(line.length() - 1); 
                 } else if (!Character.isISOControl(c)) {
                     line.append(e.getKeyChar());
                 }
             }
         });
-        // handle "System.err"
+        
+        // Handle "System.err"
         new SwingWorker<Void, String>() {
             @Override protected Void doInBackground() throws Exception {
                 Scanner s = new Scanner(err);
-                while (s.hasNextLine()) publish(s.nextLine() + "\n");
+                while (s.hasNextLine())
+                    publish(s.nextLine() + "\n");
                 return null;
             }
             @Override protected void process(List<String> chunks) {
@@ -194,8 +136,8 @@ public class ConsoleCore {
                 } catch (BadLocationException ex) {
                     Logger.getLogger(ConsoleCore.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                for (String line : chunks) try {
-                    //appendString(line, area);
+                for (String line : chunks)
+                    try {
                     document.insertString(document.getLength(), line, changeColor(document));
                 } catch (BadLocationException ex) {
                     Logger.getLogger(ConsoleCore.class.getName()).log(Level.SEVERE, null, ex);
@@ -204,7 +146,6 @@ public class ConsoleCore {
         }.execute();
         
         return area;
-        
     }
     
     public static void appendString(String str, JTextPane pane) throws BadLocationException
@@ -219,13 +160,12 @@ public class ConsoleCore {
         Style style = context.addStyle("test", null);
         // set some style properties
         StyleConstants.setForeground(style, Color.RED);
-        // add some data to the document
-        //document.insertString(document.getLength(), "joe", style);
         return style;
     }
     
     public static void  dispatch(JScrollPane scrollPane, JTextPane cons,
-            JTabbedPane outputTabs, Component tabComp, JFrame frame, Boolean consoleOut, Dispatchable mainFrame) {
+                                 JTabbedPane outputTabs, Component tabComp, JFrame frame,
+                                 Boolean consoleOut, Attachable mainFrame) {
         frame.add(cons);
         frame.setSize(400, 300);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -234,10 +174,10 @@ public class ConsoleCore {
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e)
             {
-                mainFrame.dispatchConsole();
+                mainFrame.attachConsole();
             }
         });
         frame.setVisible(true);
     }
-
+    
 }

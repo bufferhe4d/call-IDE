@@ -1,10 +1,14 @@
 package filebrowser;
 
-import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 
 /**
  * The PopupMenu class for folders in the file explorer.
@@ -13,13 +17,13 @@ import java.util.logging.Logger;
  */
 public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
 {
-    //properties
+    // PROPERTIES
     JMenuItem deleteFolder;
     JMenuItem createFile;
     JMenuItem createFolder;
     JMenuItem paste;
     JMenuItem projectProperties;
-    FileNode  file;
+    FileNode file;
     FileNavigator navigator;
     
     public TreeDirectoryPopupMenu( FileNavigator navigator)
@@ -28,23 +32,23 @@ public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
         
         this.navigator = navigator;
         
-        deleteFolder = new  JMenuItem("Delete Folder");
+        deleteFolder = new  JMenuItem( "Delete Folder");
         createFile = new JMenuItem( "Create File");
         createFolder = new JMenuItem( "Create Folder");
-        paste = new JMenuItem("Paste Here");
+        paste = new JMenuItem( "Paste Here");
         projectProperties = new JMenuItem( "Project Properties");
         
-        add(deleteFolder);
-        add(createFile);
-        add(createFolder);
-        add(paste);
+        add( deleteFolder);
+        add( createFile);
+        add( createFolder);
+        add( paste);
         addSeparator();
-        add(projectProperties);
+        add( projectProperties);
         
         deleteFolder.addActionListener( this);
         createFile.addActionListener( this);
         createFolder.addActionListener( this);
-        paste.addActionListener(this);
+        paste.addActionListener( this);
         projectProperties.addActionListener( this);
     }
     
@@ -54,15 +58,18 @@ public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
         if(e.getSource() == deleteFolder)
         {
             int option = JOptionPane.showConfirmDialog(SwingUtilities.getRoot(this),
-                    "Are you sure want to delete the folder \"" + file + "\" ?",  "Deleting Folder",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                                                       "Are you sure want to delete the folder \"" +
+                                                       file + "\" ?",  "Deleting Folder",
+                                                       JOptionPane.YES_NO_OPTION,
+                                                       JOptionPane.QUESTION_MESSAGE);
             if (option == JOptionPane.YES_OPTION)
                 file.delete();
         }
+        
         else if( e.getSource() == createFile)
         {
-            String fileName = JOptionPane.showInputDialog(null, "Enter file name: ",
-                    "Creating File", JOptionPane.INFORMATION_MESSAGE);
+            String fileName = JOptionPane.showInputDialog(null, "Enter file name: ", "Creating File",
+                                                          JOptionPane.INFORMATION_MESSAGE);
             if (fileName == null)
                 return;
             try {
@@ -72,24 +79,26 @@ public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
                 exc.printStackTrace();
             }
         }
+        
         else if( e.getSource() == createFolder )
         {
-            String fileName = JOptionPane.showInputDialog(null, "Enter folder name: ",
-                    "Creating Folder", JOptionPane.INFORMATION_MESSAGE);
+            String fileName = JOptionPane.showInputDialog(null, "Enter folder name: ", "Creating Folder",
+                                                          JOptionPane.INFORMATION_MESSAGE);
             if (fileName == null)
                 return;
             if (fileName.trim().length() > 0)
                 file.createDirectory(fileName);
         }
+        
         else if (e.getSource() == projectProperties)
         {
             System.out.println("Show project properties...");
         }
+        
         else if( e.getSource() == paste )
         {
-            System.out.print("paste..");
             try {
-                file.pasteFile( navigator.clipboardNode );
+                file.pasteFile( navigator.clipboardNode);
             } catch (IOException ex) {
                 Logger.getLogger(TreeFilePopupMenu.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -102,4 +111,5 @@ public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
     {
         this.file = file;
     }
+    
 }

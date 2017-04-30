@@ -6,10 +6,12 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 /**
- *
- * @author Bahadır
+ * A class to configure xml files that is needed for building
+ * @author Emin Bahadir Tuluce
+ * @version 1.0
  */
 public class BuildConfigurer {
+    
     public void exportConfigs( String location) throws IOException {
         exportConfigData( "/fileoperations/buildconfigs/build.xml", location + "/build.xml");
         exportConfigData( "/fileoperations/buildconfigs/buildJavadoc.xml", location + "/buildJavadoc.xml");
@@ -25,4 +27,5 @@ public class BuildConfigurer {
         reader.close();
         writer.close();
     }
+    
 }

@@ -2,8 +2,8 @@ package fileoperations;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.text.JTextComponent;
 import javax.swing.Timer;
+import javax.swing.text.JTextComponent;
 
 /**
  * A class to save text files periodically.
@@ -64,4 +64,5 @@ public class AutoFileSaver implements ActionListener {
             exception.printStackTrace();
         }
     }
+    
 }

@@ -9,16 +9,16 @@ import java.io.File;
  */
 public class PathedFile extends File 
 {
-    // Properties
+    // PROPERTIES
     PathedFile[] path;
     String       fileName;
     String       extension;
     
-    // Constructors
+    // CONSTRUCTORS
     /**
      * This consturctor make child file, path getter from parent
-     *
-     *
+     * @param pathName the name of the path
+     * @param parentPath the parent of the given path
      */
     public PathedFile( String pathname, PathedFile[] parentPath )
     {
@@ -26,19 +26,19 @@ public class PathedFile extends File
         
         int extensionIndex;
         
-        path = new PathedFile[ parentPath.length + 1 ];
-        for( int i = 0 ; i < parentPath.length ; i++ )
+        path = new PathedFile[parentPath.length + 1];
+        for (int i = 0 ; i < parentPath.length ; i++ )
         {
             path[i] = parentPath[i];
         }
         
-        path[ parentPath.length ] = this;
+        path[parentPath.length] = this;
         
         extensionIndex = getName().lastIndexOf('.');
-        if( extensionIndex > 0)
+        if (extensionIndex > 0)
         {
             extension = getName().substring( extensionIndex + 1);
-            fileName = getName().substring(0, extensionIndex );
+            fileName = getName().substring( 0, extensionIndex);
         }
         else
         {
@@ -47,16 +47,14 @@ public class PathedFile extends File
         }
     }
     
-    public PathedFile( String pathname )
+    public PathedFile( String pathname)
     {
-        super( pathname );
-        path = new PathedFile[  1 ];
-        
-        path[ 0 ] = this;
-        
+        super( pathname);
+        path = new PathedFile[1];
+        path[0] = this;
     }
     
-    // Methods
+    // METHODS
     public PathedFile[] getObjPath()
     {
         return path;
@@ -70,7 +68,10 @@ public class PathedFile extends File
         return fileName + "." + extension;
     }
     
-    /** This method determines file is java file */
+    /**
+     * This method determines if the file is a java source file
+     * @return true if the extension is .java
+     */
     public boolean isJavaFile()
     {
         if (extension == null)
@@ -78,11 +79,15 @@ public class PathedFile extends File
         return extension.equals("java");
     }
     
-    /** This method determines file is a callide project file  */
+    /**
+     * This method determines if the file is a callide project file
+     * @return true if the extension is .callide
+     */
     public boolean isCallideFile()
     {
         if (extension == null)
             return false;
         return extension.equals("callide");
     }
+    
 }

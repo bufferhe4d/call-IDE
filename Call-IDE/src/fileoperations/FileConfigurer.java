@@ -1,16 +1,12 @@
 package fileoperations;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 
 /**
  * A class to configure the location to save properties and templates of the user.
- * 
  * @author Emin Bahadir Tuluce
  * @version 1.0
  */

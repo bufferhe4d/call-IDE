@@ -28,7 +28,7 @@ import com.github.javaparser.ast.*;
  * The main frame of the IDE.
  * @author Emin Bahadir Tuluce, Halil Sahiner, Abdullah Talayhan
  */
-public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Dispatchable, NodeVisitor {
+public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Attachable, NodeVisitor {
     
     /** The constructor for the MainFrame */
     public MainFrame() throws IOException {
@@ -2504,7 +2504,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Di
     }
     
     @Override
-    public void dispatchConsole() {
+    public void attachConsole() {
         consoleOut = false;
         consoleOutputScrollPane.setViewportView(consoleOutputArea);
         outputTabs.setTabComponentAt( 2, tabComp);

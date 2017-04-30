@@ -1,9 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package runutils;
+
+import userinterface.MainFrame;
 
 import java.io.IOException;
 import java.io.PipedInputStream;
@@ -12,13 +9,11 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JTextArea;
 import javax.swing.JTextPane;
-import userinterface.MainFrame;
 
 /**
- *
- * @author ATTJ
+ * A class that can build consoles as text panes.
+ * @author Abdullah Talayhan
  */
 public class ConsoleBuilder {
     
@@ -32,7 +27,6 @@ public class ConsoleBuilder {
         outPipe = new PipedInputStream();
         errPipe = new PipedInputStream();
         inWriter = null;
-        
         System.setIn(inPipe);
         try {
             System.setOut(new PrintStream(new PipedOutputStream(outPipe), true));
@@ -42,24 +36,13 @@ public class ConsoleBuilder {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
-    public JTextArea getInteractiveConsole() {
-   
-        return ConsoleCore.console(outPipe, inWriter);
-    }
-    
-    public JTextArea getOutputConsole() {
-        
-        return ConsoleCore.consoleOut(outPipe);
-    }
-    
+
     public JTextPane getOutErrConsole() {
-        
         return ConsoleCore.consoleOutErr(outPipe, errPipe);
     }
     
     public JTextPane getIOEConsole() {
         return ConsoleCore.consoleIOE(outPipe, inWriter, errPipe);
     }
+    
 }

@@ -1,26 +1,30 @@
 package methodsummary;
 
-import com.github.javaparser.Position;
-import com.github.javaparser.ast.body.ConstructorDeclaration;
-import com.github.javaparser.ast.body.Parameter;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
+import com.github.javaparser.Position;
+import com.github.javaparser.ast.body.ConstructorDeclaration;
+import com.github.javaparser.ast.body.Parameter;
+
 /**
- *
- * @author mahmudsami
+ * A class to represent a node for constructors in the method summary tree.
+ * @author Mahmud Sami Aydin
+ * @version 1.0
  */
 public class ConstructorNode extends DefaultMutableTreeNode implements VisitableNode, SummaryNode {
     
+    // PROPERTIES
     ArrayList<Parameter> parameters;
-    String               nodeName;
-    String               modifier;
+    String nodeName;
+    String modifier;
     File file;
     Position position;
     ConstructorDeclaration conDec;
     
+    // CONSTRUCTORS
     public ConstructorNode(ConstructorDeclaration conDec)
     {
         super();
@@ -48,23 +52,26 @@ public class ConstructorNode extends DefaultMutableTreeNode implements Visitable
             }
         }
         nodeName = nodeName + ")";
-        
-        
     }
     
+    // METHODS
+    @Override
     public String toString()
     {
         return nodeName;
     }
     
+    @Override
     public File getFile() {
         return file;
     }
     
+    @Override
     public Position getPosition() {
         return position;
     }
     
+    @Override
     public void configureNode() {
         TreeNode parent = getParent();
         while (! (parent instanceof ClassNode))
@@ -73,18 +80,18 @@ public class ConstructorNode extends DefaultMutableTreeNode implements Visitable
         
         position = conDec.getBegin().get();
     }
-
+    
     @Override
     public int nodeType() {
         return SummaryNode.CONST_NODE;
     }
-
+    
     @Override
     public String getJavadoc() {
         String javadoc;
         if (conDec.getJavadoc().isPresent())
         {
-             javadoc = "<html>" + conDec.getJavadoc().get().toText() + "</html>" ;
+            javadoc = "<html>" + conDec.getJavadoc().get().toText() + "</html>" ;
             
             for( int i = 0; i < javadoc.length(); i++ )
             {
@@ -96,6 +103,7 @@ public class ConstructorNode extends DefaultMutableTreeNode implements Visitable
             }
             return javadoc;
         }
-        return "Javadoc not Found";
+        return "<no javadoc>";
     }
+    
 }

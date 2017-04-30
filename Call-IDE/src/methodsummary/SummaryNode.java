@@ -1,13 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package methodsummary;
 
 /**
- *
- * @author mahmudsami
+ * An interface for nodes in the method summary tree
+ * @author Mahmud Sami Aydin
+ * @version 1.0
  */
 interface SummaryNode {
     
@@ -23,14 +19,19 @@ interface SummaryNode {
     final int CHAR_NODE = 9;
     final int OBJECT_NODE = 10;
     final int BOOLEAN_NODE = 11;
-    final int CONST_NODE  = 12;
-    final int VOID_NODE   = 13;
+    final int CONST_NODE = 12;
+    final int VOID_NODE = 13;
     
     /**
-     * This method give node type 
-     * @return type of node 
+     * This method gives node type 
+     * @return type of the node 
      */
     public int nodeType();
     
+    /**
+     * This method gives the javadoc comments
+     * @return the javadoc comments of the node
+     */
     public String getJavadoc();
+    
 }

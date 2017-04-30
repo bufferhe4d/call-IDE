@@ -11,21 +11,20 @@ import java.util.Scanner;
  * @author Emin Bahadir Tuluce
  * @version 1.0
  */
-
 public class FileSaver {
     
-    /** The saving file of the contents */
+    /** The file to save the contents */
     private File file;
     
     /**
      * Creates an instance of FileSaver with the specified file.
-     * @param file the saving file of the contents
+     * @param file the file to save the contents
      */
     public FileSaver( File file) {
         this.file = file;
     }
     
-    /** @param file the saving file of the contents */
+    /** @param file the file to save the contents */
     public void setPath( File file) {
         this.file = file;
     }
@@ -42,11 +41,11 @@ public class FileSaver {
     /**
      * Saves the contents to the given file.
      * @param content the contents to save
-     * @param diffPath the different saving file of the contents
+     * @param diffFile a different file to save the contents
      * @throws IOException if the writing is failed
      */
-    public void saveAs( String content, File diffPath) throws IOException {
-        PrintWriter output = new PrintWriter( diffPath);
+    public void saveAs( String content, File diffFile) throws IOException {
+        PrintWriter output = new PrintWriter( diffFile);
         output.print( content);
         output.close();
     }
@@ -59,9 +58,9 @@ public class FileSaver {
     {
         Scanner scan = new Scanner(  file );
         String content = "";
-        while( scan.hasNext() )
+        while (scan.hasNext())
         {
-            content.concat(scan.nextLine() + "\n");
+            content.concat( scan.nextLine() + "\n");
         }
         return content;        
     }

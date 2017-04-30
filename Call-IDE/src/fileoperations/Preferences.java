@@ -72,4 +72,5 @@ public class Preferences implements Serializable {
     
     /** Empty constructor which is needed for serialization */
     public Preferences() {}
+    
 }
