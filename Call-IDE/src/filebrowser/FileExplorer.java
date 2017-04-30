@@ -3,6 +3,7 @@ package filebrowser;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 import javax.swing.JPanel;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
  * A panel which contains a navigator to browse files
@@ -54,7 +55,7 @@ public class FileExplorer extends JPanel
      * This method opens many files
      * @param files paths of files
      */    
-    public void openFiles( ArrayList<String> files )
+    public void openFiles( ArrayList<String> files)
     {
         for (int i = 0 ; i < files.size(); i++)
         {
@@ -69,6 +70,15 @@ public class FileExplorer extends JPanel
     public void convertToWorkspace( boolean makeWorkspace)
     {
         navigator.root.setWorkspace( makeWorkspace);
+        if (makeWorkspace) { // clear the old browser node
+            ((DefaultMutableTreeNode) navigator.root.getChildAt(0)).removeFromParent();
+        }
+        navigator.updateUI();
+    }
+    
+    public boolean isWorkspace()
+    {
+        return navigator.root.isWorkspace();
     }
     
     /**
@@ -80,5 +90,5 @@ public class FileExplorer extends JPanel
         navigator.updateDirectory( DirectoryPath);
         navigator.updateUI();
     }
-    
+
 }

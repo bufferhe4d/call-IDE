@@ -724,12 +724,13 @@
     <Container class="javax.swing.JFrame" name="projectFrame">
       <Properties>
         <Property name="title" type="java.lang.String" value="Project Properties"/>
+        <Property name="resizable" type="boolean" value="false"/>
       </Properties>
 
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="projectPanel" min="-2" max="-2" attributes="0"/>
+              <Component id="projectPanel" alignment="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -744,24 +745,9 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
+                  <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="mainClassLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="mainClassField" min="-2" pref="218" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="projectRootLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="projectRootField" min="-2" pref="218" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="projectNameLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="149" max="32767" attributes="0"/>
-                              <Component id="projectNameField" min="-2" pref="218" max="-2" attributes="0"/>
-                          </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="classPathLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
@@ -769,10 +755,40 @@
                           </Group>
                           <Component id="classPathScrollPane" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="mainClassLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="projectNameLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="33" pref="33" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="mainClassField" pref="0" max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="browseMainButton" min="-2" pref="121" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="projectNameField" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               <Component id="projectOkButton" min="-2" pref="80" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="projectCancelButton" min="-2" pref="80" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="projectRootLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="projectLocationLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="projectLocationField" pref="306" max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="browseLocationButton" min="-2" pref="121" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="dd" max="32767" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -783,21 +799,26 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="projectNameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="projectNameField" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="projectRootLabel" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="projectRootField" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="projectNameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="projectNameField" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="projectRootLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="dd" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="projectLocationLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="projectLocationField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="browseLocationButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="mainClassLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="mainClassField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="browseMainButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -822,14 +843,14 @@
                 <Property name="text" type="java.lang.String" value="Project Name:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="projectRootLabel">
+            <Component class="javax.swing.JLabel" name="projectLocationLabel">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Project Root:"/>
+                <Property name="text" type="java.lang.String" value="Project Location:"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="mainClassField">
               <Properties>
-                <Property name="text" type="java.lang.String" value="/private/lab01/Test.java"/>
+                <Property name="text" type="java.lang.String" value="C:\u005cUsers\u005cUser\u005cDocuments\u005chello\u005cproj\u005csrc\u005cmaino.java" containsInvalidXMLChars="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="mainClassLabel">
@@ -846,11 +867,17 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="OK"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="projectOkButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="projectCancelButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Cancel"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="projectCancelButtonActionPerformed"/>
+              </Events>
             </Component>
             <Container class="javax.swing.JScrollPane" name="classPathScrollPane">
               <AuxValues>
@@ -862,11 +889,7 @@
                 <Component class="javax.swing.JList" name="classPathList">
                   <Properties>
                     <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                      <StringArray count="3">
-                        <StringItem index="0" value=" /cs101/sos/SOSGame.jar"/>
-                        <StringItem index="1" value=" /mypackage/Calculator.jar"/>
-                        <StringItem index="2" value=" /fileops/FileDownloader.jar"/>
-                      </StringArray>
+                      <StringArray count="0"/>
                     </Property>
                   </Properties>
                   <AuxValues>
@@ -882,12 +905,33 @@
             </Component>
             <Component class="javax.swing.JTextField" name="projectNameField">
               <Properties>
-                <Property name="text" type="java.lang.String" value="lab01"/>
+                <Property name="text" type="java.lang.String" value="Project1"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="projectRootField">
+            <Component class="javax.swing.JTextField" name="projectLocationField">
               <Properties>
-                <Property name="text" type="java.lang.String" value="/private/lab01"/>
+                <Property name="text" type="java.lang.String" value="C:\u005cUsers\u005cUser\u005cDocuments\u005chello\u005cproj\u005c" containsInvalidXMLChars="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="browseLocationButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Browse"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="browseMainButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Browse"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="projectRootLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Project Root:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="dd">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="text" type="java.lang.String" value="C:\u005cUsers\u005cUser\u005cDocuments\u005chello\u005cproj\u005cProject1" containsInvalidXMLChars="true"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -921,6 +965,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="New Project"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newProjectButtonActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="separator1">
             </MenuItem>
@@ -942,6 +989,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Open Project"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openProjectButtonActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="openFolderButton">
               <Properties>
@@ -1817,9 +1867,6 @@
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Help Contents"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="helpToolActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="loginTool">
           <Properties>

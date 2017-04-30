@@ -1,5 +1,6 @@
-package fileoperations;
+package fileoperations.configurers;
 
+import fileoperations.ContentReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;

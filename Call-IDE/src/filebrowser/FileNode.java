@@ -110,6 +110,7 @@ public class FileNode extends DefaultMutableTreeNode
         }
     }
     
+    @Override
     public boolean getAllowsChildren()
     {
         return allowsChildren;
@@ -123,9 +124,9 @@ public class FileNode extends DefaultMutableTreeNode
         if (isRoot())
         {
             if (isWorkspace)
-                return "Workspace";
+                return "Active Projects";
             else
-                return "Recent Files";
+                return "File Explorer";
         }
         return file.toString();
     }

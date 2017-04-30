@@ -86,6 +86,10 @@ public class CommentFunctionality {
         searchContext = new SearchContext ("");
         searchContext.setSearchFor(textArea.getSelectedText());
         changedText = "";
+        
+        if( searchContext.getSearchFor() == null)
+            return;
+        
         if( !searchContext.getSearchFor().substring( 0, 2).equals("//"))
             changedText = searchContext.getSearchFor().substring( 0, 2);
         
