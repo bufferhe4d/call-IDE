@@ -32,125 +32,177 @@ import helputils.ErrorHelper;
  * @author Abdullah Talayhan
  */
 public class ConsoleCore {
-    
+    // Only handles Error and Output Streams
     public static JTextPane consoleOutErr(final InputStream out, final InputStream err) {
-        
+
+        // Styled document for coloring the error stream
         DefaultStyledDocument document = new DefaultStyledDocument();
         final JTextPane area = new JTextPane(document);
-        
+
         // Handle "System.out"
         new SwingWorker<Void, String>() {
             @Override protected Void doInBackground() throws Exception {
                 Scanner s = new Scanner(out);
+                // read the stream and publish the results
                 while (s.hasNextLine()) publish(s.nextLine() + "\n");
+
                 return null;
             }
             @Override protected void process(List<String> chunks) {
+                // read the lines from published chunks
                 for (String line : chunks) try {
+                    // append them to the text pane
                     appendString(line, area);
                 } catch (BadLocationException ex) {
                     Logger.getLogger(ConsoleCore.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        }.execute();
-        
+        }.execute(); // execute the SwingWorker
+
         new SwingWorker<Void, String>() {
             @Override protected Void doInBackground() throws Exception {
                 Scanner s = new Scanner(err);
+                // read the stream and publish the results
                 while (s.hasNextLine()) publish(s.nextLine() + "\n");
+
                 return null;
             }
             @Override protected void process(List<String> chunks) {
+                // change the stream color to red for errors
                 try {
                     changeColor(document);
                 } catch (BadLocationException ex) {
                     Logger.getLogger(ConsoleCore.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                // read the lines from published chunks
                 for (String line : chunks) try {
                     //appendString(line, area);
+                    //append them to the  text pane
                     document.insertString(document.getLength(), line, changeColor(document));
                 } catch (BadLocationException ex) {
                     Logger.getLogger(ConsoleCore.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        }.execute();
-        
+        }.execute(); // execute the SwingWorker
+
         return area;
-        
+
     }
-    
+
     public static JTextPane consoleIOE(final InputStream out, final PrintWriter in, final InputStream err) {
-        
+
+        // Styled document for coloring the error stream
         DefaultStyledDocument document = new DefaultStyledDocument();
         final JTextPane area = new JTextPane(document);
-        
+
         // Handle "System.out"
         new SwingWorker<Void, String>() {
             @Override protected Void doInBackground() throws Exception {
-                
+
+                // read the stream and publish the results
+                // BufferedReader for not interrupting the input stream
                 BufferedReader reader = new BufferedReader(new InputStreamReader(out));
                 char nextChar = (char) reader.read();
                 while (nextChar != -1) {
                     publish("" + nextChar);
                     nextChar = (char) reader.read();
                 }
-                
+
                 return null;
             }
-            
+
             @Override protected void process(List<String> chunks) {
+              // read the lines from published chunks
                 for (String line : chunks) try {
+                    //append them to the  text pane
                     appendString(line,area);
                 } catch (BadLocationException ex) {
                     Logger.getLogger(ConsoleCore.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        }.execute();
-        
+        }.execute(); // execute the SwingWorker
+
         // Handle "System.in"
         area.addKeyListener(new KeyAdapter() {
-            private StringBuffer line = new StringBuffer();
-            @Override public void keyTyped(KeyEvent e) {
-                char c = e.getKeyChar();
-                if (c == KeyEvent.VK_ENTER) {
-                    in.println(line);
-                    line.setLength(0); 
-                } else if (c == KeyEvent.VK_BACK_SPACE && line.length() > 0) { 
-                    line.setLength(line.length() - 1); 
-                } else if (!Character.isISOControl(c)) {
-                    line.append(e.getKeyChar());
+            int initLength;
+            boolean notTypedYet = true;
+            String inputStr = "";
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                // get the initial document properties
+                if(notTypedYet && e.getKeyChar()!= KeyEvent.VK_ENTER) {
+                    notTypedYet = false;
+                    initLength = area.getDocument().getLength();
+                    area.setCaretPosition(area.getDocument().getLength());
+                }
+                // distinguish the input from the actual document and
+                // send it to the output stream which pipes into the
+                // input stream of the executed program
+                if (e.getKeyChar() == KeyEvent.VK_ENTER) {
+                    try {
+                        inputStr = area.getText(initLength, area.getDocument().getLength() - initLength - 1);
+                        in.println(inputStr);
+                        notTypedYet = true;
+                        inputStr = "";
+
+                    } catch (BadLocationException ex) {
+                        Logger.getLogger(ConsoleCore.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyChar() == KeyEvent.VK_ENTER) {
+                    area.setCaretPosition(area.getDocument().getLength());
+                }
+                // consume the unwanted backspace occurences.
+                else if(e.getKeyChar() == KeyEvent.VK_BACK_SPACE) {
+                    if(initLength - area.getCaretPosition() == 0) {
+                        e.consume();
+                    }
+                    if(notTypedYet) {
+                        e.consume();
+                    }
                 }
             }
         });
-        
+
         // Handle "System.err"
         new SwingWorker<Void, String>() {
             @Override protected Void doInBackground() throws Exception {
                 Scanner s = new Scanner(err);
                 int currentLine = 0;
                 String error;
-                
+
                 while (s.hasNextLine())
                 {
                     currentLine++;
                     if( currentLine == 8 )
                     {
+                        // get the error line to use in errorhelper
                         error = s.nextLine();
                         ErrorHelper.addError(error);
                         publish(error + "\n");
                     }
                     else
                     {
+                        // publish the rest
                         publish(s.nextLine() + "\n");
                     }
                 return null;
+              }
             }
             @Override protected void process(List<String> chunks) {
+                // change the stream color to red for errors
                 try {
                     changeColor(document);
                 } catch (BadLocationException ex) {
                     Logger.getLogger(ConsoleCore.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                // read the chunks and append them to the text pane
                 for (String line : chunks)
                     try {
                     document.insertString(document.getLength(), line, changeColor(document));
@@ -158,17 +210,18 @@ public class ConsoleCore {
                     Logger.getLogger(ConsoleCore.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        }.execute();
-        
+        }.execute(); // execute the SwingWorker
+
         return area;
     }
-    
+
+    // append method for JTextPane
     public static void appendString(String str, JTextPane pane) throws BadLocationException
     {
         StyledDocument document = (StyledDocument) pane.getDocument();
         document.insertString(document.getLength(), str, null);
     }
-    
+    // change the color of the JTextPane document
     public static Style changeColor(DefaultStyledDocument document) throws BadLocationException {
         StyleContext context = new StyleContext();
         // build a style
@@ -177,7 +230,7 @@ public class ConsoleCore {
         StyleConstants.setForeground(style, Color.RED);
         return style;
     }
-    
+    // dispatch the console from the JTabbedPane and put it back
     public static void  dispatch(JScrollPane scrollPane, JTextPane cons,
                                  JTabbedPane outputTabs, Component tabComp, JFrame frame,
                                  Boolean consoleOut, Attachable mainFrame) {
@@ -194,5 +247,5 @@ public class ConsoleCore {
         });
         frame.setVisible(true);
     }
-    
+
 }
