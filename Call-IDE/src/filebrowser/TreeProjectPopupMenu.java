@@ -10,10 +10,11 @@ import javax.swing.JMenuItem;
  */
 public class TreeProjectPopupMenu extends TreeDirectoryPopupMenu{
     
-    
+    //properties
     JMenuItem projectProperties;
     JMenuItem closeProject;
     
+    //constructor
     public TreeProjectPopupMenu(FileNavigator navigator) {
         
         super(navigator);
@@ -28,7 +29,7 @@ public class TreeProjectPopupMenu extends TreeDirectoryPopupMenu{
         projectProperties.addActionListener( this);
         closeProject.addActionListener( this);
     }
-    
+    //methods
     public void actionPerformed( ActionEvent e)
     {
        if (e.getSource() == projectProperties)
