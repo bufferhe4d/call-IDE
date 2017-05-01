@@ -16,7 +16,7 @@ public class ExceptionHelper
     public static String getHelpLink( String exception) 
     {
         String helperLink;
-        helperLink = "";
+        helperLink = "We Can Not Found Help For Exception";
         
         if (exception.equals("ArrayIndexOutOfBoundsException"))
             helperLink = "http://mindprod.com/jgloss/runerrormessages.html#ARRAYINDEXOUTOFBOUNDS";
