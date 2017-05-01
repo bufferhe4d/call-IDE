@@ -3,7 +3,8 @@ Group number: g2A
 Group Name: Code Erat Demonstrandum
 Project Name: Call-IDE
 
-Status: 
+
+Status:
 - Project is still in progress
 - IDE part has minor bugs and it lacks the project system
 - Submission System only has the Database Design and Moss checker but nothing else.
