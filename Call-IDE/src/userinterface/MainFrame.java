@@ -32,7 +32,7 @@ import com.github.javaparser.ast.*;
  */
 public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, Attachable, NodeVisitor {
     
-    /** The constructor for the MainFrame */
+    /** Creates the main frame of the IDE. */
     public MainFrame() throws IOException {
         initProperties();
         loadIcons();
@@ -1706,7 +1706,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         }        
     }
 
-    /** This class is used for listening resize events of the window. */
+    /** This class is used for listening resize events of the window to arrange components with each. */
     class ResizeListener extends ComponentAdapter {
         @Override
         public void componentResized(ComponentEvent e) {
@@ -1714,6 +1714,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         }
     }
 
+    /** Checks each tab if they are unsaved and closes the IDE after the processes. */
     private void quit() {
         boolean cancelled = false;
         while (textAreas.size() > 0 && !cancelled) {
@@ -1725,6 +1726,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         }
     }
 
+    /** Loads the icon files. */
     private void loadIcons() {
         closeIcon = new ImageIcon( (new ImageIcon( getClass().getResource(
                 "/userinterface/images/close.png"))).getImage().getScaledInstance(
@@ -1734,6 +1736,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
                         16, 16, java.awt.Image.SCALE_SMOOTH));
     }
 
+    /** Initializes the properties. */
     private void initProperties() {
         textAreas = new ArrayList<RSyntaxTextArea>();
         files = new ArrayList<File>();
@@ -1743,7 +1746,8 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         openProjects = new ArrayList<ProjectHandler>();
         untitledCount = 1;
     }
-
+    
+    /** Initializes the components other than the auto-generated ones. */
     private void initOtherComponents() {
         clearPlaceHolders();
         noWorkspacePanel = new JPanel();
@@ -1787,7 +1791,9 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         insertMethodSummary();
     }
 
+    /** Listener for the console's detach button. */
     private class DetachConsoleListener implements ActionListener {
+        @Override
         public void actionPerformed( ActionEvent e) {
             ConsoleCore.dispatch(consoleOutputScrollPane, consoleOutputArea,
                                  outputTabs, tabComp, consoleFrame, consoleOut, MainFrame.this);
@@ -1804,6 +1810,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
             else
                 outputTabs.setSelectedIndex(outputTabs.getSelectedIndex());
             outputTabs.addChangeListener(new ChangeListener() {
+                @Override
                 public void stateChanged( ChangeEvent evt) {
                     if (outputTabs.getSelectedIndex() == 2)
                         outputTabs.setSelectedIndex( lastOutputTabIndex);
@@ -1813,6 +1820,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         }
     }
 
+    /** Clears placeholder components which were used for a better designing experience. */
     private void clearPlaceHolders() {
         placeHolderFileExplorer.setVisible( false);
         placeHolderMenu1.setVisible( false);
@@ -1821,6 +1829,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         placeholderMethodSummary.setVisible( false);
     }
 
+    /** Initializes the main frame of the IDE. */
     private void initFrame() throws IOException {
         dividerLocation = 200;
         setTitle( "Call-IDE");
@@ -1840,6 +1849,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         setVisible(true);
     }
 
+    /** Adds a tab to the text editor with given properties. */
     private void addTab( String tabName, String content) throws IOException {
         JPanel panel = new JPanel( new BorderLayout());
         RSyntaxTextArea textArea = new RSyntaxTextArea();
@@ -1873,6 +1883,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         textTabs.setTabComponentAt( index, tabPanel);
     }
 
+    /** The listener for close buttons of the tabs. */
     private class CloseTabListener implements ActionListener {
         JLabel titleLabel;
         public CloseTabListener( JLabel titleLabel) {
@@ -1885,6 +1896,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         }
     }
 
+    /** Checks if the tab content is unsaved. */
     private int checkTab( int index) {
         if (files.get(index) == null && !(textAreas.get(index).getText().isEmpty())) {
             String fileName = tabTitles.get(index).getText();
@@ -1924,6 +1936,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         return JOptionPane.DEFAULT_OPTION;
     }
 
+    /** Closes the tab. */
     private void closeTab( int index) {
         methodParser.removeNode( files.remove( index));
         methodSummary.updateUI();
@@ -1944,11 +1957,13 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         topLeftSplitPane.setDividerLocation( topLeftSplitPane.getWidth() - 250);
     }
 
+    /** Opens the find and replace tool for the current tab. */
     private void showFindAndReplace() {
         new FindAndReplace(findAndReplaceFrame, this, getActiveTextArea(), nextButton, previousButton, replaceButton,
                            replaceAllButton, findTextField, replaceTextField, matchCaseCheck, wholeWordCheck );
     }
 
+    /** Opens the preferences frame of the IDE. */
     private void showPreferences() {
         try {
             boolean[] checkBoxValues = preferences.getToolbar();
@@ -1991,6 +2006,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         }
     }
 
+    /** Attempts to save the given content to the given file location. */
     private boolean saveFile( File file, String content) {
         try {
             if (file == null) {
@@ -2012,6 +2028,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         }
     }
 
+    /** Saves the given content to another file location. */
     private boolean saveAsFile( File file, String content) {
         try {
             JFileChooser chooser = new JFileChooser();
@@ -2055,6 +2072,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         return false;
     }
 
+    /** Shows a dialog to open a file. */
     private void showFileOpenDialog() {
         JFileChooser chooser = new JFileChooser();
         if (chooser.showOpenDialog( this) == JFileChooser.APPROVE_OPTION) {
@@ -2063,6 +2081,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         }
     }
 
+    /** Opens a file in the editor. */
     @Override
     public void openFile( File file) {
         try {
@@ -2093,6 +2112,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         }
     }
 
+    /** Creates a new opened file on the IDE. */
     private void newFile() {
         try {
             files.add( null);
@@ -2106,6 +2126,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         }
     }
 
+    /** Supplies access to the active file on the editor. */
     private File getActiveFile() {
         int index = textTabs.getSelectedIndex();
         if (index >= files.size())
@@ -2113,22 +2134,26 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         return files.get(index);
     }
 
+    /** Supplies access to the active content on the editor. */
     private String getActiveContent() {
         int index = textTabs.getSelectedIndex();
         RSyntaxTextArea textArea = textAreas.get( index);
         return textArea.getText();
     }
 
+    /** Supplies access to the active text area component. */
     private RSyntaxTextArea getActiveTextArea() {
         int index = textTabs.getSelectedIndex();
         return textAreas.get( index);
     }
 
+    /** Prints a message to the status tab and makes that tab active. */
     public void printStatus( String status) {
         statusArea.setText( statusArea.getText() + status + "\n");
         outputTabs.setSelectedIndex(0);
     }
 
+    /** Adds the file explorer to the frame. */
     private void addExplorer() {
         noWorkspacePanel.setVisible( false);
         ArrayList<String> projects = new ArrayList<String>();
@@ -2138,10 +2163,12 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         explorerScrollPane.setViewportView( fileExplorer);
     }
     
+    /** Adds an empty explorer to the frame which asks for a path from the user. */
     private void addEmptyExplorer() {
         explorerScrollPane.setViewportView( noWorkspacePanel);
     }
 
+    /** Loads the profile settings of the user. */
     private void loadProfile() throws IOException {
         config = new FileConfigurer();
         if (!config.configExists())
@@ -2156,6 +2183,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         loadWorkspace( workspace);
     }
 
+    /** Loads the file explorer's contents if exists. */
     private void loadWorkspace( String workspace) {
         if (workspace == null)
             addEmptyExplorer();
@@ -2163,6 +2191,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
             addExplorer();
     }
 
+    /** Asks user to choose a path for the file explorer. */
     private void chooseWorkspace() {
         try {
             JFileChooser chooser = new JFileChooser();
@@ -2180,6 +2209,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
     }
 
     // TODO : ADD SUBMISSION OPTION PROPERTY TO THE PREFERENCES CLASS.
+    /** Applies the preference settings to the IDE. */
     private void applyPreferences() throws IOException {
         boolean[] toolbarPrefs = preferences.getToolbar();
         JButton[] currentToolbar = {newTool, openTool, saveTool,
@@ -2219,6 +2249,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         }
     }
 
+    /** The listener for inserting template button. */
     private class TemplateButtonListener implements ActionListener {
         int templateIndex;
         public TemplateButtonListener( int templateIndex) {
@@ -2230,6 +2261,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         }
     }
 
+    /** Loads the templates from the user's home location. */
     private void loadTemplates() throws IOException {
         TemplateManager manager = new TemplateManager( userPath);
         templates = manager.getTemplates();
@@ -2243,15 +2275,18 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         }
     }
 
+    /** Clears the template menu for refreshing. */
     private void clearTemplatesMenu() {
         while (templatesMenu.getItemCount() > 1)
             templatesMenu.remove(1);
     }
 
+    /** Inserts the template on the given index to the active text area. */
     private void insertTemplate( int templateIndex) {
         getActiveTextArea().insert(templates[templateIndex], getActiveTextArea().getCaretPosition());
     }
 
+    /** Saves the preferences of the user which they specified on the preferences frame. */
     private void savePreferences() {
         try {
             boolean[] toolbarPrefs = {newCheck.isSelected(), openCheck.isSelected(),
@@ -2308,6 +2343,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         }
     }
 
+    /** Opens a file chooser for user to choose its file explorer's path. */
     public void choosePreferredWorkspace() {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY);
@@ -2321,6 +2357,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         }
     }
 
+    /** Restores all the default preferences to the preferences frame. */
     public void resetPreferencesWindow() {
         final Preferences DEFAULT = Preferences.DEFAULT;
 
@@ -2351,12 +2388,14 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         }
     }
 
+    /** Prints the status message about the autosaved file. */
     @Override
     public void report( File file, String content) {
         printStatus( "File saved automatically: " + file.getAbsolutePath());
         savedContents.set(files.indexOf(file), content);
     }
 
+    /** Inserts a sample javadoc comment to the active text area. */
     private void insertJavadocComment() {
         final String COMMENT = "/**\n" +
             " * __description__\n" +
@@ -2366,6 +2405,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         getActiveTextArea().insert( COMMENT, getActiveTextArea().getCaretPosition());
     }
 
+    /** Arranges the window divider locations. */
     private void arrangeWindow() {
         explorerScrollPane.setVisible( fileTrackerButton.getState());
         methodSummaryScrollPane.setVisible( methodSummaryButton.getState());
@@ -2377,6 +2417,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         }
     }
 
+    /** Arranges the window to its default state. */
     private void arrangeWindowDefault() {
         fileTrackerButton.setState( true);
         methodSummaryButton.setState( true);
@@ -2386,12 +2427,13 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         arrangeComponents();
     }
 
-    /** Had to write this since revalidate() is not working properly. */
+    /** This method is for the cases which JFrame.revalidate() does not works properly. */
     private void revalidateProperly() {
         setSize( getWidth() + 1, getHeight() + 1);
         setSize( getWidth() - 1, getHeight() - 1);
     }
 
+    /** Opens a file chooser and adds a new template to the user's template archive. */
     private void addNewTemplate() {
         try {
             JFileChooser chooser = new JFileChooser();
@@ -2411,6 +2453,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         }
     }
 
+    /** Opens a dialog to open a folder into the editor. */
     private void showFolderOpenDialog() {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY);
@@ -2425,6 +2468,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         }
     }
 
+    /** Compiles the active file on the editor. */
     private JTextPane compileCurrentFile() {
         if (isEditing()) {
             int index = textTabs.getSelectedIndex();
@@ -2443,10 +2487,12 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         return null;
     }
     
+    /** Compiles a folder to a path /classes next to it. */
     private JTextPane compileFolder( String folder) {
         return compileFolderTo( folder, folder + "/classes");
     }
     
+    /** Compiles a given folder to a given path. */
     private JTextPane compileFolderTo( String srcFolder, String buildFolder) {
         JTextPane insertedPane = new ConsoleBuilder().getOutErrConsole();
         insertedPane.setFont( preferences.getOutputFont());
@@ -2458,11 +2504,13 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         return insertedPane;
     }
     
+    /** Runs the current active file on the console. */
     private void runCurrentFile() {
         if (isEditing())
             runFile( getActiveFile());
     }
 
+    /** Runs a given file on the console. */
     private void runFile( File file) {
         if (file == null) {
             printStatus("The file should be saved and compiled before running.");
@@ -2523,6 +2571,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
     }
 
     // TODO : INTEGRATE TO PROJECT SYSTEM
+    /** Generates javadoc for the current project. */
     private void javadocCurrentProject() {
         JTextPane insertedPane = new ConsoleBuilder().getOutErrConsole();
         insertedPane.setFont( preferences.getOutputFont());
@@ -2537,6 +2586,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
     }
 
     // TODO : INTEGRATE TO PROJECT SYSTEM
+    /** Generates an executable jar file for the current project. */
     private void jarCurrentProject() {
         JTextPane insertedPane = new ConsoleBuilder().getOutErrConsole();
         insertedPane.setFont( preferences.getOutputFont());
@@ -2551,10 +2601,12 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         outputTabs.setSelectedIndex(1);
     }
 
+    /** Resets the console interactions. */
     private void resetInteractions() {
         // TODO
     }
 
+    /** Compiles the file and runs it when compiling is done. */
     private void compileRunCurrentFile() {
         JTextPane insertedPane = compileCurrentFile();
         if (insertedPane != null) {
@@ -2570,6 +2622,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         }
     }
 
+    /** Re-attaches the detached console to the main frame. */
     @Override
     public void attachConsole() {
         consoleOut = false;
@@ -2579,6 +2632,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         outputTabs.setSelectedIndex(2);
     }
 
+    /** Enables drop-to-open feature. */
     private void enableFileDrop() {
         new FileDrop( this, new FileDrop.Listener() {
             @Override
@@ -2590,10 +2644,12 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         });
     }
 
+    /** Checks if there is an active editor. */
     private boolean isEditing() {
         return textTabs.getSelectedIndex() != -1;
     }
 
+    /** Inserts the method summary tree to the main frame. */
     private void insertMethodSummary() {
         try {
             methodParser = new Parser();
@@ -2608,6 +2664,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         methodSummaryScrollPane.setViewportView(methodSummary);
     }
 
+    /** Updates the method summary tree's contents according to the given file. */
     private void updateMethodSummary( File file) {
         try {
             if (!methodParser.contains(file))
@@ -2623,6 +2680,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         methodSummary.updateUI();
     }
 
+    /** Visits the given file's position on the editor. */
     @Override
     public void visitNode( File file, Position position) {
         int index = -1;
@@ -2640,6 +2698,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         textAreas.get(index).setCaretPosition(distance);
     }
 
+    /** Shows the frame for creating projects. */
     private void showCreateProject() {
         projectFrame.setTitle( "Create New Project");
         projectFrame.pack();
@@ -2647,6 +2706,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         projectFrame.setVisible(true);
     }
 
+    /** Creates a project with the specified properties on the frame. */
     private void createProject() {
         String projectName = projectNameField.getText();
         String projectLocation = projectLocationField.getText();
@@ -2669,6 +2729,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         projectFrame.setVisible(false);
     }
 
+    /** Opens a folder chooser to open a project. */
     private void showProjectOpenDialog() {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY);
@@ -2679,6 +2740,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
     }
     
     // TODO : BUILDSYS INTEGRATION & HANDLING
+    /** Opens the given project folder on the IDE. */
     private void openProject( File projectFolder) {
         boolean open = true;
         ProjectHandler handler = new ProjectHandler();
@@ -2721,6 +2783,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         }
     }
     
+    /** Adds the file explorer to the frame wih the given root. */
     private void addExplorerWith( String rootString) {
         noWorkspacePanel.setVisible( false);
         ArrayList<String> projects = new ArrayList<String>();
@@ -2730,6 +2793,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         explorerScrollPane.setViewportView( fileExplorer);
     }
     
+    /** Supplies access to the ProjectHandler object of the given file. */
     private ProjectHandler getProjectHandler( File file) {
         for (ProjectHandler ph : openProjects) {
             System.out.println("all: " + ph.getAllJavaFiles());
@@ -2743,6 +2807,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         return null;
     }
     
+    /** Updates the project files on the disk. */
     private void updateProjects() {
         for (ProjectHandler handler : openProjects) {
             try {
@@ -2764,6 +2829,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         }
     }
     
+    /** Determines what to do with the compile button on the frame. */
     private void compileAction() {
         if (projectMode) {
             updateProjects();
@@ -2776,6 +2842,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
             compileCurrentFile();
     }
     
+    /** Determines what to do with the run button on the frame. */
     private void runAction() {
         if (projectMode)
             ; // TODO : RUN THE MAIN CLASS
@@ -2783,6 +2850,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
             runCurrentFile();
     }
     
+    /** Determines what to do with the compile & run button on the frame. */
     private void compileRunAction() {
         if (projectMode)
             ; // TODO : COMPILE THE PROJECT, RUN THE MAIN CLASS WHEN IT'S OVER
@@ -2790,6 +2858,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
             compileRunCurrentFile();
     }
     
+    /** Opens a folder chooser dialog for the user to choose its project location. */
     private void browseProjectLocation() {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY);
@@ -2800,6 +2869,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         }
     }
     
+    /** Opens a file chooser dialog for user to choose its main class location. */
     private void browseMainClass() {
         JFileChooser chooser = new JFileChooser();
         if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
