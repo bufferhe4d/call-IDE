@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package helputils;
 
 import java.awt.Color;
@@ -15,16 +9,18 @@ import java.net.URL;
 import javax.swing.*;
 
 /**
- *
- * @author mahmudsami
+ * This class represent a error helper tab on output tabs for get errors and give some helper link
+ * @author   Mahmud Sami Aydin
+ * @version  1.00, 1/5/2017
  */
 public class ErrorHelper extends JPanel 
 {
-    
+    //properties
     static JLabel[]   errors;
     static LinkingLabel[]   links;
     static int valid;
     
+    //constructors
     public ErrorHelper()
     {
         super();
@@ -49,6 +45,7 @@ public class ErrorHelper extends JPanel
         
     }
     
+    //methods
     public static void addError( String error )
     {
         StringBuffer errorName;

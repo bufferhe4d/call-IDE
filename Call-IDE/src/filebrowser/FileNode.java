@@ -17,23 +17,28 @@ import javax.swing.tree.TreePath;
  */
 public class FileNode extends DefaultMutableTreeNode
 {
-    
+    //properties
     PathedFile file;
     boolean    allowsChildren;
     HashMap    nodesAndPaths;
     boolean    isBrowsingProjects;
     
+    //constructors
+    /**
+     * This constructor get files and construct root node without real path
+     * @param files children of root
+     */
     public FileNode( ArrayList<String> files )
     {
         super();
+        // Create temp filenode and set properties
         FileNode temp;
         allowsChildren = true;
         nodesAndPaths = new HashMap();
-        
         file = new PathedFile( "/DEFAULT_PATH/");
-        
         nodesAndPaths.put( file.getAbsolutePath(), this);
         
+        //add a child for each i
         for (int i =0 ; i < files.size(); i++)
         {
             temp = new FileNode( new PathedFile ( files.get(i), file.getObjPath()), nodesAndPaths);
@@ -41,9 +46,15 @@ public class FileNode extends DefaultMutableTreeNode
                 add( temp );
         }
         
+        //check that it is empty
         checkEmptyDir();
     }
     
+    /**
+     *  This constructor get file linked to node and hashmap for all nodes and paths are related
+     *  @param file PathedFile related with node
+     *  @param nodesAndPaths show that files and nodes relation
+     */
     public FileNode( PathedFile file, HashMap nodesAndPaths)
     {
         super();
@@ -59,7 +70,10 @@ public class FileNode extends DefaultMutableTreeNode
         
         checkEmptyDir();
     }
-    
+    /**
+     * This constructor add root directoy node
+     * @param file root file as a pathed file
+     */
     public FileNode( PathedFile file)
     {
         super();
@@ -85,17 +99,20 @@ public class FileNode extends DefaultMutableTreeNode
         nodesAndPaths.put( emptyParent + "<empty>", this);
     }
     
+    /** This method checks directory is empty and add emtpy child*/
     public void checkEmptyDir()
     {
         if (this.file.isDirectory() && this.file.list() != null && this.file.list().length == 0)
             addEmptyChildren();
     }
     
+    /** This method adds a empty child */
     public void addEmptyChildren()
     {
         add ( new FileNode( this.file.getAbsolutePath(), nodesAndPaths));
     }
     
+    /** this method adds real children of file */
     public void addChildren()
     {
         if (file.listFiles() != null) 
@@ -115,7 +132,7 @@ public class FileNode extends DefaultMutableTreeNode
     {
         return allowsChildren;
     }
-    
+    /** This method returns node name properly */
     @Override
     public String toString()
     {
@@ -131,13 +148,14 @@ public class FileNode extends DefaultMutableTreeNode
         return file.toString();
     }
     
+    /** This method compares nodes and if they are equals return true */
     public boolean equals( FileNode n)
     {
         return file.getPath().equals( n.file.getPath());
     }
     
     /**
-     *  This method get the parents tree of node
+     *  This method gets the parents tree of node
      *  @return tree path for node
      */
     protected TreePath getTree()
@@ -152,6 +170,7 @@ public class FileNode extends DefaultMutableTreeNode
         return new TreePath( tempNodes);
     }
     
+    /**  This method deletes file and remove from parent  the node */
     public boolean delete()
     {
         if (getParent().getChildCount() == 1)
@@ -166,7 +185,7 @@ public class FileNode extends DefaultMutableTreeNode
         }
         return true;
     }
-    
+    /**  This method  deletes folder with its children files and subfiles  */
     private boolean deleteFolder( File file)
     {
         boolean done = true;
@@ -182,6 +201,7 @@ public class FileNode extends DefaultMutableTreeNode
         return done;
     }
     
+    /** This method adds a node and create file with a name  */
     public void createFile( String fileName) throws IOException
     {
         FileNode temp;
@@ -192,6 +212,7 @@ public class FileNode extends DefaultMutableTreeNode
         ((FileNode)(this.parent)).updateChildren();  
     }
     
+    /** This method creates a directory into node */
     public void createDirectory( String fileName)
     {
         FileNode temp;
@@ -203,11 +224,13 @@ public class FileNode extends DefaultMutableTreeNode
         ((FileNode)(this.parent)).updateChildren();
     }
     
+    /** This  gets file of node */
     public File getFile()
     {
         return file;
     }
     
+    /**  This method adds a file in a node it spefied for visual root */
     public void openFile( String filePath, HashMap map)
     {
         if( getAllowsChildren())
@@ -216,6 +239,7 @@ public class FileNode extends DefaultMutableTreeNode
         }
     }
     
+    /** This method pastes the source file into this directory */
     public void pasteFile( FileNode sourceNode) throws IOException
     {
         File temp =  new File( file.getAbsolutePath() + "/" + sourceNode.toString());
@@ -224,6 +248,7 @@ public class FileNode extends DefaultMutableTreeNode
         updateChildren();
     }
     
+    /**  This method updates nodes in directory it create nodes for child files and subdirectories if isn't created */
     public void updateChildren()
     {
         addChildren();
@@ -237,10 +262,12 @@ public class FileNode extends DefaultMutableTreeNode
         }
     }
     
+    /**  This method determines node is empty node */
     public boolean isEmpty() {
         return file == null && isLeaf();
     }
     
+    /** This method sets root  as a broswing project */
     public void setIsBrowsingProjects( boolean isBrowsingProjects)
     {
         if( isRoot())
@@ -249,15 +276,18 @@ public class FileNode extends DefaultMutableTreeNode
         }
     }
     
+    /** This method gets root  is broswing project */
     public boolean isBrowsingProjects()
     {
         return isRoot() && isBrowsingProjects;
     }
     
+    /** This method returns true if node is visual root*/
     public boolean isRoot(){
         return file.equals( new PathedFile( "/DEFAULT_PATH/"));
     }
     
+    /** This method clear paths and nodes releation */
     public void clearNodesAndPaths() {
         nodesAndPaths = new HashMap();
     }
