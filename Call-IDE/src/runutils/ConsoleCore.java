@@ -25,6 +25,7 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
+import helputils.ErrorHelper;
 
 /**
  * A class to build different consoles with the given streams.
@@ -126,8 +127,22 @@ public class ConsoleCore {
         new SwingWorker<Void, String>() {
             @Override protected Void doInBackground() throws Exception {
                 Scanner s = new Scanner(err);
+                int currentLine = 0;
+                String error;
+                
                 while (s.hasNextLine())
-                    publish(s.nextLine() + "\n");
+                {
+                    currentLine++;
+                    if( currentLine == 8 )
+                    {
+                        error = s.nextLine();
+                        ErrorHelper.addError(error);
+                        publish(error + "\n");
+                    }
+                    else
+                    {
+                        publish(s.nextLine() + "\n");
+                    }
                 return null;
             }
             @Override protected void process(List<String> chunks) {
