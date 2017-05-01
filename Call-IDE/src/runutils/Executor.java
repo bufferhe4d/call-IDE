@@ -5,6 +5,10 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+/**
+ * A class to execute java class files with main methods.
+ * @author Abdullah Talayhan
+ */
 public class Executor {
     private URL codLoc;
     private Thread executeThread;

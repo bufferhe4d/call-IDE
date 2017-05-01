@@ -1,12 +1,8 @@
 package helputils;
 
-import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.net.URL;
-import javax.swing.*;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  * This class represent a error helper tab on output tabs for get errors and give some helper link

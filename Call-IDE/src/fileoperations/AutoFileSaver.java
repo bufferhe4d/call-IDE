@@ -42,19 +42,7 @@ public class AutoFileSaver implements ActionListener {
         timer.start();
     }
     
-    public void setFileSaver( FileSaver fileSaver) {
-        this.fileSaver = fileSaver;
-    }
-    
-    public void setContentSource( JTextComponent contentSource) {
-        this.contentSource = contentSource;
-    }
-    
-    public void setPeriod( int period) {
-        timer.setDelay( period);
-        timer.restart();
-    }
-    
+    @Override
     public void actionPerformed( ActionEvent e) {
         try {
             String content = contentSource.getText();

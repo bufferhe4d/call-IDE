@@ -132,6 +132,7 @@ public class FileNode extends DefaultMutableTreeNode
     {
         return allowsChildren;
     }
+    
     /** This method returns node name properly */
     @Override
     public String toString()
@@ -185,6 +186,7 @@ public class FileNode extends DefaultMutableTreeNode
         }
         return true;
     }
+    
     /**  This method  deletes folder with its children files and subfiles  */
     private boolean deleteFolder( File file)
     {

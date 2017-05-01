@@ -2,7 +2,7 @@ package helputils;
 
 /**
  * This class enables the user reach reasons and solutions of run-time errors 
- * @author Ataberk Gözkaya
+ * @author Ataberk Gozkaya
  * @version 1.00 14/04/2017
  */
 public class ExceptionHelper 

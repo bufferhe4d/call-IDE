@@ -23,8 +23,8 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 /**
- *
- * @author ATTJ
+ * Configures build files, make executions, logs the compiler outputs.
+ * @author Abdullah Talayhan
  */
 public class BuildSys {
     

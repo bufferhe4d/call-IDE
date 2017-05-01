@@ -22,7 +22,7 @@ public class PathedFile extends File
      */
     public PathedFile( String pathname, PathedFile[] parentPath )
     {
-        super( pathname );
+        super( pathname);
         
         int extensionIndex;
         

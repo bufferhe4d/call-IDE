@@ -3,7 +3,6 @@ package filebrowser;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 import javax.swing.JPanel;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
  * A panel which contains a navigator to browse files
@@ -41,28 +40,7 @@ public class FileExplorer extends JPanel
         navigator.root.add( new FileNode( new PathedFile( root, navigator.root.file.path), navigator.root.nodesAndPaths));
         navigator.updateUI();
     }
-    
-    /**
-     * This method opens single file
-     * @param file path of file
-     */
-    public void openFile( String file)
-    {
-        navigator.openFile( file);
-    }
-    
-    /**
-     * This method opens many files
-     * @param files paths of files
-     */    
-    public void openFiles( ArrayList<String> files)
-    {
-        for (int i = 0 ; i < files.size(); i++)
-        {
-            navigator.openFile( files.get ( i));
-        }
-    }
-    
+        
     /**
      * @param isProjectBrowser
      */

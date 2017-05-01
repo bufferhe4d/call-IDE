@@ -20,7 +20,7 @@ public class FileNavigator extends JTree implements TreeSelectionListener
     TreeDirectoryPopupMenu directoryMenu;
     TreeFilePopupMenu      fileMenu;
     TreeJavaFilePopupMenu  javaFileMenu;
-    TreeProjectPopupMenu  projectMenu;
+    TreeProjectPopupMenu   projectMenu;
     FileOpener             opener;
     FileNode               root;
     FileNode               clipboardNode;
@@ -49,16 +49,6 @@ public class FileNavigator extends JTree implements TreeSelectionListener
     }
     
     /**
-     * This method open a file and update ui
-     * @param file path of file will be open
-     */
-    public void openFile( String file)
-    {
-        root.openFile( file, root.nodesAndPaths);
-        updateUI();
-    }
-    
-    /**
      * This method get last selected node
      * @param e Tree selection event
      */
@@ -77,16 +67,7 @@ public class FileNavigator extends JTree implements TreeSelectionListener
         ((FileNode) root.nodesAndPaths.get( DirectoryPath)).updateChildren();
         updateUI();
     }
-    
-    /**
-     * This method determines clipboardIsEmpty or not
-     * @return clipboard is emtpy
-     */
-    public boolean clipboradIsEmpty()
-    {
-        return clipboardNode == null ;
-    }
-    
+        
     /**
      * This class added for listening tree and providing interactions
      */
