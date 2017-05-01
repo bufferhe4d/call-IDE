@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package helputils;
 
 import java.awt.Color;
@@ -12,37 +7,48 @@ import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 
 /**
- *
+ * This class represent links with proper color behavior for exception help
  * @author mahmudsami
  */
 class LinkingLabel extends JLabel
     {
-        
-        String link;
-        
+        //constants
         final Color NON_CLICKED = Color.BLUE;
         final Color HOVER      = Color.RED;
         final Color CLICKED    = Color.MAGENTA;
         
+        //properties
+        String link;
         Color prevHover;
         
+        /**
+         *This constructor take link and make a label 
+         *@param link web address will be reached when clicked
+         */
         LinkingLabel( String link)
         {
             super(  link );
             this.link = link;
             prevHover  = NON_CLICKED;
-            //link =  ExceptionHelper.getHelpLink(exception);
             setForeground( NON_CLICKED );
         
             addMouseListener(new linkListener());
         }
         
+        /**
+         * This method set the link and change test
+         *@param link web address will be reached when clicked
+         */
         @Override
         public void setText(String link)
         {
             super.setText(link);
             this.link = link;
         }
+        
+        /**
+         * This class a listener for link it react with mouse properly and change text color
+         */
         
         private class linkListener extends MouseAdapter
         {
