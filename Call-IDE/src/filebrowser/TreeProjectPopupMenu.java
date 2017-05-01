@@ -17,11 +17,13 @@ public class TreeProjectPopupMenu extends TreeDirectoryPopupMenu{
     
     JMenuItem projectProperties;
     JMenuItem closeProject;
+    
     public TreeProjectPopupMenu(FileNavigator navigator) {
         
         super(navigator);
         
         projectProperties = new JMenuItem( "Project Properties");
+        closeProject = new JMenuItem( "Close Project");
         
         addSeparator();
         add( projectProperties);
