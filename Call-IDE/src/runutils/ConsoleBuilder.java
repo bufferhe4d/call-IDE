@@ -9,6 +9,7 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JEditorPane;
 import javax.swing.JTextPane;
 
 /**
@@ -23,6 +24,29 @@ public class ConsoleBuilder {
     PrintWriter inWriter;
     
     public ConsoleBuilder() {
+        init();
+    }
+
+    public JTextPane getOutErrConsole() {
+        return ConsoleCore.consoleOutErr(outPipe, errPipe);
+    }
+    
+    public JTextPane getIOEConsole() {
+        //return ConsoleCore.consoleOutErr(outPipe, errPipe);
+        return ConsoleCore.consoleIOE(outPipe, inWriter, errPipe);
+    }
+    
+    public void destroy() {
+        try {
+            inPipe.close();
+            outPipe.close();
+            errPipe.close();
+            inWriter.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ConsoleBuilder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void init() {
         inPipe = new PipedInputStream();
         outPipe = new PipedInputStream();
         errPipe = new PipedInputStream();
@@ -35,14 +59,6 @@ public class ConsoleBuilder {
         } catch (IOException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    public JTextPane getOutErrConsole() {
-        return ConsoleCore.consoleOutErr(outPipe, errPipe);
-    }
-    
-    public JTextPane getIOEConsole() {
-        return ConsoleCore.consoleIOE(outPipe, inWriter, errPipe);
     }
     
 }
