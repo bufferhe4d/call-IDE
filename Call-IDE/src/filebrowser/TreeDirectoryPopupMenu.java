@@ -22,7 +22,6 @@ public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
     JMenuItem createFile;
     JMenuItem createFolder;
     JMenuItem paste;
-    JMenuItem projectProperties;
     FileNode file;
     FileNavigator navigator;
     
@@ -36,21 +35,17 @@ public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
         createFile = new JMenuItem( "Create File");
         createFolder = new JMenuItem( "Create Folder");
         paste = new JMenuItem( "Paste");
-        projectProperties = new JMenuItem( "Project Properties");
         
         add( createFile);
         add( createFolder);
         addSeparator();
         add( deleteFolder);
         add( paste);
-        addSeparator();
-        add( projectProperties);
         
         deleteFolder.addActionListener( this);
         createFile.addActionListener( this);
         createFolder.addActionListener( this);
         paste.addActionListener( this);
-        projectProperties.addActionListener( this);
     }
     
     public void actionPerformed( ActionEvent e)
@@ -91,10 +86,6 @@ public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
                 file.createDirectory(fileName);
         }
         
-        else if (e.getSource() == projectProperties)
-        {
-            System.out.println("Show project properties...");
-        }
         
         else if( e.getSource() == paste )
         {
