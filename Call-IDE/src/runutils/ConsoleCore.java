@@ -192,9 +192,10 @@ public class ConsoleCore {
                         // publish the rest
                         publish(s.nextLine() + "\n");
                     }
+                }
                 return null;
-              }
             }
+            
             @Override protected void process(List<String> chunks) {
                 // change the stream color to red for errors
                 try {
