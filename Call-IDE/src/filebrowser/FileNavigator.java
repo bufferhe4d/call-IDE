@@ -20,6 +20,7 @@ public class FileNavigator extends JTree implements TreeSelectionListener
     TreeDirectoryPopupMenu directoryMenu;
     TreeFilePopupMenu      fileMenu;
     TreeJavaFilePopupMenu  javaFileMenu;
+    TreeProjectPopupMenu  projectMenu;
     FileOpener             opener;
     FileNode               root;
     FileNode               clipboardNode;
@@ -38,11 +39,9 @@ public class FileNavigator extends JTree implements TreeSelectionListener
         directoryMenu = new TreeDirectoryPopupMenu( this);
         fileMenu = new TreeFilePopupMenu( this);
         javaFileMenu = new TreeJavaFilePopupMenu( this);
+        projectMenu = new TreeProjectPopupMenu( this);
         root = (FileNode) getModel().getRoot();
         
-        // Add menus
-        add( fileMenu);
-        add( directoryMenu);
         
         // Add listeners
         addTreeSelectionListener( this);
@@ -135,8 +134,16 @@ public class FileNavigator extends JTree implements TreeSelectionListener
                 // Show proper menu
                 if( lastSelectedFile.file.isDirectory() )
                 {
-                    directoryMenu.setFile( lastSelectedFile);
-                    directoryMenu.show(FileNavigator.this, e.getX(), e.getY());
+                    if(root.isBrowsingProjects && ((FileNode)lastSelectedFile.getParent()).isRoot() )
+                    {
+                        projectMenu.setFile( lastSelectedFile);
+                        projectMenu.show(FileNavigator.this, e.getX(), e.getY());
+                    }
+                    else
+                    {
+                        directoryMenu.setFile( lastSelectedFile);
+                        directoryMenu.show(FileNavigator.this, e.getX(), e.getY());
+                    }
                 }
                 else if( lastSelectedFile.file.isJavaFile() )
                 {
