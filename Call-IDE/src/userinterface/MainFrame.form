@@ -849,9 +849,6 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="mainClassField">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="C:\u005cUsers\u005cUser\u005cDocuments\u005chello\u005cproj\u005csrc\u005cmaino.java" containsInvalidXMLChars="true"/>
-              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="mainClassLabel">
               <Properties>
@@ -905,23 +902,26 @@
             </Component>
             <Component class="javax.swing.JTextField" name="projectNameField">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Project2"/>
+                <Property name="text" type="java.lang.String" value="MyProject"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="projectLocationField">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="C:\u005cUsers\u005cUser\u005cDocuments\u005chello\u005cproj\u005c" containsInvalidXMLChars="true"/>
-              </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="browseLocationButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Browse"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="browseLocationButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="browseMainButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Browse"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="browseMainButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="projectRootLabel">
               <Properties>
@@ -931,7 +931,6 @@
             <Component class="javax.swing.JTextField" name="dd">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
-                <Property name="text" type="java.lang.String" value="C:\u005cUsers\u005cUser\u005cDocuments\u005chello\u005cproj\u005cProject2" containsInvalidXMLChars="true"/>
               </Properties>
             </Component>
           </SubComponents>
