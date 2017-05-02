@@ -274,6 +274,34 @@ public class ProjectHandler
         return project.allJavaFiles.remove( file);
     }
     
+     /**
+     * It adds a file to project. 
+     * @param file to add. 
+     * @return true if adding was successfull
+     */
+    public boolean addJar( File file)
+    {
+        return project.externalClassPaths.add( file);
+    }
+    
+    /**
+     * It removes a jar from project.
+     * @param file to remove. 
+     * @return true if removing was successfull
+     */
+    public boolean removeJar( File file)
+    {
+        return project.externalClassPaths.remove( file);
+    }
+    
+    /**
+     * It removes all jars from project.
+     */
+    public void removeAllJars()
+    {
+        project.externalClassPaths = new ArrayList<File>();
+    }
+    
     /*
      * It synchronizes src and build absolute path with project path. src and build must be in the same folder with project file.
      */
