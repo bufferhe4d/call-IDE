@@ -39,10 +39,8 @@ public class ProjectProperties implements Serializable
     * E.g "packageX/HelloWorld.java"
     */
    protected ArrayList<File> allJavaFiles;
+
    
-   /**
-    * external class paths that project has
-    */
    protected ArrayList<File> externalClassPaths;
    
 }
