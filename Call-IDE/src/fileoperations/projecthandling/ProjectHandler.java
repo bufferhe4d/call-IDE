@@ -40,7 +40,7 @@ public class ProjectHandler
      */
     public ProjectHandler( File build, File src, File mainClass, String projectPath) throws SecurityException
     {
-        this( build, src, mainClass, projectPath, new ArrayList<File>() );
+        this( build, src, mainClass, projectPath, new ArrayList<File>(), new  ArrayList<File>());
     }
     
     /**
@@ -52,7 +52,7 @@ public class ProjectHandler
      * @param allJavaFiles list of project files in src
      * @throws SecurityException if can't create src and build
      */
-    public ProjectHandler( File build, File src, File mainClass, String projectPath, ArrayList<File> allJavaFiles) throws SecurityException
+    public ProjectHandler( File build, File src, File mainClass, String projectPath, ArrayList<File> allJavaFiles, ArrayList<File> externalClassPaths) throws SecurityException
     {
         this.projectPath = projectPath;
         project = new ProjectProperties();
@@ -61,6 +61,7 @@ public class ProjectHandler
         project.src = src;
         project.mainClass = mainClass;
         project.allJavaFiles = allJavaFiles;
+        project.externalClassPaths = externalClassPaths;
         checkAndCreateFolders();
     }
     
