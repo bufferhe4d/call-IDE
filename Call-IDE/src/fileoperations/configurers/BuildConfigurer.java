@@ -14,6 +14,7 @@ public class BuildConfigurer {
     
     public void exportConfigs( String location) throws IOException {
         exportConfigData( "/fileoperations/buildconfigs/build.xml", location + "/build.xml");
+        exportConfigData( "/fileoperations/buildconfigs/buildFile.xml", location + "/buildFile.xml");
         exportConfigData( "/fileoperations/buildconfigs/buildJavadoc.xml", location + "/buildJavadoc.xml");
         exportConfigData( "/fileoperations/buildconfigs/buildJar.xml", location + "/buildJar.xml");
         exportConfigData( "/fileoperations/buildconfigs/runJava.xml", location + "/runJava.xml");

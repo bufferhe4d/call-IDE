@@ -69,8 +69,11 @@ public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
             if (fileName == null)
                 return;
             try {
-                if (fileName.trim().length() > 0)
+                if (fileName.trim().length() > 0) {
+                    if (!fileName.contains("."))
+                        fileName = fileName + ".java";
                     file.createFile(fileName); 
+                }
             } catch(Exception exc) {
                 exc.printStackTrace();
             }

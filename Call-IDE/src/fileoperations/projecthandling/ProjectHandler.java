@@ -333,6 +333,10 @@ public class ProjectHandler
         return projectPath;
     }
     
+    public void setPath( String projectPath) {
+        this.projectPath = projectPath;
+    }
+    
     public ArrayList<File> getJarFiles() {
         return project.externalClassPaths;
     }

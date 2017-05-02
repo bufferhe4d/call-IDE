@@ -3,6 +3,8 @@
         <!-- The value of a property is accessed via ${} -->
         <property location="/Users/ATTJ/Desktop/code/classes" name="build.dir"/>
         <property location="/Users/ATTJ/Desktop/code/dist" name="dist.dir"/>
+        <property value="sa" name="jar.name"/>
+        <property value="sa" name="main.name"/>
 
         <!-- Deletes the existing build, docs and dist directory-->
         <target name="clean">
@@ -16,9 +18,9 @@
 
         <!--Creates the deployable jar file  -->
         <target name="jar">
-                <jar basedir="${build.dir}" destfile="${dist.dir}\test.ant.jar">
+                <jar basedir="${build.dir}" destfile="${dist.dir}/${jar.name}">
                         <manifest>
-                                <attribute name="Main-Class" value="myP.hello"/>
+                                <attribute name="Main-Class" value="${main.name}"/>
                         </manifest>
                 </jar>
         </target>

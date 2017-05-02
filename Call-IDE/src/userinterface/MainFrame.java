@@ -1679,7 +1679,10 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
     }//GEN-LAST:event_newProjectButtonActionPerformed
 
     private void projectOkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_projectOkButtonActionPerformed
-        createProject();
+        if (creatingProject)
+            createProject();
+        else
+            modifyProject();
     }//GEN-LAST:event_projectOkButtonActionPerformed
 
     private void projectCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_projectCancelButtonActionPerformed
@@ -2062,7 +2065,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
 
                 methodParser.removeNode( file);
 
-                if (selected.getName().endsWith(".java"))
+                if (selected.getName().contains("."))
                     file = new File(selected.getParent() + "/" + selected.getName());
                 else
                     file = new File(selected.getParent() + "/" + selected.getName() + ".java");
@@ -2505,7 +2508,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
                 return null;
             }
             else {
-                return compileFolder(getActiveFile().getParent());
+                return compileFile(getActiveFile().getAbsolutePath());
             }
         }
         return null;
@@ -2529,6 +2532,17 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         return insertedPane;
     }
     
+    private JTextPane compileFile( String filePath) {
+        JTextPane insertedPane = new ConsoleBuilder().getOutErrConsole();
+        insertedPane.setFont( preferences.getOutputFont());
+        compilerOutputScrollPane.setViewportView( insertedPane);
+        BuildSys.setPropsForCompileFile(userPath + "/BuildConfigs/buildFile.xml", filePath);
+        BuildSys.compile(userPath + "/BuildConfigs/buildFile.xml");
+        outputTabs.setSelectedIndex(1);
+        fileExplorer.updateDirectory( (new File(filePath)).getParent());
+        return insertedPane;
+    }
+    
     /** Runs the current active file on the console. */
     private void runCurrentFile() {
         if (isEditing())
@@ -2536,7 +2550,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
     }
 
     private void runFileDefault( File file) {
-        runFile( file, new File(file.getParent() + "/classes"));
+        runFile( file, new File(file.getParent()));
     }
     
     /** Runs a given file on the console. */
@@ -2601,32 +2615,41 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         outputTabs.setSelectedIndex(2);
     }
 
-    // TODO : INTEGRATE TO PROJECT SYSTEM
     /** Generates javadoc for the current project. */
     private void javadocCurrentProject() {
+        ProjectHandler currentProject = getProjectHandler(getActiveFile());
+        
         JTextPane insertedPane = new ConsoleBuilder().getOutErrConsole();
         insertedPane.setFont( preferences.getOutputFont());
         compilerOutputScrollPane.setViewportView( insertedPane);
 
-        // INPUTS: JAVADOC XML FILE, SOURCE DIR, TARGET DIR
+        // INPUTS: JAR XML FILE, SRC DIR, TARGET DIR
         BuildSys.setPropsForJavaDoc(userPath + "/BuildConfigs/buildJavadoc.xml", 
-                                    getActiveFile().getParent(), getActiveFile().getParent() + "/doc");
+                                    currentProject.getSrc().getAbsolutePath(),
+                                    currentProject.getPath() + "/doc");
         BuildSys.compile(userPath + "/BuildConfigs/buildJavadoc.xml");
-
         outputTabs.setSelectedIndex(1);
+        fileExplorer.updateDirectory(currentProject.getPath());
     }
 
-    // TODO : INTEGRATE TO PROJECT SYSTEM
+    // TODO INTEGRATE TO THE PROJECT SYSTEM
     /** Generates an executable jar file for the current project. */
     private void jarCurrentProject() {
+        ProjectHandler currentProject = getProjectHandler(getActiveFile());
+        
         JTextPane insertedPane = new ConsoleBuilder().getOutErrConsole();
         insertedPane.setFont( preferences.getOutputFont());
         compilerOutputScrollPane.setViewportView( insertedPane);
 
         // INPUTS: JAR XML FILE, BUILD DIR, TARGET DIR,  mainClass with Package Name
+        String mainFileName = currentProject.getMainClass().getName();
+        // TODO INCLUDE THE PACKAGE NAME AS WELL
+        String mainClassName = mainFileName.substring(0, mainFileName.length() - 5);
         BuildSys.setPropsForJar(userPath + "/BuildConfigs/buildJar.xml",
-                                getActiveFile().getParent() + "/classes",
-                                getActiveFile().getParent() + "/dist", "myP.hello");
+                                currentProject.getBuild().getAbsolutePath(),
+                                currentProject.getPath() + "/dist",
+                                mainClassName, "myjar.jar");
+        // TODO ADD A GETNAME METHOD TO PROJECT HANDLER AND USE UT
         BuildSys.compile(userPath + "/BuildConfigs/buildJar.xml");
 
         outputTabs.setSelectedIndex(1);
@@ -2731,6 +2754,10 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
 
     /** Shows the frame for creating projects. */
     private void showCreateProject() {
+        creatingProject = true;
+        projectNameField.setEditable(true);
+        projectLocationField.setEditable(true);
+        browseLocationButton.setEnabled(true);
         projectFrame.setTitle( "Create New Project");
         projectFrame.pack();
         projectFrame.setLocationRelativeTo( this);
@@ -2753,15 +2780,8 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
             rootFolder.mkdir();
             ProjectHandler handler = new ProjectHandler( buildFolder, srcFolder, mainClassFile, projectRoot);
 
-            for ( int i = 0; i < paths.getSize(); i++ ) {
+            for ( int i = 0; i < paths.getSize(); i++ ) 
                 handler.addJar( new File( paths.getElementAt(i) ) );
-            }
-            
-            for ( int i = 0; i < paths.getSize(); i++ )
-            {
-                handler.addJar( new File( paths.getElementAt(i) ) );
-            }
-            
 
             handler.saveProject( projectRoot, projectName);
             
@@ -2783,7 +2803,6 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         }
     }
     
-    // TODO : BUILDSYS INTEGRATION & HANDLING
     /** Opens the given project folder on the IDE. */
     private void openProject( File projectFolder) {
         boolean open = true;
@@ -2953,10 +2972,24 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
     
     @Override
     public void closeProject( File projectRoot) {
-        System.out.println("Closing project: " + projectRoot.getAbsolutePath());
+        System.out.println( "Closing project: " + projectRoot.getAbsolutePath());
+        ProjectHandler selectedProject = null;
+        for (ProjectHandler project : openProjects) {
+            if (projectRoot.getAbsolutePath().equals(project.getPath())) {
+                selectedProject = project;
+            }
+        }
+        openProjects.remove(selectedProject);
+        // TODO remove the project from the explorer as well.
+        
     }
     
     private void showPropertiesOf( ProjectHandler project) {
+        creatingProject = false;
+        modifyingProject = project;
+        projectNameField.setEditable(false);
+        projectLocationField.setEditable(false);
+        browseLocationButton.setEnabled(false);
         projectNameField.setText( (new File(project.getPath()).getName()));
         projectRootField.setText( project.getPath());
         projectLocationField.setText( (new File(project.getPath()).getParent()));
@@ -2975,6 +3008,35 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
             projectRootField.setText( projectLocationField.getText() + "\\" + projectNameField.getText());
         else
             projectRootField.setText( projectLocationField.getText() + "/" + projectNameField.getText());
+    }
+    
+    private void modifyProject() {
+        String projectName = projectNameField.getText();
+        String projectLocation = projectLocationField.getText();
+        String mainClass = mainClassField.getText();
+        String projectRoot = projectLocation + "/" + projectName + "/";
+        
+        File buildFolder = new File( projectRoot + "/build");
+        File srcFolder = new File( projectRoot + "/src");
+        File mainClassFile = new File( mainClass);
+        File rootFolder = new File( projectRoot);
+        ListModel<String> paths = classPathList.getModel();
+        try {
+            if (!(new File(modifyingProject.getPath())).equals(rootFolder))
+                rootFolder.mkdir();
+            modifyingProject.setPath( projectRoot);
+            modifyingProject.setBuild(buildFolder);
+            modifyingProject.setSrc(srcFolder);
+            modifyingProject.setMainClass(mainClassFile);
+            modifyingProject.removeAllJars();
+            for ( int i = 0; i < paths.getSize(); i++ ) 
+                modifyingProject.addJar( new File( paths.getElementAt(i) ) );
+            modifyingProject.saveProject( projectRoot, projectName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        projectFrame.setVisible(false);
     }
 
     // Other Variables
@@ -3007,6 +3069,8 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
     private Parser methodParser;
     private boolean projectMode;
     private ArrayList<ProjectHandler> openProjects;
+    private boolean creatingProject;
+    private ProjectHandler modifyingProject;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutButton;

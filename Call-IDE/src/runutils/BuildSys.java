@@ -30,7 +30,6 @@ public class BuildSys {
     
     public static void setPropsForCompile(String init ,String build, String src) {
         try {
-            //String filepath = "/Users/ATTJ/Desktop/xmlPlay/build.xml";
             String filepath = init;
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -40,25 +39,13 @@ public class BuildSys {
             //Node project = doc.getFirstChild();
             Node prop1 = doc.getElementsByTagName("property").item(0);
             Node prop2 = doc.getElementsByTagName("property").item(1);
-            
-            
-            // get project attributes
-            //NamedNodeMap attr = project.getAttributes();
-            
-            //Node nodeAttr = attr.getNamedItem("basedir");
-            //nodeAttr.setTextContent("2");
-            //System.out.println(nodeAttr.getTextContent());
-            //nodeAttr.setTextContent("/Users/ATTJ/Desktop/code");
-            //System.out.println(nodeAttr.getTextContent());
-            
+
             NamedNodeMap srcAttr = prop1.getAttributes();
             Node srcName = srcAttr.getNamedItem("location");
-            System.out.println(srcName.getTextContent());
             srcName.setTextContent(src);
             
             NamedNodeMap buildAttr = prop2.getAttributes();
             Node buildName = buildAttr.getNamedItem("location");
-            System.out.println(buildName.getTextContent());
             buildName.setTextContent(build);
             
             
@@ -73,7 +60,45 @@ public class BuildSys {
         }
     }
     
-    public static void setPropsForJar(String init, String buildDir, String distDir, String mainClassWithPackage) {
+    public static void setPropsForCompileFile(String init, String sourceFile) {
+        try {
+            File file = new File(sourceFile);
+            
+            String filepath = init;
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document doc = docBuilder.parse(filepath);
+            
+            // get project 
+            //Node project = doc.getFirstChild();
+            Node prop1 = doc.getElementsByTagName("property").item(0);
+            Node prop2 = doc.getElementsByTagName("property").item(1);
+            Node prop3 = doc.getElementsByTagName("property").item(2);
+            
+            NamedNodeMap srcAttr = prop1.getAttributes();
+            Node srcName = srcAttr.getNamedItem("location");
+            srcName.setTextContent( file.getParent());
+            
+            NamedNodeMap buildAttr = prop2.getAttributes();
+            Node buildName = buildAttr.getNamedItem("location");
+            buildName.setTextContent( file.getParent());
+            
+            NamedNodeMap fileAttr = prop3.getAttributes();
+            Node fileName = fileAttr.getNamedItem("value");
+            fileName.setTextContent( file.getName());
+            
+            updateBuildFile( filepath, doc);
+            
+        } catch (ParserConfigurationException pce) {
+            pce.printStackTrace();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } catch (SAXException sae) {
+            sae.printStackTrace();
+        }
+    }
+    
+    public static void setPropsForJar(String init, String buildDir, String distDir, String mainClassWithPackage, String jarName) {
         
         try {
             //String filepath = "/Users/ATTJ/Desktop/xmlPlay/build.xml";
@@ -88,6 +113,7 @@ public class BuildSys {
             Node prop1 = doc.getElementsByTagName("property").item(0);
             // get property, location dist
             Node prop2 = doc.getElementsByTagName("property").item(1);
+            Node prop3 = doc.getElementsByTagName("property").item(2);
             
             // get target, jar
             Node jarTarget = doc.getElementsByTagName("attribute").item(0);
@@ -95,21 +121,21 @@ public class BuildSys {
             //Node mainClass = jarTarget.getFirstChild();
             Node mainClass = jarTarget;
             
-            System.out.println(mainClass);
             NamedNodeMap buildAttr = prop1.getAttributes();
             Node buildName = buildAttr.getNamedItem("location");
-            System.out.println(buildName.getTextContent());
             buildName.setTextContent(buildDir);
             
             NamedNodeMap distAttr = prop2.getAttributes();
             Node distName = distAttr.getNamedItem("location");
-            System.out.println(distName.getTextContent());
             distName.setTextContent(distDir);
             
             NamedNodeMap mainAttr = mainClass.getAttributes();
             Node mainName = mainAttr.getNamedItem("value");
-            System.out.println(mainName.getTextContent());
             mainName.setTextContent(mainClassWithPackage);
+            
+            NamedNodeMap jarAttr = prop3.getAttributes();
+            Node jarNameNode = jarAttr.getNamedItem("value");
+            jarNameNode.setTextContent(jarName);
             
             updateBuildFile( filepath, doc);
             
@@ -134,12 +160,10 @@ public class BuildSys {
             
             NamedNodeMap buildAttr = prop1.getAttributes();
             Node buildName = buildAttr.getNamedItem("location");
-            System.out.println(buildName.getTextContent());
             buildName.setTextContent(srcDir);
             
             NamedNodeMap distAttr = prop2.getAttributes();
             Node distName = distAttr.getNamedItem("location");
-            System.out.println(distName.getTextContent());
             distName.setTextContent(docsDir);
             
             updateBuildFile( filepath, doc);
