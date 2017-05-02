@@ -130,7 +130,7 @@ public class Parser {
                         metDec.isPublic() && metDec.isStatic()) {
                         ArrayList<Parameter> parameters = new ArrayList<Parameter>(metDec.getParameters());
                         if (parameters.size() == 1 && parameters.get(0).toString().equals("String[] args"))
-                            return node.file;
+                            return ((ClassNode)node).file;
                     }
                 }
             }
