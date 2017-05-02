@@ -2721,7 +2721,15 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         try {
             rootFolder.mkdir();
             ProjectHandler handler = new ProjectHandler( buildFolder, srcFolder, mainClassFile, projectRoot);
+            
+            ListModel<String> paths = classPathList.getModel();
+            for ( int i = 0; i < paths.getSize(); i++ )
+            {
+                handler.addJar( new File( paths.getElementAt(i) ) );
+            }
+            
             handler.saveProject( projectRoot, projectName);
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
