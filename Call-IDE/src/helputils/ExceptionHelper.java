@@ -5,7 +5,7 @@ package helputils;
  * @author Ataberk Gozkaya
  * @version 1.00 14/04/2017
  */
-public class ExceptionParser 
+public class ExceptionHelper 
 {
     /**
      * This method compares run-time error names and 

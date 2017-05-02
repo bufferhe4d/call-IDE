@@ -787,7 +787,7 @@
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="browseLocationButton" min="-2" pref="121" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="dd" max="32767" attributes="0"/>
+                                  <Component id="projectRootField" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -806,7 +806,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="projectRootLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="dd" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="projectRootField" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -890,6 +890,7 @@
                     </Property>
                   </Properties>
                   <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JList&lt;&gt;(new DefaultListModel&lt;String&gt;())"/>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                   </AuxValues>
                 </Component>
@@ -899,6 +900,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Choose Path"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="classPathButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="projectNameField">
               <Properties>
@@ -928,9 +932,10 @@
                 <Property name="text" type="java.lang.String" value="Project Root:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="dd">
+            <Component class="javax.swing.JTextField" name="projectRootField">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
+                <Property name="text" type="java.lang.String" value="/MyProject"/>
               </Properties>
             </Component>
           </SubComponents>

@@ -16,4 +16,16 @@ public interface FileOpener {
      */
     void openFile( File file);
     
+    /**
+     * Closes an open project.
+     * @param projectRoot the root folder of the project
+     */
+    void closeProject( File projectRoot);
+    
+    /**
+     * Shows project properties of a project.
+     * @param projectRoot the root folder of the project
+     */
+    void showProjectProperties( File projectRoot);
+    
 }

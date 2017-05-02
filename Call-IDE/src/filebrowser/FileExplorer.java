@@ -23,10 +23,9 @@ public class FileExplorer extends JPanel
     public FileExplorer( ArrayList<String> files, FileOpener opener)
     {
         super();
-        navigator = new FileNavigator( files);
+        navigator = new FileNavigator( files, opener);
         setLayout( new FlowLayout( FlowLayout.LEFT));
         add( navigator);
-        navigator.opener = opener;
         setVisible( true);
     }
     

@@ -243,7 +243,7 @@ public class ProjectHandler
      */
     public File getMainClass()
     {
-        return new File( project.src.getAbsolutePath() + "/" + project.mainClass.getPath() );
+        return new File( project.src.getAbsolutePath() + "/" + project.mainClass.getName() );
     }
     
     /**
@@ -331,6 +331,10 @@ public class ProjectHandler
     
     public String getPath() {
         return projectPath;
+    }
+    
+    public ArrayList<File> getJarFiles() {
+        return project.externalClassPaths;
     }
     
     //*************************************Inner Exception Class****************************************

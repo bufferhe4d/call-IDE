@@ -13,11 +13,14 @@ public class TreeProjectPopupMenu extends TreeDirectoryPopupMenu{
     //properties
     JMenuItem projectProperties;
     JMenuItem closeProject;
+    FileOpener opener;
     
     //constructor
     public TreeProjectPopupMenu(FileNavigator navigator) {
         
         super(navigator);
+        
+        this.opener = navigator.opener;
         
         projectProperties = new JMenuItem( "Project Properties");
         closeProject = new JMenuItem( "Close Project");
@@ -34,11 +37,11 @@ public class TreeProjectPopupMenu extends TreeDirectoryPopupMenu{
     {
        if (e.getSource() == projectProperties)
         {
-            System.out.println("Show project properties...");
+            opener.showProjectProperties( file.getFile());
         }
        else if (e.getSource() == closeProject )
         {
-            System.out.println("close project ");
+            opener.closeProject( file.getFile());
         }
 
        navigator.updateUI();
