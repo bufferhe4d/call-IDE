@@ -122,14 +122,14 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         projectOkButton = new javax.swing.JButton();
         projectCancelButton = new javax.swing.JButton();
         classPathScrollPane = new javax.swing.JScrollPane();
-        classPathList = new javax.swing.JList<>();
+        classPathList = new javax.swing.JList<>(new DefaultListModel<String>());
         classPathButton = new javax.swing.JButton();
         projectNameField = new javax.swing.JTextField();
         projectLocationField = new javax.swing.JTextField();
         browseLocationButton = new javax.swing.JButton();
         browseMainButton = new javax.swing.JButton();
         projectRootLabel = new javax.swing.JLabel();
-        dd = new javax.swing.JTextField();
+        projectRootField = new javax.swing.JTextField();
         submissionButtonGroup = new javax.swing.ButtonGroup();
         mainSplitPane = new javax.swing.JSplitPane();
         topSplitPane = new javax.swing.JSplitPane();
@@ -682,6 +682,11 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         classPathScrollPane.setViewportView(classPathList);
 
         classPathButton.setText("Choose Path");
+        classPathButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                classPathButtonActionPerformed(evt);
+            }
+        });
 
         projectNameField.setText("MyProject");
 
@@ -701,7 +706,8 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
 
         projectRootLabel.setText("Project Root:");
 
-        dd.setEditable(false);
+        projectRootField.setEditable(false);
+        projectRootField.setText("/MyProject");
 
         javax.swing.GroupLayout projectPanelLayout = new javax.swing.GroupLayout(projectPanel);
         projectPanel.setLayout(projectPanelLayout);
@@ -741,7 +747,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
                                 .addComponent(projectLocationField, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(browseLocationButton, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(dd))))
+                            .addComponent(projectRootField))))
                 .addContainerGap())
         );
         projectPanelLayout.setVerticalGroup(
@@ -754,7 +760,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(projectPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(projectRootLabel)
-                    .addComponent(dd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(projectRootField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(projectPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(projectLocationLabel)
@@ -1692,6 +1698,10 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         browseMainClass();
     }//GEN-LAST:event_browseMainButtonActionPerformed
 
+    private void classPathButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_classPathButtonActionPerformed
+        browseClassPath();
+    }//GEN-LAST:event_classPathButtonActionPerformed
+
     /** Sets LookAndFeel to the given name. */
     public static void setLookAndFeel (String lookAndFeel) {
         try {
@@ -1790,6 +1800,19 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         consoleOut = false;
 
         insertMethodSummary();
+   
+        projectLocationField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                 updateProjectRootField();
+            }
+        });
+        projectNameField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                 updateProjectRootField();
+            }
+        });
     }
 
     /** Listener for the console's detach button. */
@@ -2502,28 +2525,34 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
                                     buildFolder, srcFolder);
         BuildSys.compile(userPath + "/BuildConfigs/build.xml");
         outputTabs.setSelectedIndex(1);
+        fileExplorer.updateDirectory( (new File(buildFolder)).getParent());
         return insertedPane;
     }
     
     /** Runs the current active file on the console. */
     private void runCurrentFile() {
         if (isEditing())
-            runFile( getActiveFile());
+            runFileDefault( getActiveFile());
     }
 
+    private void runFileDefault( File file) {
+        runFile( file, new File(file.getParent() + "/classes"));
+    }
+    
     /** Runs a given file on the console. */
-    private void runFile( File file) {
+    private void runFile( File file, File build) {
+        
         if (file == null) {
             printStatus("The file should be saved and compiled before running.");
             return;
         }
         
-        File build = new File(file.getParent() + "/classes");
         if (!build.exists()){
             printStatus("The file should be saved and compiled before running.");
             return;
         }
 
+        
         Parser mainChecker = new Parser();
         try {
             mainChecker.addNode(file);
@@ -2534,6 +2563,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
             printStatus("The class does not have a proper main method.");
             return;
         }
+        
 
         String packageName = "";
         CompilationUnit cu;
@@ -2718,16 +2748,21 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
         File srcFolder = new File( projectRoot + "/src");
         File mainClassFile = new File( mainClass);
         File rootFolder = new File( projectRoot);
+        ListModel<String> paths = classPathList.getModel();
         try {
             rootFolder.mkdir();
             ProjectHandler handler = new ProjectHandler( buildFolder, srcFolder, mainClassFile, projectRoot);
+
+            for ( int i = 0; i < paths.getSize(); i++ ) {
+                handler.addJar( new File( paths.getElementAt(i) ) );
+            }
             
-            ListModel<String> paths = classPathList.getModel();
             for ( int i = 0; i < paths.getSize(); i++ )
             {
                 handler.addJar( new File( paths.getElementAt(i) ) );
             }
             
+
             handler.saveProject( projectRoot, projectName);
             
         } catch (IOException e) {
@@ -2805,10 +2840,8 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
     /** Supplies access to the ProjectHandler object of the given file. */
     private ProjectHandler getProjectHandler( File file) {
         for (ProjectHandler ph : openProjects) {
-            System.out.println("all: " + ph.getAllJavaFiles());
             ArrayList<File> javaFiles = ph.getAllJavaFiles();
             for (File javaFile : javaFiles) {
-                System.out.println(file + "<comparing>" + javaFile);
                 if (file.equals(javaFile))
                     return ph;
             }
@@ -2853,8 +2886,11 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
     
     /** Determines what to do with the run button on the frame. */
     private void runAction() {
-        if (projectMode)
-            ; // TODO : RUN THE MAIN CLASS
+        if (projectMode) {
+            updateProjects();
+            ProjectHandler activeProject = getProjectHandler( getActiveFile());
+            runFile( activeProject.getMainClass(), activeProject.getBuild());
+        }
         else
             runCurrentFile();
     }
@@ -2871,20 +2907,74 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
     private void browseProjectLocation() {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY);
-        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+        if (chooser.showOpenDialog(projectFrame) == JFileChooser.APPROVE_OPTION) {
             File file = chooser.getSelectedFile();
             if (file.isDirectory())
                 projectLocationField.setText( file.getAbsolutePath());
         }
+        updateProjectRootField();
     }
     
     /** Opens a file chooser dialog for user to choose its main class location. */
     private void browseMainClass() {
         JFileChooser chooser = new JFileChooser();
-        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+        if (chooser.showOpenDialog(projectFrame) == JFileChooser.APPROVE_OPTION) {
             File file = chooser.getSelectedFile();
             mainClassField.setText( file.getAbsolutePath());
         }
+        updateProjectRootField();
+    }
+    
+    private void browseClassPath() {
+        JFileChooser chooser = new JFileChooser();
+        if (chooser.showOpenDialog(projectFrame) == JFileChooser.APPROVE_OPTION) {
+            File file = chooser.getSelectedFile();
+            String pathToAdd = file.getAbsolutePath();
+            ListModel<String> currentPaths = classPathList.getModel();
+            boolean alreadyExists = false;
+            for (int i = 0; i < currentPaths.getSize(); i++)
+                if (currentPaths.getElementAt(i).equals(pathToAdd))
+                    alreadyExists = true;
+            if (!alreadyExists && pathToAdd.endsWith(".jar"))
+                ((DefaultListModel) classPathList.getModel()).addElement(pathToAdd);
+        }
+    }
+    
+    @Override
+    public void showProjectProperties( File projectRoot) {
+        ProjectHandler selectedProject = null;
+        for (ProjectHandler project : openProjects) {
+            if (projectRoot.getAbsolutePath().equals(project.getPath())) {
+                selectedProject = project;
+            }
+        }
+        showPropertiesOf( selectedProject);
+    }
+    
+    @Override
+    public void closeProject( File projectRoot) {
+        System.out.println("Closing project: " + projectRoot.getAbsolutePath());
+    }
+    
+    private void showPropertiesOf( ProjectHandler project) {
+        projectNameField.setText( (new File(project.getPath()).getName()));
+        projectRootField.setText( project.getPath());
+        projectLocationField.setText( (new File(project.getPath()).getParent()));
+        mainClassField.setText( project.getMainClass().getAbsolutePath());
+        ArrayList<File> externalPaths = project.getJarFiles();
+        for (File jarFile : externalPaths)
+            ((DefaultListModel) classPathList.getModel()).addElement(jarFile.getAbsolutePath());
+        projectFrame.setTitle( "Project Properties");
+        projectFrame.pack();
+        projectFrame.setLocationRelativeTo( this);
+        projectFrame.setVisible(true);
+    }
+    
+    private void updateProjectRootField() {
+        if (projectLocationField.getText().indexOf('\\') != -1)
+            projectRootField.setText( projectLocationField.getText() + "\\" + projectNameField.getText());
+        else
+            projectRootField.setText( projectLocationField.getText() + "/" + projectNameField.getText());
     }
 
     // Other Variables
@@ -2947,7 +3037,6 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
     private javax.swing.JScrollPane consoleOutputScrollPane;
     private javax.swing.JMenuItem copyButton;
     private javax.swing.JMenuItem cutButton;
-    private javax.swing.JTextField dd;
     private javax.swing.JMenu editMenu;
     private javax.swing.JPanel editorAndMethodSummaryPanel;
     private javax.swing.JComboBox<String> editorFontChooser;
@@ -3030,6 +3119,7 @@ public class MainFrame extends JFrame implements FileOpener, AutosaveHandler, At
     private javax.swing.JLabel projectNameLabel;
     private javax.swing.JButton projectOkButton;
     private javax.swing.JPanel projectPanel;
+    private javax.swing.JTextField projectRootField;
     private javax.swing.JLabel projectRootLabel;
     private javax.swing.JMenuItem quitButton;
     private javax.swing.JMenuItem redoButton;
