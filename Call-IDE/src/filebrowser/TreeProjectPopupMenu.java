@@ -41,7 +41,8 @@ public class TreeProjectPopupMenu extends TreeDirectoryPopupMenu{
         }
        else if (e.getSource() == closeProject )
         {
-            opener.closeProject( file.getFile());
+            opener.closeProject(file.getFile());
+            navigator.closeProject(file);
         }
 
        navigator.updateUI();

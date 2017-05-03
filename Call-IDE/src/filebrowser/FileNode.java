@@ -294,4 +294,20 @@ public class FileNode extends DefaultMutableTreeNode
         nodesAndPaths = new HashMap();
     }
     
+    /** This method close the node */
+    public void closeFile() 
+    {
+        
+        if(  getAllowsChildren() )
+        for( int i = 0 ; i < this.getChildCount() ; i++)
+        {
+            if( !isEmpty() )
+            ((FileNode)this.getChildAt(i)).closeFile();
+        }
+        
+        nodesAndPaths.remove(file.getAbsolutePath(), this);
+        removeFromParent();
+        
+    }
+    
 }

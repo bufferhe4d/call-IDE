@@ -69,6 +69,16 @@ public class FileNavigator extends JTree implements TreeSelectionListener
         ((FileNode) root.nodesAndPaths.get(directoryPath)).updateChildren();
         updateUI();
     }
+    
+    /**
+     * 
+     * 
+     */
+    public void closeProject( FileNode rootOfProject )
+    {
+        rootOfProject.closeFile();
+        updateUI();
+    }
         
     /**
      * This class added for listening tree and providing interactions
