@@ -56,9 +56,9 @@ class LinkingLabel extends JLabel
             
             @Override
             public void mouseClicked( MouseEvent e){
-                if( !link.equals("We Can Not Found Help For Exception"))
+                if( !link.equals("No help found about this exception."))
                 {
-                LinkOpener.openLink(link);
+                try { LinkOpener.openLink(link); } catch (Exception exc) {}
                 setForeground(CLICKED);
                 prevHover = CLICKED;
                 }
@@ -67,7 +67,7 @@ class LinkingLabel extends JLabel
             @Override
             public void mousePressed( MouseEvent e)
             {
-                 if( !link.equals("We Can Not Found Help For Exception"))
+                 if( !link.equals("No help found about this exception."))
                 {
                 setForeground(HOVER);
                 }
@@ -76,11 +76,11 @@ class LinkingLabel extends JLabel
             @Override
             public void mouseReleased( MouseEvent e)
             {
-                 if( !link.equals("We Can Not Found Help For Exception") )
+                 if( !link.equals("No help found about this exception.") )
                 {
                 if( inside)
                 {
-                    LinkOpener.openLink(link);
+                    try { LinkOpener.openLink(link); } catch (Exception exc) {}
                     setForeground(CLICKED);
                     prevHover = CLICKED;
                 }    
@@ -92,7 +92,7 @@ class LinkingLabel extends JLabel
             @Override
             public void mouseEntered( MouseEvent e)
             {
-                 if(  !link.equals("We Can Not Found Help For Exception") )
+                 if(  !link.equals("No help found about this exception.") )
                 {
                 inside = true;
                 Cursor cursor = getCursor();
@@ -103,7 +103,7 @@ class LinkingLabel extends JLabel
             @Override
             public void mouseExited( MouseEvent e)
             {
-                 if( !link.equals("We Can Not Found Help For Exception") )
+                 if( !link.equals("No help found about this exception.") )
                 {
                 inside = false;
                 Cursor cursor = getCursor();

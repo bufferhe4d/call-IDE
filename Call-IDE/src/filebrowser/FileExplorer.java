@@ -20,7 +20,7 @@ public class FileExplorer extends JPanel
      * @param files list of taken files
      * @param opener file opener which opens files
      */
-    public FileExplorer( ArrayList<String> files, FileOpener opener)
+    public FileExplorer( ArrayList<String> files, NavigationParent opener)
     {
         super();
         navigator = new FileNavigator( files, opener);
@@ -56,12 +56,12 @@ public class FileExplorer extends JPanel
     
     /**
      * This method update directory node and its children,
-     * @param DirectoryPath path of directory updated
+     * @param directoryPath path of directory updated
      */
-    public void updateDirectory( String DirectoryPath)
+    public void updateDirectory( String directoryPath)
     {
-        navigator.updateDirectory( DirectoryPath);
+        navigator.updateDirectory(directoryPath);
         navigator.updateUI();
     }
-
+    
 }

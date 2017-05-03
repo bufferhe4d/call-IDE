@@ -3,7 +3,7 @@
         <!-- The value of a property is accessed via ${} -->
         <property location="C:\Users\User\Documents\hello" name="src.dir"/>
         <property location="C:\Users\User\Documents\hello\classes" name="build.dir"/>
-        <property location="C:\Users\User\Documents\hello\classes" name="src.name"/>
+        <property value="C:\Users\User\Documents\hello\classes" name="src.name"/>
         
         <!-- Compiles the java code (including the usage of library for JUnit -->
         <target name="compile">

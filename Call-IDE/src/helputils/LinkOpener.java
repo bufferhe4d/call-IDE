@@ -19,11 +19,7 @@ public class LinkOpener {
      * Opens the given link on the default browser.
      * @param link the link to open
      */
-    public static void openLink( String link) {
-        try{
-            Desktop.getDesktop().browse(new URI( link));
-        } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
-        }
+    public static void openLink( String link) throws IOException, URISyntaxException {
+        Desktop.getDesktop().browse(new URI( link));
     }
 }

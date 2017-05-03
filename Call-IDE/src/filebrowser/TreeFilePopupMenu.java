@@ -45,6 +45,7 @@ public class TreeFilePopupMenu extends JPopupMenu implements ActionListener
     }
     
     // METHODS
+    @Override
     public void actionPerformed( ActionEvent e)
     {
         setVisible(false);

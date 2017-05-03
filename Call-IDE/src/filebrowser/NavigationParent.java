@@ -8,7 +8,7 @@ import java.io.File;
  * @author Emin Bahadir Tuluce
  * @version 1.0
  */
-public interface FileOpener {
+public interface NavigationParent {
     
     /**
      * Opens the file in the editor.
@@ -28,4 +28,7 @@ public interface FileOpener {
      */
     void showProjectProperties( File projectRoot);
     
+    void compileSelectedFile( File file);
+    
+    void runSelectedFile( File file);
 }

@@ -1,8 +1,9 @@
 package fileoperations;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.util.Scanner;
 
 /**
  * A class to read text files.
@@ -11,18 +12,37 @@ import java.util.Scanner;
  */
 public class ContentReader {
     
+    public static String[] SUPPORTED_EXTENSIONS = {".java", ".txt", ".md"};
+    
     /**
      * Reads and returns the file contents.
      * @param file the file to read
      * @return the content of the readed file
      */
     public static String read( File file) throws IOException {
-        Scanner input = new Scanner( file);
+        FileReader input = new FileReader( file);
+        BufferedReader reader = new BufferedReader( input);
         String content = "";
-        while( input.hasNext())
-            content += input.nextLine() + "\n";
+        String nextLine = reader.readLine();
+        while (nextLine != null) {
+            content += nextLine + "\n";
+            nextLine = reader.readLine();
+        }
         input.close();
+        reader.close();
         return content;
+    }
+    
+    /**
+     * Checks if a file has a supported file extension to read.
+     * @param file the file to check
+     * @return true if the extension is supported, false otherways.
+     */
+    public static boolean isSupported( File file) {
+        for (String extension : SUPPORTED_EXTENSIONS)
+            if (file.getName().endsWith(extension))
+                return true;
+        return false;
     }
     
 }

@@ -13,11 +13,14 @@ public class TreeJavaFilePopupMenu extends TreeFilePopupMenu
     // PROPERTIES
     JMenuItem compile;
     JMenuItem run;
+    NavigationParent opener;
 
     // CONSTRUCTORS
     public TreeJavaFilePopupMenu( FileNavigator navigator)
     {
         super(navigator);
+        
+        this.opener = navigator.opener;
         
         compile = new JMenuItem( "Compile File");
         run = new JMenuItem( "Run File");
@@ -37,13 +40,12 @@ public class TreeJavaFilePopupMenu extends TreeFilePopupMenu
         super.actionPerformed( e);
         if( e.getSource() == compile)
         {
-            System.out.println("Compiling the file...");
+            opener.compileSelectedFile( file.getFile());
         }
         else if ( e.getSource() == run)
         {
-            System.out.println("Running the file...");
+            opener.runSelectedFile( file.getFile());
         }
-        
         navigator.updateUI();
     }
     

@@ -341,6 +341,10 @@ public class ProjectHandler
         return project.externalClassPaths;
     }
     
+    public String getName() {
+        return (new File(projectPath).getName());
+    }
+    
     //*************************************Inner Exception Class****************************************
     /**
      * It is exception to check files are not matching

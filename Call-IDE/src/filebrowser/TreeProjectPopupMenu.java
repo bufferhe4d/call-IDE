@@ -13,7 +13,7 @@ public class TreeProjectPopupMenu extends TreeDirectoryPopupMenu{
     //properties
     JMenuItem projectProperties;
     JMenuItem closeProject;
-    FileOpener opener;
+    NavigationParent opener;
     
     //constructor
     public TreeProjectPopupMenu(FileNavigator navigator) {
