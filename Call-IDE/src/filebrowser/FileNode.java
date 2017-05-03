@@ -304,8 +304,8 @@ public class FileNode extends DefaultMutableTreeNode
             if( !isEmpty() )
             ((FileNode)this.getChildAt(i)).closeFile();
         }
-        
-        nodesAndPaths.remove(file.getAbsolutePath(), this);
+        if( !isEmpty())
+            nodesAndPaths.remove(file.getAbsolutePath(), this);
         removeFromParent();
         
     }
