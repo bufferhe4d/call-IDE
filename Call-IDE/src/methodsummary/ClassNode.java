@@ -100,7 +100,8 @@ public class ClassNode extends DefaultMutableTreeNode implements SummaryNode {
     {
         @Override
         public void visit( ConstructorDeclaration n, Void arg) {
-            add( new ConstructorNode(n));
+            if (nodeName.equals(n.getNameAsString()+ ".java"))
+                add( new ConstructorNode(n));
             super.visit(n, arg);
         }
     }
