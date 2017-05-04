@@ -107,6 +107,11 @@ public class WriteStdIn implements Runnable{
                         }
                     }
                 }
+                else {
+                    if(console.getSelectionStart() < initLength) {
+                        e.consume();
+                    }
+                }
                 
                 if(e.getKeyChar() == KeyEvent.VK_ENTER) {
                     console.setCaretPosition(console.getDocument().getLength());
