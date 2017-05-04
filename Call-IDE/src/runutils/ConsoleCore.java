@@ -235,9 +235,12 @@ public class ConsoleCore {
     public static void  dispatch(JScrollPane scrollPane, JTextPane cons,
                                  JTabbedPane outputTabs, Component tabComp, JFrame frame,
                                  Boolean consoleOut, Attachable mainFrame) {
-        frame.add(cons);
+        //frame.add(cons);
         frame.setSize(400, 300);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        JScrollPane scroller = new JScrollPane();
+        scroller.setViewportView(cons);
+        frame.add(scroller);
         if (frame.getWindowListeners().length > 0)
             frame.removeWindowListener(frame.getWindowListeners()[0]);
         frame.addWindowListener(new WindowAdapter() {
