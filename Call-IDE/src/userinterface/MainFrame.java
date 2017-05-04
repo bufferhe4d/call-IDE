@@ -2591,6 +2591,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         return insertedPane;
     }
     
+    /** Compiles a given file right next to it. */
     private JTextPane compileFile( String filePath) {
         JTextPane insertedPane = new ConsoleBuilder().getOutErrConsole();
         insertedPane.setFont( preferences.getOutputFont());
@@ -2599,7 +2600,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         BuildSys.compile(userPath + "/BuildConfigs/buildFile.xml");
         outputTabs.setSelectedIndex(1);
         fileExplorer.updateDirectory( (new File(filePath)).getParent());
-        // TODO : DOES NOT WORK PROPERLY SOMETIMES
+        // TODO : DOES NOT WORK PROPERLY
         return insertedPane;
     }
     
@@ -2625,16 +2626,8 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     
     /** Runs a given file on the console. */
     private void runFile( File file, File build) {
-        Parser mainChecker = new Parser();
-        try {
-            mainChecker.addNode(file);
-        } catch (ParseException | IOException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if (!mainChecker.hasMain(file)) {
-            printStatus("The class does not have a proper main method: " + file.getAbsolutePath());
+        if (!hasMainMethod( file))
             return;
-        }
 
         String packageName = "";
         CompilationUnit cu;
@@ -2650,7 +2643,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         String className = file.getName().substring(0, file.getName().length() - 5);
         String classDest = build + "/" + packageDest + "/" + className + ".class";
         if (!(new File( classDest)).exists()) {
-            printStatus(classDest + "does not exists.");
             printStatus("The source packages should be compiled before running.");
             return;
         }
@@ -2745,6 +2737,8 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
 
     /** Compiles the file and runs it when compiling is done. */
     private void compileRunCurrentFile() {
+        if (getActiveFile() != null && !hasMainMethod(getActiveFile()))
+            return;
         JTextPane insertedPane = compileCurrentFile();
         if (insertedPane != null) {
             insertedPane.getDocument().addDocumentListener(new DocumentListener() {
@@ -2842,6 +2836,9 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         projectNameField.setEditable(true);
         projectLocationField.setEditable(true);
         browseLocationButton.setEnabled(true);
+        browseMainButton.setEnabled( false);
+        mainClassField.setText("");
+        mainClassField.setEditable( false);
         projectFrame.setTitle( "Create New Project");
         projectFrame.pack();
         projectFrame.setLocationRelativeTo( this);
@@ -2929,6 +2926,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 openProjects.add( handler);
                 fileExplorer.openProject(handler.getPath());
             }
+            printStatus( "Project opened: " + handler.getName());
         }
     }
     
@@ -3003,6 +3001,21 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         return insertedPane;
     }
     
+    /** Checks if a file has a proper main method in it. */
+    private boolean hasMainMethod( File file) {
+        Parser mainChecker = new Parser();
+        try {
+            mainChecker.addNode(file);
+        } catch (ParseException | IOException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (!mainChecker.hasMain(file)) {
+            printStatus("The class " + file.getName() + " does not have a proper main method.");
+            return false;
+        }
+        return true;
+    }
+    
     /** Determines what to do with the run button on the frame. */
     private void runAction() {
         if (projectMode)
@@ -3069,7 +3082,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     public void showProjectProperties( File projectRoot) {
         ProjectHandler selectedProject = null;
         for (ProjectHandler project : openProjects) {
-            System.out.println(projectRoot.getAbsolutePath() + " <> " + project.getPath());
             if (new File(projectRoot.getAbsolutePath()).equals(new File(project.getPath()))) {
                 selectedProject = project;
             }
@@ -3110,6 +3122,9 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         for (File jarFile : externalPaths)
             ((DefaultListModel) classPathList.getModel()).addElement(jarFile.getAbsolutePath());
         projectFrame.setTitle( "Project Properties");
+        browseMainButton.setEnabled( true);
+        mainClassField.setText("");
+        mainClassField.setEditable( true);
         projectFrame.pack();
         projectFrame.setLocationRelativeTo( this);
         projectFrame.setVisible(true);
@@ -3141,7 +3156,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             modifyingProject.setPath( projectRoot);
             modifyingProject.setBuild(buildFolder);
             modifyingProject.setSrc(srcFolder);
-            System.out.println("setting main class: " + mainClassFile.getAbsolutePath() );
             modifyingProject.setMainClass(mainClassFile);
             modifyingProject.removeAllJars();
             for (int i = 0; i < paths.getSize(); i++) 
@@ -3193,6 +3207,8 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     
     /** Compiles and runs the active project on the editor. */
     private void compileRunCurrentProject() {
+        if (!currentIsRunnable())
+            return;
         JTextPane insertedPane = compileCurrentProject();
         if (insertedPane != null) {
             insertedPane.getDocument().addDocumentListener(new DocumentListener() {
@@ -3205,6 +3221,17 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 }
             });
         }
+    }
+    
+    /** Checks if the current project has runnable properties. */
+    private boolean currentIsRunnable()  {
+        updateProjects();
+        ProjectHandler activeProject = getProjectHandler( getActiveFile());
+        if (!activeProject.getMainClass().exists()) {
+            printStatus("The project hasn't got a proper main class.");
+            return false;
+        }
+        return hasMainMethod( activeProject.getMainClass());
     }
     
     /** Determines what to do with the ok button of the project properties frame. */

@@ -110,7 +110,7 @@ public class Parser {
                     if (metDec.getNameAsString().equals("main") &&
                         metDec.isPublic() && metDec.isStatic()) {
                         ArrayList<Parameter> parameters = new ArrayList<Parameter>(metDec.getParameters());
-                        if (parameters.size() == 1 && parameters.get(0).toString().equals("String[] args"))
+                        if (parameters.size() == 1 && parameters.get(0).toString().startsWith("String[]"))
                             return true;
                     }
                 }
@@ -129,7 +129,7 @@ public class Parser {
                     if (metDec.getNameAsString().equals("main") &&
                         metDec.isPublic() && metDec.isStatic()) {
                         ArrayList<Parameter> parameters = new ArrayList<Parameter>(metDec.getParameters());
-                        if (parameters.size() == 1 && parameters.get(0).toString().equals("String[] args"))
+                        if (parameters.size() == 1 && parameters.get(0).toString().startsWith("String[]"))
                             return ((ClassNode)node).file;
                     }
                 }
