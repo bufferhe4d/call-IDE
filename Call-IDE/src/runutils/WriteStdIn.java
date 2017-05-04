@@ -7,6 +7,8 @@ package runutils;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -27,7 +29,7 @@ public class WriteStdIn implements Runnable{
     public Thread write = null;
     private String input = null;
     private BufferedWriter writer = null;
-
+    int initLength;
     public WriteStdIn(Process p, JTextPane t){
 
         process = p;
@@ -36,9 +38,9 @@ public class WriteStdIn implements Runnable{
 
         write = new Thread(this);
         write.start();
-
+        
         console.addKeyListener(new KeyAdapter() {
-            int initLength;
+            //initLength = 0;
             boolean notTypedYet = true;
             //String inputStr = "";
 
@@ -130,6 +132,15 @@ public class WriteStdIn implements Runnable{
          }    
 
         });
+        
+        console.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(initLength - console.getCaretPosition() >= 0) {
+                console.setCaretPosition(console.getDocument().getLength());
+                }
+            }
+        });
     }
 
 
@@ -166,4 +177,6 @@ public class WriteStdIn implements Runnable{
     public void killUrSelf() {
         write.interrupt();
     }
+    
+    
 }
