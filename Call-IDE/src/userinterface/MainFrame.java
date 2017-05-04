@@ -2657,26 +2657,26 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
 
         if (consoleOut) {
             consoleFrame.remove(consoleOutputArea);
-            consoleOutputArea = new ConsoleBuilder().getIOEConsole();
+            //consoleOutputArea = new ConsoleBuilder().getIOEConsole();
+            consoleOutputArea = new JTextPane();
             consoleOutputArea.setFont( preferences.getOutputFont());
             consoleFrame.add(consoleOutputArea);
         }
         else {
-            consoleOutputArea = new ConsoleBuilder().getIOEConsole();
+            //consoleOutputArea = new ConsoleBuilder().getIOEConsole();
+            consoleOutputArea = new JTextPane();
             consoleOutputArea.setFont( preferences.getOutputFont());
             consoleOutputScrollPane.setViewportView(consoleOutputArea);
         }
 
-        try {
-            executor = new Executor(build.toURI().toURL());
-            if(packageName.equals(""))
-                executor.execute(className);
-            else
-                executor.execute(packageName + "." + className);
+        
+        executor = new Executor(build.getAbsolutePath());
+        if(packageName.equals(""))
+            executor.execute(consoleOutputArea,className);
+        else
+            executor.execute(consoleOutputArea, packageName + "." + className);
 
-        } catch (MalformedURLException ex1) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex1);
-        }
+        
 
         outputTabs.setSelectedIndex(2);
     }
@@ -2739,7 +2739,9 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     }
 
     /** Resets the console interactions. */
-    private void resetInteractions() {}
+    private void resetInteractions() {
+        executor.stop();
+    }
 
     /** Compiles the file and runs it when compiling is done. */
     private void compileRunCurrentFile() {
