@@ -47,6 +47,7 @@ public class WriteStdIn implements Runnable{
 
             @Override
             public void keyTyped(KeyEvent e) {
+                
                 // get the initial document properties
                 if(notTypedYet /*&& e.getKeyChar()!= KeyEvent.VK_ENTER*/) {
                     notTypedYet = false;
@@ -63,6 +64,11 @@ public class WriteStdIn implements Runnable{
                         }
                     }
                 }
+                else {
+                    if(console.getSelectionStart() < initLength) {
+                        e.consume();
+                    }
+                }
                 
                 // distinguish the input from the actual document and
                 // send it to the output stream which pipes into the
@@ -71,7 +77,7 @@ public class WriteStdIn implements Runnable{
                     
                     try {
                         input = console.getText(initLength, console.getDocument().getLength() - initLength - 1);
-
+                        
                         input =input + "\n";
                         notTypedYet = true;
                         write.resume();
@@ -123,11 +129,12 @@ public class WriteStdIn implements Runnable{
                     }
                     
                 }
-                else if(e.getKeyCode() == 38)
-                if(initLength - console.getCaretPosition() + (console.getDocument().getLength() - initLength)>= 0) {
+                else if(e.getKeyCode() == 38) {
+                    if(initLength - console.getCaretPosition() + (console.getDocument().getLength() - initLength)>= 0) {
 
-                        e.consume();
+                            e.consume();
                     }
+                }
             }
         });
         
@@ -135,7 +142,8 @@ public class WriteStdIn implements Runnable{
             @Override
         public void focusGained(java.awt.event.FocusEvent e)
         {
-                              console.setCaretPosition(console.getDocument().getLength());     
+            console.setCaretPosition(console.getDocument().getLength());
+                              
          }    
 
         });
@@ -146,7 +154,10 @@ public class WriteStdIn implements Runnable{
                 if(initLength - console.getCaretPosition() >= 0) {
                 console.setCaretPosition(console.getDocument().getLength());
                 }
+                
             }
+            
+            
         });
     }
 
