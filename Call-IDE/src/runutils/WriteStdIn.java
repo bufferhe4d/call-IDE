@@ -30,6 +30,7 @@ public class WriteStdIn implements Runnable{
     private String input = null;
     private BufferedWriter writer = null;
     int initLength;
+
     public WriteStdIn(Process p, JTextPane t){
 
         process = p;
@@ -56,6 +57,7 @@ public class WriteStdIn implements Runnable{
                         try {
                             console.getDocument().insertString(initLength, "\n", null);
                             notTypedYet = true;
+                            
                         } catch (BadLocationException ex) {
                             Logger.getLogger(WriteStdIn.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -121,6 +123,11 @@ public class WriteStdIn implements Runnable{
                     }
                     
                 }
+                else if(e.getKeyCode() == 38)
+                if(initLength - console.getCaretPosition() + (console.getDocument().getLength() - initLength)>= 0) {
+
+                        e.consume();
+                    }
             }
         });
         
