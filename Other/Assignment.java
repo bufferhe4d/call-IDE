@@ -1,5 +1,5 @@
 /**
- * This class will be used to store the information about assignments 
+ * Desc:     This class will be used to store the information about assignments 
  * @author   Ataberk Gözkaya
  * @version  1.00  03/05/2017
  */
