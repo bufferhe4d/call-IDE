@@ -34,8 +34,16 @@ import com.github.javaparser.ast.*;
  */
 public class MainFrame extends JFrame implements NavigationParent, AutosaveHandler, Attachable, NodeVisitor {
     
+    PrintStream StdOut; // use StdOut.println() instead of System.out.println for debugging.
+    PrintStream StdErr;
+    ConsoleBuilder builder;
+
     /** Creates the main frame of the IDE. */
     public MainFrame() throws IOException {
+        StdOut = System.out;
+        StdErr = System.err;
+        builder = new ConsoleBuilder();
+        
         initProperties();
         loadIcons();
         initComponents();
@@ -1819,7 +1827,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         consoleOutputScrollPane.setViewportView(consoleOutputArea);
 
         consoleFrame = new JFrame("Console");
-        consoleFrame.setVisible(false);
+        //consoleFrame.setVisible(false);
+        
+        detachScroll = new JScrollPane();
+        
         consoleOut = false;
 
         insertMethodSummary();
@@ -1843,7 +1854,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         /** Detaches the console from the frame. */
         @Override
         public void actionPerformed( ActionEvent e) {
-            ConsoleCore.dispatch(consoleOutputScrollPane, consoleOutputArea,
+            ConsoleCore.dispatch(detachScroll , consoleOutputArea,
                                  outputTabs, tabComp, consoleFrame, consoleOut, MainFrame.this);
             outputTabs.getComponentAt(2).setVisible(false);
             JPanel emptyPanel = new JPanel();
@@ -2580,12 +2591,16 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     
     /** Compiles a given folder to a given path. */
     private JTextPane compileFolderTo( String srcFolder, String buildFolder) {
-        JTextPane insertedPane = new ConsoleBuilder().getOutErrConsole();
-        insertedPane.setFont( preferences.getOutputFont());
+        // clean up buffers
+        builder.destroy();
+        ConsoleCore.free();
+        builder.init();
+        JTextPane insertedPane = builder.getOutErrConsole();
+        
         compilerOutputScrollPane.setViewportView( insertedPane);
         BuildSys.setPropsForCompile(userPath + "/BuildConfigs/build.xml",
                                     buildFolder, srcFolder);
-        BuildSys.compile(userPath + "/BuildConfigs/build.xml");
+        BuildSys.compile(userPath + "/BuildConfigs/build.xml", StdOut, StdErr );
         outputTabs.setSelectedIndex(1);
         fileExplorer.updateDirectory( (new File(buildFolder)).getParent());
         return insertedPane;
@@ -2593,14 +2608,21 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     
     /** Compiles a given file right next to it. */
     private JTextPane compileFile( String filePath) {
-        JTextPane insertedPane = new ConsoleBuilder().getOutErrConsole();
+        // clean up buffers
+        builder.destroy();
+        ConsoleCore.free();
+        builder.init();
+        JTextPane insertedPane = builder.getOutErrConsole();
+
+        
         insertedPane.setFont( preferences.getOutputFont());
         compilerOutputScrollPane.setViewportView( insertedPane);
         BuildSys.setPropsForCompileFile(userPath + "/BuildConfigs/buildFile.xml", filePath);
-        BuildSys.compile(userPath + "/BuildConfigs/buildFile.xml");
+        
+        BuildSys.compile(userPath + "/BuildConfigs/buildFile.xml", StdOut, StdErr);
         outputTabs.setSelectedIndex(1);
         fileExplorer.updateDirectory( (new File(filePath)).getParent());
-        // TODO : DOES NOT WORK PROPERLY
+        // TODO : DOES NOT WORK PROPERLY ** DONE!
         return insertedPane;
     }
     
@@ -2615,7 +2637,25 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             printStatus("The file should be saved before running.");
         else {
             File build = new File(file.getParent());
-            String classFileName = file.getName().substring(0, file.getName().length() - 5) + ".class";
+            String packageName = "";
+            String classFileName;
+            CompilationUnit cu;
+            
+            // control package name
+            try {
+                cu = JavaParser.parse( file);
+                if (cu.getPackageDeclaration().isPresent())
+                    packageName = cu.getPackageDeclaration().get().getName().toString();
+            } catch (IOException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if(packageName.equals("")) {
+                 classFileName = file.getName().substring(0, file.getName().length() - 5) + ".class";
+            }
+            else {
+                 classFileName = packageName + "/" + file.getName().substring(0, file.getName().length() - 5) + ".class";
+            }
+            
             if (!(new File(file.getParent() + "/" + classFileName)).exists()) {
                 printStatus("The file should be compiled before running.");
                 return;
@@ -2626,6 +2666,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     
     /** Runs a given file on the console. */
     private void runFile( File file, File build) {
+        
         if (!hasMainMethod( file))
             return;
 
@@ -2648,14 +2689,15 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         }
 
         if (consoleOut) {
-            consoleFrame.remove(consoleOutputArea);
-            //consoleOutputArea = new ConsoleBuilder().getIOEConsole();
+            
             consoleOutputArea = new JTextPane();
             consoleOutputArea.setFont( preferences.getOutputFont());
-            consoleFrame.add(consoleOutputArea);
+            // dispatch again if the console is out already.
+            ConsoleCore.dispatch(detachScroll, consoleOutputArea, outputTabs, tabComp, consoleFrame, consoleOut, this);
+            
         }
         else {
-            //consoleOutputArea = new ConsoleBuilder().getIOEConsole();
+            
             consoleOutputArea = new JTextPane();
             consoleOutputArea.setFont( preferences.getOutputFont());
             consoleOutputScrollPane.setViewportView(consoleOutputArea);
@@ -2669,7 +2711,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             executor.execute(consoleOutputArea, packageName + "." + className);
 
         
-
         outputTabs.setSelectedIndex(2);
     }
 
@@ -2682,7 +2723,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 
         ProjectHandler currentProject = getProjectHandler(getActiveFile());
         
-        JTextPane insertedPane = new ConsoleBuilder().getOutErrConsole();
+        builder.destroy();
+        ConsoleCore.free();
+        builder.init();
+        JTextPane insertedPane = builder.getOutErrConsole();
         insertedPane.setFont( preferences.getOutputFont());
         compilerOutputScrollPane.setViewportView( insertedPane);
 
@@ -2690,7 +2734,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         BuildSys.setPropsForJavaDoc(userPath + "/BuildConfigs/buildJavadoc.xml", 
                                     currentProject.getSrc().getAbsolutePath(),
                                     currentProject.getPath() + "/doc");
-        BuildSys.compile(userPath + "/BuildConfigs/buildJavadoc.xml");
+        BuildSys.compile(userPath + "/BuildConfigs/buildJavadoc.xml", StdOut, StdErr);
         outputTabs.setSelectedIndex(1);
         fileExplorer.updateDirectory(currentProject.getPath());
     }
@@ -2704,7 +2748,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         
         ProjectHandler currentProject = getProjectHandler(getActiveFile());
         
-        JTextPane insertedPane = new ConsoleBuilder().getOutErrConsole();
+        builder.destroy();
+        ConsoleCore.free();
+        builder.init();
+        JTextPane insertedPane = builder.getOutErrConsole();
         insertedPane.setFont( preferences.getOutputFont());
         compilerOutputScrollPane.setViewportView( insertedPane);
 
@@ -2725,7 +2772,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                                 currentProject.getBuild().getAbsolutePath(),
                                 currentProject.getPath() + "/dist",
                                 mainClassName, currentProject.getName() +".jar");
-        BuildSys.compile(userPath + "/BuildConfigs/buildJar.xml");
+        BuildSys.compile(userPath + "/BuildConfigs/buildJar.xml", StdOut, StdErr);
 
         outputTabs.setSelectedIndex(1);
     }
@@ -3231,6 +3278,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             printStatus("The project hasn't got a proper main class.");
             return false;
         }
+        
         return hasMainMethod( activeProject.getMainClass());
     }
     
@@ -3270,6 +3318,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private JButton workspaceButton;
     private JPanel noWorkspacePanel;
     private JTextPane consoleOutputArea;
+    private JScrollPane detachScroll;
     private JFrame consoleFrame;
     private Component tabComp;
     private ImageIcon closeIcon;
