@@ -6,9 +6,9 @@
 public class Course 
 {
 	//properties
-	private int id;
+	private int    id;
 	private String name;
-	private int instructorID;
+	private int    instructorID;
 	private String classKey;
 	
 	
