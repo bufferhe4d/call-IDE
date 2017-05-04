@@ -26,6 +26,9 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 import helputils.ErrorHelper;
+import java.awt.BorderLayout;
+import java.io.PrintStream;
+import javax.swing.JPanel;
 
 /**
  * A class to build different consoles with the given streams.
@@ -33,6 +36,11 @@ import helputils.ErrorHelper;
  */
 public class ConsoleCore {
     // Only handles Error and Output Streams
+    static Scanner scanOut;
+    static Scanner scanErr;
+    static SwingWorker<Void, String> sw1;
+    static SwingWorker<Void, String> sw2;
+    
     public static JTextPane consoleOutErr(final InputStream out, final InputStream err) {
 
         // Styled document for coloring the error stream
@@ -40,11 +48,11 @@ public class ConsoleCore {
         final JTextPane area = new JTextPane(document);
 
         // Handle "System.out"
-        new SwingWorker<Void, String>() {
+        sw1 = new SwingWorker<Void, String>() {
             @Override protected Void doInBackground() throws Exception {
-                Scanner s = new Scanner(out);
+                scanOut = new Scanner(out);
                 // read the stream and publish the results
-                while (s.hasNextLine()) publish(s.nextLine() + "\n");
+                while (scanOut.hasNextLine()) publish(scanOut.nextLine() + "\n");
 
                 return null;
             }
@@ -57,13 +65,15 @@ public class ConsoleCore {
                     Logger.getLogger(ConsoleCore.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        }.execute(); // execute the SwingWorker
+        }; 
+        
+        sw1.execute(); // execute the SwingWorker
 
-        new SwingWorker<Void, String>() {
+        sw2 = new SwingWorker<Void, String>() {
             @Override protected Void doInBackground() throws Exception {
-                Scanner s = new Scanner(err);
+                scanErr = new Scanner(err);
                 // read the stream and publish the results
-                while (s.hasNextLine()) publish(s.nextLine() + "\n");
+                while (scanErr.hasNextLine()) publish(scanErr.nextLine() + "\n");
 
                 return null;
             }
@@ -83,12 +93,83 @@ public class ConsoleCore {
                     Logger.getLogger(ConsoleCore.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        }.execute(); // execute the SwingWorker
+        }; 
+        
+        sw2.execute();// execute the SwingWorker
 
         return area;
 
     }
+    
+    
+    public static JTextPane consoleOutErr2(final InputStream out, final InputStream err, PrintStream StdOut) {
 
+        // Styled document for coloring the error stream
+        DefaultStyledDocument document = new DefaultStyledDocument();
+        final JTextPane area = new JTextPane(document);
+
+        // Handle "System.out"
+        sw1 = new SwingWorker<Void, String>() {
+            @Override protected Void doInBackground() throws Exception {
+                scanOut = new Scanner(out);
+                // read the stream and publish the results
+                while (scanOut.hasNextLine()) publish(scanOut.nextLine() + "\n");
+                
+                return null;
+            }
+            @Override protected void process(List<String> chunks) {
+                // read the lines from published chunks
+                for (String line : chunks) try {
+                    // append them to the text pane
+                    StdOut.println(line);
+                    appendString(line, area);
+                } catch (BadLocationException ex) {
+                    Logger.getLogger(ConsoleCore.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        };//.execute(); // execute the SwingWorker
+        sw1.execute();
+        
+        sw2 = new SwingWorker<Void, String>() {
+            @Override protected Void doInBackground() throws Exception {
+                Scanner scanErr = new Scanner(err);
+                // read the stream and publish the results
+                while (scanErr.hasNextLine()) publish(scanErr.nextLine() + "\n");
+
+                return null;
+            }
+            @Override protected void process(List<String> chunks) {
+                // change the stream color to red for errors
+                try {
+                    changeColor(document);
+                } catch (BadLocationException ex) {
+                    Logger.getLogger(ConsoleCore.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                // read the lines from published chunks
+                for (String line : chunks) try {
+                    //appendString(line, area);
+                    //append them to the  text pane
+                    StdOut.println(line);
+                    document.insertString(document.getLength(), line, changeColor(document));
+                } catch (BadLocationException ex) {
+                    Logger.getLogger(ConsoleCore.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        };//.execute(); // execute the SwingWorker
+        sw2.execute();
+        return area;
+
+    }
+    
+    // free the swingWorkers.
+    public static void free() {
+   
+        if(sw1 != null) {
+            sw1.cancel(true);
+            sw2.cancel(true);
+        }
+    }
+    
     public static JTextPane consoleIOE(final InputStream out, final PrintWriter in, final InputStream err) {
 
         // Styled document for coloring the error stream
@@ -231,16 +312,22 @@ public class ConsoleCore {
         StyleConstants.setForeground(style, Color.RED);
         return style;
     }
+    
     // dispatch the console from the JTabbedPane and put it back
     public static void  dispatch(JScrollPane scrollPane, JTextPane cons,
                                  JTabbedPane outputTabs, Component tabComp, JFrame frame,
                                  Boolean consoleOut, Attachable mainFrame) {
-        //frame.add(cons);
+        
+        
         frame.setSize(400, 300);
+        frame.setLayout(new BorderLayout());
+        
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        JScrollPane scroller = new JScrollPane();
-        scroller.setViewportView(cons);
-        frame.add(scroller);
+        
+        scrollPane.setViewportView(cons);
+        
+        frame.add(scrollPane);
+        
         if (frame.getWindowListeners().length > 0)
             frame.removeWindowListener(frame.getWindowListeners()[0]);
         frame.addWindowListener(new WindowAdapter() {

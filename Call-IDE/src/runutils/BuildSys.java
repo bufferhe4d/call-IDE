@@ -188,32 +188,39 @@ public class BuildSys {
         
     }
     
-    public static void altCompile( String file, PrintStream out, PrintStream err) {
+    // new compile method, resets the streams at the end.
+    public static void compile( String file, PrintStream out, PrintStream err) {
         
         // File buildFile = new File("build.xml");
         File buildFile = new File(file);
         Project p = new Project();
         p.setUserProperty("ant.file", buildFile.getAbsolutePath());     
         DefaultLogger consoleLogger = new DefaultLogger();
-        consoleLogger.setErrorPrintStream(err);
-        consoleLogger.setOutputPrintStream(out);
+        consoleLogger.setErrorPrintStream(System.err);
+        consoleLogger.setOutputPrintStream(System.out);
         consoleLogger.setMessageOutputLevel(Project.MSG_INFO);
+        
         p.addBuildListener(consoleLogger);
         
         try {
             p.fireBuildStarted();
+            out.println("ant");
             p.init();
             ProjectHelper helper = ProjectHelper.getProjectHelper();
             p.addReference("ant.projectHelper", helper);
             helper.parse(p, buildFile);
             p.executeTarget(p.getDefaultTarget());
             p.fireBuildFinished(null);
+            System.setErr(err);
+            System.setOut(out);
+            
+            
         } catch (BuildException e) {
             p.fireBuildFinished(e);
         }
     }
     
-    public static void compile( String file) {
+    public static void altCompile( String file) {
         
         // File buildFile = new File("build.xml");
         File buildFile = new File(file);
@@ -233,6 +240,7 @@ public class BuildSys {
             helper.parse(p, buildFile);
             p.executeTarget(p.getDefaultTarget());
             p.fireBuildFinished(null);
+          
         } catch (BuildException e) {
             p.fireBuildFinished(e);
         }

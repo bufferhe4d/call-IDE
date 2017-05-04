@@ -31,8 +31,12 @@ public class ConsoleBuilder {
         return ConsoleCore.consoleOutErr(outPipe, errPipe);
     }
     
+    // for testing, DO NOT DELETE
+    public JTextPane getOutErr2Console(PrintStream StdOut) {
+        return ConsoleCore.consoleOutErr2(outPipe, errPipe, StdOut);
+    }
+    
     public JTextPane getIOEConsole() {
-        //return ConsoleCore.consoleOutErr(outPipe, errPipe);
         return ConsoleCore.consoleIOE(outPipe, inWriter, errPipe);
     }
     
