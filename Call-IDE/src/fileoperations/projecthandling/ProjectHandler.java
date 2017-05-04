@@ -57,7 +57,6 @@ public class ProjectHandler
         this.projectPath = projectPath;
         project = new ProjectProperties();
         project.build = build;
-        System.out.println("actually writing: " + src);
         project.src = src;
         project.mainClass = mainClass;
         project.allJavaFiles = allJavaFiles;
@@ -243,7 +242,7 @@ public class ProjectHandler
      */
     public File getMainClass()
     {
-        return new File( project.src.getAbsolutePath() + "/" + project.mainClass.getName() );
+        return project.mainClass;
     }
     
     /**
