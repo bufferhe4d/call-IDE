@@ -47,7 +47,6 @@ public class FileNode extends DefaultMutableTreeNode
                 add( temp );
         }
         
-        children.sort(new FileNodeComparator() );
         //check that it is empty
         checkEmptyDir();
     }
@@ -70,9 +69,6 @@ public class FileNode extends DefaultMutableTreeNode
         if( getAllowsChildren())
             addChildren();
         
-        
-        children.sort(new FileNodeComparator() );
-        
         checkEmptyDir();
     }
     /**
@@ -89,9 +85,6 @@ public class FileNode extends DefaultMutableTreeNode
         
         if( getAllowsChildren() )
             addChildren();
-        
-        
-        children.sort(new FileNodeComparator() );
         
         checkEmptyDir();
     }
