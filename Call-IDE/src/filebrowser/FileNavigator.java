@@ -58,6 +58,7 @@ public class FileNavigator extends JTree implements TreeSelectionListener
     public void valueChanged( TreeSelectionEvent e)
     {
         lastSelectedFile = (FileNode) (((JTree)(e.getSource())).getLastSelectedPathComponent());
+        lastSelectedFile.shallowUpdate();
     }
     
     /**
