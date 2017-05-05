@@ -23,6 +23,7 @@ public class FileNode extends DefaultMutableTreeNode
     boolean    allowsChildren;
     HashMap    nodesAndPaths;
     boolean    isBrowsingProjects;
+    boolean    childrenSorted;
     
     //constructors
     /**
@@ -67,7 +68,13 @@ public class FileNode extends DefaultMutableTreeNode
         nodesAndPaths.put(this.file.getAbsolutePath(), this);
         
         if( getAllowsChildren())
+        {
             addChildren();
+            childrenSorted = false;
+        }
+        else
+            
+            childrenSorted = true;
         
         checkEmptyDir();
     }
@@ -84,7 +91,12 @@ public class FileNode extends DefaultMutableTreeNode
         nodesAndPaths.put(this.file.getAbsolutePath(), this);
         
         if( getAllowsChildren() )
+        {
             addChildren();
+            childrenSorted = false;
+        }
+        else
+            childrenSorted = true;
         
         checkEmptyDir();
     }
@@ -97,6 +109,7 @@ public class FileNode extends DefaultMutableTreeNode
         
         this.nodesAndPaths =  nodesAndPaths;
         
+        childrenSorted = true;
         nodesAndPaths.put( emptyParent + "<empty>", this);
     }
     
@@ -318,9 +331,14 @@ public class FileNode extends DefaultMutableTreeNode
         {
             updateChildren();
         }
+        else if ( !childrenSorted )
+        {
+            childrenSorted = true;
+            children.sort( new FileNodeComparator());
+        }
     }
     
-    private class FileNodeComparator implements Comparator
+    private static class FileNodeComparator implements Comparator
     {
 
         @Override
