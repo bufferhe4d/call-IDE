@@ -327,7 +327,11 @@ public class FileNode extends DefaultMutableTreeNode
     
     public void shallowUpdate()
     {
-        if( file != null && file.listFiles().length != children.size() )
+        if( isRoot() )
+        {
+            children.sort( new FileNodeComparator() );
+        }
+        else if(  !isLeaf() && file.listFiles().length != children.size() )
         {
             updateChildren();
         }
