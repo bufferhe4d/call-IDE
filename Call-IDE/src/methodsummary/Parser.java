@@ -119,19 +119,16 @@ public class Parser {
         return false;
     }
     
-    public File getMain( File file) {
-        int index = getRow( file);
-        if (index != -1) {
-            MutableTreeNode node = ((MutableTreeNode) rootNode.getChildAt(index));
-            if (node instanceof ClassNode) {
-                for (int i = 0; i < ((ClassNode) node).getChildCount(); i++) {
-                    MethodDeclaration metDec = ((MethodNode) (((ClassNode) node).getChildAt(i))).metDec;
-                    if (metDec.getNameAsString().equals("main") &&
-                        metDec.isPublic() && metDec.isStatic()) {
-                        ArrayList<Parameter> parameters = new ArrayList<Parameter>(metDec.getParameters());
-                        if (parameters.size() == 1 && parameters.get(0).toString().startsWith("String[]"))
-                            return ((ClassNode)node).file;
-                    }
+    public File getMain( File file) throws ParseException, IOException 
+    {
+        for(int i = 0; i<file.listFiles().length; i++)
+        {
+            if(file.listFiles()[i].getAbsolutePath().endsWith(".java"))
+            {
+                addNode(file.listFiles()[i]);
+                if(hasMain(file.listFiles()[i]))
+                {
+                    return file.listFiles()[i];
                 }
             }
         }
