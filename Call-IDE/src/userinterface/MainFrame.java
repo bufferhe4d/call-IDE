@@ -3048,9 +3048,17 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         return insertedPane;
     }
     
-    /** Checks if a file has a proper main method in it. */
+        /** Checks if a file has a proper main method in it. */
     private boolean hasMainMethod( File file) {
         Parser mainChecker = new Parser();
+        if( fileExplorer.isProjectBrowser())
+            try {
+                return getMainMethod(file) != null;
+            } catch (ParseException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
         try {
             mainChecker.addNode(file);
         } catch (ParseException | IOException ex) {
@@ -3060,7 +3068,15 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             printStatus("The class " + file.getName() + " does not have a proper main method.");
             return false;
         }
+        
         return true;
+    }
+    
+    /** Get the file has Main method */
+    private File getMainMethod( File file ) throws ParseException, IOException
+    {
+        Parser mainChecker = new Parser();
+        return mainChecker.getMain(file);
     }
     
     /** Determines what to do with the run button on the frame. */
