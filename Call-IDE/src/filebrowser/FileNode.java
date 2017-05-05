@@ -6,6 +6,7 @@ import fileoperations.FileSaver;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -46,6 +47,7 @@ public class FileNode extends DefaultMutableTreeNode
                 add( temp );
         }
         
+        children.sort(new FileNodeComparator() );
         //check that it is empty
         checkEmptyDir();
     }
@@ -68,6 +70,9 @@ public class FileNode extends DefaultMutableTreeNode
         if( getAllowsChildren())
             addChildren();
         
+        
+        children.sort(new FileNodeComparator() );
+        
         checkEmptyDir();
     }
     /**
@@ -84,6 +89,9 @@ public class FileNode extends DefaultMutableTreeNode
         
         if( getAllowsChildren() )
             addChildren();
+        
+        
+        children.sort(new FileNodeComparator() );
         
         checkEmptyDir();
     }
@@ -262,6 +270,7 @@ public class FileNode extends DefaultMutableTreeNode
                      ((FileNode) getChildAt(i-1)).getParent().getChildCount() > 1)
                 ((FileNode) getChildAt(i-1)).delete();
         }
+        children.sort(new FileNodeComparator() );
     }
     
     /**  This method determines node is empty node */
@@ -310,7 +319,6 @@ public class FileNode extends DefaultMutableTreeNode
         
     }
     
-    /** This method make ligth check for updating project */
     public void shallowUpdate()
     {
         if( file != null && file.listFiles().length != children.size() )
@@ -319,4 +327,21 @@ public class FileNode extends DefaultMutableTreeNode
         }
     }
     
+    private class FileNodeComparator implements Comparator
+    {
+
+        @Override
+        public int compare(Object o1, Object o2) {
+            FileNode node1 = (FileNode)o1;
+            FileNode node2 = (FileNode)o2;
+            if (node1.isLeaf() && !node2.isLeaf()) {
+                return 1;
+            } else if (!node1.isLeaf() && node2.isLeaf()) {
+                return -1;
+            } else {
+                return node1.file.toString().compareToIgnoreCase(node2.file.toString());
+    }    
+        }
+        
+    }
 }
