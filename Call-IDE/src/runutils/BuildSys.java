@@ -3,6 +3,7 @@ package runutils;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -86,6 +87,54 @@ public class BuildSys {
             NamedNodeMap fileAttr = prop3.getAttributes();
             Node fileName = fileAttr.getNamedItem("value");
             fileName.setTextContent( file.getName());
+            
+            updateBuildFile( filepath, doc);
+            
+        } catch (ParserConfigurationException pce) {
+            pce.printStackTrace();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } catch (SAXException sae) {
+            sae.printStackTrace();
+        }
+    }
+    
+    public static void setPropsForCompileWithDepend(String init ,String build, String src, ArrayList<File> dependencies) {
+        try {
+            String filepath = init;
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document doc = docBuilder.parse(filepath);
+            
+            // get project 
+            //Node project = doc.getFirstChild();
+            Node prop1 = doc.getElementsByTagName("property").item(0);
+            Node prop2 = doc.getElementsByTagName("property").item(1);
+
+            NamedNodeMap srcAttr = prop1.getAttributes();
+            Node srcName = srcAttr.getNamedItem("location");
+            srcName.setTextContent(src);
+            
+            NamedNodeMap buildAttr = prop2.getAttributes();
+            Node buildName = buildAttr.getNamedItem("location");
+            buildName.setTextContent(build);
+            
+            String allDeps = "";
+            
+            for(int i = 0; i < dependencies.size(); i++) {
+                allDeps = allDeps + dependencies.get(i).getAbsolutePath() + ";";
+            }
+            
+            allDeps.substring(allDeps.length()-1);
+
+            Node deps = doc.getElementsByTagName("pathelement").item(0);
+            
+            NamedNodeMap depsAttr = deps.getAttributes();
+            Node depNames = depsAttr.getNamedItem("path");
+            depNames.setTextContent(allDeps);
+            
+            
+            
             
             updateBuildFile( filepath, doc);
             

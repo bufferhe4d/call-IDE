@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextArea;
@@ -38,14 +39,16 @@ public class RunFile implements Runnable{
     public Thread program = null;
     public Process process = null;
     public String buildPath;
+    public ArrayList<File> deps;
     public int exitVal;
     ReadStdOut read;
     //public int initLength;
     
     private JTextPane console; 
     private String fn;
-    public RunFile(JTextPane cons,String filename, String buildPath){ 
+    public RunFile(JTextPane cons,String filename, String buildPath, ArrayList<File> dependencies){ 
         console = cons;
+        deps = dependencies;
         fn=filename;
         this.buildPath =buildPath;
         program = new Thread(this);
@@ -56,8 +59,15 @@ public class RunFile implements Runnable{
     @Override
     public void run() {     
         try {  
-
-            ProcessBuilder builder = new ProcessBuilder("java", "-cp", buildPath, fn);
+            
+            String allDeps = "";
+            if ( deps != null) {
+                for(int i = 0; i < deps.size(); i++) {
+                    allDeps = allDeps + deps.get(i).getAbsolutePath() + ";";
+                }
+            }
+            
+            ProcessBuilder builder = new ProcessBuilder("java", allDeps + buildPath, fn);
             process = builder.start();
 
             read = new ReadStdOut(process,console); 
