@@ -310,4 +310,13 @@ public class FileNode extends DefaultMutableTreeNode
         
     }
     
+    /** This method make ligth check for updating project */
+    public void shallowUpdate()
+    {
+        if( file != null && file.listFiles().length != children.size() )
+        {
+            updateChildren();
+        }
+    }
+    
 }
