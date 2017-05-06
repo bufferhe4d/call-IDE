@@ -45,6 +45,9 @@ public class FileNavigator extends JTree implements TreeSelectionListener
         projectMenu = new TreeProjectPopupMenu( this);
         root = (FileNode) getModel().getRoot();
         
+        //sort the tree
+        root.updateChildren();
+        
         // Add listeners
         addTreeSelectionListener( this);
         addMouseListener( new TreeMouseListener());
