@@ -1,7 +1,9 @@
 Enable creating jar with dependecies (lib folder).
 <del>Compile with copying non-java source files to the build folder</del>
+
 Generate jar with including non-java source files.
 <del>A bug about running the projects with classpaths.</del>
+
 
 <del>Stop program should be called before running another one or quitting the IDE.</del>
 
