@@ -3,8 +3,8 @@ package filebrowser;
 import fileoperations.ContentReader;
 import fileoperations.FileSaver;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -267,6 +267,19 @@ public class FileNode extends DefaultMutableTreeNode
     /**  This method updates nodes in directory it create nodes for child files and subdirectories if isn't created */
     public void updateChildren()
     {
+         if( !isRoot() )
+        {
+            for (int i = getChildCount();  i > 0 ; i-- )
+            {
+                FileNode temp =  ((FileNode)getChildAt(i-1));
+                System.out.println(" Hey "+  temp + i);
+                if( !temp.isEmpty() && !(( temp.file.isDirectory() && Files.exists(temp.file.toPath()) ) || temp.file.exists() ))
+                {
+                    temp.closeFile();
+                    System.out.println(" Hey "+  temp + i);
+                }
+            }
+        }
         addChildren();
         for (int i = getChildCount();  i > 0 ; i-- )
         {
