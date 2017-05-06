@@ -7,6 +7,7 @@ package runutils;
  * @version 1.0
  */
 public interface Attachable {
+    
     /** Attaches the console to the frame. */
     void attachConsole();
     

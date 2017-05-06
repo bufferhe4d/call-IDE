@@ -1870,10 +1870,9 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         });
 
         consoleOutputArea = new JTextPane();
-        consoleOutputScrollPane.setViewportView(consoleOutputArea);
+        consoleOutputScrollPane.setViewportView( consoleOutputArea);
 
-        consoleFrame = new JFrame("Console");
-        //consoleFrame.setVisible(false);
+        consoleFrame = new JFrame( "Console");
         
         detachScroll = new JScrollPane();
         
@@ -1881,15 +1880,15 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
 
         insertMethodSummary();
    
-        projectLocationField.addKeyListener(new KeyAdapter() {
+        projectLocationField.addKeyListener( new KeyAdapter() {
             @Override
-            public void keyReleased(KeyEvent e) {
+            public void keyReleased (KeyEvent e) {
                  updateProjectRootField();
             }
         });
-        projectNameField.addKeyListener(new KeyAdapter() {
+        projectNameField.addKeyListener( new KeyAdapter() {
             @Override
-            public void keyReleased(KeyEvent e) {
+            public void keyReleased( KeyEvent e) {
                  updateProjectRootField();
             }
         });
@@ -1897,32 +1896,37 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
 
     /** Listener for the console's detach button. */
     private class DetachConsoleListener implements ActionListener {
-        /** Detaches the console from the frame. */
+        /** Calls the detaching method of the console. */
         @Override
         public void actionPerformed( ActionEvent e) {
-            ConsoleCore.dispatch(detachScroll , consoleOutputArea,
-                                 outputTabs, tabComp, consoleFrame, consoleOut, MainFrame.this);
-            outputTabs.getComponentAt(2).setVisible(false);
-            JPanel emptyPanel = new JPanel();
-            JButton fakeDetachButton = new JButton();
-            fakeDetachButton.setIcon( detachIcon);
-            fakeDetachButton.setPreferredSize( new Dimension(0, 24));
-            emptyPanel.add(fakeDetachButton);
-            emptyPanel.setVisible(false);
-            outputTabs.setTabComponentAt( 2, emptyPanel);
-            if (outputTabs.getSelectedIndex() == 2)
-                outputTabs.setSelectedIndex(1);
-            else
-                outputTabs.setSelectedIndex(outputTabs.getSelectedIndex());
-            outputTabs.addChangeListener(new ChangeListener() {
-                @Override
-                public void stateChanged( ChangeEvent evt) {
-                    if (outputTabs.getSelectedIndex() == 2)
-                        outputTabs.setSelectedIndex( lastOutputTabIndex);
-                }
-            });
-            consoleOut = true;
+            detachConsole();
         }
+    }
+    
+    /** Detaches the console from the frame. */
+    private void detachConsole() {
+        ConsoleCore.dispatch(detachScroll , consoleOutputArea,
+                                 outputTabs, tabComp, consoleFrame, consoleOut, MainFrame.this);
+        outputTabs.getComponentAt(2).setVisible(false);
+        JPanel emptyPanel = new JPanel();
+        JButton fakeDetachButton = new JButton();
+        fakeDetachButton.setIcon( detachIcon);
+        fakeDetachButton.setPreferredSize( new Dimension(0, 24));
+        emptyPanel.add(fakeDetachButton);
+        emptyPanel.setVisible(false);
+        outputTabs.setTabComponentAt( 2, emptyPanel);
+        if (outputTabs.getSelectedIndex() == 2)
+            outputTabs.setSelectedIndex(1);
+        else
+            outputTabs.setSelectedIndex(outputTabs.getSelectedIndex());
+        outputTabs.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged( ChangeEvent evt) {
+                if (outputTabs.getSelectedIndex() == 2)
+                    outputTabs.setSelectedIndex( lastOutputTabIndex);
+            }
+        });
+        consoleOut = true;
     }
 
     /** Clears placeholder components which were used for a better designing experience. */
@@ -2137,7 +2141,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 FileSaver saver = new FileSaver( file);
                 saver.save( content);
                 savedContents.set( files.indexOf( file), content);
-                printStatus( "File updated: " + file.getAbsolutePath());
+                printStatus( "File updated: " + file.getName());
 
                 updateMethodSummary( file);
 
@@ -2645,7 +2649,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         
         insertedPane.setFont( preferences.getOutputFont());
         compilerOutputScrollPane.setViewportView( insertedPane);
-        stdOut.println("depends: " + dependencies);
         BuildSys.setPropsForCompileWithDepend(userPath + "/BuildConfigs/buildDeps.xml",
                                     buildFolder, srcFolder, dependencies);
         BuildSys.compile(userPath + "/BuildConfigs/buildDeps.xml", stdOut, stdErr );
@@ -2707,7 +2710,8 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 printStatus("The file should be compiled before running.");
                 return;
             }
-                runFile( file, build);
+            printStatus( "Running " + file.getName() );
+            runFile( file, build);
         }
     }
     
@@ -2777,6 +2781,11 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             return;
         }
         
+        printStatus("Generating javadoc: " + currentProject.getName());
+        
+        if (builder == null)
+            builder = new ConsoleBuilder();
+        
         builder.destroy();
         ConsoleCore.free();
         builder.init();
@@ -2802,6 +2811,11 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             return;
         }
         
+        printStatus("Generating jar: " + currentProject.getName());
+        
+        if (builder == null)
+            builder = new ConsoleBuilder();
+        
         builder.destroy();
         ConsoleCore.free();
         builder.init();
@@ -2820,7 +2834,8 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             if (cu.getPackageDeclaration().isPresent())
                 packageName = cu.getPackageDeclaration().get().getName().toString();
         } catch (IOException e) {}
-        mainClassName = packageName + "." + mainClassName;
+        if (!packageName.equals(""))
+            mainClassName = packageName + "." + mainClassName;
         
         BuildSys.setPropsForJar(userPath + "/BuildConfigs/buildJar.xml",
                                 currentProject.getBuild().getAbsolutePath(),
@@ -3128,13 +3143,26 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         return true;
     }
     
-    // TODO : USE THE DETACH PREFERENCE OF THE USER
+    /** Checks and arranges the state (detached/attached) of the console. */
+    private void checkConsoleState() {
+        if (preferences.getDispatchOnRun()) {
+            if (consoleOut) {
+                consoleFrame.setExtendedState( JFrame.NORMAL);
+                consoleFrame.toFront();
+                consoleFrame.requestFocus();
+            }
+            else
+                detachConsole();
+        }
+    }
+    
     /** Determines what to do with the run button on the frame. */
     private void runAction() {
         if (projectMode)
             runCurrentProject();
         else
             runCurrentFile();
+        checkConsoleState();
     }
     
     /** Runs the active project on the editor. */
@@ -3154,17 +3182,20 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             printStatus( "Can't find the compiled main class: " + mainClassFile.getAbsolutePath());
         }
         else {
-            printStatus( "Running the class " + activeProject.getMainClass() + " of project " + activeProject.getName());
+            printStatus( "Running " + activeProject.getMainClass().getName() + " in project " + activeProject.getName());
             runFile( activeProject.getMainClass(), activeProject.getBuild(), activeProject.getJarFiles());
         }
     }
     
     /** Determines what to do with the compile & run button on the frame. */
     private void compileRunAction() {
+        if (builder == null)
+            builder = new ConsoleBuilder();
         if (projectMode)
             compileRunCurrentProject();
         else
             compileRunCurrentFile();
+        checkConsoleState();
     }
     
     /** Opens a folder chooser dialog for the user to choose its project location. */
@@ -3242,6 +3273,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             fileExplorer.setIsProjectBrowser(false);
             projectMode = false;
         }
+        printStatus( "Project closed: " + selectedProject.getName());
     }
     
     /** Shows properties frame of the given project. */
@@ -3411,7 +3443,8 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     
     /** Initializes the input output streams of the debug console. */
     private void initStreams() {
-        stdOut = System.out; // use StdOut.println() instead of System.out.println for debugging.
+        // Use StdOut.println() instead of System.out.println for debugging.
+        stdOut = System.out;
         stdErr = System.err;
     }
 

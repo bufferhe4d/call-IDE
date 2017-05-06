@@ -28,7 +28,6 @@ import javax.swing.text.StyledDocument;
 import helputils.ErrorHelper;
 import java.awt.BorderLayout;
 import java.io.PrintStream;
-import javax.swing.JPanel;
 
 /**
  * A class to build different consoles with the given streams.
@@ -317,8 +316,6 @@ public class ConsoleCore {
     public static void  dispatch(JScrollPane scrollPane, JTextPane cons,
                                  JTabbedPane outputTabs, Component tabComp, JFrame frame,
                                  Boolean consoleOut, Attachable mainFrame) {
-        
-        
         frame.setSize(400, 300);
         frame.setLayout(new BorderLayout());
         

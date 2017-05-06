@@ -125,7 +125,7 @@ public class BuildSys {
                 allDeps = allDeps + dependencies.get(i).getAbsolutePath() + ";";
             }
             
-            allDeps.substring(allDeps.length()-1);
+            //allDeps.substring(allDeps.length()-1);
 
             Node deps = doc.getElementsByTagName("pathelement").item(0);
             
@@ -251,7 +251,7 @@ public class BuildSys {
         
         try {
             p.fireBuildStarted();
-            out.println("ant");
+            // out.println("ant");
             p.init();
             ProjectHelper helper = ProjectHelper.getProjectHelper();
             p.addReference("ant.projectHelper", helper);

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package runutils;
 
 import java.awt.event.KeyAdapter;
@@ -20,23 +15,23 @@ import javax.swing.text.StyledDocument;
 
 /**
  *
- * @author abdullah.talayhan-ug
+ * @author Abdullah Talayhan
  */
 public class WriteStdIn implements Runnable{
-
+    
     private Process process = null;
     private JTextPane console = null;
     public Thread write = null;
     private String input = null;
     private BufferedWriter writer = null;
     int initLength;
-
+    
     public WriteStdIn(Process p, JTextPane t){
-
+        
         process = p;
         console = t;
         writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
-
+        
         write = new Thread(this);
         write.start();
         
@@ -44,7 +39,7 @@ public class WriteStdIn implements Runnable{
             //initLength = 0;
             boolean notTypedYet = true;
             //String inputStr = "";
-
+            
             @Override
             public void keyTyped(KeyEvent e) {
                 
@@ -74,30 +69,24 @@ public class WriteStdIn implements Runnable{
                 // send it to the output stream which pipes into the
                 // input stream of the executed program
                 if (e.getKeyChar() == KeyEvent.VK_ENTER) {
-                    
                     try {
                         input = console.getText(initLength, console.getDocument().getLength() - initLength - 1);
-                        
                         input =input + "\n";
                         notTypedYet = true;
                         write.resume();
                         //inputStr = "";
-                        
-
                     } catch (BadLocationException ex) {
                         Logger.getLogger(ConsoleCore.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-
             }
-
+            
             @Override
             public void keyPressed(KeyEvent e) {
                 if(notTypedYet ) {
                     notTypedYet = false;
                     initLength = console.getDocument().getLength();
                     console.setCaretPosition(console.getDocument().getLength());
-                    
                     if(e.getKeyChar()== KeyEvent.VK_ENTER) {
                         try {
                             console.getDocument().insertString(initLength, "\n", null);
@@ -112,7 +101,6 @@ public class WriteStdIn implements Runnable{
                         e.consume();
                     }
                 }
-                
                 if(e.getKeyChar() == KeyEvent.VK_ENTER) {
                     console.setCaretPosition(console.getDocument().getLength());
                 }
@@ -124,20 +112,15 @@ public class WriteStdIn implements Runnable{
                     if(notTypedYet) {
                         e.consume();
                     }
-                    System.out.println(initLength);
-
                 }
                 else if(e.getKeyCode() == 37) {
                     if(initLength - console.getCaretPosition() >= 0) {
-
                         e.consume();
                     }
-                    
                 }
                 else if(e.getKeyCode() == 38) {
                     if(initLength - console.getCaretPosition() + (console.getDocument().getLength() - initLength)>= 0) {
-
-                            e.consume();
+                        e.consume();
                     }
                 }
             }
@@ -145,45 +128,36 @@ public class WriteStdIn implements Runnable{
         
         console.addFocusListener(new java.awt.event.FocusAdapter() {
             @Override
-        public void focusGained(java.awt.event.FocusEvent e)
-        {
-            console.setCaretPosition(console.getDocument().getLength());
-                              
-         }    
-
+            public void focusGained(java.awt.event.FocusEvent e)
+            {
+                console.setCaretPosition(console.getDocument().getLength());               
+            }   
         });
         
         console.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(initLength - console.getCaretPosition() >= 0) {
-                console.setCaretPosition(console.getDocument().getLength());
+                    console.setCaretPosition(console.getDocument().getLength());
                 }
-                
             }
-            
-            
         });
     }
-
-
+    
     @Override
-    public void run(){
+    public void run() {
         write.suspend();
-        
-        while(true){
+        while (true) {
             try {
                 //send variable input in stdin of process
                 writer.write(input);
                 writer.flush();
-
             } catch (IOException e) {}
             write.suspend();
         }
-        
     }
-    public  void appendString(String str, JTextPane pane) throws BadLocationException
-    {
+    
+    public  void appendString(String str, JTextPane pane) throws BadLocationException {
         StyledDocument document = (StyledDocument) pane.getDocument();
         document.insertString(document.getLength(), str, null);
     }
@@ -200,6 +174,5 @@ public class WriteStdIn implements Runnable{
     public void killUrSelf() {
         write.interrupt();
     }
-    
     
 }

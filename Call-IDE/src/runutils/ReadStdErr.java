@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package runutils;
 
 import java.awt.Color;
@@ -21,23 +16,21 @@ import javax.swing.text.StyledDocument;
 
 /**
  *
- * @author abdullah.talayhan-ug
+ * @author Abdullah Talayhan
  */
 public class ReadStdErr implements Runnable{
-
     public Thread read = null;
     private BufferedReader reader = null;
     private Process process = null;
     private JTextPane console = null;
     private boolean finish;
-    public ReadStdErr(Process p,JTextPane t){
+    public ReadStdErr(Process p,JTextPane t) {
         finish = false;
         process = p;
         reader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
         console = t;
         read = new Thread(this);
         read.start();
-        
     }
 
     public void run() {
@@ -55,13 +48,9 @@ public class ReadStdErr implements Runnable{
             Logger.getLogger(ReadStdErr.class.getName()).log(Level.SEVERE, null, ex);
         }
         finish = true;
-        
-        
-
     }
     
-    public  void appendString(String str, JTextPane pane) throws BadLocationException
-    {
+    public  void appendString(String str, JTextPane pane) throws BadLocationException {
         StyledDocument document = (StyledDocument) pane.getDocument();
         document.insertString(document.getLength(), str, null);
     }
@@ -78,4 +67,5 @@ public class ReadStdErr implements Runnable{
     public boolean isFinished() {
         return finish;
     }
+    
 }
