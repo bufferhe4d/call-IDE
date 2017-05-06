@@ -3,6 +3,8 @@ Compile with copying non-java source files to the build folder.
 Generate jar with including non-java source files.
 A bug about running the projects with classpaths.
 
+Stop program should be called before running another one or quitting the IDE.
+
 Ask users to select their main class when they try to run a project without one.
 Integrate the JDK checker to the main frame.
 Implement and integrate the error helping system.
