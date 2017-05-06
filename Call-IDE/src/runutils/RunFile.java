@@ -37,12 +37,24 @@ public class RunFile implements Runnable{
     public void run() {     
         try {  
             String allDeps = "";
-            if ( deps != null) {
-                for(int i = 0; i < deps.size(); i++) {
-                    allDeps = allDeps + deps.get(i).getAbsolutePath() + ";";
-                }
+            
+            // check for os seperator
+            String sep;
+            if(System.getProperty("os.name").startsWith("Windows")) {
+                sep = ";";
+                
+            }
+            else {
+                sep = ":";
             }
             
+            if ( deps != null) {
+                for(int i = 0; i < deps.size(); i++) {
+                    allDeps = allDeps + deps.get(i).getAbsolutePath() + sep;
+                }
+            }
+            //allDeps = allDeps.substring(0, allDeps.length()-1);
+            System.out.println(allDeps + buildPath);
             ProcessBuilder builder = new ProcessBuilder("java", "-cp", allDeps + buildPath, fn);
             process = builder.start();
             
@@ -66,6 +78,10 @@ public class RunFile implements Runnable{
     public void kill() {
         process.destroy();
         read.killUrSelf();
+    }
+    
+    public boolean alive() {
+        return process.isAlive();
     }
     
     public  void appendString(String str, JTextPane pane) throws BadLocationException {

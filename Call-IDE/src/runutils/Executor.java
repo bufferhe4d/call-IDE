@@ -32,7 +32,10 @@ public class Executor {
     }
     
     public void stop() {
-        r.kill();
+        if(r.alive())
+            r.kill();
     }
+    
+    
     
 }
