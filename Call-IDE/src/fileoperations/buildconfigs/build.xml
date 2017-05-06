@@ -16,7 +16,13 @@
 
         <!-- Compiles the java code (including the usage of library for JUnit -->
         <target depends="clean, makedir" name="compile">
-                <javac destdir="${build.dir}" srcdir="${src.dir}">
+                <copy todir="${build.dir}">
+                        <fileset dir="${src.dir}">
+                                <exclude name="**/*.java"/>
+                        </fileset>
+                </copy>
+
+                <javac destdir="${build.dir}" srcdir="${src.dir}" debug="true">
                 </javac>
 
         </target>
