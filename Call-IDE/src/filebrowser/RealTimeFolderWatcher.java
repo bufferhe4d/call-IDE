@@ -95,35 +95,28 @@ public class RealTimeFolderWatcher extends Thread {
             // iterate over events
             for (int i = 0; i < allEvents.size(); i++) {
                 tempEvent = allEvents.get(i);
-                if(tempEvent.kind() == ENTRY_CREATE || tempEvent.kind() == ENTRY_DELETE || tempEvent.kind() == ENTRY_MODIFY)
+                if(tempEvent.kind() == ENTRY_MODIFY)
                     allPaths.add(dir.resolve((Path) tempEvent.context()).toString());
                 
 
             }
-            maxPath = allPaths.get(0);
-            for(int i = 0; i < allPaths.size(); i++) {
-                if(allPaths.get(i).length() > maxPath.length())
-                    maxPath = allPaths.get(i);
+            // chech if any event is ENTRY_MODIFY
+            if(!allPaths.isEmpty()) {
+                maxPath = allPaths.get(0);
+                for(int i = 0; i < allPaths.size(); i++) {
+                    if(allPaths.get(i).length() > maxPath.length())
+                        maxPath = allPaths.get(i);
+                }
+                System.out.println(maxPath);
+                
+                File changedFile = new File(maxPath);
+                if(changedFile.isDirectory()) {
+                    explorer.updateDirectory(maxPath);
+                }
+                else {
+                    explorer.updateDirectory(changedFile.getAbsolutePath());
+                }
             }
-            //System.out.println(maxPath);
-            /*if (eventWithMaxLength.kind() == ENTRY_CREATE ) {
-                System.out.println("Create Event:: " + event.context().toString() + "assumed path:" + pathToWatch.resolve((Path) event.context()));
-              }
-              else if(eventWithMaxLength.kind() == ENTRY_MODIFY) {
-                  System.out.println("Modify Event: " + event.context().toString() + "assumed path:" + pathToWatch.resolve((Path) event.context()));
-              }
-              else if(eventWithMaxLength.kind() == ENTRY_DELETE) {
-
-                  System.out.println("Delete Event: " + event.context().toString() + "assumed path:" + pathToWatch.resolve((Path) event.context()));
-              }*/
-            File changedFile = new File(maxPath);
-            if(changedFile.isDirectory()) {
-                explorer.updateDirectory(maxPath);
-            }
-            else {
-                explorer.updateDirectory(changedFile.getAbsolutePath());
-            }
-            System.out.println("error");
             // reset the key
             key.reset();
           }
