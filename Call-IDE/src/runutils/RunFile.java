@@ -67,7 +67,7 @@ public class RunFile implements Runnable{
                 }
             }
             
-            ProcessBuilder builder = new ProcessBuilder("java", allDeps + buildPath, fn);
+            ProcessBuilder builder = new ProcessBuilder("java", "-cp", allDeps + buildPath, fn);
             process = builder.start();
 
             read = new ReadStdOut(process,console); 

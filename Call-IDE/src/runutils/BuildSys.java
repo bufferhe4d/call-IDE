@@ -132,9 +132,7 @@ public class BuildSys {
             NamedNodeMap depsAttr = deps.getAttributes();
             Node depNames = depsAttr.getNamedItem("path");
             depNames.setTextContent(allDeps);
-            
-            
-            
+
             
             updateBuildFile( filepath, doc);
             

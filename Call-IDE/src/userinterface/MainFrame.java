@@ -33,17 +33,10 @@ import com.github.javaparser.ast.*;
  * @author Emin Bahadir Tuluce, Halil Sahiner, Abdullah Talayhan
  */
 public class MainFrame extends JFrame implements NavigationParent, AutosaveHandler, Attachable, NodeVisitor {
-    
-    PrintStream StdOut; // use StdOut.println() instead of System.out.println for debugging.
-    PrintStream StdErr;
-    ConsoleBuilder builder;
 
     /** Creates the main frame of the IDE. */
     public MainFrame() throws IOException {
-        StdOut = System.out;
-        StdErr = System.err;
-        builder = new ConsoleBuilder();
-        
+        initStreams();
         initProperties();
         loadIcons();
         initComponents();
@@ -84,7 +77,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         editorFontSizeLabel = new javax.swing.JLabel();
         indentLabel = new javax.swing.JLabel();
         lineNumbersCheck = new javax.swing.JCheckBox();
-        themeComboBox = new javax.swing.JComboBox<>();
+        themeComboBox = new javax.swing.JComboBox<String>();
         indentTextField = new javax.swing.JTextField();
         autosaveTextField = new javax.swing.JTextField();
         minsLabel = new javax.swing.JLabel();
@@ -96,11 +89,11 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         bracketMatchingCheck = new javax.swing.JCheckBox();
         editorFontLabel = new javax.swing.JLabel();
         editorFontSizeField = new javax.swing.JTextField();
-        editorFontChooser = new javax.swing.JComboBox<>();
+        editorFontChooser = new javax.swing.JComboBox<String>();
         outputFontSizeLabel = new javax.swing.JLabel();
         outputFontLabel = new javax.swing.JLabel();
         outputFontSizeField = new javax.swing.JTextField();
-        outputFontChooser = new javax.swing.JComboBox<>();
+        outputFontChooser = new javax.swing.JComboBox<String>();
         submissionSelectLabel = new javax.swing.JLabel();
         callideSubmissionRadio = new javax.swing.JRadioButton();
         externalSubmissionRadio = new javax.swing.JRadioButton();
@@ -141,6 +134,11 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         projectRootLabel = new javax.swing.JLabel();
         projectRootField = new javax.swing.JTextField();
         submissionButtonGroup = new javax.swing.ButtonGroup();
+        mainSelectionFrame = new javax.swing.JFrame();
+        mainSelectionLabel = new javax.swing.JLabel();
+        mainSelectionScrollPane = new javax.swing.JScrollPane();
+        mainSelectionList = new javax.swing.JList();
+        jButton1 = new javax.swing.JButton();
         mainSplitPane = new javax.swing.JSplitPane();
         topSplitPane = new javax.swing.JSplitPane();
         explorerScrollPane = new javax.swing.JScrollPane();
@@ -308,7 +306,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         lineNumbersCheck.setText("Display line numbers");
         lineNumbersCheck.setVerifyInputWhenFocusTarget(false);
 
-        themeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "default.xml", "dark.xml", "eclipse.xml", "idea.xml", "monokai.xml", "vs.xml" }));
+        themeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "default.xml", "dark.xml", "eclipse.xml", "idea.xml", "monokai.xml", "vs.xml" }));
 
         indentTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         indentTextField.setText("4");
@@ -347,7 +345,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         editorFontSizeField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         editorFontSizeField.setText("16");
 
-        editorFontChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Arial", "Calibri", "Consolas", "Courier New", "Lucida Console", "Times New Roman", "Tahoma" }));
+        editorFontChooser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Arial", "Calibri", "Consolas", "Courier New", "Lucida Console", "Times New Roman", "Tahoma" }));
 
         outputFontSizeLabel.setText("Size");
 
@@ -356,7 +354,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         outputFontSizeField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         outputFontSizeField.setText("16");
 
-        outputFontChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Arial", "Calibri", "Consolas", "Courier New", "Lucida Console", "Times New Roman", "Tahoma" }));
+        outputFontChooser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Arial", "Calibri", "Consolas", "Courier New", "Lucida Console", "Times New Roman", "Tahoma" }));
 
         submissionSelectLabel.setText("Submission System:");
 
@@ -377,7 +375,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             }
         });
 
-        externalSubmissionField.setText("https://stars.bilkent.edu.tr/srs");
+        externalSubmissionField.setEnabled(false);
 
         detachConsoleCheck.setText("Detach console on run");
 
@@ -717,7 +715,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             }
         });
 
-        browseMainButton.setText("Browse");
+        browseMainButton.setText("Select");
         browseMainButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 browseMainButtonActionPerformed(evt);
@@ -740,7 +738,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                         .addComponent(classPathLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(classPathButton))
-                    .addComponent(classPathScrollPane)
+                    .addComponent(classPathScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, projectPanelLayout.createSequentialGroup()
                         .addGroup(projectPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(mainClassLabel)
@@ -761,10 +759,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                         .addGroup(projectPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(projectRootLabel)
                             .addComponent(projectLocationLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(20, 20, 20)
                         .addGroup(projectPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(projectPanelLayout.createSequentialGroup()
-                                .addComponent(projectLocationField, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
+                                .addComponent(projectLocationField)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(browseLocationButton, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(projectRootField))))
@@ -813,6 +811,50 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         projectFrameLayout.setVerticalGroup(
             projectFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(projectPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        mainSelectionLabel.setText("Please select the main class of your project.");
+
+        mainSelectionList.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "<no main method found>" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        mainSelectionList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        mainSelectionScrollPane.setViewportView(mainSelectionList);
+
+        jButton1.setText("OK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout mainSelectionFrameLayout = new javax.swing.GroupLayout(mainSelectionFrame.getContentPane());
+        mainSelectionFrame.getContentPane().setLayout(mainSelectionFrameLayout);
+        mainSelectionFrameLayout.setHorizontalGroup(
+            mainSelectionFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainSelectionFrameLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(mainSelectionFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(mainSelectionLabel)
+                    .addComponent(mainSelectionScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainSelectionFrameLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        mainSelectionFrameLayout.setVerticalGroup(
+            mainSelectionFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainSelectionFrameLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(mainSelectionLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(mainSelectionScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -1711,7 +1753,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     }//GEN-LAST:event_browseLocationButtonActionPerformed
 
     private void browseMainButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseMainButtonActionPerformed
-        browseMainClass();
+        showMainSelection();
     }//GEN-LAST:event_browseMainButtonActionPerformed
 
     private void classPathButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_classPathButtonActionPerformed
@@ -1729,6 +1771,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private void externalSubmissionRadioStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_externalSubmissionRadioStateChanged
         updateLinkField();
     }//GEN-LAST:event_externalSubmissionRadioStateChanged
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        selectMainClass();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * Sets LookAndFeel to the given name.
@@ -2590,17 +2636,19 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     }
     
     /** Compiles a given folder to a given path. */
-    private JTextPane compileFolderTo( String srcFolder, String buildFolder) {
+    private JTextPane compileFolderTo( String srcFolder, String buildFolder, ArrayList<File> dependencies) {
         // clean up buffers
         builder.destroy();
         ConsoleCore.free();
         builder.init();
         JTextPane insertedPane = builder.getOutErrConsole();
         
+        insertedPane.setFont( preferences.getOutputFont());
         compilerOutputScrollPane.setViewportView( insertedPane);
-        BuildSys.setPropsForCompile(userPath + "/BuildConfigs/build.xml",
-                                    buildFolder, srcFolder);
-        BuildSys.compile(userPath + "/BuildConfigs/build.xml", StdOut, StdErr );
+        stdOut.println("depends: " + dependencies);
+        BuildSys.setPropsForCompileWithDepend(userPath + "/BuildConfigs/buildDeps.xml",
+                                    buildFolder, srcFolder, dependencies);
+        BuildSys.compile(userPath + "/BuildConfigs/buildDeps.xml", stdOut, stdErr );
         outputTabs.setSelectedIndex(1);
         fileExplorer.updateDirectory( (new File(buildFolder)).getParent());
         return insertedPane;
@@ -2619,10 +2667,9 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         compilerOutputScrollPane.setViewportView( insertedPane);
         BuildSys.setPropsForCompileFile(userPath + "/BuildConfigs/buildFile.xml", filePath);
         
-        BuildSys.compile(userPath + "/BuildConfigs/buildFile.xml", StdOut, StdErr);
+        BuildSys.compile(userPath + "/BuildConfigs/buildFile.xml", stdOut, stdErr);
         outputTabs.setSelectedIndex(1);
         fileExplorer.updateDirectory( (new File(filePath)).getParent());
-        // TODO : DOES NOT WORK PROPERLY ** DONE!
         return insertedPane;
     }
     
@@ -2664,8 +2711,12 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         }
     }
     
-    /** Runs a given file on the console. */
     private void runFile( File file, File build) {
+        runFile( file, build, null);
+    }
+    
+    /** Runs a given file on the console. */
+    private void runFile( File file, File build, ArrayList<File> dependencies) {
         
         if (!hasMainMethod( file))
             return;
@@ -2703,8 +2754,11 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             consoleOutputScrollPane.setViewportView(consoleOutputArea);
         }
 
+        if (dependencies == null)
+            executor = new Executor(build.getAbsolutePath());
+        else
+            executor = new Executor(build.getAbsolutePath(), dependencies);
         
-        executor = new Executor(build.getAbsolutePath());
         if(packageName.equals(""))
             executor.execute(consoleOutputArea,className);
         else
@@ -2715,13 +2769,13 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     }
 
     /** Generates javadoc for the current project. */
-    private void javadocCurrentProject() {
-        if (!projectMode) {
+    private void javadocCurrentProject() {    
+        ProjectHandler currentProject = getProjectHandler(getActiveFile());
+        
+        if (!projectMode || currentProject == null) {
             printStatus("You should first create a project to generate javadoc.");
             return;
         }
-                
-        ProjectHandler currentProject = getProjectHandler(getActiveFile());
         
         builder.destroy();
         ConsoleCore.free();
@@ -2734,19 +2788,19 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         BuildSys.setPropsForJavaDoc(userPath + "/BuildConfigs/buildJavadoc.xml", 
                                     currentProject.getSrc().getAbsolutePath(),
                                     currentProject.getPath() + "/doc");
-        BuildSys.compile(userPath + "/BuildConfigs/buildJavadoc.xml", StdOut, StdErr);
+        BuildSys.compile(userPath + "/BuildConfigs/buildJavadoc.xml", stdOut, stdErr);
         outputTabs.setSelectedIndex(1);
         fileExplorer.updateDirectory(currentProject.getPath());
     }
 
     /** Generates an executable jar file for the current project. */
     private void jarCurrentProject() {
-        if (!projectMode) {
+        ProjectHandler currentProject = getProjectHandler(getActiveFile());
+        
+        if (!projectMode || currentProject == null) {
             printStatus("You should first create a project to generate jar file.");
             return;
         }
-        
-        ProjectHandler currentProject = getProjectHandler(getActiveFile());
         
         builder.destroy();
         ConsoleCore.free();
@@ -2772,14 +2826,15 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                                 currentProject.getBuild().getAbsolutePath(),
                                 currentProject.getPath() + "/dist",
                                 mainClassName, currentProject.getName() +".jar");
-        BuildSys.compile(userPath + "/BuildConfigs/buildJar.xml", StdOut, StdErr);
+        BuildSys.compile(userPath + "/BuildConfigs/buildJar.xml", stdOut, stdErr);
 
         outputTabs.setSelectedIndex(1);
     }
 
     /** Resets the console interactions. */
     private void resetInteractions() {
-        executor.stop();
+        if (executor != null)
+            executor.stop();
     }
 
     /** Compiles the file and runs it when compiling is done. */
@@ -3032,6 +3087,8 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     
     /** Determines what to do with the compile button on the frame. */
     private void compileAction() {
+        if (builder == null)
+            builder = new ConsoleBuilder();
         if (projectMode)
             compileCurrentProject();
         else
@@ -3041,24 +3098,24 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     /** Compiles the active project on the editor. */
     private JTextPane compileCurrentProject() {
         updateProjects();
+        if (getActiveFile() == null) {
+            printStatus( "The file should be saved before compiling.");
+            return null;
+        }
         ProjectHandler activeProject = getProjectHandler( getActiveFile());
+        if (activeProject == null) {
+            printStatus("This file is not in a project.");
+            return null;
+        }
         JTextPane insertedPane = compileFolderTo( activeProject.getSrc().getAbsolutePath(),
-                         activeProject.getBuild().getAbsolutePath());
+                         activeProject.getBuild().getAbsolutePath(), activeProject.getJarFiles());
         fileExplorer.updateDirectory(activeProject.getPath());
         return insertedPane;
     }
     
-        /** Checks if a file has a proper main method in it. */
+    /** Checks if a file has a proper main method in it. */
     private boolean hasMainMethod( File file) {
         Parser mainChecker = new Parser();
-        if( fileExplorer.isProjectBrowser())
-            try {
-                return getMainMethod(file) != null;
-            } catch (ParseException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
         try {
             mainChecker.addNode(file);
         } catch (ParseException | IOException ex) {
@@ -3068,17 +3125,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             printStatus("The class " + file.getName() + " does not have a proper main method.");
             return false;
         }
-        
         return true;
     }
     
-    /** Get the file has Main method */
-    private File getMainMethod( File file ) throws ParseException, IOException
-    {
-        Parser mainChecker = new Parser();
-        return mainChecker.getMain(file);
-    }
-    
+    // TODO : USE THE DETACH PREFERENCE OF THE USER
     /** Determines what to do with the run button on the frame. */
     private void runAction() {
         if (projectMode)
@@ -3090,8 +3140,23 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     /** Runs the active project on the editor. */
     private void runCurrentProject() {
         updateProjects();
+        if (getActiveFile() == null) {
+            printStatus("The file should be compiled before running.");
+            return;
+        }
         ProjectHandler activeProject = getProjectHandler( getActiveFile());
-        runFile( activeProject.getMainClass(), activeProject.getBuild());
+        if (activeProject == null) {
+            printStatus("This file is not in a project.");
+            return;
+        }
+        File mainClassFile = activeProject.getMainClass();
+        if (!mainClassFile.exists() || !mainClassFile.isFile()) {
+            printStatus( "Can't find the compiled main class: " + mainClassFile.getAbsolutePath());
+        }
+        else {
+            printStatus( "Running the class " + activeProject.getMainClass() + " of project " + activeProject.getName());
+            runFile( activeProject.getMainClass(), activeProject.getBuild(), activeProject.getJarFiles());
+        }
     }
     
     /** Determines what to do with the compile & run button on the frame. */
@@ -3115,13 +3180,22 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     }
     
     /** Opens a file chooser dialog for user to choose its main class location. */
-    private void browseMainClass() {
-        JFileChooser chooser = new JFileChooser();
-        if (chooser.showOpenDialog(projectFrame) == JFileChooser.APPROVE_OPTION) {
-            File file = chooser.getSelectedFile();
-            mainClassField.setText( file.getAbsolutePath());
-        }
-        updateProjectRootField();
+    private void showMainSelection() {
+        mainSelectionList.setModel(new AbstractListModel() {
+            ArrayList files = (new Parser()).searchMain( modifyingProject.getSrc());
+            public int getSize() { return files.size(); }
+            public Object getElementAt(int i) { return files.get(i); }
+        });
+        mainSelectionFrame.pack();
+        mainSelectionFrame.setLocationRelativeTo(this);
+        mainSelectionFrame.setVisible(true);
+    }
+    
+    /** Sets the main class of the project as selected in the frame. */
+    private void selectMainClass() {
+        if (mainSelectionList.getSelectedValue() != null)
+            mainClassField.setText( mainSelectionList.getSelectedValue().toString());
+        mainSelectionFrame.setVisible(false);
     }
     
     /** Opens a file chooser dialog to browse class paths of the project. */
@@ -3182,11 +3256,11 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         projectLocationField.setText( (new File(project.getPath()).getParent()));
         mainClassField.setText( project.getMainClass().getAbsolutePath());
         ArrayList<File> externalPaths = project.getJarFiles();
+        ((DefaultListModel) classPathList.getModel()).removeAllElements();
         for (File jarFile : externalPaths)
             ((DefaultListModel) classPathList.getModel()).addElement(jarFile.getAbsolutePath());
         projectFrame.setTitle( "Project Properties");
         browseMainButton.setEnabled( true);
-        mainClassField.setText("");
         mainClassField.setEditable( true);
         projectFrame.pack();
         projectFrame.setLocationRelativeTo( this);
@@ -3221,8 +3295,20 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             modifyingProject.setSrc(srcFolder);
             modifyingProject.setMainClass(mainClassFile);
             modifyingProject.removeAllJars();
-            for (int i = 0; i < paths.getSize(); i++) 
-                modifyingProject.addJar( new File( paths.getElementAt(i)));
+            ArrayList<File> existingJars = modifyingProject.getJarFiles();
+            for (int i = 0; i < paths.getSize(); i++) {
+                File jarFile = new File( paths.getElementAt(i));
+                boolean alreadyIn = false;
+                for (int j = 0; j < existingJars.size(); j++) {
+                    File existingJar = existingJars.get(j);
+                    if (existingJar.equals( jarFile)) {
+                        j = existingJars.size();
+                        alreadyIn = true;
+                    }
+                }
+                if (!alreadyIn)
+                    modifyingProject.addJar( jarFile);
+            }
             modifyingProject.saveProject( projectRoot, projectName);
         } catch (IOException e) {
             e.printStackTrace();
@@ -3237,7 +3323,8 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             updateProjects();
             ProjectHandler selectedProject = getProjectHandler( selectedFile);
             compileFolderTo( selectedProject.getSrc().getAbsolutePath(),
-                             selectedProject.getBuild().getAbsolutePath());
+                             selectedProject.getBuild().getAbsolutePath(),
+                             selectedProject.getJarFiles());
             fileExplorer.updateDirectory(selectedProject.getPath());
         }
         else
@@ -3270,6 +3357,15 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     
     /** Compiles and runs the active project on the editor. */
     private void compileRunCurrentProject() {
+        if (getActiveFile() == null) {
+            printStatus("The file should be saved before running.");
+            return;
+        }
+        ProjectHandler activeProject = getProjectHandler( getActiveFile());
+        if (activeProject == null) {
+            printStatus("This file is not in a project.");
+            return;
+        }
         if (!currentIsRunnable())
             return;
         JTextPane insertedPane = compileCurrentProject();
@@ -3291,7 +3387,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         updateProjects();
         ProjectHandler activeProject = getProjectHandler( getActiveFile());
         if (!activeProject.getMainClass().exists()) {
-            printStatus("The project hasn't got a proper main class.");
+            printStatus("Please set a main class to the project.");
             return false;
         }
         
@@ -3311,6 +3407,12 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         externalSubmissionField.setEnabled( externalSubmissionRadio.isSelected());
         if (!externalSubmissionRadio.isSelected())
             externalSubmissionField.setText("");
+    }
+    
+    /** Initializes the input output streams of the debug console. */
+    private void initStreams() {
+        stdOut = System.out; // use StdOut.println() instead of System.out.println for debugging.
+        stdErr = System.err;
     }
 
     // Other Variables
@@ -3346,6 +3448,9 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private SummaryTree methodSummary;
     private Parser methodParser;
     private ProjectHandler modifyingProject;
+    private PrintStream stdOut;
+    private PrintStream stdErr;
+    private ConsoleBuilder builder;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutButton;
@@ -3401,6 +3506,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private javax.swing.JLabel indentLabel;
     private javax.swing.JTextField indentTextField;
     private javax.swing.JMenuItem insertJavadocButton;
+    private javax.swing.JButton jButton1;
     private javax.swing.JMenuItem jarButton;
     private javax.swing.JCheckBox jarCheck;
     private javax.swing.JButton jarTool;
@@ -3413,6 +3519,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private javax.swing.JButton loginTool;
     private javax.swing.JTextField mainClassField;
     private javax.swing.JLabel mainClassLabel;
+    private javax.swing.JFrame mainSelectionFrame;
+    private javax.swing.JLabel mainSelectionLabel;
+    private javax.swing.JList mainSelectionList;
+    private javax.swing.JScrollPane mainSelectionScrollPane;
     private javax.swing.JSplitPane mainSplitPane;
     private javax.swing.JCheckBox matchCaseCheck;
     private javax.swing.JMenuBar menuBar;

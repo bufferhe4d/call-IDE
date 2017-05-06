@@ -9,6 +9,7 @@ import javax.swing.tree.MutableTreeNode;
 import com.github.javaparser.ParseException;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
+import javax.swing.tree.TreeNode;
 
 /**
  * A class that can parse java source files.
@@ -106,12 +107,15 @@ public class Parser {
             MutableTreeNode node = ((MutableTreeNode) rootNode.getChildAt(index));
             if (node instanceof ClassNode) {
                 for (int i = 0; i < ((ClassNode) node).getChildCount(); i++) {
-                    MethodDeclaration metDec = ((MethodNode) (((ClassNode) node).getChildAt(i))).metDec;
-                    if (metDec.getNameAsString().equals("main") &&
-                        metDec.isPublic() && metDec.isStatic()) {
-                        ArrayList<Parameter> parameters = new ArrayList<Parameter>(metDec.getParameters());
-                        if (parameters.size() == 1 && parameters.get(0).toString().startsWith("String[]"))
-                            return true;
+                    TreeNode treeNode = (((ClassNode) node).getChildAt(i));
+                    if (treeNode instanceof MethodNode) {
+                        MethodDeclaration metDec = ((MethodNode) treeNode).metDec;
+                        if (metDec.getNameAsString().equals("main") &&
+                            metDec.isPublic() && metDec.isStatic()) {
+                            ArrayList<Parameter> parameters = new ArrayList<Parameter>(metDec.getParameters());
+                            if (parameters.size() == 1 && parameters.get(0).toString().startsWith("String[]"))
+                                return true;
+                        }
                     }
                 }
             }
@@ -119,20 +123,28 @@ public class Parser {
         return false;
     }
     
-    public File getMain( File file) throws ParseException, IOException 
+    public ArrayList<File> searchMain( File srcDir)
     {
-        for(int i = 0; i<file.listFiles().length; i++)
-        {
-            if(file.listFiles()[i].getAbsolutePath().endsWith(".java"))
+        try {
+            ArrayList<File> mains = new ArrayList<File>();
+            File[] files = srcDir.listFiles();
+            for(int i = 0; i< files.length; i++)
             {
-                addNode(file.listFiles()[i]);
-                if(hasMain(file.listFiles()[i]))
+                if (files[i].isDirectory()) {
+                    mains.addAll(searchMain(files[i]));
+                }
+                else if(files[i].getAbsolutePath().endsWith(".java"))
                 {
-                    return file.listFiles()[i];
+                    addNode( files[i]);
+                    if(hasMain(files[i]))
+                        mains.add(files[i]);
                 }
             }
+            return mains;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return null;
+        return new ArrayList<File>();
     }
     
     private int getRow( File file) {
