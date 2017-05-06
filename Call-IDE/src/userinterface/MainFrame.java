@@ -33,7 +33,8 @@ import com.github.javaparser.ast.*;
  * @author Emin Bahadir Tuluce, Halil Sahiner, Abdullah Talayhan
  */
 public class MainFrame extends JFrame implements NavigationParent, AutosaveHandler, Attachable, NodeVisitor {
-
+    
+    RealTimeFolderWatcher watcher;
     /** Creates the main frame of the IDE. */
     public MainFrame() throws IOException {
         initStreams();
@@ -2294,6 +2295,8 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         fileExplorer = new FileExplorer( workspaces, this);
         fileExplorer.setBackground( Color.WHITE);
         explorerScrollPane.setViewportView( fileExplorer);
+        watcher = new RealTimeFolderWatcher(new File(workspace), fileExplorer);
+        watcher.start();
     }
     
     /** Adds an empty explorer to the frame which asks for a path from the user. */
@@ -2334,6 +2337,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 if (file.isDirectory()) {
                     workspace = file.getAbsolutePath();
                     config.setWorkspace( workspace);
+                    
                 }
             }
         } catch (IOException e) {
