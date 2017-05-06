@@ -2722,9 +2722,11 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     /** Runs a given file on the console. */
     private void runFile( File file, File build, ArrayList<File> dependencies) {
         
+        resetInteractions();
+        
         if (!hasMainMethod( file))
             return;
-
+        stdOut.println(build.getAbsolutePath());
         String packageName = "";
         CompilationUnit cu;
         try {
@@ -3232,16 +3234,20 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     /** Opens a file chooser dialog to browse class paths of the project. */
     private void browseClassPath() {
         JFileChooser chooser = new JFileChooser();
+        chooser.setMultiSelectionEnabled(true);
         if (chooser.showOpenDialog(projectFrame) == JFileChooser.APPROVE_OPTION) {
-            File file = chooser.getSelectedFile();
-            String pathToAdd = file.getAbsolutePath();
-            ListModel<String> currentPaths = classPathList.getModel();
-            boolean alreadyExists = false;
-            for (int i = 0; i < currentPaths.getSize(); i++)
-                if (currentPaths.getElementAt(i).equals(pathToAdd))
-                    alreadyExists = true;
-            if (!alreadyExists && pathToAdd.endsWith(".jar"))
-                ((DefaultListModel) classPathList.getModel()).addElement(pathToAdd);
+            //File file = chooser.getSelectedFile();
+            File[] files = chooser.getSelectedFiles();
+            for(File file : files) {
+                String pathToAdd = file.getAbsolutePath();
+                ListModel<String> currentPaths = classPathList.getModel();
+                boolean alreadyExists = false;
+                for (int i = 0; i < currentPaths.getSize(); i++)
+                    if (currentPaths.getElementAt(i).equals(pathToAdd))
+                        alreadyExists = true;
+                if (!alreadyExists && pathToAdd.endsWith(".jar"))
+                    ((DefaultListModel) classPathList.getModel()).addElement(pathToAdd);
+            }
         }
     }
     
