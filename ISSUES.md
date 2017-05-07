@@ -1,29 +1,29 @@
-Enable creating jar with dependecies (lib folder).
-<br><del>Compile with copying non-java source files to the build folder</del>
-
-Generate jar with including non-java source files.
-<br><del>A bug about running the projects with classpaths.</del>
-
-
+Enable creating jar with dependecies (lib folder).<br>
+<del>Compile with copying non-java source files to the build folder. </del> <br>
+Generate jar with including non-java source files.<br>
+<del>A bug about running the projects with classpaths.</del><br>
 <del>Stop program should be called before running another one or quitting the IDE.</del>
 
-Ask users to select their main class when they try to run a project without one.
-Integrate the JDK checker to the main frame.
-Implement and integrate the error helping system.
+Ask users to select their main class when they try to run a project without one.<br>
+Integrate the JDK checker to the main frame.<br>
+Implement and integrate the error helping system.<br>
 
-FileNavigator gives NullPointerException in some cases.
-Refresh the project browser for all build operations.
-Remove the folder popup options from the project popup menu.
+FileNavigator gives NullPointerException in some cases.<br>
+Refresh the project browser for all build operations.<br>
+Remove the folder popup options from the project popup menu.<br>
+Popup menu's delete action is disabling that deleted file to appear again in that directory.<br>
 
-Enable opening .callide extension from the operating system.
-Enable opening projects by selecting .callide files in the file chooser dialog.
+Enable opening .callide extension from the operating system.<br>
+Enable opening projects by selecting .callide files in the file chooser dialog.<br>
 
-Update stop the program icon.
+Implement and integrate the auto-complete functionality to the editor.<br>
 
-Write a help contents documentation.
+Update stop the program icon.<br>
 
-Write a proper About page.
+Write a help contents documentation.<br>
 
+Write a proper About page.<br>
 
+<br><br>
 
 06.05.2017 - 17:23
