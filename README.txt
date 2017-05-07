@@ -20,6 +20,9 @@ Mahmud Sami Aydın
 - Method Summary [methodsummary]
 - Moss Similarity Checker [helputils.MossDetector]
 - Error Help GUI Part and console integration (not integrated with main frame) [helputils.ErrorHelper.java], [helputils.LinkingLabel.java] 
+~~~~~~~~~Checkpoint 2~~~~~~~~~~~~
+-found console bugs
+-fix the navigator and method summary bugs
 
 Abdullah Talayhan
 - Build and execution system (Compile, Run) [runutils.BuildSys.java, runutils.Executor.java]
