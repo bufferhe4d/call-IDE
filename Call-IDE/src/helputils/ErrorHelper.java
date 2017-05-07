@@ -32,11 +32,10 @@ public class ErrorHelper extends JPanel
         {
             errors[i] = new JLabel();
             links[i] = new LinkingLabel("");
-                add( errors[i] );
-                add( links [i] );
-
+            add( errors[i] );
+            add( links [i] );
         }
-           
+        
         setVisible(true);
         
     }
@@ -60,9 +59,8 @@ public class ErrorHelper extends JPanel
             errors[0].setText(error );
             links[0].setText(ExceptionHelper.getHelpLink( error ) );
             if(valid < 9 )
-               valid++;            
+                valid++;            
         }
     }
-    
     
 }

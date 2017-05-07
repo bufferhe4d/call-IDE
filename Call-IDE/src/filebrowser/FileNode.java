@@ -272,11 +272,9 @@ public class FileNode extends DefaultMutableTreeNode
             for (int i = getChildCount();  i > 0 ; i-- )
             {
                 FileNode temp =  ((FileNode)getChildAt(i-1));
-                System.out.println(" Hey "+  temp + i);
                 if( !temp.isEmpty() && !(( temp.file.isDirectory() && Files.exists(temp.file.toPath()) ) || temp.file.exists() ))
                 {
                     temp.closeFile();
-                    System.out.println(" Hey "+  temp + i);
                 }
             }
         }

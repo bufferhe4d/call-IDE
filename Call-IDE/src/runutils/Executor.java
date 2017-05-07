@@ -10,7 +10,6 @@ import javax.swing.JTextPane;
  */
 public class Executor {
     private String buildPath;
-    private Thread executeThread;
     private RunFile r;
     private ArrayList<File> deps;
     

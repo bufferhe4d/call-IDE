@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><project default="main" name="Ant-Test">
         <!-- Sets variables which can later be used. -->
         <!-- The value of a property is accessed via ${} -->
-        <property location="C:\Users\User\Documents\hello" name="src.dir"/>
-        <property location="C:\Users\User\Documents\hello\classes" name="build.dir"/>
-        <property value="C:\Users\User\Documents\hello\classes" name="src.name"/>
+        <property location="/Users/ATTJ/Desktop/code/joe" name="src.dir"/>
+        <property location="/Users/ATTJ/Desktop/code/joe" name="build.dir"/>
+        <property name="src.name" value="hello.java"/>
         
         <!-- Compiles the java code (including the usage of library for JUnit -->
         <target name="compile">
-                <javac destdir="${build.dir}" srcdir="${src.dir}">
-                    <include name="${src.name}" />
+                <javac destdir="${build.dir}" srcdir="${src.dir}" debug="true">
+                    <include name="${src.name}"/>
                 </javac>
 
         </target>

@@ -12,7 +12,7 @@ import java.io.IOException;
  */
 public class ContentReader {
     
-    public static String[] SUPPORTED_EXTENSIONS = {".java", ".txt", ".md"};
+    public static String[] SUPPORTED_EXTENSIONS = {".java", ".txt", ".xml", ".md"};
     
     /**
      * Reads and returns the file contents.

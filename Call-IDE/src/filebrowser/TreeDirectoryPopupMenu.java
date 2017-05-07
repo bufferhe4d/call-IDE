@@ -38,7 +38,6 @@ public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
         
         add( createFile);
         add( createFolder);
-        addSeparator();
         add( deleteFolder);
         add( paste);
         

@@ -22,10 +22,14 @@ public class TreeProjectPopupMenu extends TreeDirectoryPopupMenu{
         
         this.opener = navigator.opener;
         
+        
         projectProperties = new JMenuItem( "Project Properties");
         closeProject = new JMenuItem( "Close Project");
         
-        addSeparator();
+         deleteFolder.setVisible( false);
+        createFile.setVisible( false);
+        createFolder.setVisible( false);
+        paste.setVisible( false);
         add( projectProperties);
         add( closeProject);
         
