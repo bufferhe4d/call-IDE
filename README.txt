@@ -64,3 +64,6 @@ Ahmet Furkan Bıyık
 - JDK checker ( not integrated yet)
 - Integrating drag & drop and open a file to main frame [userinterface.MainFrame.java]
 - Handle project and project properties [fileoperations.projecthandling.ProjectHandler.java], [fileoperations.projecthandling.ProjectProperties.java]
+~~~~~~~~~Checkpoint 2~~~~~~~~~~~~
+- Upgraded projecthandling
+- Fixed project system bugs
