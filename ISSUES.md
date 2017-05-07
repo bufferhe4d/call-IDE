@@ -9,7 +9,7 @@ Generate jar with including non-java source files.<br>
 <del>Add tooltips to the tabs showing their path on the disk.</del> <br> 
 Implement and integrate the error helping system.<br>
 
-FileNavigator gives NullPointerException in some cases.<br>
+FileNavigator gives NullPointerException in some cases. (paste)<br>
 Refresh the project browser for all build operations.<br>
 <del>Remove the folder popup options from the project popup menu.</del> <br>
 Popup menu's delete action is disabling that deleted file to appear again in that directory.<br>
