@@ -15,6 +15,10 @@ import java.util.TreeSet;
 
 import javax.swing.table.DefaultTableModel;
 
+/**
+ *
+ * @author abdullah.talayhan-ug
+ */
 public class Client {
 
 	private Socket client;

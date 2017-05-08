@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Abdullah Talayhan
+ * @author abdullah.talayhan-ug
  */
 public class EnrollCourse extends javax.swing.JFrame {
 

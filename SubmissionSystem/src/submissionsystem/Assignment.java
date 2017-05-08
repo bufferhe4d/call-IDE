@@ -1,5 +1,6 @@
 package submissionsystem;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
@@ -7,7 +8,7 @@ import java.sql.Date;
  * @author   Ataberk Gözkaya
  * @version  1.00  03/05/2017
  */
-public class Assignment 
+public class Assignment implements Serializable
 {
     //properties
     private String name;

@@ -5,6 +5,10 @@ import java.util.*;
 
 import javax.swing.table.DefaultTableModel;
 
+/**
+ *
+ * @author abdullah.talayhan-ug
+ */
 public class DBSystem {
 	private static Connection cont = null;
 	private static Statement stmt = null;
@@ -15,7 +19,7 @@ public class DBSystem {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			System.out.println("DBMS conected");
-			String conInfo = "jdbc:mysql://" + host + "/" + dbname;
+			String conInfo = "jdbc:mysql://" + host + "/" + dbname + "?verifyServerCertificate=false&useSSL=true";
 			cont = DriverManager.getConnection(conInfo, uname, password);			
 			stmt = cont.createStatement();
 			System.out.println("Database connected");

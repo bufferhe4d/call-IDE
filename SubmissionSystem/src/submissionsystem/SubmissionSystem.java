@@ -7,7 +7,7 @@ package submissionsystem;
 
 /**
  *
- * @author ATTJ
+ * @author abdullah.talayhan-ug
  */
 public class SubmissionSystem {
 

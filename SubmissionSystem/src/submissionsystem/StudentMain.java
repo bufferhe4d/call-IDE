@@ -6,9 +6,14 @@
 package submissionsystem;
 
 import java.awt.Window;
+import java.util.ArrayList;
 import javafx.stage.FileChooser;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JList;
 
 /**
  *
@@ -17,13 +22,26 @@ import javax.swing.JFrame;
 public class StudentMain extends javax.swing.JFrame {
     
     Client client;
+    ArrayList<Assignment> curAssignments;
+    ArrayList<Assignment> pastAssignments;
+    ArrayList<String> curAssignmentNames;
+    ArrayList<String> pastAssignmentNames;
+    public ArrayList<String> courseArrList;
+    DefaultListModel curModel;
+    DefaultListModel pastModel;
+    
     /**
      * Creates new form InsMain
      */
     public StudentMain(Client pclient) {
         client = pclient;
+        
         initComponents();
-        init();
+        curList.setModel(new DefaultListModel());
+        pastList.setModel(new DefaultListModel());
+        initModels();
+        initCourses();
+        initCurAssignments();
     }
 
     /**
@@ -36,12 +54,12 @@ public class StudentMain extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
+        pastList = new javax.swing.JList();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         courseCombo = new javax.swing.JComboBox();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList();
+        curList = new javax.swing.JList();
         jLabel10 = new javax.swing.JLabel();
         enrollBtn = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
@@ -71,12 +89,12 @@ public class StudentMain extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jList1.setModel(new javax.swing.AbstractListModel() {
+        pastList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Lab01", "Lab02", "Lab03", "Lab04", " " };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(pastList);
 
         jLabel7.setText("Current Assignments:");
 
@@ -84,12 +102,12 @@ public class StudentMain extends javax.swing.JFrame {
 
         courseCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "CS101-03", "CS223-01", "CS319-16" }));
 
-        jList2.setModel(new javax.swing.AbstractListModel() {
+        curList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Lab05" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane2.setViewportView(jList2);
+        jScrollPane2.setViewportView(curList);
 
         jLabel10.setText("Past Assignments");
 
@@ -370,18 +388,62 @@ public class StudentMain extends javax.swing.JFrame {
         JFileChooser f = new JFileChooser();
         f.showOpenDialog(new JFrame());
     }//GEN-LAST:event_jButton5ActionPerformed
-
+    
     private void enrollBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enrollBtnActionPerformed
         // TODO add your handling code here:
         EnrollCourse enrollFrame = new EnrollCourse(client);
         enrollFrame.setVisible(true);
     }//GEN-LAST:event_enrollBtnActionPerformed
-
-    public void init() {
+    
+    public void initModels() {
+        curModel = (DefaultListModel) curList.getModel();
+        pastModel = (DefaultListModel) pastList.getModel();
+        //curModel = new DefaultListModel();
+        //pastModel = new DefaultListModel();
+        curModel.clear();
+        pastModel.clear();
+        
+    }
+    public void initCurAssignments() {
         client.sendUTFDataToServer("GET_CUR_ASSIGNMENTS");
-        //ArrayList<Assingment> allAssignments 
+        client.sendUTFDataToServer((String)courseCombo.getSelectedItem());
+        System.out.println((String)courseCombo.getSelectedItem());
+        curAssignments = (ArrayList<Assignment>) client.getObjectFromServer();
+        curAssignmentNames = new ArrayList<String>();
         
+        for(int i = 0; i < curAssignments.size(); i++) {
+            curAssignmentNames.add(curAssignments.get(i).getName());
+        }
         
+        for(int i = 0; i < curAssignmentNames.size(); i++) {
+            curModel.addElement(curAssignmentNames.get(i));
+        }
+        //curList = new JList(curAssignmentNames.toArray());
+        
+    }
+    
+    public void initPastAssignments() {
+        client.sendUTFDataToServer("GET_PAST_ASSIGNMENTS");
+        client.sendUTFDataToServer((String)courseCombo.getSelectedItem().toString());
+        pastAssignments = (ArrayList<Assignment>) client.getObjectFromServer();
+        pastAssignmentNames = new ArrayList<String>();
+        
+        for(int i = 0; i < curAssignments.size(); i++) {
+            pastAssignmentNames.add(curAssignments.get(i).getName());
+        }
+        
+        for(int i = 0; i < pastAssignmentNames.size(); i++) {
+            pastModel.addElement(pastAssignmentNames.get(i));
+        }
+       
+        
+    }
+    
+    public void initCourses() {
+        client.sendUTFDataToServer("GET_COURSES");
+        courseArrList = (ArrayList)client.getObjectFromServer();
+        
+        courseCombo.setModel(new DefaultComboBoxModel(courseArrList.toArray()));
     }
     /**
      * @param args the command line arguments
@@ -390,6 +452,7 @@ public class StudentMain extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox courseCombo;
+    private javax.swing.JList curList;
     private javax.swing.JButton enrollBtn;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -413,8 +476,6 @@ public class StudentMain extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JList jList1;
-    private javax.swing.JList jList2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -422,5 +483,6 @@ public class StudentMain extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JList pastList;
     // End of variables declaration//GEN-END:variables
 }

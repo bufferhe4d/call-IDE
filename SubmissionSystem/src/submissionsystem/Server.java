@@ -15,12 +15,16 @@ import java.util.TreeSet;
 
 import javax.swing.table.DefaultTableModel;
 
+/**
+ *
+ * @author abdullah.talayhan-ug
+ */
 public class Server {
 
 	public Server() {
 
 		try {
-			DBSystem.initializeDB("localhost:8889", "callIDE", "root", "root");
+			DBSystem.initializeDB("138.68.93.173:3306", "apo_callide", "apo", "duracell");
 
 			ServerSocket server = new ServerSocket(9999);
 			System.out.println("Server is running");
@@ -137,7 +141,7 @@ public class Server {
 
 
 
-                            if(type.equals("Instructor")) { //Admin					 {
+                            if(type.equals("Instructor")) { //Ins					 {
                                while(true) {
                                    
 
@@ -198,16 +202,29 @@ public class Server {
 
                                }
                             }
-                            else { //doctor
+                            else { //student
                                while(true)
                                {
                                    String op = dis.readUTF();
                                    
-                                   if(op.equals("GET_CUR_ASSIGNMENTS"))
+                                   if(op.equals("GET_COURSES")) {
+                                       ArrayList<String> courseList = ServerSys.getStuCourses(un);
+
+                                       oos.writeObject(courseList);
+                                   }
+                                   else if(op.equals("GET_CUR_ASSIGNMENTS"))
                                    {    
-                                       ArrayList curAssignments = ServerSys.getCurAssignments(un, "");
+                                       courseCode = dis.readUTF();
+                                       ArrayList curAssignments = ServerSys.getCurAssignments(un, courseCode);
                                        					
                                        oos.writeObject(curAssignments);
+                                   }
+                                   else if(op.equals("GET_PAST_ASSIGNMENTS"))
+                                   {    
+                                       courseCode = dis.readUTF();
+                                       ArrayList pastAssignments = ServerSys.getPastAssignments(un, courseCode);
+                                       					
+                                       oos.writeObject(pastAssignments);
                                    }
                                    else if(op.equals("ENROLL_COURSE")) {
                                        cKey = dis.readUTF();

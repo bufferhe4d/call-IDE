@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author ATTJ
+ * @author abdullah.talayhan-ug
  */
 public class SendAssignment extends javax.swing.JFrame {
 
