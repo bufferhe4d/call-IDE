@@ -60,6 +60,22 @@ public class ServerSys {
             return courses;
         }
         
+        public static ArrayList getStuCourses(String email) {
+            ArrayList<String> courses = new ArrayList<String>();
+            String sql = "select code from enrollment where email='" + email +"';";
+            ResultSet rs = DBSystem.executeQue(sql);
+                try {
+			while (rs.next()) {
+				courses.add(rs.getString(1));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+                }
+            
+            return courses;
+        }
+        
         public static DefaultTableModel showStudents(String code) {
             String sql = "select stdid, name, student.email from student join enrollment on student.email = enrollment.email where enrollment.code='" + code + "'";
             
@@ -117,8 +133,63 @@ public class ServerSys {
 	
         public static ArrayList getCurAssignments(String email, String courseCode) {
             ArrayList<Assignment> assignments = new ArrayList<Assignment>();
+            String sql = "select name, duedate, subdate, ins_assignment.path from ins_assignment where upper(ins_assignment.path) like '%" + courseCode +"%' AND duedate >= CURDATE()";
+            System.out.println(sql);
+            ResultSet rs = DBSystem.executeQue(sql);
+            int columncount;
+            try {
+                columncount = rs.getMetaData().getColumnCount();
+                while(rs.next())
+                {
+                    ArrayList singleRow = new ArrayList();
+                    for(int i=1;i<=columncount;i++)
+                    {
+                        singleRow.add(rs.getObject(i));
+                    }
+                    assignments.add(new Assignment((String)rs.getObject(1), email ,(Date)rs.getObject(2), (Date)rs.getObject(3), (String)rs.getObject(4), -1));
+                    System.out.println(singleRow);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ServerSys.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                
             
-            ResultSet rs = DBSystem.executeQue("select name, duedate, subdate, ins_assignment.path from ins_assignment where ins_assignment.path like '%" + courseCode +"%' AND duedate >= CURDATE()");
+            
+            return assignments;
+            
+        }
+        
+        public static ArrayList getPastAssignments(String email, String courseCode) {
+            ArrayList<Assignment> assignments = new ArrayList<Assignment>();
+            
+            ResultSet rs = DBSystem.executeQue("select name, duedate, subdate, ins_assignment.path from ins_assignment where upper(ins_assignment.path) like '%" + courseCode +"%' AND duedate < CURDATE()");
+            int columncount;
+            try {
+                columncount = rs.getMetaData().getColumnCount();
+                while(rs.next())
+                {
+                    ArrayList singleRow = new ArrayList();
+                    for(int i=1;i<=columncount;i++)
+                    {
+                        singleRow.add(rs.getObject(i));
+                    }
+                    assignments.add(new Assignment((String)rs.getObject(1), email ,(Date)rs.getObject(2), (Date)rs.getObject(3), (String)rs.getObject(4), -1));
+                    System.out.println(singleRow);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ServerSys.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                
+            
+            
+            return assignments;
+            
+        }
+        
+        public static ArrayList getSubmissions(String email, String courseCode) {
+            ArrayList<Assignment> assignments = new ArrayList<Assignment>();
+            
+            ResultSet rs = DBSystem.executeQue("select name, duedate, subdate, stu_assignment.path from stu_assignment where stu_assignment.path like '%" + courseCode +"%' AND duedate < CURDATE()");
             int columncount;
             try {
                 columncount = rs.getMetaData().getColumnCount();
@@ -141,6 +212,9 @@ public class ServerSys {
             return assignments;
             
         }
+        
+        
+        
 	public static String enrollCourse(String email, String cKey) {
             
             
@@ -178,7 +252,7 @@ public class ServerSys {
 	
 	public static String sendEmail(String email) {
 		String from = "noreply.callide@gmail.com";
-		String pwd = "enter-password-here";
+		String pwd = "enter-pass";
 		String code = RandomStringUtils.randomAlphanumeric(6).toUpperCase();
 		Properties props = new Properties();
 		props.put("mail.smtp.starttls.enable", "true");
