@@ -190,11 +190,13 @@ public class FileNode extends DefaultMutableTreeNode
     {
         if (getParent().getChildCount() == 1)
             ((FileNode) getParent()).addEmptyChildren();
-        removeFromParent();
+        removeFromParent(); // WATCHER CONFLICT
         if (file != null)
         {
-            if (file.isFile())
+            if (file.isFile()) {
+                nodesAndPaths.remove( file.getAbsolutePath()); // TODO if works add below as well
                 return file.delete();
+            }
             else
                 return deleteFolder( file);
         }
@@ -206,13 +208,15 @@ public class FileNode extends DefaultMutableTreeNode
     {
         boolean done = true;
         File[] files = file.listFiles();
-        for (File subFile : files)
-        {
-            if (subFile.isFile())
+        for (File subFile : files) {
+            if (subFile.isFile()) {
+                nodesAndPaths.remove( subFile.getAbsolutePath());
                 subFile.delete();
+            }
             else
                 done = done && deleteFolder( subFile);
         }
+        nodesAndPaths.remove( file.getAbsolutePath());
         file.delete();
         return done;
     }
@@ -220,27 +224,33 @@ public class FileNode extends DefaultMutableTreeNode
     /** This method adds a node and create file with a name  */
     public void createFile( String fileName) throws IOException
     {
+        // ---- WATCHER CONFLICT -----
         FileNode temp;
         temp = new FileNode( new PathedFile( file.getAbsolutePath() + "/"  + fileName
                                                 +  "/" ,  file.path ) , nodesAndPaths);
         add( temp);
+        // ---- WATCHER CONFLICT -----
+        
         new FileSaver( new File( file.getAbsolutePath() + "/" + fileName)).save("");
-        ((FileNode)(this.parent)).updateChildren();  
+        updateChildren();
     }
     
     /** This method creates a directory into node */
     public void createDirectory( String fileName)
     {
+        // ---- WATCHER CONFLICT -----
         FileNode temp;
         temp = new FileNode( new PathedFile( file.getAbsolutePath() + "/" + fileName
                                                 +  "/" ,  file.path ) , nodesAndPaths);
-        temp.file.mkdir();
         add( temp);
         temp.checkEmptyDir();
-        ((FileNode)(this.parent)).updateChildren();
+        // ---- WATCHER CONFLICT -----
+        
+        (new File(file.getAbsolutePath() + "/" + fileName)).mkdir();
+        updateChildren();
     }
     
-    /** This  gets file of node */
+    /** This gets file of node */
     public File getFile()
     {
         return file;
@@ -251,43 +261,50 @@ public class FileNode extends DefaultMutableTreeNode
     {
         if( getAllowsChildren())
         {
-            add( new FileNode( new PathedFile( filePath , file.path ), map)); 
+            add( new FileNode( new PathedFile( filePath , file.path ), map));
         }
     }
     
     /** This method pastes the source file into this directory */
     public void pasteFile( FileNode sourceNode) throws IOException
     {
-        File temp =  new File( file.getAbsolutePath() + "/" + sourceNode.toString());
-        FileSaver filePaster = new FileSaver( sourceNode.getFile());
-        filePaster.saveAs( ContentReader.read(sourceNode.getFile()), temp);
-        updateChildren();
+        if (sourceNode != null) {
+            File temp =  new File( file.getAbsolutePath() + "/" + sourceNode.toString());
+            FileSaver filePaster = new FileSaver( sourceNode.getFile());
+            filePaster.saveAs( ContentReader.read(sourceNode.getFile()), temp);
+            updateChildren();
+        }
     }
     
     /**  This method updates nodes in directory it create nodes for child files and subdirectories if isn't created */
     public void updateChildren()
     {
-         if( !isRoot() )
+        if (file != null && file.isDirectory())
         {
-            for (int i = getChildCount();  i > 0 ; i-- )
+            if( !isRoot())
             {
-                FileNode temp =  ((FileNode)getChildAt(i-1));
-                if( !temp.isEmpty() && !(( temp.file.isDirectory() && Files.exists(temp.file.toPath()) ) || temp.file.exists() ))
+                for (int i = getChildCount();  i > 0 ; i-- )
                 {
-                    temp.closeFile();
+                    FileNode temp =  ((FileNode) getChildAt(i-1));
+                    if( !temp.isEmpty() && !(( temp.file.isDirectory() && Files.exists(temp.file.toPath()) ) || temp.file.exists() ))
+                        temp.closeFile();
                 }
             }
+            addChildren();
+            for (int i = getChildCount();  i > 0 ; i-- )
+            {
+                FileNode temp = (FileNode) getChildAt(i-1);
+                if( temp.file != null && temp.file.isDirectory() )
+                    temp.updateChildren();
+                else if (temp.file == null &&
+                         temp.getParent().getChildCount() > 1)
+                    temp.delete();
+            }
+            if (getChildCount() == 0) {
+                addEmptyChildren();
+            }
+            children.sort(new FileNodeComparator() );
         }
-        addChildren();
-        for (int i = getChildCount();  i > 0 ; i-- )
-        {
-            if( !getChildAt(i-1).isLeaf() )
-                ((FileNode) getChildAt(i-1)).updateChildren();
-            else if (((FileNode) getChildAt(i-1)).file == null &&
-                     ((FileNode) getChildAt(i-1)).getParent().getChildCount() > 1)
-                ((FileNode) getChildAt(i-1)).delete();
-        }
-        children.sort(new FileNodeComparator() );
     }
     
     /**  This method determines node is empty node */
@@ -311,7 +328,10 @@ public class FileNode extends DefaultMutableTreeNode
     }
     
     /** This method returns true if node is visual root*/
-    public boolean isRoot(){
+    @Override
+    public boolean isRoot() {
+        if (file == null)
+            return false;
         return file.equals( new PathedFile( "/DEFAULT_PATH/"));
     }
     
@@ -323,17 +343,15 @@ public class FileNode extends DefaultMutableTreeNode
     /** This method close the node */
     public void closeFile() 
     {
-        
         if(  getAllowsChildren() )
-        for( int i = 0 ; i < this.getChildCount() ; i++)
+            for( int i = 0 ; i < this.getChildCount() ; i++)
         {
             if( !isEmpty() )
-            ((FileNode)this.getChildAt(i)).closeFile();
+                ((FileNode)this.getChildAt(i)).closeFile();
         }
         if( !isEmpty())
             nodesAndPaths.remove(file.getAbsolutePath(), this);
         removeFromParent();
-        
     }
     
     public void shallowUpdate()
@@ -342,7 +360,7 @@ public class FileNode extends DefaultMutableTreeNode
         {
             children.sort( new FileNodeComparator() );
         }
-        else if(  !isLeaf() && file.listFiles().length != children.size() )
+        else if(  !isLeaf() && file != null && children != null && file.listFiles().length != children.size() )
         {
             updateChildren();
         }
@@ -355,7 +373,7 @@ public class FileNode extends DefaultMutableTreeNode
     
     private static class FileNodeComparator implements Comparator
     {
-
+        
         @Override
         public int compare(Object o1, Object o2) {
             FileNode node1 = (FileNode)o1;
@@ -366,7 +384,7 @@ public class FileNode extends DefaultMutableTreeNode
                 return -1;
             } else {
                 return node1.file.toString().compareToIgnoreCase(node2.file.toString());
-    }    
+            }    
         }
         
     }

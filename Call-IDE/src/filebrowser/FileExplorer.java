@@ -3,6 +3,7 @@ package filebrowser;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 import javax.swing.JPanel;
+import javax.swing.JTree;
 
 /**
  * A panel which contains a navigator to browse files
@@ -64,4 +65,20 @@ public class FileExplorer extends JPanel
         navigator.updateUI();
     }
     
+    /**  This method expands the root of the tree. */
+    public void expandRoot() {
+        navigator.expandRow(1);
+    }
+    
+    /** This method refreshes the all nodes of the tree. */
+    public void refreshAll() {
+        for (int i = navigator.root.getChildCount();  i > 0 ; i-- )
+            ((FileNode) navigator.root.getChildAt(i-1)).updateChildren();
+        navigator.updateUI();
+    }
+    
+    /** This method gives the tree component of the file explorer. */
+    public JTree getTree() {
+        return navigator;
+    }
 }

@@ -73,7 +73,9 @@ public class TreeFilePopupMenu extends JPopupMenu implements ActionListener
             }
         }
         
-        navigator.updateUI();
+        try {
+            navigator.updateUI();
+        } catch (NullPointerException ex) {}
     }
     
     public void setFile( FileNode file)

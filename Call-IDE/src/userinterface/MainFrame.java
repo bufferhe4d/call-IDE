@@ -27,6 +27,8 @@ import org.fife.ui.rsyntaxtextarea.*;
 
 import com.github.javaparser.*;
 import com.github.javaparser.ast.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * The main frame of the IDE.
@@ -35,6 +37,7 @@ import com.github.javaparser.ast.*;
 public class MainFrame extends JFrame implements NavigationParent, AutosaveHandler, Attachable, NodeVisitor {
     
     RealTimeFolderWatcher watcher;
+    
     /** Creates the main frame of the IDE. */
     public MainFrame() throws IOException {
         initStreams();
@@ -79,7 +82,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         editorFontSizeLabel = new javax.swing.JLabel();
         indentLabel = new javax.swing.JLabel();
         lineNumbersCheck = new javax.swing.JCheckBox();
-        themeComboBox = new javax.swing.JComboBox<String>();
+        themeComboBox = new javax.swing.JComboBox<>();
         indentTextField = new javax.swing.JTextField();
         autosaveTextField = new javax.swing.JTextField();
         minsLabel = new javax.swing.JLabel();
@@ -91,11 +94,11 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         bracketMatchingCheck = new javax.swing.JCheckBox();
         editorFontLabel = new javax.swing.JLabel();
         editorFontSizeField = new javax.swing.JTextField();
-        editorFontChooser = new javax.swing.JComboBox<String>();
+        editorFontChooser = new javax.swing.JComboBox<>();
         outputFontSizeLabel = new javax.swing.JLabel();
         outputFontLabel = new javax.swing.JLabel();
         outputFontSizeField = new javax.swing.JTextField();
-        outputFontChooser = new javax.swing.JComboBox<String>();
+        outputFontChooser = new javax.swing.JComboBox<>();
         submissionSelectLabel = new javax.swing.JLabel();
         callideSubmissionRadio = new javax.swing.JRadioButton();
         externalSubmissionRadio = new javax.swing.JRadioButton();
@@ -143,13 +146,14 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         selectMainButton = new javax.swing.JButton();
         mainSplitPane = new javax.swing.JSplitPane();
         topSplitPane = new javax.swing.JSplitPane();
-        explorerScrollPane = new javax.swing.JScrollPane();
-        placeHolderFileExplorer = new javax.swing.JTree();
         editorAndMethodSummaryPanel = new javax.swing.JPanel();
         topLeftSplitPane = new javax.swing.JSplitPane();
         textTabs = new javax.swing.JTabbedPane();
         methodSummaryScrollPane = new javax.swing.JScrollPane();
         placeholderMethodSummary = new javax.swing.JTree();
+        explorerLayeredPane = new javax.swing.JLayeredPane();
+        explorerScrollPane = new javax.swing.JScrollPane();
+        placeHolderFileExplorer = new javax.swing.JTree();
         outputsPanel = new javax.swing.JPanel();
         outputTabs = new javax.swing.JTabbedPane();
         statusPanel = new javax.swing.JPanel();
@@ -308,7 +312,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         lineNumbersCheck.setText("Display line numbers");
         lineNumbersCheck.setVerifyInputWhenFocusTarget(false);
 
-        themeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "default.xml", "dark.xml", "eclipse.xml", "idea.xml", "monokai.xml", "vs.xml" }));
+        themeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "default.xml", "dark.xml", "eclipse.xml", "idea.xml", "monokai.xml", "vs.xml" }));
 
         indentTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         indentTextField.setText("4");
@@ -347,7 +351,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         editorFontSizeField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         editorFontSizeField.setText("16");
 
-        editorFontChooser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Arial", "Calibri", "Consolas", "Courier New", "Lucida Console", "Times New Roman", "Tahoma" }));
+        editorFontChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Arial", "Calibri", "Consolas", "Courier New", "Lucida Console", "Times New Roman", "Tahoma" }));
 
         outputFontSizeLabel.setText("Size");
 
@@ -356,7 +360,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         outputFontSizeField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         outputFontSizeField.setText("16");
 
-        outputFontChooser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Arial", "Calibri", "Consolas", "Courier New", "Lucida Console", "Times New Roman", "Tahoma" }));
+        outputFontChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Arial", "Calibri", "Consolas", "Courier New", "Lucida Console", "Times New Roman", "Tahoma" }));
 
         submissionSelectLabel.setText("Submission System:");
 
@@ -873,8 +877,36 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             }
         });
 
-        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("workspace");
-        javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("lab01");
+        topLeftSplitPane.setDividerLocation(700);
+        topLeftSplitPane.setLeftComponent(textTabs);
+        textTabs.getAccessibleContext().setAccessibleName("");
+
+        placeholderMethodSummary.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("HelloWorld.java");
+        javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("main( String[]) : void");
+        treeNode1.add(treeNode2);
+        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("greeting() : String");
+        treeNode1.add(treeNode2);
+        placeholderMethodSummary.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        methodSummaryScrollPane.setViewportView(placeholderMethodSummary);
+
+        topLeftSplitPane.setRightComponent(methodSummaryScrollPane);
+
+        javax.swing.GroupLayout editorAndMethodSummaryPanelLayout = new javax.swing.GroupLayout(editorAndMethodSummaryPanel);
+        editorAndMethodSummaryPanel.setLayout(editorAndMethodSummaryPanelLayout);
+        editorAndMethodSummaryPanelLayout.setHorizontalGroup(
+            editorAndMethodSummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(topLeftSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 948, Short.MAX_VALUE)
+        );
+        editorAndMethodSummaryPanelLayout.setVerticalGroup(
+            editorAndMethodSummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(topLeftSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
+        );
+
+        topSplitPane.setRightComponent(editorAndMethodSummaryPanel);
+
+        treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("workspace");
+        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("lab01");
         javax.swing.tree.DefaultMutableTreeNode treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("src");
         javax.swing.tree.DefaultMutableTreeNode treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("HelloWorld.java");
         treeNode3.add(treeNode4);
@@ -945,35 +977,22 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         placeHolderFileExplorer.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         explorerScrollPane.setViewportView(placeHolderFileExplorer);
 
-        topSplitPane.setLeftComponent(explorerScrollPane);
+        explorerLayeredPane.setLayer(explorerScrollPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        topLeftSplitPane.setDividerLocation(700);
-        topLeftSplitPane.setLeftComponent(textTabs);
-        textTabs.getAccessibleContext().setAccessibleName("");
-
-        placeholderMethodSummary.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
-        treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("HelloWorld.java");
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("main( String[]) : void");
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("greeting() : String");
-        treeNode1.add(treeNode2);
-        placeholderMethodSummary.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
-        methodSummaryScrollPane.setViewportView(placeholderMethodSummary);
-
-        topLeftSplitPane.setRightComponent(methodSummaryScrollPane);
-
-        javax.swing.GroupLayout editorAndMethodSummaryPanelLayout = new javax.swing.GroupLayout(editorAndMethodSummaryPanel);
-        editorAndMethodSummaryPanel.setLayout(editorAndMethodSummaryPanelLayout);
-        editorAndMethodSummaryPanelLayout.setHorizontalGroup(
-            editorAndMethodSummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(topLeftSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 849, Short.MAX_VALUE)
+        javax.swing.GroupLayout explorerLayeredPaneLayout = new javax.swing.GroupLayout(explorerLayeredPane);
+        explorerLayeredPane.setLayout(explorerLayeredPaneLayout);
+        explorerLayeredPaneLayout.setHorizontalGroup(
+            explorerLayeredPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(explorerLayeredPaneLayout.createSequentialGroup()
+                .addComponent(explorerScrollPane)
+                .addGap(1, 1, 1))
         );
-        editorAndMethodSummaryPanelLayout.setVerticalGroup(
-            editorAndMethodSummaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(topLeftSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
+        explorerLayeredPaneLayout.setVerticalGroup(
+            explorerLayeredPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(explorerScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
         );
 
-        topSplitPane.setRightComponent(editorAndMethodSummaryPanel);
+        topSplitPane.setLeftComponent(explorerLayeredPane);
 
         mainSplitPane.setTopComponent(topSplitPane);
 
@@ -1146,6 +1165,11 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
 
         helpTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/images/help.png"))); // NOI18N
         helpTool.setToolTipText("Help Contents");
+        helpTool.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                helpToolActionPerformed(evt);
+            }
+        });
 
         loginTool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/images/login.png"))); // NOI18N
         loginTool.addActionListener(new java.awt.event.ActionListener() {
@@ -1542,7 +1566,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(toolbarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
-                .addComponent(mainSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+                .addComponent(mainSplitPane)
                 .addGap(1, 1, 1))
         );
 
@@ -1780,6 +1804,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         selectMainClass();
     }//GEN-LAST:event_selectMainButtonActionPerformed
 
+    private void helpToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpToolActionPerformed
+        fileExplorer.updateUI(); // TODO remove this.
+    }//GEN-LAST:event_helpToolActionPerformed
+
     /**
      * Sets LookAndFeel to the given name.
      * @param lookAndFeel "Metal", "Nimbus", "CDE/Motif", "Windows", or "Windows Classic"
@@ -1814,6 +1842,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             cancelled = (checkTab(0) == JOptionPane.CANCEL_OPTION);
         }
         if (!cancelled) {
+            resetInteractions();
             System.exit(0);
         }
     }
@@ -1876,7 +1905,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         consoleOutputArea = new JTextPane();
         consoleOutputScrollPane.setViewportView( consoleOutputArea);
 
-        consoleFrame = new JFrame( "Console");
+        consoleFrame = new JFrame( "Console Output");
         
         detachScroll = new JScrollPane();
         
@@ -1899,6 +1928,23 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         
         statusArea.setLineWrap(true);
         statusArea.setWrapStyleWord(true);
+        
+        JButton refreshButton = new JButton("*"); // TODO ADD ICON
+        refreshButton.setPreferredSize( new Dimension(25, 25));
+        explorerLayeredPane.add( refreshButton);
+        explorerLayeredPane.setLayer( refreshButton, JLayeredPane.DRAG_LAYER);
+        explorerLayeredPane.addComponentListener( new ComponentAdapter() {
+            @Override
+            public void componentResized( ComponentEvent e) {
+                refreshButton.setBounds( explorerLayeredPane.getWidth() - 30, 3, 25, 25);
+            }
+        });
+        refreshButton.addActionListener( new ActionListener() {
+            @Override
+            public void actionPerformed( ActionEvent e) {
+                refreshExplorer();
+            }
+        });
     }
 
     /** Listener for the console's detach button. */
@@ -2293,24 +2339,40 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     public void printStatus( String status) {
         statusArea.setText( statusArea.getText() + "> " + status + "\n");
         outputTabs.setSelectedIndex(0);
-        
-    }
-
-    /** Adds the file explorer to the frame. */
-    private void addExplorer() {
-        noWorkspacePanel.setVisible( false);
-        ArrayList<String> workspaces = new ArrayList<String>();
-        workspaces.add( workspace);
-        fileExplorer = new FileExplorer( workspaces, this);
-        fileExplorer.setBackground( Color.WHITE);
-        explorerScrollPane.setViewportView( fileExplorer);
-        watcher = new RealTimeFolderWatcher(new File(workspace), fileExplorer);
-        watcher.start();
     }
     
     /** Adds an empty explorer to the frame which asks for a path from the user. */
     private void addEmptyExplorer() {
         explorerScrollPane.setViewportView( noWorkspacePanel);
+    }
+
+    /** Adds the file explorer to the frame. */
+    private void addExplorer() {
+        addExplorerWith( workspace);
+        //watcher = new RealTimeFolderWatcher(new File(workspace), fileExplorer);
+        //watcher.start();
+    }
+    
+    /** Adds the file explorer to the frame wih the given root. */
+    private void addExplorerWith( String rootDir) {
+        noWorkspacePanel.setVisible( false);
+        ArrayList<String> projects = new ArrayList<String>();
+        projects.add( rootDir);
+        fileExplorer = new FileExplorer( projects, this);
+        fileExplorer.setBackground( Color.WHITE);
+        explorerScrollPane.setViewportView( fileExplorer);
+        fileExplorer.updateDirectory( rootDir);
+        fileExplorer.expandRoot();
+        fileExplorer.getTree().addMouseListener( new MouseAdapter() {
+            @Override
+            public void mousePressed( MouseEvent e) {
+                explorerLayeredPane.repaint();
+            }
+            @Override
+            public void mouseReleased( MouseEvent e) {
+                explorerLayeredPane.repaint();
+            }
+        });
     }
 
     /** Loads the profile settings of the user. */
@@ -2635,26 +2697,26 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
 
     /** Compiles the active file on the editor. */
     private JTextPane compileCurrentFile() {
-        if (isEditing()) {
-            int index = textTabs.getSelectedIndex();
-            if (getActiveFile() == null) {
-                printStatus( "The file should be saved before compiling.");
-                return null;
-            }
-            else if ( !textAreas.get(index).getText().equals(savedContents.get(index)) ) {
-                printStatus( "The file should be saved to its modified version before compiling.");
-                return null;
-            }
-            else {
-                printStatus( "Compiling file: " + getActiveFile().getName());
-                return compileFile(getActiveFile().getAbsolutePath());
-            }
+        int index = textTabs.getSelectedIndex();
+        if (getActiveFile() == null) {
+            printStatus( "The file should be saved before compiling.");
+            return null;
         }
-        return null;
+        else if ( !textAreas.get(index).getText().equals(savedContents.get(index)) ) {
+            printStatus( "The file should be saved to its modified version before compiling.");
+            return null;
+        }
+        else {
+            printStatus( "Compiling file: " + getActiveFile().getName());
+            return compileFile(getActiveFile().getAbsolutePath());
+        }
     }
     
     /** Compiles a given folder to a given path. */
     private JTextPane compileFolderTo( String srcFolder, String buildFolder, ArrayList<File> dependencies) {
+        if (builder == null)
+            builder = new ConsoleBuilder();
+
         // clean up buffers
         builder.destroy();
         ConsoleCore.free();
@@ -2667,18 +2729,21 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                                     buildFolder, srcFolder, dependencies);
         BuildSys.compile(userPath + "/BuildConfigs/buildDeps.xml", stdOut, stdErr );
         outputTabs.setSelectedIndex(1);
+        
         fileExplorer.updateDirectory( (new File(buildFolder)).getParent());
         return insertedPane;
     }
     
     /** Compiles a given file right next to it. */
     private JTextPane compileFile( String filePath) {
+        if (builder == null)
+            builder = new ConsoleBuilder();
+
         // clean up buffers
         builder.destroy();
         ConsoleCore.free();
         builder.init();
         JTextPane insertedPane = builder.getOutErrConsole();
-
         
         insertedPane.setFont( preferences.getOutputFont());
         compilerOutputScrollPane.setViewportView( insertedPane);
@@ -2692,13 +2757,14 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     
     /** Runs the current active file on the console. */
     private void runCurrentFile() {
-        if (isEditing())
-            runFileDefault( getActiveFile());
+        runFileDefault( getActiveFile());
     }
 
     private void runFileDefault( File file) {
         if (file == null)
-            printStatus("The file should be saved before running.");
+            printStatus( "The file should be saved before running.");
+        else if (!file.exists())
+            printStatus( "This file could not be found on the disk.");
         else {
             File build = new File(file.getParent());
             String packageName = "";
@@ -2760,15 +2826,12 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         }
 
         if (consoleOut) {
-            
             consoleOutputArea = new JTextPane();
             consoleOutputArea.setFont( preferences.getOutputFont());
             // dispatch again if the console is out already.
             ConsoleCore.dispatch(detachScroll, consoleOutputArea, outputTabs, tabComp, consoleFrame, consoleOut, this);
-            
         }
         else {
-            
             consoleOutputArea = new JTextPane();
             consoleOutputArea.setFont( preferences.getOutputFont());
             consoleOutputScrollPane.setViewportView(consoleOutputArea);
@@ -2860,6 +2923,8 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         BuildSys.compile(userPath + "/BuildConfigs/buildJar.xml", stdOut, stdErr);
 
         outputTabs.setSelectedIndex(1);
+        
+        fileExplorer.updateDirectory(currentProject.getPath());
     }
 
     /** Resets the console interactions. */
@@ -2870,6 +2935,11 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
 
     /** Compiles the file and runs it when compiling is done. */
     private void compileRunCurrentFile() {
+        int index = textTabs.getSelectedIndex();
+        if ( !textAreas.get(index).getText().equals(savedContents.get(index)) ) {
+            printStatus( "The file should be saved to its modified version before compiling.");
+            return;
+        }
         if (getActiveFile() != null && !hasMainMethod(getActiveFile()))
             return;
         JTextPane insertedPane = compileCurrentFile();
@@ -3067,15 +3137,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         }
     }
     
-    /** Adds the file explorer to the frame wih the given root. */
-    private void addExplorerWith( String rootString) {
-        noWorkspacePanel.setVisible( false);
-        ArrayList<String> projects = new ArrayList<String>();
-        projects.add( rootString);
-        fileExplorer = new FileExplorer( projects, this);
-        fileExplorer.setBackground( Color.WHITE);
-        explorerScrollPane.setViewportView( fileExplorer);
-    }
+    
     
     /** Supplies access to the ProjectHandler object of the given file. */
     private ProjectHandler getProjectHandler( File file) {
@@ -3122,12 +3184,14 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     
     /** Determines what to do with the compile button on the frame. */
     private void compileAction() {
-        if (builder == null)
-            builder = new ConsoleBuilder();
-        if (projectMode)
-            compileCurrentProject();
-        else
-            compileCurrentFile();
+        if (isEditing()) {
+            if (builder == null)
+                builder = new ConsoleBuilder();
+            if (projectMode)
+                compileCurrentProject();
+            else
+                compileCurrentFile();
+        }
     }
     
     /** Compiles the active project on the editor. */
@@ -3179,11 +3243,13 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     
     /** Determines what to do with the run button on the frame. */
     private void runAction() {
-        if (projectMode)
-            runCurrentProject();
-        else
-            runCurrentFile();
-        checkConsoleState();
+        if (isEditing()) {
+            if (projectMode)
+                runCurrentProject();
+            else
+                runCurrentFile();
+            checkConsoleState();
+        }
     }
     
     /** Runs the active project on the editor. */
@@ -3215,13 +3281,15 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     
     /** Determines what to do with the compile & run button on the frame. */
     private void compileRunAction() {
-        if (builder == null)
-            builder = new ConsoleBuilder();
-        if (projectMode)
-            compileRunCurrentProject();
-        else
-            compileRunCurrentFile();
-        checkConsoleState();
+        if (isEditing()) {
+            if (builder == null)
+                builder = new ConsoleBuilder();
+            if (projectMode)
+                compileRunCurrentProject();
+            else
+                compileRunCurrentFile();
+            checkConsoleState();
+        }
     }
     
     /** Opens a folder chooser dialog for the user to choose its project location. */
@@ -3493,6 +3561,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                         "to download and install it from the official website: " +
                         JDKChecker.JDK_LINK);
     }
+    
+    private void refreshExplorer() {
+        fileExplorer.refreshAll();
+    }
 
     // Other Variables
     private ArrayList<RSyntaxTextArea> textAreas;
@@ -3567,6 +3639,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private javax.swing.JLabel editorFontLabel;
     private javax.swing.JTextField editorFontSizeField;
     private javax.swing.JLabel editorFontSizeLabel;
+    private javax.swing.JLayeredPane explorerLayeredPane;
     private javax.swing.JScrollPane explorerScrollPane;
     private javax.swing.JTextField externalSubmissionField;
     private javax.swing.JRadioButton externalSubmissionRadio;

@@ -316,20 +316,19 @@ public class ConsoleCore {
     public static void  dispatch(JScrollPane scrollPane, JTextPane cons,
                                  JTabbedPane outputTabs, Component tabComp, JFrame frame,
                                  Boolean consoleOut, Attachable mainFrame) {
-        frame.setSize(400, 300);
+        frame.setSize(600, 400);
+        frame.setLocationRelativeTo( (Component) mainFrame);
         frame.setLayout(new BorderLayout());
-        
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
         scrollPane.setViewportView(cons);
-        
         frame.add(scrollPane);
         
         if (frame.getWindowListeners().length > 0)
             frame.removeWindowListener(frame.getWindowListeners()[0]);
         frame.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e)
-            {
+            @Override
+            public void windowClosing(WindowEvent e) {
                 mainFrame.attachConsole();
             }
         });

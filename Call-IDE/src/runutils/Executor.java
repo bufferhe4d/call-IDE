@@ -31,7 +31,7 @@ public class Executor {
     }
     
     public void stop() {
-        if(r.alive())
+        if (r != null && r.alive())
             r.kill();
     }
     

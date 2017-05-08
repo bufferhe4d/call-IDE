@@ -76,12 +76,14 @@ public class RunFile implements Runnable{
     }
     
     public void kill() {
-        process.destroy();
-        read.killUrSelf();
+        if (process != null && read != null) {
+            process.destroy();
+            read.killUrSelf();
+        }
     }
     
     public boolean alive() {
-        return process.isAlive();
+        return process != null && process.isAlive();
     }
     
     public  void appendString(String str, JTextPane pane) throws BadLocationException {
