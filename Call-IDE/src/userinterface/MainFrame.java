@@ -27,17 +27,14 @@ import org.fife.ui.rsyntaxtextarea.*;
 
 import com.github.javaparser.*;
 import com.github.javaparser.ast.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+
 
 /**
  * The main frame of the IDE.
  * @author Emin Bahadir Tuluce, Halil Sahiner, Abdullah Talayhan
  */
 public class MainFrame extends JFrame implements NavigationParent, AutosaveHandler, Attachable, NodeVisitor {
-    
-    RealTimeFolderWatcher watcher;
-    
+            
     /** Creates the main frame of the IDE. */
     public MainFrame() throws IOException {
         initStreams();
@@ -1865,6 +1862,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         tabTitles = new ArrayList<JLabel>();
         autosavers = new ArrayList<AutoFileSaver>();
         openProjects = new ArrayList<ProjectHandler>();
+        folderWatchers = new ArrayList<RealTimeFolderWatcher>();
         untitledCount = 1;
     }
     
@@ -3139,11 +3137,19 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 openProjects.add( handler);
                 fileExplorer.openProject(handler.getPath());
             }
+            try {
+                RealTimeFolderWatcher fw = new RealTimeFolderWatcher(handler.getSrc().toPath(), this);
+                folderWatchers.add(fw);
+                fw.registerAll( handler.getSrc().toPath());
+                fw.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             printStatus( "Project opened: " + handler.getName());
         }
     }
     
-    
+    ArrayList<RealTimeFolderWatcher> folderWatchers;
     
     /** Supplies access to the ProjectHandler object of the given file. */
     private ProjectHandler getProjectHandler( File file) {
@@ -3158,7 +3164,8 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     }
     
     /** Updates the project files on the disk. */
-    private void updateProjects() {
+    @Override
+    public void updateProjects() {
         for (ProjectHandler handler : openProjects) {
             try {
                 File projectFile = null;

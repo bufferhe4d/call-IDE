@@ -31,4 +31,6 @@ public interface NavigationParent {
     void compileSelectedFile( File file);
     
     void runSelectedFile( File file);
+    
+    void updateProjects();
 }
