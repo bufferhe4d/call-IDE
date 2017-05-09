@@ -1,8 +1,9 @@
-Enable creating jar with dependecies (lib folder).<br>
+<del>Enable creating jar with dependecies (lib folder).</del> <br>
 <del>Compile with copying non-java source files to the build folder. </del> <br>
-Generate jar with including non-java source files.<br>
-<del>A bug about running the projects with classpaths.</del><br>
-<del>Stop program should be called before running another one or quitting the IDE.</del>
+<del>Generate jar with including non-java source files.</del> <br>
+<del>A bug about running the projects with classpaths.</del> <br>
+<del>Stop program should be called before running another one or quitting the IDE.</del> <br>
+Fix the bug about jar signitures.
 
 <del>Ask users to select their main class when they try to run a project without one.</del> <br>
 <del>Integrate the JDK checker to the main frame.</del> <br> 
@@ -28,4 +29,4 @@ Write a proper About page.<br>
 
 <br><br>
 
-08.05.2017 - 17:12
+09.05.2017 - 11:33
