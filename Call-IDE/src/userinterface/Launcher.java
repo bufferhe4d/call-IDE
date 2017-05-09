@@ -7,10 +7,10 @@ package userinterface;
  */
 public class Launcher {
 
-    public Launcher() {
+    public Launcher( String launchWith ) {
         try {
             System.out.println( "Creating the main frame...");
-            new MainFrame();
+            new MainFrame( launchWith);
             System.out.println( "Main frame is created.");
         } catch (Exception e) {
             System.out.println( "An error occured while creating the main frame:");
@@ -21,9 +21,13 @@ public class Launcher {
     
     public static void main(String[] args) {
         System.out.println( "Setting look and feel...");
-        MainFrame.setLookAndFeel("Windows"); // Metal, Nimbus, CDE/Motif, Windows, Windows Classic
+        MainFrame.setLookAndFeel( "Windows"); // Metal, Nimbus, CDE/Motif, Windows, Windows Classic
         System.out.println( "Instancinating the launcher...");
-        new Launcher();
+        
+        if (args.length > 1)
+            new Launcher( args[1]);
+        else
+            new Launcher( null);
         System.out.println( "Launching process ended.");
     }
 
