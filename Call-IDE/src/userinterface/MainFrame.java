@@ -47,8 +47,14 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         newFile();
         initFrame();
         checkJDK();
-        if (openWith != null && openWith.endsWith(ProjectHandler.EXTENSION))
-            openProject( new File( openWith).getParentFile());
+                
+        if (openWith != null )
+        {
+           if ( openWith.endsWith(ProjectHandler.EXTENSION) )
+              openProject( new File( openWith).getParentFile());
+           else if( openWith.endsWith(".java") )
+              openFile( new File( openWith) );
+        }
     }
 
     /**
