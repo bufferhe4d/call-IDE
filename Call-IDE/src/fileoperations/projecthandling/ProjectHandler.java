@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * 
  * @see ProjectProperties
  * 
- * @author Ahmet Furkan Biyik
+ * @author Ahmet Furkan Biyik, Emin Bahadir Tuluce
  * @version 1.00, 30.04.2017
  */
 public class ProjectHandler
@@ -344,6 +344,34 @@ public class ProjectHandler
         return (new File(projectPath).getName());
     }
     
+    public void copyLibs() throws IOException{
+        File libFolder = new File(projectPath + "/lib");
+        if (!libFolder.exists())
+            libFolder.mkdir();
+        for (File jarFile : project.externalClassPaths) {
+            File destJar = new File(projectPath + "/lib/" + jarFile.getName());
+            copyJar( jarFile, destJar);
+        }
+    }
+    
+    private void copyJar( File jarLoc, File libLoc) throws IOException {
+        if (!libLoc.exists()) {
+            InputStream jarInput = null;
+            OutputStream jarOutput = null;
+            try {
+                jarInput = new FileInputStream( jarLoc);
+                jarOutput = new FileOutputStream( libLoc);
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = jarInput.read(buffer)) > 0)
+                    jarOutput.write(buffer, 0, length);
+            } finally {
+                jarInput.close();
+                jarOutput.close();
+            }
+        }
+    }
+    
     //*************************************Inner Exception Class****************************************
     /**
      * It is exception to check files are not matching
@@ -358,4 +386,5 @@ public class ProjectHandler
             super( "Files did not match.");
         }
     }
+   
 }

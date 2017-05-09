@@ -2916,12 +2916,18 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         if (!packageName.equals(""))
             mainClassName = packageName + "." + mainClassName;
         
-        BuildSys.setPropsForJar(userPath + "/BuildConfigs/buildJar.xml",
+        String buildConfigPath;
+        if (currentProject.getJarFiles().isEmpty())
+            buildConfigPath = "/BuildConfigs/buildJar.xml";
+        else
+            buildConfigPath = "/BuildConfigs/buildDepJar.xml";
+        
+        BuildSys.setPropsForJar(userPath + buildConfigPath,
                                 currentProject.getBuild().getAbsolutePath(),
                                 currentProject.getPath() + "/dist",
                                 mainClassName, currentProject.getName() +".jar");
-        BuildSys.compile(userPath + "/BuildConfigs/buildJar.xml", stdOut, stdErr);
-
+        BuildSys.compile(userPath + buildConfigPath, stdOut, stdErr);
+        
         outputTabs.setSelectedIndex(1);
         
         fileExplorer.updateDirectory(currentProject.getPath());
@@ -3065,7 +3071,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 handler.addJar( new File( paths.getElementAt(i) ) );
 
             handler.saveProject( projectRoot, projectName);
-            
+            handler.copyLibs();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -3444,6 +3450,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                     modifyingProject.addJar( jarFile);
             }
             modifyingProject.saveProject( projectRoot, projectName);
+            modifyingProject.copyLibs();
         } catch (IOException e) {
             e.printStackTrace();
         }
