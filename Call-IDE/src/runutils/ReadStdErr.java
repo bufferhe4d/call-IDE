@@ -19,16 +19,19 @@ import javax.swing.text.StyledDocument;
  * @author Abdullah Talayhan
  */
 public class ReadStdErr implements Runnable{
+    
     public Thread read = null;
     private BufferedReader reader = null;
     private Process process = null;
     private JTextPane console = null;
     private boolean finish;
+    
     public ReadStdErr(Process p,JTextPane t) {
         finish = false;
         process = p;
         reader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
         console = t;
+        
         read = new Thread(this);
         read.start();
     }
@@ -36,9 +39,13 @@ public class ReadStdErr implements Runnable{
     public void run() {
         String line;
         try {
-        while((line = reader.readLine())!=null)                       
-          console.getDocument().insertString(console.getDocument().getLength(), line + "\n", changeColor(new DefaultStyledDocument()));
-             }catch (IOException e) {} catch (BadLocationException ex) {
+        while((line = reader.readLine())!=null) {
+            if (line.startsWith("Exception")) 
+                console.getDocument().insertString(console.getDocument().getLength(), line + " (See the help about this exception: " + "ExceptionHelper.getLink(helputils.ErrorParser( line))" +  ")\n", changeColor(new DefaultStyledDocument()));
+            else
+                console.getDocument().insertString(console.getDocument().getLength(), line + "\n", changeColor(new DefaultStyledDocument()));
+        }
+            }catch (IOException e) {} catch (BadLocationException ex) {
             Logger.getLogger(ReadStdErr.class.getName()).log(Level.SEVERE, null, ex);
         }
         
