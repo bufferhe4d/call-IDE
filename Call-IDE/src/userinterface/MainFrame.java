@@ -15,7 +15,6 @@ import java.awt.image.*;
 import java.io.*;
 import java.net.*;
 import java.util.*;
-import java.util.logging.*;
 
 import javax.imageio.*;
 import javax.swing.*;
@@ -39,7 +38,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     public MainFrame( String openWith) throws IOException {
         initStreams();
         initProperties();
-        loadIcons();
+        loadSources();
         initComponents();
         initOtherComponents();
         loadProfile();
@@ -149,6 +148,18 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         mainSelectionScrollPane = new javax.swing.JScrollPane();
         mainSelectionList = new javax.swing.JList();
         selectMainButton = new javax.swing.JButton();
+        helpContentsFrame = new javax.swing.JFrame();
+        helpSplitPane = new javax.swing.JSplitPane();
+        helpListScrollPane = new javax.swing.JScrollPane();
+        helpList = new javax.swing.JList();
+        helpPaneScrollPane = new javax.swing.JScrollPane();
+        helpPane = new javax.swing.JTextPane();
+        aboutFrame = new javax.swing.JFrame();
+        logoLabel = new javax.swing.JLabel();
+        developerListLabel = new javax.swing.JLabel();
+        aboutSubPanel = new javax.swing.JPanel();
+        aboutSubLabel = new javax.swing.JLabel();
+        licenseLabel = new javax.swing.JLabel();
         mainSplitPane = new javax.swing.JSplitPane();
         topSplitPane = new javax.swing.JSplitPane();
         editorAndMethodSummaryPanel = new javax.swing.JPanel();
@@ -593,7 +604,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 .addComponent(preferecesButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        findAndReplaceFrame.setTitle("Find / Replace");
+        findAndReplaceFrame.setTitle("Find & Replace");
         findAndReplaceFrame.setResizable(false);
 
         replaceButton.setText("Replace");
@@ -826,6 +837,8 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             .addComponent(projectPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
+        mainSelectionFrame.setTitle("Select Main Class");
+
         mainSelectionLabel.setText("Please select the main class of your project.");
 
         mainSelectionList.setModel(new javax.swing.AbstractListModel() {
@@ -867,6 +880,97 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 .addComponent(mainSelectionScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(selectMainButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        helpContentsFrame.setTitle("Call-IDE Help");
+
+        helpSplitPane.setDividerLocation(90);
+
+        helpList.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "General", "Editing", "Building", "Window", "Projects", "Options" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        helpListScrollPane.setViewportView(helpList);
+
+        helpSplitPane.setLeftComponent(helpListScrollPane);
+
+        helpPane.setEditable(false);
+        helpPaneScrollPane.setViewportView(helpPane);
+
+        helpSplitPane.setRightComponent(helpPaneScrollPane);
+
+        javax.swing.GroupLayout helpContentsFrameLayout = new javax.swing.GroupLayout(helpContentsFrame.getContentPane());
+        helpContentsFrame.getContentPane().setLayout(helpContentsFrameLayout);
+        helpContentsFrameLayout.setHorizontalGroup(
+            helpContentsFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(helpSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+        );
+        helpContentsFrameLayout.setVerticalGroup(
+            helpContentsFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(helpSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+        );
+
+        aboutFrame.setTitle("About Call-IDE");
+
+        logoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/images/splash.png"))); // NOI18N
+
+        developerListLabel.setText("<html>\n<u><b>Developer Team</b></u><br>\nMahmud Sami Aydın<br>\nAhmet Furkan Bıyık<br>\nAtaberk Gözkaya<br>\nAbdullah Talayhan<br>\nEmin Bahadır Tülüce<br>\nHalil Şahiner<br>\n<br>\n</html>");
+
+        aboutSubPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        aboutSubLabel.setText("<html>\n<u><b>Product Version:</b></u>\n%version%<br>\n<br>\n<u><b>System:</b></u>\n%system%<br>\n<br>\n<u><b>Working Path:</b></u>\n%userpath%<br>\n<br>");
+
+        javax.swing.GroupLayout aboutSubPanelLayout = new javax.swing.GroupLayout(aboutSubPanel);
+        aboutSubPanel.setLayout(aboutSubPanelLayout);
+        aboutSubPanelLayout.setHorizontalGroup(
+            aboutSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(aboutSubPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(aboutSubLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        aboutSubPanelLayout.setVerticalGroup(
+            aboutSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(aboutSubPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(aboutSubLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        licenseLabel.setText("This product has not licensed yet.");
+
+        javax.swing.GroupLayout aboutFrameLayout = new javax.swing.GroupLayout(aboutFrame.getContentPane());
+        aboutFrame.getContentPane().setLayout(aboutFrameLayout);
+        aboutFrameLayout.setHorizontalGroup(
+            aboutFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(aboutFrameLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(developerListLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(aboutFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(aboutFrameLayout.createSequentialGroup()
+                        .addComponent(licenseLabel)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(aboutSubPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+            .addGroup(aboutFrameLayout.createSequentialGroup()
+                .addGap(80, 80, 80)
+                .addComponent(logoLabel)
+                .addGap(80, 80, 80))
+        );
+        aboutFrameLayout.setVerticalGroup(
+            aboutFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(aboutFrameLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(logoLabel)
+                .addGap(18, 18, 18)
+                .addComponent(licenseLabel)
+                .addGap(18, 18, 18)
+                .addGroup(aboutFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(developerListLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(aboutSubPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1550,9 +1654,19 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
 
         helpContentsButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         helpContentsButton.setText("Help Contents");
+        helpContentsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                helpContentsButtonActionPerformed(evt);
+            }
+        });
         helpMenu.add(helpContentsButton);
 
         aboutButton.setText("About");
+        aboutButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutButtonActionPerformed(evt);
+            }
+        });
         helpMenu.add(aboutButton);
 
         menuBar.add(helpMenu);
@@ -1810,8 +1924,16 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     }//GEN-LAST:event_selectMainButtonActionPerformed
 
     private void helpToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpToolActionPerformed
-        showError( "Not implemented yet.");
+        helpContentsButtonActionPerformed( evt);
     }//GEN-LAST:event_helpToolActionPerformed
+
+    private void helpContentsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpContentsButtonActionPerformed
+        showHelpContents();
+    }//GEN-LAST:event_helpContentsButtonActionPerformed
+
+    private void aboutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutButtonActionPerformed
+        showAbout();
+    }//GEN-LAST:event_aboutButtonActionPerformed
 
     /**
      * Sets LookAndFeel to the given name.
@@ -1856,7 +1978,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     }
 
     /** Loads the icon files. */
-    private void loadIcons() {
+    private void loadSources() {
         try {
             closeIcon = new ImageIcon( (new ImageIcon( getClass().getResource(
                 "/userinterface/images/close.png"))).getImage().getScaledInstance(
@@ -1868,8 +1990,16 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             refreshIcon = new ImageIcon( (new ImageIcon( getClass().getResource(
                 "/userinterface/images/refresh.png"))).getImage().getScaledInstance(
                 16, 16, java.awt.Image.SCALE_SMOOTH));
+            for (int i = 1; i <= 6; i++) {
+                Scanner helpReader = new Scanner(getClass().getResourceAsStream("/helputils/helpcontents/page" + i +".html"));
+                String helpString = "";
+                while (helpReader.hasNext())
+                    helpString = helpString + helpReader.nextLine();
+                helpStrings.add(helpString);
+                helpReader.close();
+            }
         } catch (IOException e) {
-            showError( "An error occured while loading the icon sources.");
+            showError( "An error occured while loading the sources.");
         }
     }
 
@@ -1882,12 +2012,23 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         autosavers = new ArrayList<AutoFileSaver>();
         openProjects = new ArrayList<ProjectHandler>();
         folderWatchers = new ArrayList<RealTimeFolderWatcher>();
+        helpStrings = new ArrayList<String>();
         untitledCount = 1;
     }
 
     /** Initializes the components other than the auto-generated ones. */
     private void initOtherComponents() {
         clearPlaceHolders();
+        initFileExplorer();
+        initConsole();
+        initMethodSummary();
+        initRefreshButton();
+        initHelpContents();
+        initAbout();
+    }
+    
+    /** Initializes the file explorer. */
+    private void initFileExplorer() {
         noWorkspacePanel = new JPanel();
         workspaceButton = new JButton( "Choose Path");
         workspaceButton.addActionListener( new ActionListener() {
@@ -1900,7 +2041,23 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             }
         });
         noWorkspacePanel.add( workspaceButton);
-
+        
+        projectLocationField.addKeyListener( new KeyAdapter() {
+            @Override
+            public void keyReleased (KeyEvent e) {
+                updateProjectRootField();
+            }
+        });
+        projectNameField.addKeyListener( new KeyAdapter() {
+            @Override
+            public void keyReleased( KeyEvent e) {
+                updateProjectRootField();
+            }
+        });
+    }
+    
+    /** Initializes the console pane. */
+    private void initConsole() {
         JPanel consoleTabPanel = new JPanel();
         JLabel titleLabel = new JLabel( "Console Output");
         JButton detachButton = new JButton();
@@ -1918,31 +2075,18 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 lastOutputTabIndex = outputTabs.getSelectedIndex();
             }
         });
-
         consoleOutputArea = new JTextPane();
         consoleOutputScrollPane.setViewportView( consoleOutputArea);
         consoleFrame = new JFrame( "Console Output");
         detachScroll = new JScrollPane();
         consoleOut = false;
-
-        insertMethodSummary();
-
-        projectLocationField.addKeyListener( new KeyAdapter() {
-            @Override
-            public void keyReleased (KeyEvent e) {
-                updateProjectRootField();
-            }
-        });
-        projectNameField.addKeyListener( new KeyAdapter() {
-            @Override
-            public void keyReleased( KeyEvent e) {
-                updateProjectRootField();
-            }
-        });
-
+        
         statusArea.setLineWrap(true);
         statusArea.setWrapStyleWord(true);
-
+    }
+    
+    /** Initializes the refresh button of file explorer. */
+    private void initRefreshButton() {
         JButton refreshButton = new JButton();
         refreshButton.setPreferredSize( new Dimension(25, 25));
         refreshButton.setIcon( refreshIcon);
@@ -1960,6 +2104,27 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 refreshExplorer();
             }
         });
+    }
+    
+    /** Initializes the help contents. */
+    private void initHelpContents() {
+        helpPane.setContentType("text/html");
+        helpList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent lse) {
+                helpPane.setText(helpStrings.get(helpList.getSelectedIndex()));
+            }
+        });
+    }
+    
+    /** Initializes the about frame. */
+    private void initAbout() {
+        String aboutContent = aboutSubLabel.getText();
+        aboutContent = aboutContent.replace("%version%", "Call-IDE <i>Alpha</i>");
+        aboutContent = aboutContent.replace("%system%", System.getProperty("os.name") +
+                " version: " + System.getProperty("os.version") + "  architecture: " + System.getProperty("os.arch"));
+        aboutContent = aboutContent.replace("%userpath%", System.getProperty("user.home") + File.separator + "Call-IDE" + File.separator);
+        aboutSubLabel.setText(aboutContent);
     }
 
     /** Listener for the console's detach button. */
@@ -2252,7 +2417,9 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                                                      textAreas.get( textAreas.size() - 1),
                                                      this, preferences.getAutosaveIn()));
                 if (fileExplorer != null) {
-                    fileExplorer.updateDirectory(selected.getParent());
+                    try {
+                        fileExplorer.updateDirectory(selected.getParent());
+                    } catch (NullPointerException ex) {}
                 }
                 updateMethodSummary( file);
                 methodSummary.updateUI();
@@ -2798,7 +2965,11 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 printStatus( "The file should be compiled before running.");
                 return;
             }
-            printStatus( "Running " + file.getName() );
+            if ((new File(file.getParent() + "/" + classFileName)).lastModified() < file.lastModified()){
+                printStatus( "The file should be compiled to its lastest version before running.");
+                return;
+            }
+            printStatus( "Running " + file.getName() + " ...");
             runFile( file, build);
         }
     }
@@ -2994,7 +3165,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     }
 
     /** Inserts the method summary tree to the main frame. */
-    private void insertMethodSummary() {
+    private void initMethodSummary() {
         try {
             methodParser = new Parser();
             methodSummary = new SummaryTree( methodParser, this);
@@ -3267,7 +3438,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private void runCurrentProject() {
         updateProjects();
         if (getActiveFile() == null) {
-            printStatus( "The file should be compiled before running.");
+            printStatus( "The file should be saved before running.");
             return;
         }
         ProjectHandler activeProject = getProjectHandler( getActiveFile());
@@ -3277,12 +3448,15 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         }
         File mainClassFile = activeProject.getMainClass();
         if (mainClassFile == null) {
-            printStatus( "Please select a main class of your project first.");
+            printStatus( "Please select the main class of your project first.");
             showPropertiesOf(activeProject);
             showMainSelection();
         }
         else if (!mainClassFile.exists() || !mainClassFile.isFile()) {
             printStatus( "Can't find the compiled main class: " + mainClassFile.getAbsolutePath());
+        }
+        else if (!compiledToLast(activeProject)) {
+            printStatus( "The project should be compiled to its latest version before running.");
         }
         else {
             printStatus( "Running " + activeProject.getMainClass().getName() +
@@ -3303,6 +3477,29 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 compileRunCurrentFile();
             checkConsoleState();
         }
+    }
+    
+    private String getPathDifference( String shorter, String longer) {
+        int i = 0;
+        while (i < shorter.length() && shorter.charAt(i) == longer.charAt(i)) i++;
+        return longer.substring(i);
+    }
+    private boolean compiledToLast( ProjectHandler project) {
+        ArrayList<File> sourceFiles = project.getAllJavaFiles();
+        String srcLocation = project.getSrc().getAbsolutePath();
+        String buildLocation = project.getBuild().getAbsolutePath();
+
+        for (File sourceFile : sourceFiles) {
+            String sourcePath = sourceFile.getParent();            
+            String difference = getPathDifference(srcLocation, sourcePath);
+            String sourceName = sourceFile.getName();
+            String buildPath = buildLocation + "/" + difference + "/" + sourceName.substring(0, sourceName.length()-5) + ".class";
+            File buildFile = new File(buildPath);
+            if (buildFile.lastModified() < sourceFile.lastModified())
+                return false;
+        }
+        
+        return true;
     }
 
     /** Opens a folder chooser dialog for the user to choose its project location. */
@@ -3584,6 +3781,20 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private void showError( String message) {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
+    
+    /** Shows the help about the IDE. */
+    private void showHelpContents() {
+        helpContentsFrame.pack();
+        helpContentsFrame.setLocationRelativeTo(this);
+        helpContentsFrame.setVisible(true);
+    }
+    
+    /** Shows the about page of the software. */
+    private void showAbout() {
+        aboutFrame.pack();
+        aboutFrame.setLocationRelativeTo( this);
+        aboutFrame.setVisible( true);
+    }
 
     // Other Variables
     private ArrayList<RSyntaxTextArea> textAreas;
@@ -3592,6 +3803,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private ArrayList<String> savedContents;
     private ArrayList<AutoFileSaver> autosavers;
     private ArrayList<ProjectHandler> openProjects;
+    private ArrayList<String> helpStrings;
     private boolean workspaceChanged;
     private boolean consoleOut;
     private boolean projectMode;
@@ -3626,6 +3838,9 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutButton;
+    private javax.swing.JFrame aboutFrame;
+    private javax.swing.JLabel aboutSubLabel;
+    private javax.swing.JPanel aboutSubPanel;
     private javax.swing.JMenuItem apiButton;
     private javax.swing.JCheckBox apiCheck;
     private javax.swing.JButton apiTool;
@@ -3654,6 +3869,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private javax.swing.JMenuItem copyButton;
     private javax.swing.JMenuItem cutButton;
     private javax.swing.JCheckBox detachConsoleCheck;
+    private javax.swing.JLabel developerListLabel;
     private javax.swing.JMenu editMenu;
     private javax.swing.JPanel editorAndMethodSummaryPanel;
     private javax.swing.JComboBox<String> editorFontChooser;
@@ -3673,7 +3889,13 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private javax.swing.JTextField findTextField;
     private javax.swing.JCheckBox helpCheck;
     private javax.swing.JMenuItem helpContentsButton;
+    private javax.swing.JFrame helpContentsFrame;
+    private javax.swing.JList helpList;
+    private javax.swing.JScrollPane helpListScrollPane;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JTextPane helpPane;
+    private javax.swing.JScrollPane helpPaneScrollPane;
+    private javax.swing.JSplitPane helpSplitPane;
     private javax.swing.JButton helpTool;
     private javax.swing.JPanel idePreferencesPanel;
     private javax.swing.JLabel indentLabel;
@@ -3685,10 +3907,12 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private javax.swing.JMenuItem javadocButton;
     private javax.swing.JCheckBox javadocCheck;
     private javax.swing.JButton javadocTool;
+    private javax.swing.JLabel licenseLabel;
     private javax.swing.JCheckBox lineNumbersCheck;
     private javax.swing.JMenuItem loginButton;
     private javax.swing.JCheckBox loginCheck;
     private javax.swing.JButton loginTool;
+    private javax.swing.JLabel logoLabel;
     private javax.swing.JTextField mainClassField;
     private javax.swing.JLabel mainClassLabel;
     private javax.swing.JFrame mainSelectionFrame;

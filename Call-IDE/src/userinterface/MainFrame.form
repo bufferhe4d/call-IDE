@@ -578,7 +578,7 @@
     </Container>
     <Container class="javax.swing.JFrame" name="findAndReplaceFrame">
       <Properties>
-        <Property name="title" type="java.lang.String" value="Find / Replace"/>
+        <Property name="title" type="java.lang.String" value="Find &amp; Replace"/>
         <Property name="resizable" type="boolean" value="false"/>
       </Properties>
 
@@ -952,6 +952,9 @@
     <Component class="javax.swing.ButtonGroup" name="submissionButtonGroup">
     </Component>
     <Container class="javax.swing.JFrame" name="mainSelectionFrame">
+      <Properties>
+        <Property name="title" type="java.lang.String" value="Select Main Class"/>
+      </Properties>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -1017,6 +1020,184 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectMainButtonActionPerformed"/>
           </Events>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Container class="javax.swing.JFrame" name="helpContentsFrame">
+      <Properties>
+        <Property name="title" type="java.lang.String" value="Call-IDE Help"/>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Component id="helpSplitPane" alignment="0" pref="400" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Component id="helpSplitPane" alignment="0" pref="300" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Container class="javax.swing.JSplitPane" name="helpSplitPane">
+          <Properties>
+            <Property name="dividerLocation" type="int" value="90"/>
+          </Properties>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
+          <SubComponents>
+            <Container class="javax.swing.JScrollPane" name="helpListScrollPane">
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
+                  <JSplitPaneConstraints position="left"/>
+                </Constraint>
+              </Constraints>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JList" name="helpList">
+                  <Properties>
+                    <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
+                      <StringArray count="6">
+                        <StringItem index="0" value="General"/>
+                        <StringItem index="1" value="Editing"/>
+                        <StringItem index="2" value="Building"/>
+                        <StringItem index="3" value="Window"/>
+                        <StringItem index="4" value="Projects"/>
+                        <StringItem index="5" value="Options"/>
+                      </StringArray>
+                    </Property>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JScrollPane" name="helpPaneScrollPane">
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
+                  <JSplitPaneConstraints position="right"/>
+                </Constraint>
+              </Constraints>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JTextPane" name="helpPane">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+          </SubComponents>
+        </Container>
+      </SubComponents>
+    </Container>
+    <Container class="javax.swing.JFrame" name="aboutFrame">
+      <Properties>
+        <Property name="title" type="java.lang.String" value="About Call-IDE"/>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="developerListLabel" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Component id="licenseLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
+                      <Component id="aboutSubPanel" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
+                  <Component id="logoLabel" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="logoLabel" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="licenseLabel" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="developerListLabel" min="-2" max="-2" attributes="0"/>
+                      <Component id="aboutSubPanel" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JLabel" name="logoLabel">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/userinterface/images/splash.png"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="developerListLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xa;&lt;u&gt;&lt;b&gt;Developer Team&lt;/b&gt;&lt;/u&gt;&lt;br&gt;&#xa;Mahmud Sami Ayd&#x131;n&lt;br&gt;&#xa;Ahmet Furkan B&#x131;y&#x131;k&lt;br&gt;&#xa;Ataberk G&#xf6;zkaya&lt;br&gt;&#xa;Abdullah Talayhan&lt;br&gt;&#xa;Emin Bahad&#x131;r T&#xfc;l&#xfc;ce&lt;br&gt;&#xa;Halil &#x15e;ahiner&lt;br&gt;&#xa;&lt;br&gt;&#xa;&lt;/html&gt;"/>
+          </Properties>
+        </Component>
+        <Container class="javax.swing.JPanel" name="aboutSubPanel">
+          <Properties>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                <LineBorder/>
+              </Border>
+            </Property>
+          </Properties>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="aboutSubLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="aboutSubLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="aboutSubLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xa;&lt;u&gt;&lt;b&gt;Product Version:&lt;/b&gt;&lt;/u&gt;&#xa;%version%&lt;br&gt;&#xa;&lt;br&gt;&#xa;&lt;u&gt;&lt;b&gt;System:&lt;/b&gt;&lt;/u&gt;&#xa;%system%&lt;br&gt;&#xa;&lt;br&gt;&#xa;&lt;u&gt;&lt;b&gt;Working Path:&lt;/b&gt;&lt;/u&gt;&#xa;%userpath%&lt;br&gt;&#xa;&lt;br&gt;"/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Component class="javax.swing.JLabel" name="licenseLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="This product has not licensed yet."/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
@@ -1422,11 +1603,17 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Help Contents"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="helpContentsButtonActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="aboutButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="About"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="aboutButtonActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
