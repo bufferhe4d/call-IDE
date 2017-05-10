@@ -913,6 +913,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         );
 
         aboutFrame.setTitle("About Call-IDE");
+        aboutFrame.setResizable(false);
 
         logoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/images/splash.png"))); // NOI18N
 

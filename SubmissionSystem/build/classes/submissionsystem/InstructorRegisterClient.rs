@@ -1,3 +1,0 @@
-InstructorRegisterClient$1
-InstructorRegisterClient
-InstructorRegisterClient$2

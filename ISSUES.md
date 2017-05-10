@@ -25,8 +25,8 @@ Update stop the program icon.<br>
 
 Write a help contents documentation.<br>
 
-Write a proper About page.<br>
+<del>Write a proper About page.</del><br>
 
 <br><br>
 
-09.05.2017 - 11:33
+10.05.2017 - 22:16
