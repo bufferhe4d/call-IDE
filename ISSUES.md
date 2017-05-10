@@ -20,7 +20,7 @@ Fix the bug about jar signitures.
 
 Implement and integrate the auto-complete functionality to the editor.<br>
 
-Update stop the program icon.<br>
+<del>Update stop the program icon.</del><br>
 <del>Add a refresh icon.</del><br>
 
 Write a help contents documentation.<br>
