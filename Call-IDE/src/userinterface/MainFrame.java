@@ -46,7 +46,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         enableFileDrop( this);
         newFile();
         initFrame();
-        checkJDK();
+        // checkJDK();
                 
         if (openWith != null )
         {
@@ -1867,7 +1867,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             frameIcon = ImageIO.read(getClass().getResource( "/userinterface/images/icon.jpg"));
             refreshIcon = new ImageIcon( (new ImageIcon( getClass().getResource(
                 "/userinterface/images/refresh.png"))).getImage().getScaledInstance(
-                20, 20, java.awt.Image.SCALE_SMOOTH));
+                16, 16, java.awt.Image.SCALE_SMOOTH));
         } catch (IOException e) {
             showError( "An error occured while loading the icon sources.");
         }

@@ -1,6 +1,11 @@
 package runutils;
 
+import helputils.ExceptionParser;
+import helputils.LinkOpener;
+
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -40,10 +45,16 @@ public class ReadStdErr implements Runnable{
         String line;
         try {
         while((line = reader.readLine())!=null) {
-            if (line.startsWith("Exception")) 
-                console.getDocument().insertString(console.getDocument().getLength(), line + " (See the help about this exception: " + "ExceptionHelper.getLink(helputils.ErrorParser( line))" +  ")\n", changeColor(new DefaultStyledDocument()));
+            if (line.startsWith("Exception in thread")) {
+                console.getDocument().insertString(console.getDocument().getLength(),
+                    line + " (See the help about this exception: " +
+                    ExceptionParser.getExceptionLink( line) + 
+                    ") [Double-click to visit.]\n", changeColor(new DefaultStyledDocument()));
+                addLink( ExceptionParser.getExceptionLink( line));
+            }
             else
-                console.getDocument().insertString(console.getDocument().getLength(), line + "\n", changeColor(new DefaultStyledDocument()));
+                console.getDocument().insertString(console.getDocument().getLength(),
+                    line + "\n", changeColor(new DefaultStyledDocument()));
         }
             }catch (IOException e) {} catch (BadLocationException ex) {
             Logger.getLogger(ReadStdErr.class.getName()).log(Level.SEVERE, null, ex);
@@ -73,6 +84,20 @@ public class ReadStdErr implements Runnable{
     
     public boolean isFinished() {
         return finish;
+    }
+    
+    private void addLink( String link) {
+        console.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed( MouseEvent e) {
+                if (e.getClickCount() == 2 && !e.isConsumed()) {
+                    e.consume();
+                    try {
+                        LinkOpener.openLink( link);
+                    } catch (Exception ex) {}
+                }
+            }
+        });
     }
     
 }
