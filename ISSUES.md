@@ -3,7 +3,7 @@
 <del>Generate jar with including non-java source files.</del> <br>
 <del>A bug about running the projects with classpaths.</del> <br>
 <del>Stop program should be called before running another one or quitting the IDE.</del> <br>
-Fix the bug about jar signitures.
+<del>Fix the bug about jar signitures.</del>
 
 <del>Ask users to select their main class when they try to run a project without one.</del> <br>
 <del>Integrate the JDK checker to the main frame.</del> <br> 
