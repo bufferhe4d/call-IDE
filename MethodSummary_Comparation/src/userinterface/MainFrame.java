@@ -8,6 +8,7 @@ import fileoperations.projecthandling.*;
 import helputils.*;
 import methodsummary.*;
 import runutils.*;
+import submissionsystem.userinterface.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -27,8 +28,6 @@ import org.fife.ui.rsyntaxtextarea.*;
 
 import com.github.javaparser.*;
 import com.github.javaparser.ast.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * The main frame of the IDE.
@@ -919,7 +918,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
 
         logoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/images/splash.png"))); // NOI18N
 
-        developerListLabel.setText("<html>\n<u><b>Developer Team</b></u><br>\nMahmud Sami Aydın<br>\nAhmet Furkan Bıyık<br>\nAtaberk Gözkaya<br>\nAbdullah Talayhan<br>\nEmin Bahadır Tülüce<br>\nHalil Şahiner<br>\n<br>\n</html>");
+        developerListLabel.setText("<html>\n<u><b>Developer Team</b></u><br>\n%developers%\n</html>");
 
         aboutSubPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -1494,9 +1493,19 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         submissionMenu.setText("Submission System");
 
         registerButton.setText("Register");
+        registerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registerButtonActionPerformed(evt);
+            }
+        });
         submissionMenu.add(registerButton);
 
         loginButton.setText("Login");
+        loginButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginButtonActionPerformed(evt);
+            }
+        });
         submissionMenu.add(loginButton);
 
         toolsMenu.add(submissionMenu);
@@ -1911,7 +1920,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     }//GEN-LAST:event_classPathButtonActionPerformed
 
     private void loginToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginToolActionPerformed
-        loginAction();
+       loginButtonActionPerformed( evt);
     }//GEN-LAST:event_loginToolActionPerformed
 
     private void callideSubmissionRadioStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_callideSubmissionRadioStateChanged
@@ -1937,6 +1946,14 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private void aboutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutButtonActionPerformed
         showAbout();
     }//GEN-LAST:event_aboutButtonActionPerformed
+
+    private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
+        loginAction();
+    }//GEN-LAST:event_loginButtonActionPerformed
+
+    private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
+        registerAction();
+    }//GEN-LAST:event_registerButtonActionPerformed
 
     /**
      * Sets LookAndFeel to the given name.
@@ -2001,7 +2018,17 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 helpStrings.add(helpString);
                 helpReader.close();
             }
-        } catch (IOException e) {
+            
+            BufferedReader developerReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/helputils/developers.html"), "ISO-8859-9"));
+            developerList = "";
+            String line = developerReader.readLine();
+            while (line != null) {
+                developerList = developerList + line;
+                line = developerReader.readLine();
+            }
+            developerReader.close();
+            
+        } catch (Exception e) {
             showError( "An error occured while loading the sources.");
         }
     }
@@ -2090,7 +2117,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     
     /** Initializes the refresh button of file explorer. */
     private void initRefreshButton() {
-        refreshButton = new JButton();
+        JButton refreshButton = new JButton();
         refreshButton.setPreferredSize( new Dimension(25, 25));
         refreshButton.setIcon( refreshIcon);
         explorerLayeredPane.add( refreshButton);
@@ -2128,6 +2155,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 " version: " + System.getProperty("os.version") + "  architecture: " + System.getProperty("os.arch"));
         aboutContent = aboutContent.replace("%userpath%", System.getProperty("user.home") + File.separator + "Call-IDE" + File.separator);
         aboutSubLabel.setText(aboutContent);
+        developerListLabel.setText( developerListLabel.getText().replace( "%developers%", developerList));
     }
 
     /** Listener for the console's detach button. */
@@ -2293,13 +2321,8 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
 
     /** Closes the tab on the given index. */
     private void closeTab( int index) {
-        if( !projectMode && files.get(index) != null)
-        {
-            methodParser.removeNode( files.remove( index));
-            methodSummary.updateUI();
-        }
-        else
-            files.remove( index);
+        methodParser.removeNode( files.remove( index));
+        methodSummary.updateUI();
         savedContents.remove( index);
         tabTitles.remove( index);
         textAreas.remove( index);
@@ -2387,12 +2410,8 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 saver.save( content);
                 savedContents.set( files.indexOf( file), content);
                 printStatus( "File updated: " + file.getName());
-                if( projectMode )
-                {
-                    updateMethodSummary( getProjectHandler( file ).getSrc() );
-                }
-                else
-                    updateMethodSummary( file);
+                updateAutoComplete( file);
+                updateMethodSummary( file);
                 return true;
             }
         } catch (IOException e) {
@@ -2411,8 +2430,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             JFileChooser chooser = new JFileChooser();
             if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
                 File selected = chooser.getSelectedFile();
-                if(!projectMode)
-                    methodParser.removeNode( file);
+                methodParser.removeNode( file);
                 if (selected.getName().contains("."))
                     file = new File(selected.getParent() + "/" + selected.getName());
                 else
@@ -2435,11 +2453,9 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                         fileExplorer.updateDirectory(selected.getParent());
                     } catch (NullPointerException ex) {}
                 }
-                if( !projectMode)
-                {
-                    updateMethodSummary( file);
-                    methodSummary.updateUI();
-                }
+                updateAutoComplete( file);
+                updateMethodSummary( file);
+                methodSummary.updateUI();
 
                 return true;
             }
@@ -2486,8 +2502,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                                                    this, preferences.getAutosaveIn()));
             savedContents.add( content);
             textTabs.setSelectedIndex( textAreas.size() - 1);
-            if(!projectMode)
-                updateMethodSummary( file);
+            updateMethodSummary( file);
             printStatus( "File opened: " + file.getName());
         } catch (IOException e) {
             showError( "An error occured while opening the file.");
@@ -2542,10 +2557,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
 
     /** Adds the file explorer to the frame. */
     private void addExplorer() {
-        // TODO , when closing project without workspace
         addExplorerWith( workspace);
-        
-        
         //watcher = new RealTimeFolderWatcher(new File(workspace), fileExplorer);
         //watcher.start();
     }
@@ -2824,7 +2836,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
 
     /** Arranges the window divider locations. */
     private void arrangeWindow() {
-        refreshButton.setVisible(fileTrackerButton.getState());
         explorerScrollPane.setVisible( fileTrackerButton.getState());
         methodSummaryScrollPane.setVisible( methodSummaryButton.getState());
         outputsPanel.setVisible( outputsPaneButton.getState());
@@ -2974,7 +2985,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 cu = JavaParser.parse( file);
                 if (cu.getPackageDeclaration().isPresent())
                     packageName = cu.getPackageDeclaration().get().getName().toString();
-            } catch (IOException ex) {}
+            } catch (Exception ex) {}
             if(packageName.equals("")) {
                 classFileName = file.getName().substring(0,
                                 file.getName().length() - 5) + ".class";
@@ -3143,8 +3154,11 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             printStatus( "The file should be saved to its modified version before compiling.");
             return;
         }
-        if (getActiveFile() != null && !hasMainMethod(getActiveFile()))
+        if (getActiveFile() == null)
             return;
+        if ( !hasMainMethod(getActiveFile())) {
+            return;
+        }
         JTextPane insertedPane = compileCurrentFile();
         if (insertedPane != null) {
             insertedPane.getDocument().addDocumentListener(new DocumentListener() {
@@ -3152,8 +3166,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 public void removeUpdate(DocumentEvent e) {}
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if (insertedPane.getText().contains( "BUILD SUCCESSFUL"))
+                    if (insertedPane.getText().contains( "BUILD SUCCESSFUL")) {
                         runCurrentFile();
+                        insertedPane.getDocument().removeDocumentListener(this);
+                    }
                 }
             });
         }
@@ -3185,6 +3201,22 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private boolean isEditing() {
         return textTabs.getSelectedIndex() != -1;
     }
+    
+    /**
+    * A method to update the auto-completion list for class
+    * @param file a parameter to take the active file to parse
+    */
+    public void updateAutoComplete( File file)
+    {
+        autoComplete = new AutoComplete( getActiveTextArea(), file);
+
+        try {
+            if (file.getName().endsWith(".java")) {
+
+            autoComplete.updateAutoComplete();
+            }
+        } catch (IOException | ParseProblemException ex ) {}
+    }
 
     /** Inserts the method summary tree to the main frame. */
     private void initMethodSummary() {
@@ -3199,16 +3231,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
 
     /** Updates the method summary tree's contents according to the given file. */
     private void updateMethodSummary( File file) {
-        if( projectMode )
-        {
-            try {
-                methodParser.refreshNode( file);
-            } catch (ParseException | IOException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        else
-        {
         try {
             if (file.getName().endsWith(".java")) {
                 if (!methodParser.contains(file))
@@ -3217,7 +3239,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                     methodParser.refreshNode( file);
             }
         } catch (ParseException | IOException | ParseProblemException ex ) {}
-        }
         methodSummary.configureTree();
         methodSummary.expandRow(0);
         methodSummary.updateUI();
@@ -3327,13 +3348,12 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             open = false;
             showError( "An error occured while opening the project.");
         } catch ( ProjectHandler.FilesMismatchException ex) {
-            printStatus( "Some files might be missing in your src folder.");
+            // printStatus( "Some files might be missing in your src folder.");
         }
         if (open) {
             if (fileExplorer == null || !fileExplorer.isProjectBrowser()) {
                 if (fileExplorer != null)
                     explorerScrollPane.remove(fileExplorer);
-                methodParser.clearNodes();
                 addExplorerWith( handler.getPath());
                 fileExplorer.setIsProjectBrowser(true);
                 projectMode = true;
@@ -3349,12 +3369,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 fw.registerAll( handler.getSrc().toPath());
                 fw.start();
             } catch (IOException e) {}
-            try {
-            methodParser.addPackage( handler.getSrc(), handler.getName());
-            methodSummary.configureTree();
-            methodSummary.expandRow(0);
-            methodSummary.updateUI();
-            } catch (ParseException | IOException e) {}
             printStatus( "Project opened: " + handler.getName());
         }
     }
@@ -3442,7 +3456,9 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         Parser mainChecker = new Parser();
         try {
             mainChecker.addNode(file);
-        } catch (ParseException | IOException ex) {}
+        } catch (Exception ex) {
+            return true; // Should return true for errorenous source files.
+        }
         if (!mainChecker.hasMain(file)) {
             printStatus( "The class " + file.getName() + " does not have a proper main method.");
             return false;
@@ -3618,24 +3634,9 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         if (openProjects.isEmpty()) {
             explorerScrollPane.remove(fileExplorer);
             addExplorer();
-            methodParser.clearNodes();
-            for( File file : files) 
-            {
-                if( file != null )
-                    try {
-                        methodParser.addNode(file);
-                } catch (ParseException ex) {
-                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
             fileExplorer.setIsProjectBrowser(false);
             projectMode = false;
         }
-        else
-            methodParser.removeNode(selectedProject.getSrc());
-        methodSummary.updateUI();
         printStatus( "Project closed: " + selectedProject.getName());
     }
 
@@ -3743,18 +3744,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             runFile( selectedFile, selectedFile.getParentFile());
     }
 
-    /** Opens the login screen according to the login option of the user. */
-    private void loginAction() {
-        String submissionLink = preferences.getSubmissionLink();
-        if (submissionLink != null) {
-            try {
-                LinkOpener.openLink( submissionLink);
-            } catch( Exception e) {
-                printStatus( "Your submission link is invalid. Please check the preferences.");
-            }
-        }
-    }
-
     /** Compiles and runs the active project on the editor. */
     private void compileRunCurrentProject() {
         if (getActiveFile() == null) {
@@ -3842,6 +3831,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         helpContentsFrame.pack();
         helpContentsFrame.setLocationRelativeTo(this);
         helpContentsFrame.setVisible(true);
+        helpList.setSelectedIndex(0);
     }
     
     /** Shows the about page of the software. */
@@ -3849,6 +3839,43 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         aboutFrame.pack();
         aboutFrame.setLocationRelativeTo( this);
         aboutFrame.setVisible( true);
+    }
+    
+    
+    /** Opens the login screen according to the login option of the user. */
+    private void loginAction() {
+        String submissionLink = preferences.getSubmissionLink();
+        if (submissionLink != null) {
+            try {
+                LinkOpener.openLink( submissionLink);
+            } catch( Exception e) {
+                printStatus( "Your submission link is invalid. Please check the preferences.");
+            }
+        }
+        else {
+            JFrame loginFrame = new LoginFrame();
+            loginFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            loginFrame.setLocationRelativeTo(this);
+            loginFrame.setVisible(true);
+        }
+    }
+    
+    /** Opens the registeration screen according to the login option of the user. */
+    private void registerAction() {
+        String submissionLink = preferences.getSubmissionLink();
+        if (submissionLink != null) {
+            try {
+                LinkOpener.openLink( submissionLink);
+            } catch( Exception e) {
+                printStatus( "Your submission link is invalid. Please check the preferences.");
+            }
+        }
+        else {
+            VerifyEmail verifyEmail = new VerifyEmail();
+            verifyEmail.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            verifyEmail.setLocationRelativeTo(this);
+            verifyEmail.setVisible(true);
+        }
     }
 
     // Other Variables
@@ -3868,10 +3895,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private int lastOutputTabIndex;
     private String userPath;
     private String workspace;
+    private String developerList;
     private String[] templates;
     private String[] templateNames;
     private JButton workspaceButton;
-    private JButton refreshButton;
     private JPanel noWorkspacePanel;
     private JTextPane consoleOutputArea;
     private JScrollPane detachScroll;
@@ -3891,6 +3918,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private PrintStream stdOut;
     private PrintStream stdErr;
     private ConsoleBuilder builder;
+    private AutoComplete autoComplete;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutButton;

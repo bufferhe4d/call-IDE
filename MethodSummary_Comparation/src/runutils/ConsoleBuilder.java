@@ -45,9 +45,7 @@ public class ConsoleBuilder {
             outPipe.close();
             errPipe.close();
             inWriter.close();
-        } catch (IOException ex) {
-            Logger.getLogger(ConsoleBuilder.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } catch (IOException ex) {}
     }
     public void init() {
         inPipe = new PipedInputStream();
@@ -59,9 +57,7 @@ public class ConsoleBuilder {
             System.setOut(new PrintStream(new PipedOutputStream(outPipe), true));
             System.setErr(new PrintStream(new PipedOutputStream(errPipe), true));
             inWriter = new PrintWriter(new PipedOutputStream(inPipe), true);
-        } catch (IOException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } catch (IOException ex) {}
     }
     
 }

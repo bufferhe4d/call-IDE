@@ -48,9 +48,7 @@ public class AutoFileSaver implements ActionListener {
             String content = contentSource.getText();
             fileSaver.save( content);
             outputTarget.report( fileSaver.getFile(), content);
-        } catch ( Exception exception) {
-            exception.printStackTrace();
-        }
+        } catch ( Exception exception) {}
     }
     
 }
