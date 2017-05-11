@@ -76,8 +76,8 @@ public class FileNavigator extends JTree implements TreeSelectionListener
     }
     
     /**
-     * This method close the project and update user interface 
-     * @param rootOfProject will be close
+     * 
+     * 
      */
     public void closeProject( FileNode rootOfProject )
     {

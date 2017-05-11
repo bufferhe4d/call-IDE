@@ -2558,8 +2558,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     /** Adds the file explorer to the frame. */
     private void addExplorer() {
         addExplorerWith( workspace);
-        //watcher = new RealTimeFolderWatcher(new File(workspace), fileExplorer);
-        //watcher.start();
     }
 
     /** Adds the file explorer to the frame wih the given root. */
@@ -2837,6 +2835,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     /** Arranges the window divider locations. */
     private void arrangeWindow() {
         explorerScrollPane.setVisible( fileTrackerButton.getState());
+        explorerLayeredPane.setVisible( fileTrackerButton.getState());
         methodSummaryScrollPane.setVisible( methodSummaryButton.getState());
         outputsPanel.setVisible( outputsPaneButton.getState());
         revalidateProperly();
@@ -3633,7 +3632,12 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         openProjects.remove(selectedProject);
         if (openProjects.isEmpty()) {
             explorerScrollPane.remove(fileExplorer);
-            addExplorer();
+            if (workspace != null)
+                addExplorer();
+            else {
+                addEmptyExplorer();
+                noWorkspacePanel.setVisible(true);
+            }
             fileExplorer.setIsProjectBrowser(false);
             projectMode = false;
         }
@@ -3818,7 +3822,8 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
 
     /** Refreshes the file list of the explorer. */
     private void refreshExplorer() {
-        fileExplorer.refreshAll();
+        if (fileExplorer != null)
+            fileExplorer.refreshAll();
     }
 
     /** Pops up an error message. */
@@ -3840,7 +3845,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         aboutFrame.setLocationRelativeTo( this);
         aboutFrame.setVisible( true);
     }
-    
     
     /** Opens the login screen according to the login option of the user. */
     private void loginAction() {

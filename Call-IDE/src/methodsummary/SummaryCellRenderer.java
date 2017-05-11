@@ -16,23 +16,20 @@ import javax.swing.tree.DefaultTreeCellRenderer;
  */
 public class SummaryCellRenderer extends DefaultTreeCellRenderer {
     
-    //Property
     private Icon[] icons;
     
-    //Constructor
     public SummaryCellRenderer() throws MalformedURLException, IOException {
         super();
         buildIcons();
     }
     
-    //Methods
     @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value,
                                                   boolean selected, boolean expanded,
                                                   boolean leaf, int row, boolean hasFocus) {
         super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
         if( value  instanceof SummaryNode )
-        {     
+        {        
             Icon icon = icons[((SummaryNode)value).nodeType()];
             setIcon(icon);
             if (((SummaryNode)value).nodeType() == 2)
@@ -43,15 +40,11 @@ public class SummaryCellRenderer extends DefaultTreeCellRenderer {
         }
         return this;
     }
-    /**
-     * This method build icons for each node type
-     * @throws MalformedURLException
-     * @throws IOException 
-     */
+    
     private void buildIcons() throws MalformedURLException, IOException {
         ImageIcon logoIcon = new ImageIcon( ImageIO.read(
                 getClass().getResource( "/userinterface/images/logoicon.png")));
-        icons = new Icon[16];
+        icons = new Icon[15];
         icons[SummaryNode.CLASS_NODE  ] = logoIcon;
         icons[SummaryNode.INNER_NODE  ] = logoIcon;
         icons[SummaryNode.INFACE_NODE ] = logoIcon;
@@ -66,7 +59,6 @@ public class SummaryCellRenderer extends DefaultTreeCellRenderer {
         icons[SummaryNode.BOOLEAN_NODE] = logoIcon;
         icons[SummaryNode.CONST_NODE  ] = logoIcon;
         icons[SummaryNode.VOID_NODE   ] = logoIcon;
-        icons[SummaryNode.PACKAGE_NODE] = logoIcon;
     }
     
 }

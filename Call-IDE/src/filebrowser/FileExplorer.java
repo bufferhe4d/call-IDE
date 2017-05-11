@@ -42,7 +42,6 @@ public class FileExplorer extends JPanel
     }
         
     /**
-     * This method sets the explorer is browsing project
      * @param isProjectBrowser
      */
     public void setIsProjectBrowser( boolean isProjectBrowser)
@@ -51,10 +50,6 @@ public class FileExplorer extends JPanel
         navigator.updateUI();
     }
     
-    /**
-     * This method determines the explorer is browsing project 
-     * @return 
-     */
     public boolean isProjectBrowser()
     {
         return navigator.root.isBrowsingProjects();

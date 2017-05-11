@@ -73,9 +73,6 @@ public class ClassNode extends DefaultMutableTreeNode implements SummaryNode {
         return "<no javadoc>";
     }
     
-    /**
-     * This class find inner classes' methods of this class
-     */
     private class FindInnerMethods extends VoidVisitorAdapter<Void> 
     {
         @Override
@@ -86,9 +83,6 @@ public class ClassNode extends DefaultMutableTreeNode implements SummaryNode {
         }
     }
     
-    /**
-     * This class find methods of this class
-     */
     class MethodVisitor extends VoidVisitorAdapter<Void> 
     {
         @Override
@@ -102,9 +96,6 @@ public class ClassNode extends DefaultMutableTreeNode implements SummaryNode {
         }
     }
     
-    /**
-     * This class find constructors of this class
-     */
     private class ConsturctorVisitor extends VoidVisitorAdapter<Void> 
     {
         @Override
@@ -115,9 +106,6 @@ public class ClassNode extends DefaultMutableTreeNode implements SummaryNode {
         }
     }
     
-    /**
-     * This class find inner classes of this class
-     */
     private class InnerClassVisitor extends VoidVisitorAdapter<Void> 
     {
         @Override

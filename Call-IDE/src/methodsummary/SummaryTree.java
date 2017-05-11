@@ -35,8 +35,6 @@ public class SummaryTree extends JTree implements TreeSelectionListener {
         TreeNode clickedNode = (TreeNode)((JTree) e.getSource()).getLastSelectedPathComponent();
         if (clickedNode instanceof VisitableNode) {
             File file = ((VisitableNode) clickedNode).getFile();
-            
-            System.out.println(file);
             Position position = ((VisitableNode) clickedNode).getPosition();
             visitor.visitNode( file, position);
         }
@@ -53,5 +51,4 @@ public class SummaryTree extends JTree implements TreeSelectionListener {
     public void configureTree() {
         configureNodes((TreeNode) treeModel.getRoot());
     }
-
 }

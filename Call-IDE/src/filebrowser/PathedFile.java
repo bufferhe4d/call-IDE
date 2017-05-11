@@ -47,10 +47,6 @@ public class PathedFile extends File
         }
     }
     
-    /**
-     * This method create a pathed file for visual root
-     * @param pathname 
-     */
     public PathedFile( String pathname)
     {
         super( pathname);
@@ -59,10 +55,6 @@ public class PathedFile extends File
     }
     
     // METHODS
-    /**
-     * This method get file and its parents according to visual root
-     * @return list of files itself parents of it
-     */
     public PathedFile[] getObjPath()
     {
         return path;
