@@ -8,6 +8,7 @@ import fileoperations.projecthandling.*;
 import helputils.*;
 import methodsummary.*;
 import runutils.*;
+import submissionsystem.userinterface.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -917,7 +918,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
 
         logoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/images/splash.png"))); // NOI18N
 
-        developerListLabel.setText("<html>\n<u><b>Developer Team</b></u><br>\nMahmud Sami Aydın<br>\nAhmet Furkan Bıyık<br>\nAtaberk Gözkaya<br>\nAbdullah Talayhan<br>\nEmin Bahadır Tülüce<br>\nHalil Şahiner<br>\n<br>\n</html>");
+        developerListLabel.setText("<html>\n<u><b>Developer Team</b></u><br>\n%developers%\n</html>");
 
         aboutSubPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -1492,9 +1493,19 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         submissionMenu.setText("Submission System");
 
         registerButton.setText("Register");
+        registerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registerButtonActionPerformed(evt);
+            }
+        });
         submissionMenu.add(registerButton);
 
         loginButton.setText("Login");
+        loginButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginButtonActionPerformed(evt);
+            }
+        });
         submissionMenu.add(loginButton);
 
         toolsMenu.add(submissionMenu);
@@ -1909,7 +1920,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     }//GEN-LAST:event_classPathButtonActionPerformed
 
     private void loginToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginToolActionPerformed
-        loginAction();
+       loginButtonActionPerformed( evt);
     }//GEN-LAST:event_loginToolActionPerformed
 
     private void callideSubmissionRadioStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_callideSubmissionRadioStateChanged
@@ -1935,6 +1946,14 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private void aboutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutButtonActionPerformed
         showAbout();
     }//GEN-LAST:event_aboutButtonActionPerformed
+
+    private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
+        loginAction();
+    }//GEN-LAST:event_loginButtonActionPerformed
+
+    private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
+        registerAction();
+    }//GEN-LAST:event_registerButtonActionPerformed
 
     /**
      * Sets LookAndFeel to the given name.
@@ -1999,7 +2018,17 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 helpStrings.add(helpString);
                 helpReader.close();
             }
-        } catch (IOException e) {
+            
+            BufferedReader developerReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/helputils/developers.html"), "ISO-8859-9"));
+            developerList = "";
+            String line = developerReader.readLine();
+            while (line != null) {
+                developerList = developerList + line;
+                line = developerReader.readLine();
+            }
+            developerReader.close();
+            
+        } catch (Exception e) {
             showError( "An error occured while loading the sources.");
         }
     }
@@ -2126,6 +2155,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 " version: " + System.getProperty("os.version") + "  architecture: " + System.getProperty("os.arch"));
         aboutContent = aboutContent.replace("%userpath%", System.getProperty("user.home") + File.separator + "Call-IDE" + File.separator);
         aboutSubLabel.setText(aboutContent);
+        developerListLabel.setText( developerListLabel.getText().replace( "%developers%", developerList));
     }
 
     /** Listener for the console's detach button. */
@@ -3166,25 +3196,23 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private boolean isEditing() {
         return textTabs.getSelectedIndex() != -1;
     }
-
+    
     /**
-     * A method to update the auto-completion list for class
-     * @param file a parameter to take the active file to parse
-     */
+    * A method to update the auto-completion list for class
+    * @param file a parameter to take the active file to parse
+    */
     public void updateAutoComplete( File file)
     {
         autoComplete = new AutoComplete( getActiveTextArea(), file);
-        
+
         try {
             if (file.getName().endsWith(".java")) {
-                
-                    autoComplete.updateAutoComplete();
+
+            autoComplete.updateAutoComplete();
             }
-        } catch (IOException | ParseProblemException ex ) {
-            
-        }
+        } catch (IOException | ParseProblemException ex ) {}
     }
-            
+
     /** Inserts the method summary tree to the main frame. */
     private void initMethodSummary() {
         try {
@@ -3315,7 +3343,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             open = false;
             showError( "An error occured while opening the project.");
         } catch ( ProjectHandler.FilesMismatchException ex) {
-            printStatus( "Some files might be missing in your src folder.");
+            // printStatus( "Some files might be missing in your src folder.");
         }
         if (open) {
             if (fileExplorer == null || !fileExplorer.isProjectBrowser()) {
@@ -3709,18 +3737,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             runFile( selectedFile, selectedFile.getParentFile());
     }
 
-    /** Opens the login screen according to the login option of the user. */
-    private void loginAction() {
-        String submissionLink = preferences.getSubmissionLink();
-        if (submissionLink != null) {
-            try {
-                LinkOpener.openLink( submissionLink);
-            } catch( Exception e) {
-                printStatus( "Your submission link is invalid. Please check the preferences.");
-            }
-        }
-    }
-
     /** Compiles and runs the active project on the editor. */
     private void compileRunCurrentProject() {
         if (getActiveFile() == null) {
@@ -3808,6 +3824,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         helpContentsFrame.pack();
         helpContentsFrame.setLocationRelativeTo(this);
         helpContentsFrame.setVisible(true);
+        helpList.setSelectedIndex(0);
     }
     
     /** Shows the about page of the software. */
@@ -3815,6 +3832,40 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         aboutFrame.pack();
         aboutFrame.setLocationRelativeTo( this);
         aboutFrame.setVisible( true);
+    }
+    
+    
+    /** Opens the login screen according to the login option of the user. */
+    private void loginAction() {
+        String submissionLink = preferences.getSubmissionLink();
+        if (submissionLink != null) {
+            try {
+                LinkOpener.openLink( submissionLink);
+            } catch( Exception e) {
+                printStatus( "Your submission link is invalid. Please check the preferences.");
+            }
+        }
+        else {
+            JFrame loginFrame = new LoginFrame();
+            loginFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            loginFrame.setLocationRelativeTo(this);
+            loginFrame.setVisible(true);
+        }
+    }
+    
+    /** Opens the registeration screen according to the login option of the user. */
+    private void registerAction() {
+        String submissionLink = preferences.getSubmissionLink();
+        if (submissionLink != null) {
+            try {
+                LinkOpener.openLink( submissionLink);
+            } catch( Exception e) {
+                printStatus( "Your submission link is invalid. Please check the preferences.");
+            }
+        }
+        else {
+            ; // TODO NEEDS CLIENT
+        }
     }
 
     // Other Variables
@@ -3834,6 +3885,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private int lastOutputTabIndex;
     private String userPath;
     private String workspace;
+    private String developerList;
     private String[] templates;
     private String[] templateNames;
     private JButton workspaceButton;
@@ -4046,7 +4098,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private javax.swing.JCheckBox wholeWordCheck;
     private javax.swing.JMenu windowMenu;
     private javax.swing.JLabel workspaceLabel;
-    private javax.swing.JTextField workspaceTextField;      
+    private javax.swing.JTextField workspaceTextField;
     // End of variables declaration//GEN-END:variables
 
 }

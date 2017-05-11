@@ -11,7 +11,7 @@ import org.fife.ui.rsyntaxtextarea.*;
 
 /**
   *          A class to create auto-complete functionality for IDE
-  * @author  Halil Şahiner
+  * @author  Halil Sahiner
   * @version 11.05.2017
   */
 public class AutoComplete {

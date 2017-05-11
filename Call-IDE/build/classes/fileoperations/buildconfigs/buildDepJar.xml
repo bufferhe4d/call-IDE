@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><project default="main" name="Ant-Test">
         <!-- Sets variables which can later be used. -->
         <!-- The value of a property is accessed via ${} -->
-        <property location="/Users/ATTJ/Desktop/code/classes" name="build.dir"/>
-        <property location="/Users/ATTJ/Desktop/code/dist" name="dist.dir"/>
-        <property value="sa" name="jar.name"/>
-        <property value="sa" name="main.name"/>
+        <property location="/Users/ATTJ/Documents/callv3/build" name="build.dir"/>
+        <property location="/Users/ATTJ/Documents/callv3/dist" name="dist.dir"/>
+        <property name="jar.name" value="callv3.jar"/>
+        <property name="main.name" value="sa"/>
 
         <!-- Deletes the existing build, docs and dist directory-->
         <target name="clean">
@@ -18,12 +18,19 @@
 
         <!--Creates the deployable jar file  -->
         <target name="jar">
-                <jar basedir="${build.dir}" destfile="${dist.dir}/${jar.name}">
-					<zipgroupfileset dir="${dist.dir}/../lib" includes="*.jar"/>
-                        <manifest>
-                                <attribute name="Main-Class" value="${main.name}"/>
-                        </manifest>
+                <jar jarfile="${dist.dir}/deps.jar">
+                  <zipgroupfileset dir="${dist.dir}/../lib" includes="*.jar"/>
+
                 </jar>
+
+                <sleep seconds="1"/>
+                <jar basedir="${build.dir}" jarfile="${dist.dir}/${jar.name}">
+                    <zipfileset excludes="META-INF/*SF" src="${dist.dir}/deps.jar"/>
+                    <manifest>
+                            <attribute name="Main-Class" value="userinterface.Launcher"/>
+                    </manifest>
+                </jar>
+                <delete file="${dist.dir}/deps.jar"/>
         </target>
 
         <target depends="jar" name="main">

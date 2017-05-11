@@ -1155,7 +1155,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="developerListLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xa;&lt;u&gt;&lt;b&gt;Developer Team&lt;/b&gt;&lt;/u&gt;&lt;br&gt;&#xa;Mahmud Sami Ayd&#x131;n&lt;br&gt;&#xa;Ahmet Furkan B&#x131;y&#x131;k&lt;br&gt;&#xa;Ataberk G&#xf6;zkaya&lt;br&gt;&#xa;Abdullah Talayhan&lt;br&gt;&#xa;Emin Bahad&#x131;r T&#xfc;l&#xfc;ce&lt;br&gt;&#xa;Halil &#x15e;ahiner&lt;br&gt;&#xa;&lt;br&gt;&#xa;&lt;/html&gt;"/>
+            <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xa;&lt;u&gt;&lt;b&gt;Developer Team&lt;/b&gt;&lt;/u&gt;&lt;br&gt;&#xa;%developers%&#xa;&lt;/html&gt;"/>
           </Properties>
         </Component>
         <Container class="javax.swing.JPanel" name="aboutSubPanel">
@@ -1407,11 +1407,17 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Register"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="registerButtonActionPerformed"/>
+                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="loginButton">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Login"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loginButtonActionPerformed"/>
+                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>
