@@ -1,7 +1,6 @@
 package submissionsystem.userinterface;
 
-import submissionsystem.*;
-
+import java.awt.Point;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -57,11 +56,12 @@ public class StudentMain extends javax.swing.JFrame {
         client = pclient;
         
         initComponents();
+        userNameLabel.setText("Welcome: " + client.getName() );
         curList.setModel(new DefaultListModel());
         pastList.setModel(new DefaultListModel());
         
         
-        this.setSize(new Dimension(500, this.getHeight())); //-
+        this.setSize(new Dimension(600, this.getHeight())); //-
         curPanel.setVisible(false);
         pastPanel.setVisible(false);
         
@@ -82,36 +82,38 @@ public class StudentMain extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         pastList = new javax.swing.JList();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        curAssLabel = new javax.swing.JLabel();
+        selectLabel = new javax.swing.JLabel();
         courseCombo = new javax.swing.JComboBox();
         jScrollPane2 = new javax.swing.JScrollPane();
         curList = new javax.swing.JList();
-        jLabel10 = new javax.swing.JLabel();
+        pastAssLabel = new javax.swing.JLabel();
         enrollBtn = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         pastPanel = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        asgnLabel = new javax.swing.JLabel();
         pastAsName = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        dueLabel = new javax.swing.JLabel();
         pastAsDueDate = new javax.swing.JLabel();
         downSubBtn = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        pastStateLabel = new javax.swing.JLabel();
         pastAsSubDate = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        pastGradeLabel = new javax.swing.JLabel();
         downAsgnFromSubBtn = new javax.swing.JButton();
         gradeLabel = new javax.swing.JLabel();
         curPanel = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
+        curAsgnLabel = new javax.swing.JLabel();
         curAsName = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
+        curDueaLabel = new javax.swing.JLabel();
         curAsDate = new javax.swing.JLabel();
         downAsgnBtn = new javax.swing.JButton();
         chooseSubPathBtn = new javax.swing.JButton();
         subPathField = new javax.swing.JTextField();
-        jLabel15 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
+        curStateLabel = new javax.swing.JLabel();
+        curSubLabel = new javax.swing.JLabel();
         submitBtn = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        userNameLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("My Assignments");
@@ -123,9 +125,9 @@ public class StudentMain extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(pastList);
 
-        jLabel7.setText("Current Assignments");
+        curAssLabel.setText("Current Assignments");
 
-        jLabel8.setText("Select Course: ");
+        selectLabel.setText("Select Course: ");
 
         courseCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "CS101-03", "CS223-01", "CS319-16" }));
         courseCombo.addActionListener(new java.awt.event.ActionListener() {
@@ -141,7 +143,7 @@ public class StudentMain extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(curList);
 
-        jLabel10.setText("Past Assignments");
+        pastAssLabel.setText("Past Assignments");
 
         enrollBtn.setText("Enroll");
         enrollBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -153,11 +155,11 @@ public class StudentMain extends javax.swing.JFrame {
         pastPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         pastPanel.setPreferredSize(new java.awt.Dimension(327, 163));
 
-        jLabel2.setText("Assignment: ");
+        asgnLabel.setText("Assignment: ");
 
         pastAsName.setText("Lab01");
 
-        jLabel5.setText("Due Date: ");
+        dueLabel.setText("Due Date: ");
 
         pastAsDueDate.setText("21.03.2017");
 
@@ -168,11 +170,11 @@ public class StudentMain extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("State: ");
+        pastStateLabel.setText("State: ");
 
         pastAsSubDate.setText("Submitted(21.03.2017)");
 
-        jLabel4.setText("Grade: ");
+        pastGradeLabel.setText("Grade: ");
 
         downAsgnFromSubBtn.setText("Downlaod Assignment");
         downAsgnFromSubBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -192,15 +194,15 @@ public class StudentMain extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(pastPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pastPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel4)
+                        .addComponent(pastGradeLabel)
                         .addGap(18, 18, 18)
                         .addComponent(gradeLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(downSubBtn))
                     .addGroup(pastPanelLayout.createSequentialGroup()
                         .addGroup(pastPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel5))
+                            .addComponent(asgnLabel)
+                            .addComponent(dueLabel))
                         .addGap(18, 18, 18)
                         .addGroup(pastPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(pastAsName)
@@ -208,7 +210,7 @@ public class StudentMain extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                         .addComponent(downAsgnFromSubBtn))
                     .addGroup(pastPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(pastStateLabel)
                         .addGap(21, 21, 21)
                         .addComponent(pastAsSubDate)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -221,20 +223,20 @@ public class StudentMain extends javax.swing.JFrame {
                 .addGroup(pastPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pastPanelLayout.createSequentialGroup()
                         .addGroup(pastPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
+                            .addComponent(asgnLabel)
                             .addComponent(pastAsName))
                         .addGap(5, 5, 5)
                         .addGroup(pastPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
+                            .addComponent(dueLabel)
                             .addComponent(pastAsDueDate)))
                     .addComponent(downAsgnFromSubBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                 .addGroup(pastPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pastAsSubDate, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(pastStateLabel, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
                 .addGroup(pastPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
+                    .addComponent(pastGradeLabel)
                     .addComponent(gradeLabel)
                     .addComponent(downSubBtn))
                 .addGap(15, 15, 15))
@@ -245,11 +247,11 @@ public class StudentMain extends javax.swing.JFrame {
         curPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         curPanel.setPreferredSize(new java.awt.Dimension(327, 163));
 
-        jLabel11.setText("Assignment: ");
+        curAsgnLabel.setText("Assignment: ");
 
         curAsName.setText("Lab01");
 
-        jLabel13.setText("Due Date: ");
+        curDueaLabel.setText("Due Date: ");
 
         curAsDate.setText("21.03.2017");
 
@@ -267,9 +269,9 @@ public class StudentMain extends javax.swing.JFrame {
             }
         });
 
-        jLabel15.setText("State: ");
+        curStateLabel.setText("State: ");
 
-        jLabel16.setText("Not Submitted / Submitted");
+        curSubLabel.setText("Not Submitted / Submitted");
 
         submitBtn.setText("Submit Assignment");
         submitBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -289,11 +291,11 @@ public class StudentMain extends javax.swing.JFrame {
                         .addGap(4, 4, 4)
                         .addGroup(curPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(curPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel13)
+                                .addComponent(curDueaLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(curAsDate))
                             .addGroup(curPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel11)
+                                .addComponent(curAsgnLabel)
                                 .addGap(18, 18, 18)
                                 .addComponent(curAsName)
                                 .addGap(28, 28, 28)))
@@ -302,9 +304,9 @@ public class StudentMain extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, curPanelLayout.createSequentialGroup()
                         .addGroup(curPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(curPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel15)
+                                .addComponent(curStateLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
-                                .addComponent(jLabel16))
+                                .addComponent(curSubLabel))
                             .addComponent(subPathField))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 14, Short.MAX_VALUE)
                         .addGroup(curPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -319,11 +321,11 @@ public class StudentMain extends javax.swing.JFrame {
                 .addGroup(curPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(curPanelLayout.createSequentialGroup()
                         .addGroup(curPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel11)
+                            .addComponent(curAsgnLabel)
                             .addComponent(curAsName))
                         .addGap(5, 5, 5)
                         .addGroup(curPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel13)
+                            .addComponent(curDueaLabel)
                             .addComponent(curAsDate)))
                     .addComponent(downAsgnBtn))
                 .addGap(25, 25, 25)
@@ -335,12 +337,21 @@ public class StudentMain extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(submitBtn))
                     .addGroup(curPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel16)
-                        .addComponent(jLabel15)))
+                        .addComponent(curSubLabel)
+                        .addComponent(curStateLabel)))
                 .addContainerGap(28, Short.MAX_VALUE))
         );
 
         jPanel1.add(curPanel);
+
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        userNameLabel.setText("Welcome");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -351,34 +362,43 @@ public class StudentMain extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel7))
-                .addGap(18, 18, 18)
+                    .addComponent(pastAssLabel)
+                    .addComponent(curAssLabel)
+                    .addComponent(userNameLabel))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(103, 103, 103)
+                        .addComponent(selectLabel)
+                        .addGap(6, 6, 6)
                         .addComponent(courseCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(enrollBtn))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 47, Short.MAX_VALUE))
+                        .addComponent(enrollBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
+                    .addComponent(selectLabel)
                     .addComponent(courseCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(enrollBtn))
+                    .addComponent(enrollBtn)
+                    .addComponent(jButton1)
+                    .addComponent(userNameLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(curAssLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel10)
+                        .addComponent(pastAssLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -410,7 +430,10 @@ public class StudentMain extends javax.swing.JFrame {
         else {
             client.sendUTFDataToServer("SEND_SUBMISSION");
             long millis=System.currentTimeMillis();
-            Assignment subToSend = new Assignment(asgn.getName(), asgn.getAuthor(), asgn.getDuedate(), new Date(millis), subPathToSend.getAbsolutePath(), -1);
+            String section = (String)courseCombo.getSelectedItem();
+            section = section.substring(section.lastIndexOf("-") + 1);
+            String subFileName = section + "_" + client.getName() + "_" + asgn.getName();
+            Assignment subToSend = new Assignment(subFileName, asgn.getAuthor(), asgn.getDuedate(), new Date(millis), subPathToSend.getAbsolutePath(), -1);
             client.sendObjectToServer(subToSend);
             client.sendUTFDataToServer((String)courseCombo.getSelectedItem());
             try {
@@ -418,8 +441,10 @@ public class StudentMain extends javax.swing.JFrame {
                 zipParams.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);
                 zipParams.setCompressionLevel(Zip4jConstants.DEFLATE_LEVEL_NORMAL);
                 
-                String compressedPath = subPathToSend.getParent() + "/" + subToSend.getName()  + ".zip";
-                //System.out.println(compressedPath);
+                
+                
+                String compressedPath = subPathToSend.getParent() + "/" + section + "_" + client.getName() + "_" + subToSend.getName()  + ".zip";
+                System.out.println(compressedPath);
                 ZipFile compressedFile;
             
                 compressedFile = new ZipFile(compressedPath);
@@ -432,10 +457,18 @@ public class StudentMain extends javax.swing.JFrame {
                 byte[] data = new byte[(int) toSendZip.length()];
                 
                 fis.read(data);
-                //System.out.println(java.util.Arrays.toString(data));
+                System.out.println(java.util.Arrays.toString(data));
                 fis.close();
                
                 client.sendObjectToServer(data);
+                
+                String result = client.getUTFDataFromServer();
+                if(result.equals("DONE")) {
+                    JOptionPane.showMessageDialog(this, "Submission Complete", "Call-IDE Submission System!", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else {
+                    JOptionPane.showMessageDialog(this, "Submisson Failed", "Call-IDE Error!", JOptionPane.ERROR_MESSAGE);
+                }
             } catch (ZipException ex) {
                 Logger.getLogger(StudentMain.class.getName()).log(Level.SEVERE, null, ex);
             } catch (FileNotFoundException ex) {
@@ -494,6 +527,7 @@ public class StudentMain extends javax.swing.JFrame {
     }
     private void courseComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_courseComboActionPerformed
         // TODO add your handling code here:
+        //initCourses();
         initCurAssignments();
         initPastAssignments();
     }//GEN-LAST:event_courseComboActionPerformed
@@ -503,6 +537,11 @@ public class StudentMain extends javax.swing.JFrame {
         toDown = allSubmissions.get(currentAsgnIndex);
         downloadFrom(toDown);
     }//GEN-LAST:event_downSubBtnActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        initCourses();
+    }//GEN-LAST:event_jButton1ActionPerformed
     
     public void initModels() {
         curModel = (DefaultListModel) curList.getModel();
@@ -520,14 +559,23 @@ public class StudentMain extends javax.swing.JFrame {
               if (index >= 0) {
                 currentAsgnIndex = index;
                 Assignment temp = curAssignments.get(index);
-                Object o = theList.getModel().getElementAt(index);
-                curAsName.setText(temp.getName());
-                curAsDate.setText(temp.getDuedate().toString());
-                if(!curPanel.isVisible()) {
-                    pastPanel.setVisible(false);
-                    curPanel.setVisible(true);
+                if(getSubmitted(temp) != null) {
+                    constructPastPanel(index, temp);
+                    if(!pastPanel.isVisible()) {
+                    curPanel.setVisible(false);
+                    pastPanel.setVisible(true);
+                    }
                 }
-                //System.out.println("Double-clicked on: " + o.toString());
+                else {
+                    Object o = theList.getModel().getElementAt(index);
+                    curAsName.setText(temp.getName());
+                    curAsDate.setText(temp.getDuedate().toString());
+                    if(!curPanel.isVisible()) {
+                        pastPanel.setVisible(false);
+                        curPanel.setVisible(true);
+                    }
+                    System.out.println("Double-clicked on: " + o.toString());
+                }
               }
             }
           }
@@ -550,6 +598,7 @@ public class StudentMain extends javax.swing.JFrame {
                 pastAsSubDate.setText("Submitted(" + temp.getSubdate() + ")");
                 gradeLabel.setText("" + temp.getGrade());*/
                 constructPastPanel(index);
+                
                 if(!pastPanel.isVisible()) {
                     curPanel.setVisible(false);
                     pastPanel.setVisible(true);
@@ -568,6 +617,29 @@ public class StudentMain extends javax.swing.JFrame {
         pastAsName.setText(temp.getName());
         pastAsDueDate.setText(temp.getDuedate().toString());
         Assignment tempSub = getSubmitted(temp);
+        System.out.println(temp.getName());
+        if(tempSub != null) {
+            pastAsSubDate.setText("Submitted(" + tempSub.getSubdate() + ")");
+            downSubBtn.setEnabled(true);
+            if(tempSub.getGrade() != -1) {
+                gradeLabel.setText("" + tempSub.getGrade());
+            }
+            else {
+                gradeLabel.setText("-");
+            }
+        }
+        else {
+            pastAsSubDate.setText("Not Submitted");
+            downSubBtn.setEnabled(false);
+            gradeLabel.setText("-");
+        }
+    }
+    public void constructPastPanel(int index, Assignment temp) {
+        //Assignment temp = pastAssignments.get(index);
+        pastAsName.setText(temp.getName());
+        pastAsDueDate.setText(temp.getDuedate().toString());
+        Assignment tempSub = getSubmitted(temp);
+        System.out.println(temp.getName());
         if(tempSub != null) {
             pastAsSubDate.setText("Submitted(" + tempSub.getSubdate() + ")");
             downSubBtn.setEnabled(true);
@@ -588,7 +660,8 @@ public class StudentMain extends javax.swing.JFrame {
     public Assignment getSubmitted(Assignment asgn) {
         
         for( Assignment temp : allSubmissions) {
-            if(asgn.equals(temp)) {
+            String asgnName = temp.getName().substring(temp.getName().lastIndexOf("_") + 1);
+            if(asgn.getName().equals(asgnName)) {
                 return temp;
             }
         }
@@ -600,7 +673,7 @@ public class StudentMain extends javax.swing.JFrame {
         curModel.clear();
         if(courseCode != null) {
             client.sendUTFDataToServer(courseCode);
-            //System.out.println((String)courseCombo.getSelectedItem());
+            System.out.println((String)courseCombo.getSelectedItem());
             curAssignments = (ArrayList<Assignment>) client.getObjectFromServer();
             curAssignmentNames = new ArrayList<String>();
 
@@ -655,37 +728,39 @@ public class StudentMain extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel asgnLabel;
     private javax.swing.JButton chooseSubPathBtn;
     private javax.swing.JComboBox courseCombo;
     private javax.swing.JLabel curAsDate;
     private javax.swing.JLabel curAsName;
+    private javax.swing.JLabel curAsgnLabel;
+    private javax.swing.JLabel curAssLabel;
+    private javax.swing.JLabel curDueaLabel;
     private javax.swing.JList curList;
     private javax.swing.JPanel curPanel;
+    private javax.swing.JLabel curStateLabel;
+    private javax.swing.JLabel curSubLabel;
     private javax.swing.JButton downAsgnBtn;
     private javax.swing.JButton downAsgnFromSubBtn;
     private javax.swing.JButton downSubBtn;
+    private javax.swing.JLabel dueLabel;
     private javax.swing.JButton enrollBtn;
     private javax.swing.JLabel gradeLabel;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel pastAsDueDate;
     private javax.swing.JLabel pastAsName;
     private javax.swing.JLabel pastAsSubDate;
+    private javax.swing.JLabel pastAssLabel;
+    private javax.swing.JLabel pastGradeLabel;
     private javax.swing.JList pastList;
     private javax.swing.JPanel pastPanel;
+    private javax.swing.JLabel pastStateLabel;
+    private javax.swing.JLabel selectLabel;
     private javax.swing.JTextField subPathField;
     private javax.swing.JButton submitBtn;
+    private javax.swing.JLabel userNameLabel;
     // End of variables declaration//GEN-END:variables
 }

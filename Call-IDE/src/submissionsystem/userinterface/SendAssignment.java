@@ -1,7 +1,5 @@
 package submissionsystem.userinterface;
 
-import submissionsystem.*;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -37,6 +35,7 @@ public class SendAssignment extends javax.swing.JFrame {
         client = pclient;
         courseCode = code;
         initComponents();
+        courseNameLabel.setText(courseCode);
     }
 
     /**
@@ -48,32 +47,24 @@ public class SendAssignment extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        cLabel = new javax.swing.JLabel();
+        asgnLabel = new javax.swing.JLabel();
+        dueLabel = new javax.swing.JLabel();
         nameField = new javax.swing.JTextField();
         dueDate = new javax.swing.JTextField();
-        metRestField = new javax.swing.JTextField();
-        classRestField = new javax.swing.JTextField();
         browseBtn = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
+        asgnFileLabel = new javax.swing.JLabel();
         publishBtn = new javax.swing.JButton();
-        courseName = new javax.swing.JLabel();
+        courseNameLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Publish Assignment");
 
-        jLabel1.setText("Course:");
+        cLabel.setText("Course:");
 
-        jLabel2.setText("Assignment Name: ");
+        asgnLabel.setText("Assignment Name: ");
 
-        jLabel3.setText("Due Date: ");
-
-        jLabel4.setText("Method Restrictions: ");
-
-        jLabel5.setText("Class Restrictions: ");
+        dueLabel.setText("Due Date: ");
 
         browseBtn.setText("Browse");
         browseBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -82,7 +73,7 @@ public class SendAssignment extends javax.swing.JFrame {
             }
         });
 
-        jLabel6.setText("Assignment File");
+        asgnFileLabel.setText("Assignment File");
 
         publishBtn.setText("Publish");
         publishBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -91,43 +82,32 @@ public class SendAssignment extends javax.swing.JFrame {
             }
         });
 
-        courseName.setText("CS");
+        courseNameLabel.setText("CS");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(asgnLabel)
+                            .addComponent(dueLabel)
+                            .addComponent(cLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(courseName)
+                            .addComponent(courseNameLabel)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(nameField, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
                                 .addComponent(dueDate))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(15, 15, 15)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6))
-                                .addGap(18, 18, 18))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(browseBtn)
-                                .addGap(58, 58, 58)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(metRestField, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
-                            .addComponent(classRestField)
-                            .addComponent(publishBtn, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addComponent(asgnFileLabel)
+                            .addComponent(browseBtn))
+                        .addGap(171, 171, 171)
+                        .addComponent(publishBtn)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -135,32 +115,24 @@ public class SendAssignment extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(courseName))
+                    .addComponent(cLabel)
+                    .addComponent(courseNameLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
+                    .addComponent(asgnLabel)
                     .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
+                    .addComponent(dueLabel)
                     .addComponent(dueDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(metRestField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(classRestField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(publishBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel6)
+                        .addComponent(asgnFileLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(browseBtn)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         pack();
@@ -236,23 +208,14 @@ public class SendAssignment extends javax.swing.JFrame {
         
     }//GEN-LAST:event_browseBtnActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel asgnFileLabel;
+    private javax.swing.JLabel asgnLabel;
     private javax.swing.JButton browseBtn;
-    private javax.swing.JTextField classRestField;
-    private javax.swing.JLabel courseName;
+    private javax.swing.JLabel cLabel;
+    private javax.swing.JLabel courseNameLabel;
     private javax.swing.JTextField dueDate;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JTextField metRestField;
+    private javax.swing.JLabel dueLabel;
     private javax.swing.JTextField nameField;
     private javax.swing.JButton publishBtn;
     // End of variables declaration//GEN-END:variables

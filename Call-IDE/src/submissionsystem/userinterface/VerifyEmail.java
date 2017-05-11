@@ -1,10 +1,10 @@
 package submissionsystem.userinterface;
 
-import submissionsystem.*;
-
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 
 /**
  *
@@ -17,17 +17,17 @@ public class VerifyEmail extends javax.swing.JFrame {
     /**
      * Creates new form Submission_Login
      */
-    public VerifyEmail() {
-        client = new Client();
-        client.connectServer();
-        client.sendUTFDataToServer("REGISTER_OPEN");
-        addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosing(WindowEvent e) {
-                        client.closeConnection();
-                }
-        });
+    public VerifyEmail(Client pclient) {
+        client = pclient;
+        
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				client.closeConnection();
+			}
+		});
         initComponents();
+        confirmVerifCodeButton.setEnabled(false);
         
     }
 
@@ -41,9 +41,9 @@ public class VerifyEmail extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        emailLabel = new javax.swing.JLabel();
         mailField = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
+        verifLabel = new javax.swing.JLabel();
         verifCodeField = new javax.swing.JTextField();
         confirmVerifCodeButton = new javax.swing.JButton();
         sendVerifCodeButton = new javax.swing.JButton();
@@ -51,7 +51,7 @@ public class VerifyEmail extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("E-mail Verification");
 
-        jLabel1.setText("E-mail:");
+        emailLabel.setText("E-mail:");
 
         mailField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -59,7 +59,7 @@ public class VerifyEmail extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Verification Code: ");
+        verifLabel.setText("Verification Code: ");
 
         confirmVerifCodeButton.setText("Confirm");
         confirmVerifCodeButton.addActionListener(new java.awt.event.ActionListener() {
@@ -82,8 +82,8 @@ public class VerifyEmail extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1))
+                    .addComponent(verifLabel)
+                    .addComponent(emailLabel))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(mailField, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
@@ -99,12 +99,12 @@ public class VerifyEmail extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
+                    .addComponent(emailLabel)
                     .addComponent(mailField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(sendVerifCodeButton))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
+                    .addComponent(verifLabel)
                     .addComponent(verifCodeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(confirmVerifCodeButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -131,48 +131,49 @@ public class VerifyEmail extends javax.swing.JFrame {
     private void sendVerifCodeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendVerifCodeButtonActionPerformed
         // TODO add your handling code here:
         // send e-mail
+        client.sendUTFDataToServer("REGISTER_OPEN");
         mailField.setEditable(false);
         client.sendUTFDataToServer(mailField.getText());
+        String ans = client.getUTFDataFromServer();
+        if(ans.equals("IS_EMAIL")) {
+            confirmVerifCodeButton.setEnabled(true);
+        }
+        else {
+            confirmVerifCodeButton.setEnabled(false);
+            String insCode = client.getUTFDataFromServer();
+            JOptionPane.showMessageDialog(this, "Wrong e-mail address, your institute code is: " + insCode, "Call-IDE Error!", JOptionPane.ERROR_MESSAGE);
+            mailField.setEditable(true);
+        }
     }//GEN-LAST:event_sendVerifCodeButtonActionPerformed
 
     private void confirmVerifCodeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmVerifCodeButtonActionPerformed
-        // TODO add your handling code here:
-        String ans = client.getUTFDataFromServer();
-        
+
         // not valid email
-        if(ans.equals("IS_EMAIL")) {
-                client.sendUTFDataToServer(verifCodeField.getText());
-                if(client.getUTFDataFromServer().equals("ACCEPT_USER")) {
-                        //System.out.println(client.getUTFDataFromServer());
+        client.sendUTFDataToServer(verifCodeField.getText());
+        if(client.getUTFDataFromServer().equals("ACCEPT_USER")) {
+                //System.out.println(client.getUTFDataFromServer());
 
-                        regFrame = new RegFrame(client, mailField.getText());
-                        
-                        regFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                        regFrame.setLocationRelativeTo(this);
-                        regFrame.setVisible(true);
+                regFrame = new RegFrame(client, mailField.getText());
+
+                regFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                regFrame.setLocationRelativeTo(this);
+                regFrame.setVisible(true);
 
 
-                        dispose();
-                }
-
+                dispose();
         }
-        else {
-                //System.out.println(ans);
-        }
+
+        
+        
     }//GEN-LAST:event_confirmVerifCodeButtonActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton confirmVerifCodeButton;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel emailLabel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField mailField;
     private javax.swing.JButton sendVerifCodeButton;
     private javax.swing.JTextField verifCodeField;
+    private javax.swing.JLabel verifLabel;
     // End of variables declaration//GEN-END:variables
 }
