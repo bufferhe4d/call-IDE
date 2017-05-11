@@ -11,7 +11,7 @@ import javax.swing.tree.TreeNode;
 import com.github.javaparser.Position;
 
 /**
- * The JTree component to visualise methods and constructors.
+ * The JTree component to visualize methods and constructors.
  * @author Emin Bahadir Tuluce
  * @version 1.0
  */
@@ -43,7 +43,7 @@ public class SummaryTree extends JTree implements TreeSelectionListener {
     private void configureNodes(TreeNode node) {
         if (node instanceof VisitableNode)
             ((VisitableNode) node).configureNode();
-        else
+        else if( node != null )
             for (int i = 0; i < node.getChildCount(); i++)
                 configureNodes( node.getChildAt(i));
     }
@@ -51,4 +51,5 @@ public class SummaryTree extends JTree implements TreeSelectionListener {
     public void configureTree() {
         configureNodes((TreeNode) treeModel.getRoot());
     }
+
 }

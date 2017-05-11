@@ -2143,6 +2143,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             @Override
             public void valueChanged(ListSelectionEvent lse) {
                 helpPane.setText(helpStrings.get(helpList.getSelectedIndex()));
+                helpPane.setCaretPosition(0);
             }
         });
     }
@@ -2321,8 +2322,13 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
 
     /** Closes the tab on the given index. */
     private void closeTab( int index) {
-        methodParser.removeNode( files.remove( index));
-        methodSummary.updateUI();
+        if( !projectMode && files.get(index) != null)	
+	        {			
+	            methodParser.removeNode( files.remove( index));
+	            methodSummary.updateUI();
+	        }			
+	        else			
+	            files.remove( index);
         savedContents.remove( index);
         tabTitles.remove( index);
         textAreas.remove( index);
@@ -2331,6 +2337,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             autosavers.remove( index);
         else
             autosavers.remove( index).stop();
+        //methodSummary.configureTree();
     }
 
     /** Arranges the split pane divider locations for a better look. */
@@ -2410,8 +2417,11 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 saver.save( content);
                 savedContents.set( files.indexOf( file), content);
                 printStatus( "File updated: " + file.getName());
+                if (projectMode &&  getProjectHandler( file) != null )	
+                    updateMethodSummary( getProjectHandler( file).getSrc());			
+                else			
+                    updateMethodSummary( file);
                 updateAutoComplete( file);
-                updateMethodSummary( file);
                 return true;
             }
         } catch (IOException e) {
@@ -2430,7 +2440,8 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             JFileChooser chooser = new JFileChooser();
             if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
                 File selected = chooser.getSelectedFile();
-                methodParser.removeNode( file);
+                if(!projectMode)
+                    methodParser.removeNode( file);
                 if (selected.getName().contains("."))
                     file = new File(selected.getParent() + "/" + selected.getName());
                 else
@@ -2454,8 +2465,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                     } catch (NullPointerException ex) {}
                 }
                 updateAutoComplete( file);
-                updateMethodSummary( file);
-                methodSummary.updateUI();
+                if (!projectMode) {
+                    updateMethodSummary( file);
+                    methodSummary.updateUI();
+                }
 
                 return true;
             }
@@ -2502,7 +2515,8 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                                                    this, preferences.getAutosaveIn()));
             savedContents.add( content);
             textTabs.setSelectedIndex( textAreas.size() - 1);
-            updateMethodSummary( file);
+            if(!projectMode)
+                updateMethodSummary( file);
             printStatus( "File opened: " + file.getName());
         } catch (IOException e) {
             showError( "An error occured while opening the file.");
@@ -2521,6 +2535,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         } catch(IOException e) {
             showError( "An error occured while creating a new file.");
         }
+        methodSummary.configureTree();
     }
 
     /** Supplies access to the active file on the editor. */
@@ -3230,6 +3245,12 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
 
     /** Updates the method summary tree's contents according to the given file. */
     private void updateMethodSummary( File file) {
+        if (projectMode) {	
+	            try {		
+	                methodParser.refreshNode( file);			
+	            } catch (Exception ex) {}			
+	        }			
+        else {			
         try {
             if (file.getName().endsWith(".java")) {
                 if (!methodParser.contains(file))
@@ -3238,6 +3259,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                     methodParser.refreshNode( file);
             }
         } catch (ParseException | IOException | ParseProblemException ex ) {}
+        }
         methodSummary.configureTree();
         methodSummary.expandRow(0);
         methodSummary.updateUI();
@@ -3248,7 +3270,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     public void visitNode( File file, Position position) {
         int index = -1;
         for (int i = 0; i < files.size(); i++) {
-            if (file == files.get(i))
+            if ( files.get(i)!= null && file.getAbsolutePath().equals( files.get(i).getAbsolutePath()))
                 index = i;
         }
         if (index == -1) {
@@ -3353,6 +3375,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             if (fileExplorer == null || !fileExplorer.isProjectBrowser()) {
                 if (fileExplorer != null)
                     explorerScrollPane.remove(fileExplorer);
+                methodParser.clearNodes();
                 addExplorerWith( handler.getPath());
                 fileExplorer.setIsProjectBrowser(true);
                 projectMode = true;
@@ -3368,6 +3391,13 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 fw.registerAll( handler.getSrc().toPath());
                 fw.start();
             } catch (IOException e) {}
+            try {			
+	        methodParser.addPackage( handler.getSrc(), handler.getName());				                			
+	        methodSummary.expandRow(0);			
+                methodSummary.updateUI();			
+            } catch (Exception e) {}			
+	        updateProjects();			
+	        methodSummary.configureTree();
             printStatus( "Project opened: " + handler.getName());
         }
     }
@@ -3638,9 +3668,35 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 addEmptyExplorer();
                 noWorkspacePanel.setVisible(true);
             }
+            methodParser.clearNodes();
+            for (File file : files) {
+                if( file != null )			
+                    try {
+                        methodParser.addNode(file);
+                    }catch (Exception e) {}
+            }
+            methodSummary.configureTree();
             fileExplorer.setIsProjectBrowser(false);
             projectMode = false;
         }
+        else {	
+        methodParser.removeNode(selectedProject.getSrc());
+        }
+        ArrayList<File> filesToClose = selectedProject.getAllJavaFiles();			
+        File projectFile;			
+        File openedFile;			
+        for (int i = filesToClose.size() - 1; 0 <= i; i--) {			
+            projectFile = filesToClose.get(i);			
+            for (int j = files.size() - 1; 0 <= j; j--) {			
+                openedFile = files.get(j);			
+                if (projectFile.equals(openedFile)) {			
+                    int closeIndex = files.indexOf(openedFile);			
+                    textTabs.setSelectedIndex(closeIndex);			
+                    checkTab(closeIndex);			
+                }			
+            }			
+        }			
+        methodSummary.updateUI();
         printStatus( "Project closed: " + selectedProject.getName());
     }
 
