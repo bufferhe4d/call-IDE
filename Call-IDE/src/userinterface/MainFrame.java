@@ -2380,6 +2380,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 saver.save( content);
                 savedContents.set( files.indexOf( file), content);
                 printStatus( "File updated: " + file.getName());
+                updateAutoComplete( file);
                 updateMethodSummary( file);
                 return true;
             }
@@ -2422,6 +2423,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                         fileExplorer.updateDirectory(selected.getParent());
                     } catch (NullPointerException ex) {}
                 }
+                updateAutoComplete( file);
                 updateMethodSummary( file);
                 methodSummary.updateUI();
 
@@ -3165,6 +3167,24 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         return textTabs.getSelectedIndex() != -1;
     }
 
+    /**
+     * A method to update the auto-completion list for class
+     * @param file a parameter to take the active file to parse
+     */
+    public void updateAutoComplete( File file)
+    {
+        autoComplete = new AutoComplete( getActiveTextArea(), file);
+        
+        try {
+            if (file.getName().endsWith(".java")) {
+                
+                    autoComplete.updateAutoComplete();
+            }
+        } catch (IOException | ParseProblemException ex ) {
+            
+        }
+    }
+            
     /** Inserts the method summary tree to the main frame. */
     private void initMethodSummary() {
         try {
@@ -3836,6 +3856,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private PrintStream stdOut;
     private PrintStream stdErr;
     private ConsoleBuilder builder;
+    private AutoComplete autoComplete;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutButton;
@@ -4025,7 +4046,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private javax.swing.JCheckBox wholeWordCheck;
     private javax.swing.JMenu windowMenu;
     private javax.swing.JLabel workspaceLabel;
-    private javax.swing.JTextField workspaceTextField;
+    private javax.swing.JTextField workspaceTextField;      
     // End of variables declaration//GEN-END:variables
 
 }
