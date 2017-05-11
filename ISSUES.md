@@ -18,15 +18,15 @@
 <del>Enable opening .callide extension from the operating system.</del><br>
 <del>Enable opening projects by selecting .callide files in the file chooser dialog.</del> <br>
 
-Implement and integrate the auto-complete functionality to the editor.<br>
+<del>Implement and integrate the auto-complete functionality to the editor.</del><br>
 
 <del>Update stop the program icon.</del><br>
 <del>Add a refresh icon.</del><br>
 
-Write a help contents documentation.<br>
+<del>Write a help contents documentation.</del><br>
 
 <del>Write a proper About page.</del><br>
 
 <br><br>
 
-10.05.2017 - 22:16
+12.05.2017 - 00:28
