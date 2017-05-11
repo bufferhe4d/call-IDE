@@ -527,7 +527,7 @@ public class InsMain extends javax.swing.JFrame {
     public void constuctAssignmentPanel(int index) {
         String course = (String) model.getElementAt(index);
         courseTitleLabel.setText(course);
-        System.out.println("inside");
+        // System.out.println("inside");
         client.sendUTFDataToServer("CONSTRUCT_ASSIGNMENT_PANEL");
         client.sendUTFDataToServer(course);
         allAssignments = (ArrayList<Assignment>) client.getObjectFromServer();
@@ -551,7 +551,7 @@ public class InsMain extends javax.swing.JFrame {
         public void valueChanged(ListSelectionEvent event) {
             if (subTable.getSelectedRow() > -1) {
                 // print first column value from selected row
-                System.out.println(subTable.getValueAt(subTable.getSelectedRow(), 0).toString());
+                // System.out.println(subTable.getValueAt(subTable.getSelectedRow(), 0).toString());
                 downSubBtn.setEnabled(true);
                 gradeField.setEditable(true);
                 sendGradeBtn.setEnabled(true);

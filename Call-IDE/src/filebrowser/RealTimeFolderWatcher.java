@@ -51,7 +51,6 @@ public class RealTimeFolderWatcher extends Thread {
                 .forEach(path -> {
                 try {
                     path.register(folderWatcher, events, SensitivityWatchEventModifier.HIGH);
-                    // System.out.println("The reg path: " + path);
                 } catch (Exception ex) {}
             });
             // call this method for each path: dir.register(folderWatcher, events, SensitivityWatchEventModifier.HIGH);

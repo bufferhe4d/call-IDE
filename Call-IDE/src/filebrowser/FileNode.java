@@ -344,7 +344,7 @@ public class FileNode extends DefaultMutableTreeNode
     public void closeFile() 
     {
         if(  getAllowsChildren() )
-            for( int i = 0 ; i < this.getChildCount() ; i++)
+            for( int i = this.getChildCount() - 1 ; i >= 0  ; i--)
         {
             if( !isEmpty() )
                 ((FileNode)this.getChildAt(i)).closeFile();

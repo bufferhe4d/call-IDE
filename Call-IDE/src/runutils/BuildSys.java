@@ -229,7 +229,6 @@ public class BuildSys {
         
         try {
             p.fireBuildStarted();
-            // out.println("ant");
             p.init();
             ProjectHelper helper = ProjectHelper.getProjectHelper();
             p.addReference("ant.projectHelper", helper);

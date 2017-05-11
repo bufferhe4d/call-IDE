@@ -74,25 +74,25 @@ public class Parser {
     /** This method clears the tree */
     public void clearNodes()
     {
-        ArrayList<MutableTreeNode> childrenOfRoot;
-        childrenOfRoot = (ArrayList<MutableTreeNode>) rootNode.children();
-        for( MutableTreeNode child : childrenOfRoot)
-        {
-            child.removeFromParent();
-        }
+        rootNode.removeAllChildren();
     }
     
     public boolean contains( File file) {
         for (int i = 0; i < rootNode.getChildCount(); i++)
+        {
             if (((ClassNode) (rootNode.getChildAt(i))).file == file)
             return true;
+        }
         return false;
     }
     
     public void refreshNode( File file) throws ParseException, IOException {
         int index = getRow( file);
         ((MutableTreeNode) rootNode.getChildAt(index)).removeFromParent();
-        rootNode.insert(new ClassNode(file), index);
+        if( file.getName().endsWith(".java"))
+            rootNode.insert(new ClassNode(file), index);
+        else
+            rootNode.insert(new PackageNode(file, file.getParentFile().getName()), index);
     }
     
     public void removeNode( File file) {
@@ -141,15 +141,24 @@ public class Parser {
                 }
             }
             return mains;
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return new ArrayList<File>();
     }
     
     private int getRow( File file) {
         for (int i = 0; i < rootNode.getChildCount(); i++)
-            if (((ClassNode) (rootNode.getChildAt(i))).file == file)
-            return i;
+        {
+            if ((file.isFile() && ((ClassNode) (rootNode.getChildAt(i))).file == file)  || ( file.isDirectory() && ((PackageNode) (rootNode.getChildAt(i))).file == file))
+                return i;
+        }       
         return -1;
+    }
+    
+    public void addPackage( File packageFile, String title) throws ParseException, IOException {
+        PackageNode insertedNode = new PackageNode( packageFile, title);
+        rootNode.add( insertedNode);
     }
     
 }

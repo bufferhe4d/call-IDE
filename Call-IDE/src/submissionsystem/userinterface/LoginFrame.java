@@ -153,7 +153,7 @@ public class LoginFrame extends javax.swing.JFrame {
                 //System.out.println(name);
                 dispose();
         } else {
-                System.out.println("Wrong User name or password");
+                //System.out.println("Wrong User name or password");
                 JOptionPane.showMessageDialog(this, "Wrong username or password.", "Call-IDE Error!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_loginActionPerformed

@@ -54,7 +54,6 @@ public class RunFile implements Runnable{
                 }
             }
             // allDeps = allDeps.substring(0, allDeps.length()-1);
-            // System.out.println(allDeps + buildPath);
             ProcessBuilder builder = new ProcessBuilder("java", "-cp", allDeps + buildPath, fn);
             process = builder.start();
             

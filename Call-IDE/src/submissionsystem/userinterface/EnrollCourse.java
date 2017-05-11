@@ -87,7 +87,6 @@ public class EnrollCourse extends JFrame {
 
     private void enrollBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enrollBtnActionPerformed
         // TODO add your handling code here:
-        System.out.println("test");
         
         cKey = cKeyField.getText();
         client.sendUTFDataToServer(cKey);
@@ -95,7 +94,7 @@ public class EnrollCourse extends JFrame {
         String ans = client.getUTFDataFromServer();
         
         if(ans.equals("ENROLLED")) {
-            System.out.println("Enrolled");
+            // System.out.println("Enrolled");
             String courseCode = client.getUTFDataFromServer();
             informLabel.setText("Class Key for: " + courseCode + " , Enrollment Complete." );
             JOptionPane.showMessageDialog(this, "Class Key for: " + courseCode ,  "Enrollment Complete" , JOptionPane.ERROR_MESSAGE);

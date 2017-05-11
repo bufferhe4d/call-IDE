@@ -157,7 +157,7 @@ public class VerifyEmail extends javax.swing.JFrame {
 
         }
         else {
-                System.out.println(ans);
+                //System.out.println(ans);
         }
     }//GEN-LAST:event_confirmVerifCodeButtonActionPerformed
 

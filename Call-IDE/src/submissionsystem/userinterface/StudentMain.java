@@ -419,7 +419,7 @@ public class StudentMain extends javax.swing.JFrame {
                 zipParams.setCompressionLevel(Zip4jConstants.DEFLATE_LEVEL_NORMAL);
                 
                 String compressedPath = subPathToSend.getParent() + "/" + subToSend.getName()  + ".zip";
-                System.out.println(compressedPath);
+                //System.out.println(compressedPath);
                 ZipFile compressedFile;
             
                 compressedFile = new ZipFile(compressedPath);
@@ -432,7 +432,7 @@ public class StudentMain extends javax.swing.JFrame {
                 byte[] data = new byte[(int) toSendZip.length()];
                 
                 fis.read(data);
-                System.out.println(java.util.Arrays.toString(data));
+                //System.out.println(java.util.Arrays.toString(data));
                 fis.close();
                
                 client.sendObjectToServer(data);
@@ -527,7 +527,7 @@ public class StudentMain extends javax.swing.JFrame {
                     pastPanel.setVisible(false);
                     curPanel.setVisible(true);
                 }
-                System.out.println("Double-clicked on: " + o.toString());
+                //System.out.println("Double-clicked on: " + o.toString());
               }
             }
           }
@@ -600,7 +600,7 @@ public class StudentMain extends javax.swing.JFrame {
         curModel.clear();
         if(courseCode != null) {
             client.sendUTFDataToServer(courseCode);
-            System.out.println((String)courseCombo.getSelectedItem());
+            //System.out.println((String)courseCombo.getSelectedItem());
             curAssignments = (ArrayList<Assignment>) client.getObjectFromServer();
             curAssignmentNames = new ArrayList<String>();
 
