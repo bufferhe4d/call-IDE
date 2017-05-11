@@ -3154,10 +3154,11 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             printStatus( "The file should be saved to its modified version before compiling.");
             return;
         }
-        if (getActiveFile() != null)
+        if (getActiveFile() == null)
             return;
-        if ( !hasMainMethod(getActiveFile()))
+        if ( !hasMainMethod(getActiveFile())) {
             return;
+        }
         JTextPane insertedPane = compileCurrentFile();
         if (insertedPane != null) {
             insertedPane.getDocument().addDocumentListener(new DocumentListener() {
@@ -3169,8 +3170,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                         runCurrentFile();
                         insertedPane.getDocument().removeDocumentListener(this);
                     }
-                    else if (insertedPane.getText().contains( "BUILD FAILED"))
-                        insertedPane.getDocument().removeDocumentListener(this);
                 }
             });
         }
