@@ -889,7 +889,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         helpSplitPane.setDividerLocation(90);
 
         helpList.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "General", "Editing", "Building", "Window", "Projects", "Options" };
+            String[] strings = { "General", "Editing", "Building", "Hotkeys", "Projects", "Preferences" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });

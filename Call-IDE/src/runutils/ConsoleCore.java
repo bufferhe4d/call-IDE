@@ -25,7 +25,6 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
-import helputils.ErrorHelper;
 import java.awt.BorderLayout;
 import java.io.PrintStream;
 
@@ -264,7 +263,6 @@ public class ConsoleCore {
                     {
                         // get the error line to use in errorhelper
                         error = s.nextLine();
-                        ErrorHelper.addError(error);
                         publish(error + "\n");
                     }
                     else
