@@ -52,13 +52,7 @@ public class BuildSys {
             
             updateBuildFile( filepath, doc);
             
-        } catch (ParserConfigurationException pce) {
-            pce.printStackTrace();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        } catch (SAXException sae) {
-            sae.printStackTrace();
-        }
+        } catch (Exception exc) {}
     }
     
     public static void setPropsForCompileFile(String init, String sourceFile) {
@@ -90,13 +84,7 @@ public class BuildSys {
             
             updateBuildFile( filepath, doc);
             
-        } catch (ParserConfigurationException pce) {
-            pce.printStackTrace();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        } catch (SAXException sae) {
-            sae.printStackTrace();
-        }
+        } catch (Exception ex) {}
     }
     
     public static void setPropsForCompileWithDepend(String init ,String build, String src, ArrayList<File> dependencies) {
@@ -136,13 +124,7 @@ public class BuildSys {
             
             updateBuildFile( filepath, doc);
             
-        } catch (ParserConfigurationException pce) {
-            pce.printStackTrace();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        } catch (SAXException sae) {
-            sae.printStackTrace();
-        }
+        } catch (Exception exc) {}
     }
     
     public static void setPropsForJar(String init, String buildDir, String distDir, String mainClassWithPackage, String jarName) {
@@ -215,9 +197,7 @@ public class BuildSys {
             
             updateBuildFile( filepath, doc);
             
-        } catch (ParserConfigurationException | IOException | SAXException pce) {
-            pce.printStackTrace();
-        }
+        } catch (Exception e) {}
     }
     
     
@@ -229,9 +209,7 @@ public class BuildSys {
             StreamResult result = new StreamResult(new File(filepath));
             transformer.transform(source, result);
             
-        } catch (TransformerException tfe) {
-            tfe.printStackTrace();
-        } 
+        } catch (Exception exc) {} 
         
     }
     
@@ -262,9 +240,7 @@ public class BuildSys {
             System.setOut(out);
             
             
-        } catch (BuildException e) {
-            p.fireBuildFinished(e);
-        }
+        } catch (Exception e) {}
     }
     
     public static void altCompile( String file) {
@@ -288,9 +264,7 @@ public class BuildSys {
             p.executeTarget(p.getDefaultTarget());
             p.fireBuildFinished(null);
           
-        } catch (BuildException e) {
-            p.fireBuildFinished(e);
-        }
+        } catch (Exception e) {}
     }
     
 }

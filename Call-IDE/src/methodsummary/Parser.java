@@ -141,9 +141,7 @@ public class Parser {
                 }
             }
             return mains;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {}
         return new ArrayList<File>();
     }
     

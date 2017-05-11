@@ -23,9 +23,7 @@ public class PreferencesConfigurer {
             objOut.writeObject( preferences); // Write the object data.
             objOut.close(); // Close the object stream.
             fileOut.close(); // Close the file stream.
-        } catch( IOException e) {
-            e.printStackTrace();
-        }
+        } catch( Exception e) {}
     }
     
     /** Loads the preferences object that is located on the given folder path. */
@@ -37,9 +35,7 @@ public class PreferencesConfigurer {
             preferences = (Preferences) objIn.readObject(); // Read the object data.
             objIn.close(); // Close the object stream.
             fileIn.close(); // Close the file stream.
-      } catch( IOException | ClassNotFoundException e) {
-          e.printStackTrace();
-      }
+      } catch( IOException | ClassNotFoundException e) {}
       return preferences;
     }
     

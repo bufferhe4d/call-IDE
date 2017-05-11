@@ -2985,7 +2985,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 cu = JavaParser.parse( file);
                 if (cu.getPackageDeclaration().isPresent())
                     packageName = cu.getPackageDeclaration().get().getName().toString();
-            } catch (IOException ex) {}
+            } catch (Exception ex) {}
             if(packageName.equals("")) {
                 classFileName = file.getName().substring(0,
                                 file.getName().length() - 5) + ".class";
@@ -3154,7 +3154,9 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             printStatus( "The file should be saved to its modified version before compiling.");
             return;
         }
-        if (getActiveFile() != null && !hasMainMethod(getActiveFile()))
+        if (getActiveFile() != null)
+            return;
+        if ( !hasMainMethod(getActiveFile()))
             return;
         JTextPane insertedPane = compileCurrentFile();
         if (insertedPane != null) {
@@ -3163,8 +3165,12 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 public void removeUpdate(DocumentEvent e) {}
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if (insertedPane.getText().contains( "BUILD SUCCESSFUL"))
+                    if (insertedPane.getText().contains( "BUILD SUCCESSFUL")) {
                         runCurrentFile();
+                        insertedPane.getDocument().removeDocumentListener(this);
+                    }
+                    else if (insertedPane.getText().contains( "BUILD FAILED"))
+                        insertedPane.getDocument().removeDocumentListener(this);
                 }
             });
         }
@@ -3451,7 +3457,9 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         Parser mainChecker = new Parser();
         try {
             mainChecker.addNode(file);
-        } catch (ParseException | IOException ex) {}
+        } catch (Exception ex) {
+            return true; // Should return true for errorenous source files.
+        }
         if (!mainChecker.hasMain(file)) {
             printStatus( "The class " + file.getName() + " does not have a proper main method.");
             return false;
@@ -3864,7 +3872,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             }
         }
         else {
-            ; // TODO NEEDS CLIENT
+            VerifyEmail verifyEmail = new VerifyEmail();
+            verifyEmail.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            verifyEmail.setLocationRelativeTo(this);
+            verifyEmail.setVisible(true);
         }
     }
 

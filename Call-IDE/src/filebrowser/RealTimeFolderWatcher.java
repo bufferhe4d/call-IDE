@@ -52,12 +52,10 @@ public class RealTimeFolderWatcher extends Thread {
                 try {
                     path.register(folderWatcher, events, SensitivityWatchEventModifier.HIGH);
                     // System.out.println("The reg path: " + path);
-                } catch (IOException ex) {
-                    Logger.getLogger(RealTimeFolderWatcher.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                } catch (Exception ex) {}
             });
             // call this method for each path: dir.register(folderWatcher, events, SensitivityWatchEventModifier.HIGH);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(RealTimeFolderWatcher.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -88,9 +86,7 @@ public class RealTimeFolderWatcher extends Thread {
                 // reset the key
                 key.reset();
             }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
+            catch (Exception e) {}
         }
     }
     

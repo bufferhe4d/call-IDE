@@ -129,7 +129,6 @@ public class JDKChecker
         }
         catch( Exception e)
         {
-            e.printStackTrace();
             return -1;
         }
     }

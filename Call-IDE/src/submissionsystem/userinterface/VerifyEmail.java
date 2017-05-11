@@ -17,15 +17,16 @@ public class VerifyEmail extends javax.swing.JFrame {
     /**
      * Creates new form Submission_Login
      */
-    public VerifyEmail(Client pclient) {
-        client = pclient;
-		client.sendUTFDataToServer("REGISTER_OPEN");
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				client.closeConnection();
-			}
-		});
+    public VerifyEmail() {
+        client = new Client();
+        client.connectServer();
+        client.sendUTFDataToServer("REGISTER_OPEN");
+        addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                        client.closeConnection();
+                }
+        });
         initComponents();
         
     }
