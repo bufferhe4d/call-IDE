@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><project default="main" name="Ant-Test">
+        <!-- Sets variables which can later be used. -->
+        <!-- The value of a property is accessed via ${} -->
+        <property location="/Users/ATTJ/Documents/callJoe/src" name="src.dir"/>
+        <property location="/Users/ATTJ/Documents/callJoe/build" name="build.dir"/>
+
+        <!-- Deletes the existing build, docs and dist directory-->
+        <target name="clean">
+                <delete dir="${build.dir}"/>
+        </target>
+
+        <!-- Creates the  build, docs and dist directory-->
+        <target name="makedir">
+                <mkdir dir="${build.dir}"/>
+        </target>
+
+        <target name="copy">
+                
+        </target>
+        
+        <!-- Compiles the java code (including the usage of library for JUnit -->
+        <target depends="clean, makedir" name="compile">
+                <copy todir="${build.dir}">
+                        <fileset dir="${src.dir}">
+                                <exclude name="**/*.java"/>
+                        </fileset>
+                </copy>
+
+                <javac destdir="${build.dir}" srcdir="${src.dir}" debug="true">
+					<classpath>
+						<pathelement path="/Users/ATTJ/Desktop/lib/ant-1.8.2.jar:/Users/ATTJ/Desktop/lib/ant-launcher-1.8.2.jar:/Users/ATTJ/Desktop/lib/commons-io-2.5.jar:/Users/ATTJ/Desktop/lib/filedrop.jar:/Users/ATTJ/Desktop/lib/javaparser-core-3.1.1.jar:/Users/ATTJ/Desktop/lib/moji-1.0.2.jar:/Users/ATTJ/Desktop/lib/org.eclipse.ant.core-3.1.200.jar:/Users/ATTJ/Desktop/lib/rsyntaxtextarea-3.0.0-SNAPSHOT-sources.jar:/Users/ATTJ/Desktop/lib/rsyntaxtextarea-3.0.0-SNAPSHOT.jar:/Users/ATTJ/Desktop/lib/tools.jar:"/>
+					</classpath>
+                </javac>
+
+        </target>
+
+        <target depends="compile" name="main">
+                <description>Main target</description>
+        </target>
+
+</project>

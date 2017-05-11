@@ -1,0 +1,33 @@
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+/**
+ * __description__
+ * @author __name_surname__
+ * @version __date__
+ */
+public class FrameTemplate
+{
+    public static void main( String[] args)
+    {
+        // CONSTANTS
+        
+        
+        // VARIABLES
+        
+        
+        // COMPONENTS
+        JFrame frame;
+        JPanel panel;
+        
+        // PROGRAM CODE
+        panel = new JPanel(); // Replace this with your own panel.
+        
+        frame = new JFrame();
+        frame.add( panel);
+        frame.pack();
+        frame.setLocationRelativeTo( null);
+        frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE);
+        frame.setVisible( true);
+    }
+}
