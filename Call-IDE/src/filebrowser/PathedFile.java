@@ -17,7 +17,7 @@ public class PathedFile extends File
     // CONSTRUCTORS
     /**
      * This consturctor make child file, path getter from parent
-     * @param pathName the name of the path
+     * @param pathname the name of the path
      * @param parentPath the parent of the given path
      */
     public PathedFile( String pathname, PathedFile[] parentPath )

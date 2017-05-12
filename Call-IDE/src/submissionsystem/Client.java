@@ -67,7 +67,7 @@ public class Client {
      */
     public boolean connectServer() {
         try {
-            client = new Socket("localhost", 9999);
+            client = new Socket("138.68.93.173", 9999);
             dis = new DataInputStream(client.getInputStream());
             dos = new DataOutputStream(client.getOutputStream());
             

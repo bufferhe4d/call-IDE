@@ -625,6 +625,11 @@ public class InsMain extends javax.swing.JFrame {
      */
     private void getMossBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getMossBtnActionPerformed
         String dest = System.getProperty("user.home") + "/Call-IDE/" + "Moss/Null";
+        File destFolder = new File(dest);
+        if (!destFolder.getParentFile().exists())
+            destFolder.getParentFile().mkdir();
+        if (!destFolder.exists())
+            destFolder.mkdir();
         File finFolder = null;
         try {
             for(int i = 0; i < allMossFiles.length; i++) {
@@ -713,13 +718,6 @@ public class InsMain extends javax.swing.JFrame {
             }
     
     }
-    
-    private void exttractSoucre(File src, File dest) {
-        
-    }
-    /**
-     * @param args the command line arguments
-     */
     
     public void initTabs() {
         mainTabs.addChangeListener(new ChangeListener() {

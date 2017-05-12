@@ -746,10 +746,6 @@ public class StudentMain extends javax.swing.JFrame {
         
         courseCombo.setModel(new DefaultComboBoxModel(courseArrList.toArray()));
     }
-    /**
-     * @param args the command line arguments
-     */
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel asgnLabel;

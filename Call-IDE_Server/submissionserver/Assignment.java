@@ -1,4 +1,4 @@
-package submissionsystem;
+package submissionserver;
 
 import java.io.Serializable;
 import java.sql.Date;

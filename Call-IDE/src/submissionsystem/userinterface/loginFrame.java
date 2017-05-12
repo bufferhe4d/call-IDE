@@ -1,28 +1,37 @@
 package submissionsystem.userinterface;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
-
+import submissionsystem.*;
 /**
- *
+ * A class to create a login frame to submission system
  * @author Abdullah Talayhan
  */
-public class loginFrame extends javax.swing.JFrame {
+public class LoginFrame extends javax.swing.JFrame {
     
     Client client;
     /**
      * Creates new form loginFrame
      */
-    public loginFrame() {
+    public LoginFrame() {
         initComponents();
         stdRdButton.setActionCommand("Student");
         insRdButton.setActionCommand("Instructor");
         client = new Client();
-        client.connectServer();
-        
+        if (!client.connectServer()) 
+            dispose();
+        else
+            setVisible(true);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                client.closeConnection();
+            }
+        });
     }
-    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -77,19 +86,20 @@ public class loginFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(emailLabel)
-                            .addComponent(stdRdButton)
-                            .addComponent(insRdButton))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(login))
+                        .addComponent(stdRdButton)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(passLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(passField)))
+                        .addComponent(passField, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(emailLabel)
+                        .addGap(45, 45, 45)
+                        .addComponent(idField))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(insRdButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(login)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -150,7 +160,7 @@ public class loginFrame extends javax.swing.JFrame {
                 //System.out.println(name);
                 dispose();
         } else {
-                System.out.println("Wrong User name or password");
+                // System.out.println("Wrong User name or password");
                 JOptionPane.showMessageDialog(this, "Wrong username or password.", "Call-IDE Error!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_loginActionPerformed
@@ -158,43 +168,6 @@ public class loginFrame extends javax.swing.JFrame {
     private void stdRdButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stdRdButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_stdRdButtonActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(loginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(loginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(loginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(loginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new loginFrame().setVisible(true);
-            }
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup;
     private javax.swing.JLabel emailLabel;

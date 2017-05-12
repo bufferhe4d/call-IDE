@@ -210,7 +210,7 @@ public class Parser {
     }
     /**
      * A method to add package file under the root file and set the name of the file as a title of the project
-     * @param packagefile a parameter to take the file as a src file of the source files in File type
+     * @param packageFile a parameter to take the file as a src file of the source files in File type
      * @param title a parameter to take the title to set the name of the package
      */
     public void addPackage( File packageFile, String title) throws ParseException, IOException {
