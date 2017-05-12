@@ -24,6 +24,13 @@ public class RunFile implements Runnable{
     private JTextPane console; 
     private String fn;
     
+    /**
+     * Description: Runs the given file while handling all of the streams
+     * @param cons console pane for redirection
+     * @param filename path of the file to be executed
+     * @param buildPath path of the build class
+     * @param dependencies list of build dependencies
+     */
     public RunFile(JTextPane cons,String filename, String buildPath, ArrayList<File> dependencies){ 
         console = cons;
         deps = dependencies;
@@ -33,6 +40,9 @@ public class RunFile implements Runnable{
         program.start();
     }
     
+    /**
+     * Description: run method for the RunFile thread
+     */
     @Override
     public void run() {     
         try {  
@@ -74,6 +84,9 @@ public class RunFile implements Runnable{
         }       
     }
     
+    /**
+     * kill the current executing program
+     */
     public void kill() {
         if (process != null && read != null) {
             process.destroy();
@@ -81,10 +94,20 @@ public class RunFile implements Runnable{
         }
     }
     
+    /**
+     * check if the process is running or not
+     * @return boolean state of the running project
+     */
     public boolean alive() {
         return process != null && process.isAlive();
     }
     
+    /**
+     * Description: method that appends the string to a given pane
+     * @param str string to be appended
+     * @param pane pane to be appended
+     * @throws BadLocationException 
+     */
     public  void appendString(String str, JTextPane pane) throws BadLocationException {
         StyledDocument document = (StyledDocument) pane.getDocument();
         document.insertString(document.getLength(), str, null);

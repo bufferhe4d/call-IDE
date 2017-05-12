@@ -39,6 +39,12 @@ public class ConsoleCore {
     static SwingWorker<Void, String> sw1;
     static SwingWorker<Void, String> sw2;
     
+    /**
+     * Description: creates a JTextPane that can handle output and error streams
+     * @param out output stream of the build task
+     * @param err error stream of the build task
+     * @return JTextPane which handles output and error streams
+     */
     public static JTextPane consoleOutErr(final InputStream out, final InputStream err) {
 
         // Styled document for coloring the error stream
@@ -99,7 +105,9 @@ public class ConsoleCore {
 
     }
     
-    
+    /**
+     * Alternative console for consoleOutErr
+     */
     public static JTextPane consoleOutErr2(final InputStream out, final InputStream err, PrintStream StdOut) {
 
         // Styled document for coloring the error stream
@@ -159,7 +167,9 @@ public class ConsoleCore {
 
     }
     
-    // free the swingWorkers.
+    /**
+     * Description: free the swing workers
+     */
     public static void free() {
    
         if(sw1 != null) {
@@ -168,6 +178,13 @@ public class ConsoleCore {
         }
     }
     
+    /**
+     * Description: creates a JTextPane that can handle output and error streams
+     * @param out output stream of the build task
+     * @param err error stream of the build task
+     * @param in input stream of the build task
+     * @return JTextPane which handles output and error streams
+     */
     public static JTextPane consoleIOE(final InputStream out, final PrintWriter in, final InputStream err) {
 
         // Styled document for coloring the error stream
@@ -294,13 +311,23 @@ public class ConsoleCore {
         return area;
     }
 
-    // append method for JTextPane
+    /**
+     * Description: method that appends the string to a given pane
+     * @param str string to be appended
+     * @param pane pane to be appended
+     * @throws BadLocationException 
+     */
     public static void appendString(String str, JTextPane pane) throws BadLocationException
     {
         StyledDocument document = (StyledDocument) pane.getDocument();
         document.insertString(document.getLength(), str, null);
     }
-    // change the color of the JTextPane document
+    /**
+     * Description method that changes the foreground color 
+     * @param document document to be changed
+     * @return Style for the new document
+     * @throws BadLocationException 
+     */
     public static Style changeColor(DefaultStyledDocument document) throws BadLocationException {
         StyleContext context = new StyleContext();
         // build a style
@@ -310,7 +337,9 @@ public class ConsoleCore {
         return style;
     }
     
-    // dispatch the console from the JTabbedPane and put it back
+    /**
+     * Description: dispatches the console from its current place properly.
+     */
     public static void  dispatch(JScrollPane scrollPane, JTextPane cons,
                                  JTabbedPane outputTabs, Component tabComp, JFrame frame,
                                  Boolean consoleOut, Attachable mainFrame) {

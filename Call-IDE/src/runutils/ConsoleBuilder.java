@@ -22,23 +22,40 @@ public class ConsoleBuilder {
     PipedInputStream errPipe;
     PrintWriter inWriter;
     
+    /**
+     * Consturctor for the ConsoleBuilder
+     */
     public ConsoleBuilder() {
         init();
     }
 
+    /**
+     * Description: creates a JTextPane that can handle output and error streams
+     * @return JTextPane that can handle output and error streams
+     */
     public JTextPane getOutErrConsole() {
         return ConsoleCore.consoleOutErr(outPipe, errPipe);
     }
     
-    // for testing, DO NOT DELETE
+    /**
+     * Description: creates alternative out/err pane with dynamic swing workers
+     * @return JTextPane that can handle output and error streams
+     */
     public JTextPane getOutErr2Console(PrintStream StdOut) {
         return ConsoleCore.consoleOutErr2(outPipe, errPipe, StdOut);
     }
     
+    /**
+     * Description: creates a JTextPane that can handle input, output and error streams
+     * @return JTextPane that can handle input, output and error streams
+     */
     public JTextPane getIOEConsole() {
         return ConsoleCore.consoleIOE(outPipe, inWriter, errPipe);
     }
     
+    /**
+     * Description: destroys the initialized console streams
+     */
     public void destroy() {
         try {
             inPipe.close();
@@ -47,6 +64,10 @@ public class ConsoleBuilder {
             inWriter.close();
         } catch (IOException ex) {}
     }
+    
+    /**
+     * Description: initialize the console streams.
+     */
     public void init() {
         inPipe = new PipedInputStream();
         outPipe = new PipedInputStream();

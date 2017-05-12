@@ -29,6 +29,12 @@ import org.xml.sax.SAXException;
  */
 public class BuildSys {
     
+    /**
+     * Description: Editing the xml file for compiling projects.
+     * @param init path to the xml file
+     * @param build path to the build directory
+     * @param src  path to the source directory
+     */
     public static void setPropsForCompile(String init ,String build, String src) {
         try {
             String filepath = init;
@@ -54,7 +60,11 @@ public class BuildSys {
             
         } catch (Exception exc) {}
     }
-    
+    /**
+     * Description: Editing the xml file for compiling files.
+     * @param init path to the xml file
+     * @param sourceFile path to the source to be compiled
+     */
     public static void setPropsForCompileFile(String init, String sourceFile) {
         try {
             File file = new File(sourceFile);
@@ -87,6 +97,13 @@ public class BuildSys {
         } catch (Exception ex) {}
     }
     
+    /**
+     * Description: Editing the xml file for compiling files with dependencies.
+     * @param init path to the xml file
+     * @param build path to the build folder
+     * @param src path to the source folder
+     * @param dependencies list of dependencies
+     */
     public static void setPropsForCompileWithDepend(String init ,String build, String src, ArrayList<File> dependencies) {
         try {
             String filepath = init;
@@ -127,6 +144,14 @@ public class BuildSys {
         } catch (Exception exc) {}
     }
     
+    /**
+     * Description: Editing the xml file for building jar files.
+     * @param init path to the xml file
+     * @param buildDir path to the build directory
+     * @param distDir path to the dist directory
+     * @param mainClassWithPackage name of the main class
+     * @param jarName name of the jar to be created
+     */
     public static void setPropsForJar(String init, String buildDir, String distDir, String mainClassWithPackage, String jarName) {
         
         try {
@@ -173,6 +198,12 @@ public class BuildSys {
         }
     }
     
+    /**
+     * Description: Editing the xml file for building javadoc files.
+     * @param init path to the xml file
+     * @param srcDir path to the source directory
+     * @param docsDir path to the docs directory
+     */
     public static void setPropsForJavaDoc(String init, String srcDir, String docsDir) {
         
         try {
@@ -200,7 +231,11 @@ public class BuildSys {
         } catch (Exception e) {}
     }
     
-    
+    /**
+     * Description: Updates the edited xml file
+     * @param filepath path of the xml file
+     * @param doc edited Document objects
+     */
     public static void updateBuildFile(String filepath, Document doc) {
         try {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -213,7 +248,12 @@ public class BuildSys {
         
     }
     
-    // new compile method, resets the streams at the end.
+    /**
+     * Description: compile method that maintains the i/o streams after the task is done.
+     * @param file path of the build xml to be executed
+     * @param out current output stream
+     * @param err current input stream
+     */
     public static void compile( String file, PrintStream out, PrintStream err) {
         
         // File buildFile = new File("build.xml");
@@ -242,6 +282,11 @@ public class BuildSys {
         } catch (Exception e) {}
     }
     
+    /**
+     * Description: compile method that does not maintains the i/o streams after the task is done.
+     * This is an alternative for the current compile method for future uses.
+     * @param file path of the build xml to be executed
+     */
     public static void altCompile( String file) {
         
         // File buildFile = new File("build.xml");

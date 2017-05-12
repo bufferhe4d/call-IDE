@@ -26,6 +26,11 @@ public class WriteStdIn implements Runnable{
     private BufferedWriter writer = null;
     int initLength;
     
+    /**
+     * Description: Handles the System.in from a forked process
+     * @param p forked process
+     * @param t pane that the err stream going to be directed
+     */
     public WriteStdIn(Process p, JTextPane t){
         
         process = p;
@@ -144,6 +149,9 @@ public class WriteStdIn implements Runnable{
         });
     }
     
+    /**
+     * Description: run method for the ReadStdOut thread
+     */
     @Override
     public void run() {
         write.suspend();
@@ -157,11 +165,20 @@ public class WriteStdIn implements Runnable{
         }
     }
     
+    /**
+     * Description: method that appends the string to a given pane
+     * @param str string to be appended
+     * @param pane pane to be appended
+     * @throws BadLocationException 
+     */
     public  void appendString(String str, JTextPane pane) throws BadLocationException {
         StyledDocument document = (StyledDocument) pane.getDocument();
         document.insertString(document.getLength(), str, null);
     }
     
+    /**
+     * Description: closes the writer
+     */
     public void closeAll() {
         try {
             writer.close();
@@ -171,6 +188,9 @@ public class WriteStdIn implements Runnable{
         
     }
     
+    /**
+     * kill the process of the thread
+     */
     public void killUrSelf() {
         write.interrupt();
     }

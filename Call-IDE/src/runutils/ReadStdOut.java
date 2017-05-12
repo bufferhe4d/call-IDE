@@ -21,6 +21,11 @@ public class ReadStdOut implements Runnable {
     private JTextPane console = null;
     private boolean finish;
     
+    /**
+     * Description: Handles the System.out from a forked process
+     * @param p forked process
+     * @param t pane that the err stream going to be directed
+     */
     public ReadStdOut(Process p,JTextPane t) {
         finish = false;
         process = p;
@@ -30,6 +35,9 @@ public class ReadStdOut implements Runnable {
         read.start();
     }
     
+    /**
+     * Description: run method for the ReadStdOut thread
+     */
     public void run() {
         try {
             char nextChar = (char) reader.read();
@@ -54,11 +62,20 @@ public class ReadStdOut implements Runnable {
         
     }
     
+    /**
+     * Description: method that appends the string to a given pane
+     * @param str string to be appended
+     * @param pane pane to be appended
+     * @throws BadLocationException 
+     */
     public  void appendString(String str, JTextPane pane) throws BadLocationException {
         StyledDocument document = (StyledDocument) pane.getDocument();
         document.insertString(document.getLength(), str, null);
     }
     
+    /**
+     * Description: closes the reader
+     */
     public void closeAll() {
         try {
             reader.close();
@@ -67,10 +84,17 @@ public class ReadStdOut implements Runnable {
         }
     }
     
+    /**
+     * Description: check the process state:
+     * @return boolean whether the process is finished or not
+     */
     public boolean isFinished() {
         return finish;
     }
     
+    /**
+     * kill the process of the thread
+     */
     public void killUrSelf() {
         read.interrupt();
     }

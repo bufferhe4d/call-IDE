@@ -31,6 +31,11 @@ public class ReadStdErr implements Runnable{
     private JTextPane console = null;
     private boolean finish;
     
+    /**
+     * Description: Handles the System.err from a forked process
+     * @param p forked process
+     * @param t pane that the err stream going to be directed
+     */
     public ReadStdErr(Process p,JTextPane t) {
         finish = false;
         process = p;
@@ -40,7 +45,10 @@ public class ReadStdErr implements Runnable{
         read = new Thread(this);
         read.start();
     }
-
+    
+    /**
+     * Description: run method for the ReadStdErr thread
+     */
     public void run() {
         String line;
         try {
@@ -68,11 +76,23 @@ public class ReadStdErr implements Runnable{
         finish = true;
     }
     
+    /**
+     * Description: method that appends the string to a given pane
+     * @param str string to be appended
+     * @param pane pane to be appended
+     * @throws BadLocationException 
+     */
     public  void appendString(String str, JTextPane pane) throws BadLocationException {
         StyledDocument document = (StyledDocument) pane.getDocument();
         document.insertString(document.getLength(), str, null);
     }
     
+    /**
+     * Description method that changes the foreground color 
+     * @param document document to be changed
+     * @return Style for the new document
+     * @throws BadLocationException 
+     */
     public  Style changeColor(DefaultStyledDocument document) throws BadLocationException {
         StyleContext context = new StyleContext();
         // build a style
@@ -82,10 +102,18 @@ public class ReadStdErr implements Runnable{
         return style;
     }
     
+    /**
+     * Description: check the process state:
+     * @return boolean whether the process is finished or not
+     */
     public boolean isFinished() {
         return finish;
     }
     
+    /**
+     * Description: adds a link for the current exception
+     * @param link 
+     */
     private void addLink( String link) {
         console.addMouseListener(new MouseAdapter() {
             @Override
