@@ -19,13 +19,16 @@ public class VerifyEmail extends javax.swing.JFrame {
      */
     public VerifyEmail() {
         client = new Client();
-        
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				client.closeConnection();
-			}
-		});
+        if (!client.connectServer())
+            dispose();
+        else
+            setVisible(true);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                client.closeConnection();
+            }
+        });
         initComponents();
         confirmVerifCodeButton.setEnabled(false);
         

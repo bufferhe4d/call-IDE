@@ -4,6 +4,8 @@ import it.zielke.moji.MossException;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -83,6 +85,13 @@ public class InsMain extends javax.swing.JFrame {
         
         
         initSubTable();
+        
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                client.closeConnection();
+            }
+        });
     }
 
     /**
@@ -658,7 +667,7 @@ public class InsMain extends javax.swing.JFrame {
         
         try {
             MossDetector detector = new MossDetector(finFolder.getParent());
-            System.out.println(detector.getMossLink());
+            // System.out.println(detector.getMossLink());
             mossLinkLabel.setText(detector.getMossLink().toString());
             FileUtils.cleanDirectory(finFolder);
             FileUtils.cleanDirectory(new File(dest));
@@ -693,7 +702,7 @@ public class InsMain extends javax.swing.JFrame {
                     if (f.isDirectory()) {
                         dirsq.add(f);
                     } else if (f.isFile() && f.getAbsolutePath().endsWith(".java")) {
-                        System.out.println(f.getAbsolutePath());
+                        // System.out.println(f.getAbsolutePath());
                         try {
                             Files.copy(f.toPath(), dest.toPath().resolve(f.toPath().getFileName()));
                         } catch (IOException ex) {
@@ -787,7 +796,7 @@ public class InsMain extends javax.swing.JFrame {
     public void constuctAssignmentPanel(int index) {
         String course = (String) model.getElementAt(index);
         courseTitleLabel.setText(course);
-        System.out.println("inside");
+        // System.out.println("inside");
         client.sendUTFDataToServer("CONSTRUCT_ASSIGNMENT_PANEL");
         client.sendUTFDataToServer(course);
         allAssignments = (ArrayList<Assignment>) client.getObjectFromServer();
@@ -814,7 +823,7 @@ public class InsMain extends javax.swing.JFrame {
         public void valueChanged(ListSelectionEvent event) {
             if (subTable.getSelectedRow() > -1) {
                 // print first column value from selected row
-                System.out.println(subTable.getValueAt(subTable.getSelectedRow(), 0).toString());
+                // System.out.println(subTable.getValueAt(subTable.getSelectedRow(), 0).toString());
                 downSubBtn.setEnabled(true);
                 gradeField.setEditable(true);
                 sendGradeBtn.setEnabled(true);

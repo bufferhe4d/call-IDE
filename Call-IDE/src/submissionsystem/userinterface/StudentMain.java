@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -69,6 +71,13 @@ public class StudentMain extends javax.swing.JFrame {
         initCourses();
         initCurAssignments();
         initPastAssignments();
+        
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                client.closeConnection();
+            }
+        });
     }
 
     /**
@@ -112,7 +121,7 @@ public class StudentMain extends javax.swing.JFrame {
         curStateLabel = new javax.swing.JLabel();
         curSubLabel = new javax.swing.JLabel();
         submitBtn = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        refreshButton = new javax.swing.JButton();
         userNameLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -207,7 +216,7 @@ public class StudentMain extends javax.swing.JFrame {
                         .addGroup(pastPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(pastAsName)
                             .addComponent(pastAsDueDate))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(downAsgnFromSubBtn))
                     .addGroup(pastPanelLayout.createSequentialGroup()
                         .addComponent(pastStateLabel)
@@ -305,10 +314,10 @@ public class StudentMain extends javax.swing.JFrame {
                         .addGroup(curPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(curPanelLayout.createSequentialGroup()
                                 .addComponent(curStateLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(curSubLabel))
                             .addComponent(subPathField))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 14, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(curPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(submitBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(chooseSubPathBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -339,15 +348,15 @@ public class StudentMain extends javax.swing.JFrame {
                     .addGroup(curPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(curSubLabel)
                         .addComponent(curStateLabel)))
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel1.add(curPanel);
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        refreshButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userinterface/images/refresh.png"))); // NOI18N
+        refreshButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                refreshButtonActionPerformed(evt);
             }
         });
 
@@ -374,7 +383,7 @@ public class StudentMain extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(enrollBtn)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(refreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
@@ -389,7 +398,7 @@ public class StudentMain extends javax.swing.JFrame {
                     .addComponent(selectLabel)
                     .addComponent(courseCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(enrollBtn)
-                    .addComponent(jButton1)
+                    .addComponent(refreshButton)
                     .addComponent(userNameLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(curAssLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -444,7 +453,7 @@ public class StudentMain extends javax.swing.JFrame {
                 
                 
                 String compressedPath = subPathToSend.getParent() + "/" + section + "_" + client.getName() + "_" + subToSend.getName()  + ".zip";
-                System.out.println(compressedPath);
+                //System.out.println(compressedPath);
                 ZipFile compressedFile;
             
                 compressedFile = new ZipFile(compressedPath);
@@ -457,7 +466,6 @@ public class StudentMain extends javax.swing.JFrame {
                 byte[] data = new byte[(int) toSendZip.length()];
                 
                 fis.read(data);
-                System.out.println(java.util.Arrays.toString(data));
                 fis.close();
                
                 client.sendObjectToServer(data);
@@ -541,10 +549,10 @@ public class StudentMain extends javax.swing.JFrame {
         downloadFrom(toDown);
     }//GEN-LAST:event_downSubBtnActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
         // TODO add your handling code here:
         initCourses();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_refreshButtonActionPerformed
     
     /**
      * Initializes the JTable models
@@ -580,7 +588,7 @@ public class StudentMain extends javax.swing.JFrame {
                         pastPanel.setVisible(false);
                         curPanel.setVisible(true);
                     }
-                    System.out.println("Double-clicked on: " + o.toString());
+                    //System.out.println("Double-clicked on: " + o.toString());
                 }
               }
             }
@@ -618,7 +626,7 @@ public class StudentMain extends javax.swing.JFrame {
         pastAsName.setText(temp.getName());
         pastAsDueDate.setText(temp.getDuedate().toString());
         Assignment tempSub = getSubmitted(temp);
-        System.out.println(temp.getName());
+        //System.out.println(temp.getName());
         if(tempSub != null) {
             pastAsSubDate.setText("Submitted(" + tempSub.getSubdate() + ")");
             downSubBtn.setEnabled(true);
@@ -645,7 +653,7 @@ public class StudentMain extends javax.swing.JFrame {
         pastAsName.setText(temp.getName());
         pastAsDueDate.setText(temp.getDuedate().toString());
         Assignment tempSub = getSubmitted(temp);
-        System.out.println(temp.getName());
+        //System.out.println(temp.getName());
         if(tempSub != null) {
             pastAsSubDate.setText("Submitted(" + tempSub.getSubdate() + ")");
             downSubBtn.setEnabled(true);
@@ -686,7 +694,7 @@ public class StudentMain extends javax.swing.JFrame {
         curModel.clear();
         if(courseCode != null) {
             client.sendUTFDataToServer(courseCode);
-            System.out.println((String)courseCombo.getSelectedItem());
+            //System.out.println((String)courseCombo.getSelectedItem());
             curAssignments = (ArrayList<Assignment>) client.getObjectFromServer();
             curAssignmentNames = new ArrayList<String>();
 
@@ -762,7 +770,6 @@ public class StudentMain extends javax.swing.JFrame {
     private javax.swing.JLabel dueLabel;
     private javax.swing.JButton enrollBtn;
     private javax.swing.JLabel gradeLabel;
-    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -774,6 +781,7 @@ public class StudentMain extends javax.swing.JFrame {
     private javax.swing.JList pastList;
     private javax.swing.JPanel pastPanel;
     private javax.swing.JLabel pastStateLabel;
+    private javax.swing.JButton refreshButton;
     private javax.swing.JLabel selectLabel;
     private javax.swing.JTextField subPathField;
     private javax.swing.JButton submitBtn;

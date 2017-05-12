@@ -4034,7 +4034,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             JFrame loginFrame = new LoginFrame();
             loginFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             loginFrame.setLocationRelativeTo(this);
-            loginFrame.setVisible(true);
         }
     }
     
@@ -4052,7 +4051,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             VerifyEmail verifyEmail = new VerifyEmail();
             verifyEmail.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             verifyEmail.setLocationRelativeTo(this);
-            verifyEmail.setVisible(true);
         }
     }
 

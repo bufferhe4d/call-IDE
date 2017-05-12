@@ -178,7 +178,7 @@ public class RegFrame extends javax.swing.JFrame {
         String id = idField.getText();
         String pass = String.valueOf(passField.getPassword());
         String confPass = String.valueOf(confPassField.getPassword());
-        System.out.println(pass + " " + confPass);
+        // System.out.println(pass + " " + confPass);
         if(!pass.equals(confPass)  || pass.length() < 8) {
             if(!pass.equals(confPass) ) {
                 JOptionPane.showMessageDialog(this,"Passwords do not match","Call-IDE error",JOptionPane.ERROR_MESSAGE);

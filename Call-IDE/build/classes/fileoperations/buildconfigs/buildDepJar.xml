@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><project default="main" name="Ant-Test">
+        <!-- Sets variables which can later be used. -->
+        <!-- The value of a property is accessed via ${} -->
+        <property location="---" name="build.dir"/>
+        <property location="---" name="dist.dir"/>
+        <property name="jar.name" value="callv3.jar"/>
+        <property name="main.name" value="sa"/>
+
+        <!-- Deletes the existing build, docs and dist directory-->
+        <target name="clean">
+                <delete dir="${dist.dir}"/>
+        </target>
+
+        <!-- Creates the  build, docs and dist directory-->
+        <target name="makedir">
+                <mkdir dir="${dist.dir}"/>
+        </target>
+
+        <!--Creates the deployable jar file  -->
+        <target name="jar">
+                <jar jarfile="${dist.dir}/deps.jar">
+                  <zipgroupfileset dir="${dist.dir}/../lib" includes="*.jar"/>
+
+                </jar>
+
+                <sleep seconds="1"/>
+                <jar basedir="${build.dir}" jarfile="${dist.dir}/${jar.name}">
+                    <zipfileset excludes="META-INF/*SF" src="${dist.dir}/deps.jar"/>
+                    <manifest>
+                            <attribute name="Main-Class" value="userinterface.Launcher"/>
+                    </manifest>
+                </jar>
+                <delete file="${dist.dir}/deps.jar"/>
+        </target>
+
+        <target depends="jar" name="main">
+                <description>Main target</description>
+        </target>
+
+</project>

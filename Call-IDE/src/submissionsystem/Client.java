@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import submissionsystem.userinterface.VerifyEmail;
 /**
  * A class to represent the client in the submission system
@@ -62,8 +63,9 @@ public class Client {
     
     /**
      * A method to connect the server from the client perception
+     * @return true if the connection is established
      */
-    public void connectServer() {
+    public boolean connectServer() {
         try {
             client = new Socket("localhost", 9999);
             dis = new DataInputStream(client.getInputStream());
@@ -72,9 +74,11 @@ public class Client {
             ois = new ObjectInputStream(client.getInputStream());
             oos = new ObjectOutputStream(client.getOutputStream());
             
-            System.out.println("I/O streams for client created");
+            // System.out.println("I/O streams for client created");
+            return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "The connection to the server was failed.", "Call-IDE Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
     }
     
@@ -87,7 +91,7 @@ public class Client {
             dis.close();
             dos.close();
             client.close();
-            System.out.println("CLIENT END");
+            // System.out.println("CLIENT END");
         } catch (IOException e) {
             e.printStackTrace();
         }
