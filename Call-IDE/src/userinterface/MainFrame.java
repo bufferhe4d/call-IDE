@@ -48,7 +48,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         initOtherComponents();
         loadProfile();
         enableFileDrop( this);
-        newFile();
         initFrame();
         // checkJDK();
         
@@ -58,6 +57,8 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
            else if( openWith.endsWith(".java"))
               openFile( new File( openWith));
         }
+	else
+	    newFile();
     }
 
     /**
