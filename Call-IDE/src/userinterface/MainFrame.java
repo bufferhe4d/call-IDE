@@ -4031,9 +4031,9 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             }
         }
         else {
-            JFrame loginFrame = new LoginFrame();
-            loginFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            loginFrame.setLocationRelativeTo(this);
+            JFrame logFrame = new LoginFrame();
+            logFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            logFrame.setLocationRelativeTo(this);
         }
     }
     
