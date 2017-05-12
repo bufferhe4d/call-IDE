@@ -3,6 +3,8 @@ package helputils;
 import java.util.Scanner;
 
 /**
+ * A class for parse the specific exception and give a link for those
+ * exception in oracle documentation
  * @author Emin Bahadir Tuluce
  */
 public class ExceptionParser {

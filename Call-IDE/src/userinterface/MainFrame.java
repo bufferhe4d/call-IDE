@@ -31,11 +31,14 @@ import com.github.javaparser.ast.*;
 
 /**
  * The main frame of the IDE.
- * @author Emin Bahadir Tuluce, Halil Sahiner, Abdullah Talayhan
+ * @author Code Erat Demonstrandum
  */
 public class MainFrame extends JFrame implements NavigationParent, AutosaveHandler, Attachable, NodeVisitor {
             
-    /** Creates the main frame of the IDE. */
+    /**
+     * Creates the main frame of the IDE.
+     * @param openWith the absolute path of the file to open in the IDE
+     */
     public MainFrame( String openWith) throws IOException {
         initStreams();
         initProperties();
@@ -47,13 +50,12 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         newFile();
         initFrame();
         // checkJDK();
-                
-        if (openWith != null )
-        {
-           if ( openWith.endsWith(ProjectHandler.EXTENSION) )
+        
+        if (openWith != null) {
+           if ( openWith.endsWith(ProjectHandler.EXTENSION))
               openProject( new File( openWith).getParentFile());
-           else if( openWith.endsWith(".java") )
-              openFile( new File( openWith) );
+           else if( openWith.endsWith(".java"))
+              openFile( new File( openWith));
         }
     }
 
@@ -1978,6 +1980,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
 
     /** This class is used for listening resize events of the window to arrange components with each. */
     class ResizeListener extends ComponentAdapter {
+        /**
+         * Arranges the component locations in the IDE when the component is resized.
+         * @param e the component event
+         */
         @Override
         public void componentResized(ComponentEvent e) {
             arrangeComponents();
@@ -2018,7 +2024,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 helpStrings.add(helpString);
                 helpReader.close();
             }
-            
             BufferedReader developerReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/helputils/developers.html"), "ISO-8859-9"));
             developerList = "";
             String line = developerReader.readLine();
@@ -2027,7 +2032,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 line = developerReader.readLine();
             }
             developerReader.close();
-            
         } catch (Exception e) {
             showError( "An error occured while loading the sources.");
         }
@@ -2062,6 +2066,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         noWorkspacePanel = new JPanel();
         workspaceButton = new JButton( "Choose Path");
         workspaceButton.addActionListener( new ActionListener() {
+            /**
+             * Calls a file dialog opener method for user to choose a workspace.
+             * @param e the action event of the button
+             */
             @Override
             public void actionPerformed( ActionEvent e) {
                 chooseWorkspace();
@@ -2071,14 +2079,21 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             }
         });
         noWorkspacePanel.add( workspaceButton);
-        
         projectLocationField.addKeyListener( new KeyAdapter() {
+            /**
+             * Calls a method to update the project root field.
+             * @param e the key event
+             */
             @Override
             public void keyReleased (KeyEvent e) {
                 updateProjectRootField();
             }
         });
         projectNameField.addKeyListener( new KeyAdapter() {
+            /**
+             * Calls a method to update the project root field.
+             * @param e the key event
+             */
             @Override
             public void keyReleased( KeyEvent e) {
                 updateProjectRootField();
@@ -2100,6 +2115,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         outputTabs.setTabComponentAt( 2, consoleTabPanel);
         tabComp = consoleTabPanel;
         outputTabs.addChangeListener( new ChangeListener() {
+            /**
+             * Saves the last visited output tab index when is changed
+             * @param evt the change event
+             */
             @Override
             public void stateChanged( ChangeEvent evt) {
                 lastOutputTabIndex = outputTabs.getSelectedIndex();
@@ -2110,7 +2129,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         consoleFrame = new JFrame( "Console Output");
         detachScroll = new JScrollPane();
         consoleOut = false;
-        
         statusArea.setLineWrap(true);
         statusArea.setWrapStyleWord(true);
     }
@@ -2123,12 +2141,20 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         explorerLayeredPane.add( refreshButton);
         explorerLayeredPane.setLayer( refreshButton, JLayeredPane.DRAG_LAYER);
         explorerLayeredPane.addComponentListener( new ComponentAdapter() {
+            /**
+             * Carries the refresh button to the top-right corner of the explorer.
+             * @param e the component event
+             */
             @Override
             public void componentResized( ComponentEvent e) {
                 refreshButton.setBounds( explorerLayeredPane.getWidth() - 30, 3, 25, 25);
             }
         });
         refreshButton.addActionListener( new ActionListener() {
+            /**
+             * Calls a method to refresh the explorer.
+             * @param e the action event
+             */
             @Override
             public void actionPerformed( ActionEvent e) {
                 refreshExplorer();
@@ -2140,6 +2166,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private void initHelpContents() {
         helpPane.setContentType("text/html");
         helpList.addListSelectionListener(new ListSelectionListener() {
+            /**
+             * Shows the help content according to the selected help category.
+             * @param lse the list selection event
+             */
             @Override
             public void valueChanged(ListSelectionEvent lse) {
                 helpPane.setText(helpStrings.get(helpList.getSelectedIndex()));
@@ -2161,7 +2191,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
 
     /** Listener for the console's detach button. */
     private class DetachConsoleListener implements ActionListener {
-        /** Calls the detaching method of the console. */
+        /**
+         * Calls the detaching method of the console.
+         * @param e the action event
+         */
         @Override
         public void actionPerformed( ActionEvent e) {
             detachConsole();
@@ -2203,7 +2236,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         placeholderMethodSummary.setVisible( false);
     }
 
-    /** Initializes the main frame of the IDE. */
+    /** Initializes the main frame of the IDE. @throws IOException */
     private void initFrame() throws IOException {
         dividerLocation = 200;
         setTitle( "Call-IDE");
@@ -2227,6 +2260,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
      * Adds a tab to the text editor with given properties.
      * @param title the title of the new tab
      * @param content the content of the new tab
+     * @throws IOException
      */
     private void addTab( String title, String content, String tooltip) throws IOException {
         JPanel panel = new JPanel( new BorderLayout());
@@ -2266,11 +2300,17 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     /** The listener for close buttons of the tabs. */
     private class CloseTabListener implements ActionListener {
         private JLabel titleLabel;
-        /** Creates a new CloseTabListener with the given label. */
+        /**
+         * Creates a new CloseTabListener with the given label.
+         * @param titleLabel the label for the tab to close
+         */
         public CloseTabListener( JLabel titleLabel) {
             this.titleLabel = titleLabel;
         }
-        /** Makes an attempt to close the tab. */
+        /**
+         * Makes an attempt to close the tab.
+         * @param e the action event
+         */
         @Override
         public void actionPerformed( ActionEvent e) {
             int index = tabTitles.indexOf( titleLabel);
@@ -2278,7 +2318,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         }
     }
 
-    /** Checks if the tab's content is unsaved on the given index, if not closes it. */
+    /**
+     * Checks if the tab's content is unsaved on the given index, if not closes it.
+     * @param index the index of the tab to check
+     */
     private int checkTab( int index) {
         if (files.get(index) == null && !(textAreas.get(index).getText().isEmpty())) {
             String fileName = tabTitles.get(index).getText();
@@ -2320,7 +2363,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         return JOptionPane.DEFAULT_OPTION;
     }
 
-    /** Closes the tab on the given index. */
+    /**
+     * Closes the tab on the given index.
+     * @param index the index of the tab to close
+     */
     private void closeTab( int index) {
         if( !projectMode && files.get(index) != null)	
 	        {			
@@ -2337,7 +2383,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             autosavers.remove( index);
         else
             autosavers.remove( index).stop();
-        //methodSummary.configureTree();
     }
 
     /** Arranges the split pane divider locations for a better look. */
@@ -2488,7 +2533,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         }
     }
 
-    /** Opens a file in the editor. */
+    /**
+     * Opens a file in the editor.
+     * @param file the file to open
+     */
     @Override
     public void openFile( File file) {
         try {
@@ -2559,7 +2607,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         return textAreas.get( index);
     }
 
-    /** Prints a message to the status tab and makes that tab active. */
+    /**
+     * Prints a message to the status tab and makes that tab active.
+     * @param status the status message to print
+     */
     public void printStatus( String status) {
         statusArea.setText( statusArea.getText() + "> " + status + "\n");
         outputTabs.setSelectedIndex(0);
@@ -2575,7 +2626,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         addExplorerWith( workspace);
     }
 
-    /** Adds the file explorer to the frame wih the given root. */
+    /**
+     * Adds the file explorer to the frame wih the given root.
+     * @param rootDir the root directory of the explorer which will be added
+     */
     private void addExplorerWith( String rootDir) {
         noWorkspacePanel.setVisible( false);
         ArrayList<String> projects = new ArrayList<String>();
@@ -2597,7 +2651,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         });
     }
 
-    /** Loads the profile settings of the user. */
+    /** Loads the profile settings of the user. @throws IOException */
     private void loadProfile() throws IOException {
         config = new FileConfigurer();
         if (!config.configExists())
@@ -2612,7 +2666,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         loadWorkspace( workspace);
     }
 
-    /** Loads the file explorer's contents if exists. */
+    /**
+     * Loads the file explorer's contents if exists.
+     * @param workspace the absolute path of the workspace folder
+     */
     private void loadWorkspace( String workspace) {
         if (workspace == null)
             addEmptyExplorer();
@@ -2637,7 +2694,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         }
     }
 
-    /** Applies the preference settings to the IDE. */
+    /** Applies the preference settings to the IDE. @throws IOException */
     private void applyPreferences() throws IOException {
         boolean[] toolbarPrefs = preferences.getToolbar();
         JButton[] currentToolbar = {newTool, openTool, saveTool,
@@ -2646,7 +2703,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         for (int i = 0; i < currentToolbar.length; i++) {
             currentToolbar[i].setVisible( toolbarPrefs[i]);
         }
-
         int tabSize = preferences.getIndentLevel();
         boolean bracketMatching = preferences.getBracketMatching();
         boolean lineNumbersEnabled = preferences.getDisplayLineNumbers();
@@ -2661,12 +2717,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             ((RTextScrollPane) (textArea.getParent().getParent())).
                 setLineNumbersEnabled( lineNumbersEnabled);
         }
-
         Font outputFont = preferences.getOutputFont();
         statusArea.setFont( outputFont);
         consoleOutputArea.setFont( outputFont);
         compilerOutputArea.setFont( outputFont);
-
         if (workspaceChanged)
             if (workspace != null && (new File(workspace)).isDirectory()) {
             ArrayList<String> projects = new ArrayList<String>();
@@ -2680,16 +2734,24 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     /** The listener for inserting template button. */
     private class TemplateButtonListener implements ActionListener {
         int templateIndex;
+        /**
+         * sets the template index to the clicked index.
+         * @param templateIndex the index to assign
+         */
         public TemplateButtonListener( int templateIndex) {
             this.templateIndex = templateIndex;
         }
+        /**
+         * Inserts a template which is on the index that has assigned before to the editor
+         * @param e the action event
+         */
         @Override
         public void actionPerformed( ActionEvent e) {
             insertTemplate( templateIndex);
         }
     }
 
-    /** Loads the templates from the user's home location. */
+    /** Loads the templates from the user's home location. @throws IOException */
     private void loadTemplates() throws IOException {
         TemplateManager manager = new TemplateManager( userPath);
         templates = manager.getTemplates();
@@ -2709,8 +2771,11 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             templatesMenu.remove(1);
     }
 
-    /** Inserts the template on the given index to the active empty text area,
-      If the active text area is not empty, opens a new tab to insert the template. */
+    /**
+     * Inserts the template on the given index to the active empty text area,
+     * If the active text area is not empty, opens a new tab to insert the template.
+     * @param templateIndex the index of the template to insert
+     */
     private void insertTemplate( int templateIndex) {
         if (!getActiveTextArea().getText().isEmpty())
             newFile();
@@ -2752,25 +2817,20 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 editorFontSize = 72;
             if (outputFontSize > 72)
                 outputFontSize = 72;
-            
             String editorFontName = editorFontChooser.getSelectedItem().toString();
             String outputFontName = outputFontChooser.getSelectedItem().toString();
             Font editorFont = new Font(editorFontName, Font.PLAIN, editorFontSize);
             Font outputFont = new Font(outputFontName, Font.PLAIN, outputFontSize);
-
             String submissionOption = null;
             if (externalSubmissionRadio.isSelected())
                 submissionOption = externalSubmissionField.getText();
-
             preferences = new Preferences(detachConsoleCheck.isSelected(),
                 bracketMatchingCheck.isSelected(), lineNumbersCheck.isSelected(),
                 showHelpCheck.isSelected(), toolbarPrefs, editorFont, outputFont,
                 autosaveIn, indentLevel, theme, submissionOption);
-
             PreferencesConfigurer.save( config.getUserPath(), preferences);
             config.setWorkspace(workspace);
             applyPreferences();
-
         } catch (IOException e) {
             showError( "An error occured while saving the preferences.");
         }
@@ -2793,7 +2853,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     /** Restores all the default preferences to the preferences frame. */
     public void resetPreferencesWindow() {
         final Preferences DEFAULT = Preferences.DEFAULT;
-
         boolean[] checkBoxValues = DEFAULT.getToolbar();
         JCheckBox[] checkBoxes = {newCheck, openCheck, saveCheck, undoCheck,
             redoCheck, compileCheck, runCheck, compileRunCheck, resetCheck,
@@ -2801,12 +2860,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         for (int i = 0; i < checkBoxes.length; i++) {
             checkBoxes[i].setSelected(checkBoxValues[i]);
         }
-
         autosaveCheck.setSelected( DEFAULT.getAutosaveIn() != -1);
         autosaveTextField.setEnabled( DEFAULT.getAutosaveIn() != -1);
         if (DEFAULT.getAutosaveIn() != -1)
             autosaveTextField.setText( "" + DEFAULT.getAutosaveIn());
-
         lineNumbersCheck.setSelected( DEFAULT.getDisplayLineNumbers());
         showHelpCheck.setSelected( DEFAULT.getShowHelpForErrors());
         bracketMatchingCheck.setSelected( DEFAULT.getBracketMatching());
@@ -2830,7 +2887,11 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         }
     }
 
-    /** Prints the status message about the autosaved file. */
+    /**
+     * Prints the status message about the autosaved file.
+     * @param file the file that has been processed
+     * @param content the content for the report
+     */
     @Override
     public void report( File file, String content) {
         printStatus( "File saved automatically: " + file.getAbsolutePath());
@@ -2917,7 +2978,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         }
     }
 
-    /** Compiles the active file on the editor. */
+    /**
+     * Compiles the active file on the editor.
+     * @return the text pane object which the output will be sent
+     */
     private JTextPane compileCurrentFile() {
         int index = textTabs.getSelectedIndex();
         if (getActiveFile() == null) {
@@ -2934,17 +2998,18 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         }
     }
 
-    /** Compiles a given folder to a given path. */
+    /**
+     * Compiles a given folder to a given path.
+     * @return the text pane object which the output will be sent
+     */
     private JTextPane compileFolderTo( String srcFolder, String buildFolder,
                                        ArrayList<File> dependencies) {
         if (builder == null)
             builder = new ConsoleBuilder();
-
-        // clean up buffers
+        // clean up the buffers
         builder.destroy();
         ConsoleCore.free();
         builder.init();
-        
         JTextPane insertedPane = builder.getOutErrConsole();
         insertedPane.setFont( preferences.getOutputFont());
         compilerOutputScrollPane.setViewportView( insertedPane);
@@ -2952,26 +3017,26 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                                               buildFolder, srcFolder, dependencies);
         BuildSys.compile(userPath + "/BuildConfigs/buildDeps.xml", stdOut, stdErr );
         outputTabs.setSelectedIndex(1);
-
         fileExplorer.updateDirectory( (new File(buildFolder)).getParent());
         return insertedPane;
     }
 
-    /** Compiles a given file right next to it. */
+    /**
+     * Compiles a given file right next to it.
+     * @param filePath the absolute path of the file to compile
+     * @return the text pane object which the output will be sent
+     */
     private JTextPane compileFile( String filePath) {
         if (builder == null)
             builder = new ConsoleBuilder();
-
         // clean up buffers
         builder.destroy();
         ConsoleCore.free();
         builder.init();
-        
         JTextPane insertedPane = builder.getOutErrConsole();
         insertedPane.setFont( preferences.getOutputFont());
         compilerOutputScrollPane.setViewportView( insertedPane);
         BuildSys.setPropsForCompileFile(userPath + "/BuildConfigs/buildFile.xml", filePath);
-
         BuildSys.compile(userPath + "/BuildConfigs/buildFile.xml", stdOut, stdErr);
         outputTabs.setSelectedIndex(1);
         fileExplorer.updateDirectory( (new File(filePath)).getParent());
@@ -2983,6 +3048,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         runFileDefault( getActiveFile());
     }
 
+    /**
+     * Runs the file with default settings.
+     * @param file the file to run
+     */
     private void runFileDefault( File file) {
         if (file == null)
             printStatus( "The file should be saved before running.");
@@ -2993,8 +3062,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             String packageName = "";
             String classFileName;
             CompilationUnit cu;
-
-            // control package name
+            // check package name
             try {
                 cu = JavaParser.parse( file);
                 if (cu.getPackageDeclaration().isPresent())
@@ -3021,26 +3089,32 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         }
     }
 
+    /**
+     * Runs a the given file on the console.
+     * @param file the source file to run
+     * @param build the build folder of the source file
+     */
     private void runFile( File file, File build) {
         runFile( file, build, null);
     }
 
-    /** Runs a given file on the console. */
+    /**
+     * Runs a given file on the console.
+     * @param file the source file to run
+     * @param build the build folder of the source file
+     * @param dependencies the jar files that the source file depends on
+     */
     private void runFile( File file, File build, ArrayList<File> dependencies) {
         resetInteractions();
-        
         if (!hasMainMethod( file))
             return;
-        
         String packageName = "";
         CompilationUnit cu;
-        
         try {
             cu = JavaParser.parse( file);
             if (cu.getPackageDeclaration().isPresent())
                 packageName = cu.getPackageDeclaration().get().getName().toString();
         } catch (IOException ex) {}
-        
         String packageDest = packageName.replace('.', '/');
         String className = file.getName().substring(0, file.getName().length() - 5);
         String classDest = build + "/" + packageDest + "/" + className + ".class";
@@ -3048,7 +3122,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             printStatus( "The source packages should be compiled before running.");
             return;
         }
-
         if (consoleOut) {
             consoleOutputArea = new JTextPane();
             consoleOutputArea.setFont( preferences.getOutputFont());
@@ -3061,7 +3134,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             consoleOutputArea.setFont( preferences.getOutputFont());
             consoleOutputScrollPane.setViewportView(consoleOutputArea);
         }
-
+        
         if (dependencies == null)
             executor = new Executor(build.getAbsolutePath());
         else
@@ -3078,7 +3151,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     /** Generates javadoc for the current project. */
     private void javadocCurrentProject() {    
         ProjectHandler currentProject = getProjectHandler(getActiveFile());
-
         if (!projectMode || currentProject == null) {
             printStatus( "You should first create a project to generate javadoc.");
             return;
@@ -3096,7 +3168,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         insertedPane.setFont( preferences.getOutputFont());
         compilerOutputScrollPane.setViewportView( insertedPane);
 
-        // INPUTS: JAR XML FILE, SRC DIR, TARGET DIR
         BuildSys.setPropsForJavaDoc(userPath + "/BuildConfigs/buildJavadoc.xml", 
                                     currentProject.getSrc().getAbsolutePath(),
                                     currentProject.getPath() + "/doc");
@@ -3108,27 +3179,21 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     /** Generates an executable jar file for the current project. */
     private void jarCurrentProject() {
         ProjectHandler currentProject = getProjectHandler(getActiveFile());
-
         if (!projectMode || currentProject == null) {
             printStatus( "You should first create a project to generate jar file.");
             return;
         }
-
         printStatus( "Generating jar: " + currentProject.getName());
-
         if (builder == null)
             builder = new ConsoleBuilder();
-
         builder.destroy();
         ConsoleCore.free();
         builder.init();
         JTextPane insertedPane = builder.getOutErrConsole();
         insertedPane.setFont( preferences.getOutputFont());
         compilerOutputScrollPane.setViewportView( insertedPane);
-
         String mainFileName = currentProject.getMainClass().getName();
         String mainClassName = mainFileName.substring(0, mainFileName.length() - 5);
-
         String packageName = "";
         CompilationUnit cu;
         try {
@@ -3138,19 +3203,16 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         } catch (IOException e) {}
         if (!packageName.equals(""))
             mainClassName = packageName + "." + mainClassName;
-
         String buildConfigPath;
         if (currentProject.getJarFiles().isEmpty())
             buildConfigPath = "/BuildConfigs/buildJar.xml";
         else
             buildConfigPath = "/BuildConfigs/buildDepJar.xml";
-
         BuildSys.setPropsForJar(userPath + buildConfigPath,
                                 currentProject.getBuild().getAbsolutePath(),
                                 currentProject.getPath() + "/dist",
                                 mainClassName, currentProject.getName() +".jar");
         BuildSys.compile(userPath + buildConfigPath, stdOut, stdErr);
-
         outputTabs.setSelectedIndex(1);
         fileExplorer.updateDirectory(currentProject.getPath());
     }
@@ -3202,8 +3264,12 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     /** Enables drop-to-open feature. */
     private void enableFileDrop( Component dropPane) {
         new FileDrop( dropPane, new FileDrop.Listener() {
+            /**
+             * Opens the files that has been dropped to the frame.
+             * @param files the file array which has been dropped
+             */
             @Override
-            public void filesDropped( java.io.File[] files ){   
+            public void filesDropped( java.io.File[] files) {   
                 for( int i = 0; i < files.length; i++ ){   
                     openFile( files[i]);
                 }  
@@ -3211,7 +3277,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         });
     }
 
-    /** Checks if there is an active editor. */
+    /**
+     * Checks if there is an active editor.
+     * @return false if there is not any editor pane that is being edited
+     */
     private boolean isEditing() {
         return textTabs.getSelectedIndex() != -1;
     }
@@ -3223,10 +3292,8 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     public void updateAutoComplete( File file)
     {
         autoComplete = new AutoComplete( getActiveTextArea(), file);
-
         try {
             if (file.getName().endsWith(".java")) {
-
             autoComplete.updateAutoComplete();
             }
         } catch (IOException | ParseProblemException ex ) {}
@@ -3243,29 +3310,36 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         methodSummaryScrollPane.setViewportView(methodSummary);
     }
 
-    /** Updates the method summary tree's contents according to the given file. */
+    /**
+     * Updates the method summary tree's contents according to the given file.
+     * @param file the file that has been updated
+     */
     private void updateMethodSummary( File file) {
-        if (projectMode) {	
-	            try {		
-	                methodParser.refreshNode( file);			
-	            } catch (Exception ex) {}			
-	        }			
-        else {			
-        try {
-            if (file.getName().endsWith(".java")) {
-                if (!methodParser.contains(file))
-                    methodParser.addNode( file);
-                else
-                    methodParser.refreshNode( file);
-            }
-        } catch (ParseException | IOException | ParseProblemException ex ) {}
+        if (projectMode) {
+            try {
+                methodParser.refreshNode( file);
+            } catch (Exception ex) {}
+        }
+        else {
+            try {
+                if (file.getName().endsWith(".java")) {
+                    if (!methodParser.contains(file))
+                        methodParser.addNode( file);
+                    else
+                        methodParser.refreshNode( file);
+                }
+            } catch (ParseException | IOException | ParseProblemException ex ) {}
         }
         methodSummary.configureTree();
         methodSummary.expandRow(0);
         methodSummary.updateUI();
     }
 
-    /** Visits the given file's position on the editor. */
+    /**
+     * Visits the given file's position on the editor.
+     * @param file the file to visit
+     * @param position the position to carry the caret
+     */
     @Override
     public void visitNode( File file, Position position) {
         int index = -1;
@@ -3318,7 +3392,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         } catch (IOException e) {
             showError( "An error occured while creating the project.");
         }
-
         openProject( new File( projectRoot));
         projectFrame.setVisible(false);
     }
@@ -3340,7 +3413,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         }
     }
 
-    /** Opens the given project folder on the IDE. */
+    /**
+     * Opens the given project folder on the IDE.
+     * @param projectFolder the root folder of the project
+     */
     private void openProject( File projectFolder) {
         boolean open = true;
         ProjectHandler handler = new ProjectHandler();
@@ -3402,9 +3478,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         }
     }
 
-    ArrayList<RealTimeFolderWatcher> folderWatchers;
-
-    /** Supplies access to the ProjectHandler object of the given file. */
+    /**
+     * Provides access to the ProjectHandler object of the given file.
+     * @param file the file to get the project of
+     */
     private ProjectHandler getProjectHandler( File file) {
         for (ProjectHandler ph : openProjects) {
             ArrayList<File> javaFiles = ph.getAllJavaFiles();
@@ -3437,7 +3514,11 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         }
     }
 
-    /** Adds all of the java source files in the given folder location to the given ArrayList. */
+    /**
+     * Adds all of the java source files in the given folder location to the given ArrayList.
+     * @param src the source folder to search java files in
+     * @param javaFiles the collection to add the java files
+     */
     private void searchJavaFiles( File src, ArrayList<File> javaFiles) {
         ArrayList<File> srcFiles = new ArrayList<File>( Arrays.asList(src.listFiles()));
         for (File f : srcFiles) {
@@ -3460,7 +3541,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         }
     }
 
-    /** Compiles the active project on the editor. */
+    /**
+     * Compiles the active project on the editor.
+     * @return the text pane object which the output will be sent
+     */
     private JTextPane compileCurrentProject() {
         updateProjects();
         if (getActiveFile() == null) {
@@ -3564,11 +3648,23 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         }
     }
     
+    /**
+     * Calculates the path difference between to path strings
+     * @param shorter the path which is on the top
+     * @param longer the path which is on the below
+     * @return the different part between the strings
+     */
     private String getPathDifference( String shorter, String longer) {
         int i = 0;
         while (i < shorter.length() && shorter.charAt(i) == longer.charAt(i)) i++;
         return longer.substring(i);
     }
+    
+    /**
+     * Checks if a project is compiled to its last version.
+     * @param project the ProjectHandler object of the project to check
+     * @return true if the project is compiled to its latest version, false otherways
+     */
     private boolean compiledToLast( ProjectHandler project) {
         ArrayList<File> sourceFiles = project.getAllJavaFiles();
         String srcLocation = project.getSrc().getAbsolutePath();
@@ -3603,8 +3699,8 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private void showMainSelection() {
         mainSelectionList.setModel(new AbstractListModel() {
             ArrayList files = (new Parser()).searchMain( modifyingProject.getSrc());
-            public int getSize() { return files.size(); }
-            public Object getElementAt(int i) { return files.get(i); }
+            @Override public int getSize() { return files.size(); }
+            @Override public Object getElementAt(int i) { return files.get(i); }
         });
         mainSelectionFrame.pack();
         mainSelectionFrame.setLocationRelativeTo(this);
@@ -3638,7 +3734,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         }
     }
 
-    /** Shows the project properties of the project which is located on the given folder. */
+    /**
+     * Shows the project properties of the project which is located on the given folder.
+     * @param projectRoot the root folder of the project
+     */
     @Override
     public void showProjectProperties( File projectRoot) {
         ProjectHandler selectedProject = null;
@@ -3651,7 +3750,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             showPropertiesOf( selectedProject);
     }
 
-    /** Closes the project which is located on the given folder. */
+    /**
+     * Closes the project which is located on the given folder.
+     * @param projectRoot the root folder of the project
+     */
     @Override
     public void closeProject( File projectRoot) {
         ProjectHandler selectedProject = null;
@@ -3700,7 +3802,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         printStatus( "Project closed: " + selectedProject.getName());
     }
 
-    /** Shows properties frame of the given project. */
+    /**
+     * Shows properties frame of the given project.
+     * @param project the ProjectHandler object of the project
+     */
     private void showPropertiesOf( ProjectHandler project) {
         creatingProject = false;
         modifyingProject = project;
@@ -3737,7 +3842,6 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         String projectLocation = projectLocationField.getText();
         String mainClass = mainClassField.getText();
         String projectRoot = projectLocation + "/" + projectName + "/";
-
         File buildFolder = new File( projectRoot + "/build");
         File srcFolder = new File( projectRoot + "/src");
         File mainClassFile;
@@ -3777,7 +3881,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         projectFrame.setVisible(false);
     }
 
-    /** Compiles the selected file on the file explorer. */
+    /**
+     * Compiles the selected file on the file explorer.
+     * @param selectedFile the selected file on the file explorer to compile 
+     */
     @Override
     public void compileSelectedFile( File selectedFile) {
         if (projectMode) {
@@ -3822,6 +3929,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             insertedPane.getDocument().addDocumentListener(new DocumentListener() {
                 public void changedUpdate(DocumentEvent e) {}
                 public void removeUpdate(DocumentEvent e) {}
+                /**
+                 * Runs the current project when the BUILD SUCCESSFUL message appears.
+                 * @param e the document event
+                 */
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (insertedPane.getText().contains( "BUILD SUCCESSFUL"))
@@ -3831,7 +3942,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         }
     }
 
-    /** Checks if the current project has runnable properties. */
+    /**
+     * Checks if the current project has runnable properties.
+     * @return true if the current project can be runned, false otherways
+     */
     private boolean currentIsRunnable()  {
         updateProjects();
         ProjectHandler activeProject = getProjectHandler( getActiveFile());
@@ -3882,7 +3996,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             fileExplorer.refreshAll();
     }
 
-    /** Pops up an error message. */
+    /**
+     * Pops up an error message.
+     * @param message the message string to show
+     */
     private void showError( String message) {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
@@ -3945,6 +4062,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private ArrayList<String> savedContents;
     private ArrayList<AutoFileSaver> autosavers;
     private ArrayList<ProjectHandler> openProjects;
+    private ArrayList<RealTimeFolderWatcher> folderWatchers;
     private ArrayList<String> helpStrings;
     private boolean workspaceChanged;
     private boolean consoleOut;
