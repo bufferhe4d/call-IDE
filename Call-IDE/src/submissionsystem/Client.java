@@ -7,9 +7,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-
+import submissionsystem.userinterface.VerifyEmail;
 /**
- *
+ * A class to represent the client in the submission system
  * @author Abdullah Talayhan
  */
 public class Client {
@@ -24,24 +24,45 @@ public class Client {
     int id;
     private String email;
     
+    /**
+     * A method to set the client info
+     * @param id the ID of the client in integer type
+     * @param name the name of the client in the String type
+     * @param email the email of the client in the String type
+     */
     public void setClientInfo(int id, String name, String email) {
         this.id = id;
         this.name = name;
         this.email = email;
     }
     
+    /**
+     * A method to set the email of client
+     * @param email the email of client in string type to set
+     */
     public void setEmail(String email) {
         this.email = email;
     }
     
+    /**
+     * A method to get the email of client
+     * @return the email of the client in String type
+     */
     public String getEmail() {
         return email;
     }
-
+    
+    /**
+     * A method to get the name of the client
+     * @return the name of the client in String type
+     */
     public String getName() {
         return name;
     }
     
+    /**
+     * A method to connect the server from the client perception
+     */
     public void connectServer() {
         try {
             client = new Socket("localhost", 9999);
@@ -57,6 +78,9 @@ public class Client {
         }
     }
     
+    /**
+     * A method to close the connection from the server
+     */
     public void closeConnection() {
         try {
             sendUTFDataToServer("EXIT");
@@ -69,6 +93,11 @@ public class Client {
         }
     }
     
+    /**
+     * Send UTD data to server
+     * @param msg UTF data to send
+     * @return true, if UTF data is sent to server; false, if not
+     */ 
     public boolean sendUTFDataToServer(String msg) {
         if (client != null) {
             try {
@@ -80,7 +109,11 @@ public class Client {
         }
         return false;
     }
-    
+    /**
+     * Send integer data to server 
+     * @param num the integer to send to server
+     * @return true, if the number is sent to server; false, if not
+     */
     public boolean sendIntDataToServer(int num) {
         if (client != null) {
             try {
@@ -93,6 +126,11 @@ public class Client {
         return false;
     }
     
+    /**
+     * Send double data to server 
+     * @param num the double to send to server
+     * @return true, if the number is sent to server; false, if not
+     */
     public boolean sendDoubleDataToServer(double num) {
         if (client != null) {
             try {
@@ -104,7 +142,10 @@ public class Client {
         }
         return false;
     }
-    
+    /**
+     * A method to get the UTF data from the server in String type
+     * @return the UTF Data in string type, if the client is not null; empty string if it is
+     */
     public String getUTFDataFromServer() {
         String res = "";
         if (client != null) {
@@ -116,7 +157,10 @@ public class Client {
         }
         return res;
     }
-    
+    /**
+     * A method to get the integer data from the server in String type
+     * @return the integer data in integer type, if the client is not null; empty integer if it is
+     */
     public int getIntDataFromServer() {
         int res = 0;
         if (client != null) {
@@ -128,7 +172,10 @@ public class Client {
         }
         return res;
     }
-    
+    /**
+     * A method to get the double data from the server in String type
+     * @return the double data in double type, if the client is not null; empty double if it is
+     */
     public double getDoubleDataFromServer() {
         double res = 0;
         if (client != null) {
@@ -140,7 +187,10 @@ public class Client {
         }
         return res;
     }
-    
+    /**
+     * A method to send object to server
+     * @param obj an object to send
+     */
     public void sendObjectToServer(Object obj) {
         if (client != null) {
             try {
@@ -150,7 +200,10 @@ public class Client {
             }
         }
     }
-    
+    /**
+     * A method to get the object from the server
+     * @return object, if the client is not null; null, if it is
+     */
     public Object getObjectFromServer() {
         Object obj = null;
         if (client != null) {
@@ -164,7 +217,10 @@ public class Client {
         }
         return obj;
     }
-    
+    /**
+     * A method to get the ArrayList from server
+     * @return ArrayList, if the client is not nullİ null, if it is
+     */
     public Object getArrayListFromServer() {
         Object obj = null;
         if (client != null) {
@@ -182,7 +238,7 @@ public class Client {
     public static void main(String[] args) {
         Client client = new Client();
         client.connectServer();
-        VerifyEmail frame = new VerifyEmail(client);
+        VerifyEmail frame = new VerifyEmail();
         frame.setVisible(true);
     }
     

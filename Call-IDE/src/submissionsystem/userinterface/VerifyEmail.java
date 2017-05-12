@@ -5,7 +5,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
-
+import submissionsystem.*;
 /**
  *
  * @author Abdullah Talayhan
@@ -17,8 +17,8 @@ public class VerifyEmail extends javax.swing.JFrame {
     /**
      * Creates new form Submission_Login
      */
-    public VerifyEmail(Client pclient) {
-        client = pclient;
+    public VerifyEmail() {
+        client = new Client();
         
 		addWindowListener(new WindowAdapter() {
 			@Override

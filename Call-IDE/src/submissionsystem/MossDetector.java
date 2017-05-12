@@ -67,7 +67,10 @@ public class MossDetector {
         results = socketClient.getResultURL();
         System.out.println("Results available at " + results.toString());
     }
-    
+    /**
+     * A method to get the moss link
+     * @return most link in the URL type
+     */
     public URL getMossLink()
     {
         return results;

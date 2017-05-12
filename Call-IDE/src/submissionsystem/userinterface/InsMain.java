@@ -31,7 +31,7 @@ import net.lingala.zip4j.core.*;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.*;
 import org.apache.commons.io.FileUtils;
-
+import submissionsystem.*;
 /**
  *
  * @author Abdullah Talayhan
@@ -498,6 +498,9 @@ public class InsMain extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * adds the courses of the instructor
+     */
     private void addCourseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCourseButtonActionPerformed
         // TODO add your handling code here:
         CourseReg createCourseFrame = new CourseReg(client, this);
@@ -505,7 +508,10 @@ public class InsMain extends javax.swing.JFrame {
         createCourseFrame.setLocationRelativeTo(this);
         createCourseFrame.setVisible(true);
     }//GEN-LAST:event_addCourseButtonActionPerformed
-
+    
+    /**
+     * publish assignment
+     */
     private void pubAssignButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pubAssignButtonActionPerformed
         // TODO add your handling code here:
         SendAssignment sendFrame = new SendAssignment(client, courseTitleLabel.getText());
@@ -518,7 +524,10 @@ public class InsMain extends javax.swing.JFrame {
         // TODO add your handling code here:
         
     }//GEN-LAST:event_asgnComboActionPerformed
-
+    
+    /**
+     * Send the grade to the submisson
+     */
     private void sendGradeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendGradeBtnActionPerformed
         // TODO add your handling code here:
         String email = subTable.getValueAt(subTable.getSelectedRow(), 1).toString();
@@ -533,6 +542,10 @@ public class InsMain extends javax.swing.JFrame {
         
     }//GEN-LAST:event_sendGradeBtnActionPerformed
     
+    /**
+     * download submission or assignment from server
+     * @param toDown assignment or submission to be downloaded
+     */
     private void downloadFrom(Assignment toDown ) {
         client.sendUTFDataToServer("DOWNLOAD_SUBS");
         client.sendObjectToServer(toDown);
@@ -581,7 +594,10 @@ public class InsMain extends javax.swing.JFrame {
             constuctAssignmentPanel(index);
         }
     }//GEN-LAST:event_refreshBtnActionPerformed
-
+    
+    /**
+     * choose the files for moss
+     */
     private void chooseMossFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseMossFileBtnActionPerformed
         // TODO add your handling code here:
         JFileChooser chooseMoss = new JFileChooser();
@@ -594,7 +610,10 @@ public class InsMain extends javax.swing.JFrame {
             addedFilesArea.append(f.getAbsolutePath()+"\n");
         }
     }//GEN-LAST:event_chooseMossFileBtnActionPerformed
-
+    
+    /**
+     * gets the moss link
+     */
     private void getMossBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getMossBtnActionPerformed
         String dest = System.getProperty("user.home") + "/Call-IDE/" + "Moss/Null";
         File finFolder = null;
@@ -661,21 +680,19 @@ public class InsMain extends javax.swing.JFrame {
             Logger.getLogger(InsMain.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_mossLinkLabelMouseClicked
-    
+    /**
+     * Decription: walks all the files in a given directory and filtes the java files
+     * @param folder folder to be walked
+     * @param dest directory for storing the filtered files
+     */
     public static void walkFiles( File folder, File dest) {
         Queue<File> dirsq = new LinkedList<>();
             dirsq.add(folder);
-            int files = 0;
-            int dirs = 0;
-            
-            dirs++; // to count the initial dir.
             while (!dirsq.isEmpty()) {
                 for (File f : dirsq.poll().listFiles()) {
                     if (f.isDirectory()) {
                         dirsq.add(f);
-                        dirs++;
                     } else if (f.isFile() && f.getAbsolutePath().endsWith(".java")) {
-                        files++;
                         System.out.println(f.getAbsolutePath());
                         try {
                             Files.copy(f.toPath(), dest.toPath().resolve(f.toPath().getFileName()));
@@ -685,8 +702,6 @@ public class InsMain extends javax.swing.JFrame {
                     }
                 }
             }
-            //System.out.format("Files: %d, dirs: %d. ", files, dirs);
-            //System.out.println(dirsq);
     
     }
     
@@ -706,6 +721,9 @@ public class InsMain extends javax.swing.JFrame {
             }
         });
     }
+    /**
+     * initialize the other components of the frame
+     */
     public void init() {
         userNameLabel.setText("Welcome: " + client.getName());
         courseList.setModel(new DefaultListModel());
@@ -737,7 +755,9 @@ public class InsMain extends javax.swing.JFrame {
         gradeField.setEditable(false);
         sendGradeBtn.setEnabled(false); 
     }
-    
+    /**
+     * update the course list
+     */
     public void updateCourseList() {
         courseList.setModel(new DefaultListModel());
         client.sendUTFDataToServer("GET_COURSES");
@@ -760,6 +780,10 @@ public class InsMain extends javax.swing.JFrame {
         studentTable.setModel(panelTableModel);
     }
     
+    /**
+     * constucts the assignments panel
+     * @param index selected course index
+     */
     public void constuctAssignmentPanel(int index) {
         String course = (String) model.getElementAt(index);
         courseTitleLabel.setText(course);
@@ -780,6 +804,9 @@ public class InsMain extends javax.swing.JFrame {
         //studentTable.setModel(panelTableModel);
     }
     
+    /**
+     * initialize the submissions tables
+     */
     public void initSubTable() {
         
         subTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {

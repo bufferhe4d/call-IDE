@@ -15,8 +15,10 @@ import net.lingala.zip4j.core.*;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.*;
 import net.lingala.zip4j.util.*;
+
+import submissionsystem.*;
 /**
- *
+ * A class to create a frame for sending assignments for submission system
  * @author Abdullah Talayhan
  */
 public class SendAssignment extends javax.swing.JFrame {
@@ -31,6 +33,12 @@ public class SendAssignment extends javax.swing.JFrame {
     String courseCode;
     FileInputStream fis;
     
+    /**
+     * A constructor to create a send assignment functionality for client 
+     * to send code to submission system
+     * @param pclient client which submits assignment in Client type
+     * @param code code to send as an assignement in String type
+     */
     public SendAssignment(Client pclient, String code) {
         client = pclient;
         courseCode = code;

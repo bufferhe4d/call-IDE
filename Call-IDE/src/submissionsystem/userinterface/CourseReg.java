@@ -4,9 +4,9 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import javax.swing.JOptionPane;
-
+import submissionsystem.*;
 /**
- *
+ * A class to create a frame for course registration
  * @author Abdullah Talayhan
  */
 public class CourseReg extends javax.swing.JFrame {

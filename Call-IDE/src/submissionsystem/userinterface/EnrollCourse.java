@@ -3,9 +3,9 @@ package submissionsystem.userinterface;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
-
+import submissionsystem.*;
 /**
- *
+ * A class to create a frame for enrolling the course 
  * @author Abdullah Talayhan
  */
 public class EnrollCourse extends JFrame {

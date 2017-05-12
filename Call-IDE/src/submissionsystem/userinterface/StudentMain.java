@@ -24,9 +24,9 @@ import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.ZipParameters;
 import net.lingala.zip4j.util.Zip4jConstants;
-
+import submissionsystem.*;
 /**
- *
+ * A class to create a frame for providing the functionality for the students in the submission system
  * @author Abdullah Talayhan
  */
 public class StudentMain extends javax.swing.JFrame {
@@ -503,7 +503,10 @@ public class StudentMain extends javax.swing.JFrame {
         toDown = pastAssignments.get(currentAsgnIndex);
         downloadFrom(toDown);
     }//GEN-LAST:event_downAsgnFromSubBtnActionPerformed
-    
+    /**
+     * A method to download the assignment from the submission system server
+     * @param toDown a parameter to take the assignment in Assignment type
+     */
     private void downloadFrom(Assignment toDown ) {
         client.sendUTFDataToServer("DOWNLOAD_ASGN");
         client.sendObjectToServer(toDown);
@@ -543,6 +546,9 @@ public class StudentMain extends javax.swing.JFrame {
         initCourses();
     }//GEN-LAST:event_jButton1ActionPerformed
     
+    /**
+     * Initializes the JTable models
+     */
     public void initModels() {
         curModel = (DefaultListModel) curList.getModel();
         pastModel = (DefaultListModel) pastList.getModel();
@@ -588,22 +594,14 @@ public class StudentMain extends javax.swing.JFrame {
               if (index >= 0) {
                 currentAsgnIndex = index;
                 
-                /*Assignment temp = pastAssignments.get(index);
-                if(getSubmitted(temp) != null) {
-                    temp = getSubmitted(temp);
-                }
-                Object o = theList.getModel().getElementAt(index);
-                pastAsName.setText(temp.getName());
-                pastAsDueDate.setText(temp.getDuedate().toString());
-                pastAsSubDate.setText("Submitted(" + temp.getSubdate() + ")");
-                gradeLabel.setText("" + temp.getGrade());*/
+                
                 constructPastPanel(index);
                 
                 if(!pastPanel.isVisible()) {
                     curPanel.setVisible(false);
                     pastPanel.setVisible(true);
                 }
-                //System.out.println("Double-clicked on: " + o.toString());
+                
               }
             }
           }
@@ -611,7 +609,10 @@ public class StudentMain extends javax.swing.JFrame {
         curList.addMouseListener(curMouseListener);
         pastList.addMouseListener(pastMouseListener);
     }
-    
+    /**
+     * A method to construct the panel for the past assignments
+     * @param index a parameter to take the index of the assignments
+     */
     public void constructPastPanel(int index) {
         Assignment temp = pastAssignments.get(index);
         pastAsName.setText(temp.getName());
@@ -634,6 +635,11 @@ public class StudentMain extends javax.swing.JFrame {
             gradeLabel.setText("-");
         }
     }
+    /**
+     * A method to construct the panel for the past assignments
+     * @param index a parameter to take the index of the assignments
+     * @param temp a parameter to take the past assignments
+     */
     public void constructPastPanel(int index, Assignment temp) {
         //Assignment temp = pastAssignments.get(index);
         pastAsName.setText(temp.getName());
@@ -656,7 +662,11 @@ public class StudentMain extends javax.swing.JFrame {
             gradeLabel.setText("-");
         }
     }
-    
+    /**
+     * A method to get the submitted files from server
+     * @param asgn a parameter to take the assignment from the server
+     * @return the submitted assignment, if it exists; null, if not
+     */
     public Assignment getSubmitted(Assignment asgn) {
         
         for( Assignment temp : allSubmissions) {
@@ -667,6 +677,9 @@ public class StudentMain extends javax.swing.JFrame {
         }
         return null;
     }
+    /**
+     * A method to get the current assignments from server and update the table of the current assignments
+     */
     public void initCurAssignments() {
         client.sendUTFDataToServer("GET_CUR_ASSIGNMENTS");
         courseCode = (String)courseCombo.getSelectedItem();
@@ -688,10 +701,11 @@ public class StudentMain extends javax.swing.JFrame {
         else {
             client.sendUTFDataToServer("NO_COURSE");
         }
-        //curList = new JList(curAssignmentNames.toArray());
-        
     }
     
+    /**
+     * A method to get the past assignments from the server and update the table according to that
+     */
     public void initPastAssignments() {
         client.sendUTFDataToServer("GET_PAST_ASSIGNMENTS");
         courseCode = (String)courseCombo.getSelectedItem();
@@ -715,7 +729,9 @@ public class StudentMain extends javax.swing.JFrame {
         }
         
     }
-    
+    /**
+     * A method to get the current courses from server and update the courses
+     */
     public void initCourses() {
         client.sendUTFDataToServer("GET_COURSES");
         courseArrList = (ArrayList)client.getObjectFromServer();
