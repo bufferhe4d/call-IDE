@@ -21,6 +21,7 @@ public class AutoFileSaver implements ActionListener {
      * Creates a AutoFileSaver with the given source period, then starts the timer.
      * @param fileSaver the FileSaver object to use in saving
      * @param contentSource the source component to take content periodically
+     * @param outputTarget the target program to handle the autosaving feature
      * @param period the saving periods in miliseconds
      */
     public AutoFileSaver( FileSaver fileSaver, JTextComponent contentSource,

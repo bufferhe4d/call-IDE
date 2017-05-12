@@ -38,6 +38,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     /**
      * Creates the main frame of the IDE.
      * @param openWith the absolute path of the file to open in the IDE
+     * @throws IOException
      */
     public MainFrame( String openWith) throws IOException {
         initStreams();

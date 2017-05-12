@@ -137,7 +137,7 @@ public class AutoComplete {
     }
     /**
      * A method to update the list of variables which will be auto-completed
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException 
      * @throws ParseProblemException 
      */
     public void updateAutoComplete() throws FileNotFoundException, ParseProblemException

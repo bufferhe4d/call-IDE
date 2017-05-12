@@ -1,7 +1,5 @@
 package submissionsystem.userinterface;
 
-import submissionsystem.*;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
@@ -10,13 +8,13 @@ import javax.swing.WindowConstants;
  *
  * @author Abdullah Talayhan
  */
-public class LoginFrame extends javax.swing.JFrame {
+public class loginFrame extends javax.swing.JFrame {
     
     Client client;
     /**
      * Creates new form loginFrame
      */
-    public LoginFrame() {
+    public loginFrame() {
         initComponents();
         stdRdButton.setActionCommand("Student");
         insRdButton.setActionCommand("Instructor");
@@ -36,8 +34,8 @@ public class LoginFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup = new javax.swing.ButtonGroup();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        emailLabel = new javax.swing.JLabel();
+        passLabel = new javax.swing.JLabel();
         idField = new javax.swing.JTextField();
         passField = new javax.swing.JPasswordField();
         login = new javax.swing.JButton();
@@ -47,9 +45,9 @@ public class LoginFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login");
 
-        jLabel1.setText("E-mail:");
+        emailLabel.setText("E-mail:");
 
-        jLabel2.setText("Password:");
+        passLabel.setText("Password:");
 
         login.setText("Login");
         login.addActionListener(new java.awt.event.ActionListener() {
@@ -80,19 +78,18 @@ public class LoginFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(idField)
-                            .addComponent(passField)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(stdRdButton)
+                            .addComponent(emailLabel)
+                            .addComponent(stdRdButton)
+                            .addComponent(insRdButton))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(login))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(insRdButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 162, Short.MAX_VALUE)
-                        .addComponent(login)))
+                        .addComponent(passLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(passField)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -100,12 +97,12 @@ public class LoginFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
+                    .addComponent(emailLabel)
                     .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(passField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(passLabel))
                 .addGap(11, 11, 11)
                 .addComponent(stdRdButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -119,7 +116,7 @@ public class LoginFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
-        // TODO add your handling code here:
+
         // type
         client.sendUTFDataToServer("LOGIN_OPEN");
         client.sendUTFDataToServer(buttonGroup.getSelection().getActionCommand());
@@ -153,7 +150,7 @@ public class LoginFrame extends javax.swing.JFrame {
                 //System.out.println(name);
                 dispose();
         } else {
-                //System.out.println("Wrong User name or password");
+                System.out.println("Wrong User name or password");
                 JOptionPane.showMessageDialog(this, "Wrong username or password.", "Call-IDE Error!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_loginActionPerformed
@@ -179,35 +176,33 @@ public class LoginFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(loginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(loginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(loginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(loginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LoginFrame().setVisible(true);
+                new loginFrame().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup;
+    private javax.swing.JLabel emailLabel;
     private javax.swing.JTextField idField;
     private javax.swing.JRadioButton insRdButton;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JButton login;
     private javax.swing.JPasswordField passField;
+    private javax.swing.JLabel passLabel;
     private javax.swing.JRadioButton stdRdButton;
     // End of variables declaration//GEN-END:variables
 }

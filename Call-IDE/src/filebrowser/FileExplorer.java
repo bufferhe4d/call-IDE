@@ -53,7 +53,7 @@ public class FileExplorer extends JPanel
     
     /**
      * This method determines the explorer is browsing project 
-     * @return 
+     * @return true if the explorer is browsing projects, false otherways
      */
     public boolean isProjectBrowser()
     {
@@ -82,7 +82,10 @@ public class FileExplorer extends JPanel
         navigator.updateUI();
     }
     
-    /** This method gives the tree component of the file explorer. */
+    /**
+     * This method gives the tree component of the file explorer.
+     * @return the navigator tree of this file explorer
+     */
     public JTree getTree() {
         return navigator;
     }

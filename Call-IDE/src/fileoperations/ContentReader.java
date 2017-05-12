@@ -19,6 +19,7 @@ public class ContentReader {
      * Reads and returns the file contents.
      * @param file the file to read
      * @return the content of the readed file
+     * @throws IOException
      */
     public static String read( File file) throws IOException {
         FileReader input = new FileReader( file);

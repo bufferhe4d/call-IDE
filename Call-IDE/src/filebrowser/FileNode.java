@@ -80,7 +80,7 @@ public class FileNode extends DefaultMutableTreeNode
     }
     /**
      * This constructor add root directory node
-     * @param file root file as a path ed file
+     * @param file root file as a pathed file
      */
     public FileNode( PathedFile file)
     {
@@ -163,7 +163,11 @@ public class FileNode extends DefaultMutableTreeNode
         return file.toString();
     }
     
-    /** This method compares nodes and if they are equals return true */
+    /**
+     * This method compares nodes.
+     * @param n the other FileNode to compare
+     * @return true if they are the same
+     */
     public boolean equals( FileNode n)
     {
         return file.getPath().equals( n.file.getPath());
@@ -185,7 +189,10 @@ public class FileNode extends DefaultMutableTreeNode
         return new TreePath( tempNodes);
     }
     
-    /**  This method deletes file and remove from parent  the node */
+    /**
+     * This method deletes file and remove from parent the node
+     * @return true if the deletion is successful
+     */
     public boolean delete()
     {
         if (getParent().getChildCount() == 1)
@@ -221,7 +228,11 @@ public class FileNode extends DefaultMutableTreeNode
         return done;
     }
     
-    /** This method adds a node and create file with a name  */
+    /**
+     * This method adds a node and create file with a name.
+     * @param fileName the name of the file to create
+     * @throws IOException
+     */
     public void createFile( String fileName) throws IOException
     {
         // ---- WATCHER CONFLICT -----
@@ -235,24 +246,24 @@ public class FileNode extends DefaultMutableTreeNode
         updateChildren();
     }
     
-    /** This method creates a directory into node */
+    /**
+     * This method creates a directory into node
+     * @param fileName the name of the directory to add
+     */
     public void createDirectory( String fileName)
     {
-        // ---- WATCHER CONFLICT -----
         FileNode temp;
         temp = new FileNode( new PathedFile( file.getAbsolutePath() + "/" + fileName
                                                 +  "/" ,  file.path ) , nodesAndPaths);
         add( temp);
         temp.checkEmptyDir();
-        // ---- WATCHER CONFLICT -----
         
         (new File(file.getAbsolutePath() + "/" + fileName)).mkdir();
         updateChildren();
     }
     
     /** This gets file of node */
-    public File getFile()
-    {
+    public File getFile() {
         return file;
     }
     
@@ -272,6 +283,7 @@ public class FileNode extends DefaultMutableTreeNode
     /** 
      * This method pastes the source file into this directory 
      * @param sourceNode will be pasted on this node
+     * @throws IOException
      */
     public void pasteFile( FileNode sourceNode) throws IOException
     {
@@ -314,12 +326,18 @@ public class FileNode extends DefaultMutableTreeNode
         }
     }
     
-    /**  This method determines node is empty node */
+    /**
+     * This method determines node is empty node
+     * @return true if the node is empty
+     */
     public boolean isEmpty() {
         return file == null && isLeaf();
     }
     
-    /** This method sets root  as a browsing project */
+    /**
+     * This method sets root  as a browsing project
+     * @param isBrowsingProjects the state of the browser
+     */
     public void setIsBrowsingProjects( boolean isBrowsingProjects)
     {
         if( isRoot())
@@ -328,7 +346,10 @@ public class FileNode extends DefaultMutableTreeNode
         }
     }
     
-    /** This method gets root  is browsing project */
+    /**
+     * This method gets root is browsing project
+     * @return true if the current state is browsing projects
+     */
     public boolean isBrowsingProjects()
     {
         return isRoot() && isBrowsingProjects;

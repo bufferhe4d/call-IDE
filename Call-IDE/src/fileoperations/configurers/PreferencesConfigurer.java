@@ -34,6 +34,7 @@ public class PreferencesConfigurer {
     /**
      * Loads the preferences object that is located on the given folder path.
      * @param userPath the path of the user to load the preferences
+     * @return the Preferences object that has been loaded
      */
     public static Preferences load( String userPath) {
         Preferences preferences = null;

@@ -50,6 +50,7 @@ public class ProjectHandler
      * @param mainClass it is a file of main class. Its path cannot be absolute path. It must be path after src absolute path. e.g "packageX/Main.java" so it comes after src path
      * @param projectPath path of where project file will be. It should end with "/". e.g "D:/user/workspace/projectX/".
      * @param allJavaFiles list of project files in src
+     * @param externalClassPaths list of the external class paths
      * @throws SecurityException if can't create src and build
      */
     public ProjectHandler( File build, File src, File mainClass, String projectPath, ArrayList<File> allJavaFiles, ArrayList<File> externalClassPaths) throws SecurityException

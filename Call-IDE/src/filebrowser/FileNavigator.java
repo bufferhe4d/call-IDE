@@ -29,6 +29,7 @@ public class FileNavigator extends JTree implements TreeSelectionListener
     /**
      *  This constructor creates a JTree with virtual root node add pop up menus in it and add listeners for interaction
      *  @param files file path added to virtual node
+     *  @param opener the parent frame which will open the file
      */
     public FileNavigator( ArrayList<String> files, NavigationParent opener)
     { 
