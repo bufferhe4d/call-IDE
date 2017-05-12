@@ -68,6 +68,12 @@ public class InnerNode extends DefaultMutableTreeNode implements SummaryNode{
      */
     private class FindInnerMethods extends VoidVisitorAdapter<Void> 
     {
+        /**
+         * An override method to visit the inner methods of the class
+         * @param n a parameter to take the node for search inner classes or
+         *          interface declarations
+         * @param arg a parameter to take arg and give to the super.visit 
+         */
         @Override
         public void visit(ClassOrInterfaceDeclaration n, Void arg) {
             if (!nodeName.equals(n.getNameAsString()))
@@ -81,6 +87,12 @@ public class InnerNode extends DefaultMutableTreeNode implements SummaryNode{
      */
     class MethodVisitor extends VoidVisitorAdapter<Void> 
     {
+        /**
+         * An override method to visit the methods of the class
+         * @param n a parameter to take the node for search the method declarations 
+         *          in class
+         * @param arg a parameter to take arg and give to the super.visit
+         */
         @Override
         public void visit(MethodDeclaration n, Void arg) {
             if (innerClassMethods.size() > innerMethodIndex &&
@@ -97,6 +109,11 @@ public class InnerNode extends DefaultMutableTreeNode implements SummaryNode{
      */
     private class ConsturctorVisitor extends VoidVisitorAdapter<Void> 
     {
+        /**
+         * An override method to visit the constructors in the class
+         * @param n a parameter to take the node to search the constructor in it
+         * @param arg a parameter to take arg and give to the super.visit
+         */
         @Override
         public void visit( ConstructorDeclaration n, Void arg) {
             add( new ConstructorNode(n));
@@ -109,6 +126,11 @@ public class InnerNode extends DefaultMutableTreeNode implements SummaryNode{
      */
     private class InnerClassVisitor extends VoidVisitorAdapter<Void> 
     {
+        /**
+         * An override method to visit the inner class and interface declarations in the class 
+         * @param n a parameter to take the node to look at the inner class and interface declarations 
+         * @param arg a parameter to take arg and give to the super.visit 
+         */
         @Override
         public void visit( ClassOrInterfaceDeclaration n, Void arg) {
             if (!nodeName.equals(n.getNameAsString()))

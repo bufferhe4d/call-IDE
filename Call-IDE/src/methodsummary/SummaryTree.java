@@ -40,6 +40,10 @@ public class SummaryTree extends JTree implements TreeSelectionListener {
         }
     }
     
+    /**
+     * A method to configure the nodes in the tree of the method summary
+     * @param node a parameter to take the node of the tree to configure nodes in it
+     */
     private void configureNodes(TreeNode node) {
         if (node instanceof VisitableNode)
             ((VisitableNode) node).configureNode();
@@ -48,6 +52,9 @@ public class SummaryTree extends JTree implements TreeSelectionListener {
                 configureNodes( node.getChildAt(i));
     }
     
+    /**
+     * A method to configure the tree of method summary
+     */
     public void configureTree() {
         configureNodes((TreeNode) treeModel.getRoot());
     }
