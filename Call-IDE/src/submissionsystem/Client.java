@@ -1,7 +1,5 @@
 package submissionsystem;
 
-
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -23,7 +21,7 @@ public class Client {
     private ObjectOutputStream oos;
     
     private String name, surname;
-    int id, type, dept;
+    int id;
     private String email;
     
     public void setClientInfo(int id, String name, String email) {
@@ -38,6 +36,10 @@ public class Client {
     
     public String getEmail() {
         return email;
+    }
+
+    public String getName() {
+        return name;
     }
     
     public void connectServer() {
@@ -177,13 +179,11 @@ public class Client {
         return obj;
     }
     
-    /*
     public static void main(String[] args) {
         Client client = new Client();
         client.connectServer();
         VerifyEmail frame = new VerifyEmail(client);
         frame.setVisible(true);
     }
-    */
     
 }

@@ -1,9 +1,8 @@
 package submissionsystem.userinterface;
 
-import submissionsystem.*;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 
 /**
  *
@@ -32,17 +31,14 @@ public class EnrollCourse extends JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        enterPrpLabel = new javax.swing.JLabel();
         cKeyField = new javax.swing.JTextField();
-        informLabel = new javax.swing.JLabel();
         enrollBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Enroll Course");
 
-        jLabel1.setText("Enter Class Key: ");
-
-        informLabel.setText("jLabel2");
+        enterPrpLabel.setText("Enter Class Key: ");
 
         enrollBtn.setText("Enroll");
         enrollBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -57,13 +53,10 @@ public class EnrollCourse extends JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(enrollBtn)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(informLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(enrollBtn))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(enterPrpLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cKeyField, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -73,12 +66,10 @@ public class EnrollCourse extends JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
+                    .addComponent(enterPrpLabel)
                     .addComponent(cKeyField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(enrollBtn)
-                    .addComponent(informLabel))
+                .addComponent(enrollBtn)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -87,6 +78,7 @@ public class EnrollCourse extends JFrame {
 
     private void enrollBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enrollBtnActionPerformed
         // TODO add your handling code here:
+        System.out.println("test");
         
         cKey = cKeyField.getText();
         client.sendUTFDataToServer(cKey);
@@ -94,29 +86,24 @@ public class EnrollCourse extends JFrame {
         String ans = client.getUTFDataFromServer();
         
         if(ans.equals("ENROLLED")) {
-            // System.out.println("Enrolled");
+            System.out.println("Enrolled");
             String courseCode = client.getUTFDataFromServer();
-            informLabel.setText("Class Key for: " + courseCode + " , Enrollment Complete." );
-            JOptionPane.showMessageDialog(this, "Class Key for: " + courseCode ,  "Enrollment Complete" , JOptionPane.ERROR_MESSAGE);
+            //informLabel.setText("Class Key for: " + courseCode + " , Enrollment Complete." );
+            JOptionPane.showMessageDialog(this, "Class Key for: " + courseCode ,  "Enrollment Complete" , JOptionPane.INFORMATION_MESSAGE);
             dispose();
             
         }
         else {
-            JOptionPane.showMessageDialog(this, "Class Key is invalid", "Call-IDE Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Either Class Key is invalid or you are already enrolled", "Call-IDE Error!", JOptionPane.ERROR_MESSAGE);
         }
         
         
     }//GEN-LAST:event_enrollBtnActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField cKeyField;
     private javax.swing.JButton enrollBtn;
-    private javax.swing.JLabel informLabel;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel enterPrpLabel;
     // End of variables declaration//GEN-END:variables
 }

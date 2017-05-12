@@ -1,7 +1,5 @@
 package submissionsystem.userinterface;
 
-import submissionsystem.*;
-
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -25,6 +23,8 @@ public class CourseReg extends javax.swing.JFrame {
         initComponents();
         promptLabel.setVisible(false);
         copyToClipBtn.setVisible(false);
+        client.sendUTFDataToServer("GET_INS");
+        insLabel.setText(client.getUTFDataFromServer());
     }
 
     /**
@@ -36,22 +36,22 @@ public class CourseReg extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        cCodeLabel = new javax.swing.JLabel();
         courseCodeField = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
+        titleLabel = new javax.swing.JLabel();
         titleField = new javax.swing.JTextField();
         createCourseBtn = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
+        secLabel = new javax.swing.JLabel();
         courseSectionField = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        insPrpLabel = new javax.swing.JLabel();
+        insLabel = new javax.swing.JLabel();
         promptLabel = new javax.swing.JLabel();
         copyToClipBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Register Course");
 
-        jLabel1.setText("Course Code:");
+        cCodeLabel.setText("Course Code:");
 
         courseCodeField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -59,7 +59,7 @@ public class CourseReg extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Course Title:");
+        titleLabel.setText("Course Title:");
 
         createCourseBtn.setText("Create Class");
         createCourseBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -68,11 +68,11 @@ public class CourseReg extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setText("Section No:");
+        secLabel.setText("Section No:");
 
-        jLabel4.setText("Institude Code: ");
+        insPrpLabel.setText("Institude Code: ");
 
-        jLabel5.setText("bilkent.edu.tr");
+        insLabel.setText("bilkent.edu.tr");
 
         promptLabel.setText("Class Key for CS101-03 :   QX7V6695D");
 
@@ -94,13 +94,13 @@ public class CourseReg extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel4))
+                                    .addComponent(titleLabel)
+                                    .addComponent(insPrpLabel))
                                 .addGap(198, 198, 198))
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addComponent(secLabel, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
+                                .addComponent(cCodeLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(courseCodeField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(courseSectionField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -109,7 +109,7 @@ public class CourseReg extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(copyToClipBtn))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel5)
+                                .addComponent(insLabel)
                                 .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(createCourseBtn)
@@ -120,20 +120,20 @@ public class CourseReg extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
+                    .addComponent(cCodeLabel)
                     .addComponent(courseCodeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(secLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(courseSectionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
+                    .addComponent(titleLabel)
                     .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5))
+                    .addComponent(insPrpLabel)
+                    .addComponent(insLabel))
                 .addGap(18, 18, 18)
                 .addComponent(createCourseBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -182,22 +182,18 @@ public class CourseReg extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_copyToClipBtnActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
     
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel cCodeLabel;
     private javax.swing.JButton copyToClipBtn;
     private javax.swing.JTextField courseCodeField;
     private javax.swing.JTextField courseSectionField;
     private javax.swing.JButton createCourseBtn;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel insLabel;
+    private javax.swing.JLabel insPrpLabel;
     private javax.swing.JLabel promptLabel;
+    private javax.swing.JLabel secLabel;
     private javax.swing.JTextField titleField;
+    private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,14 +1,20 @@
 package submissionsystem.userinterface;
 
-import submissionsystem.*;
-
+import it.zielke.moji.MossException;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -21,6 +27,10 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import net.lingala.zip4j.core.*;
+import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.model.*;
+import org.apache.commons.io.FileUtils;
 
 /**
  *
@@ -33,6 +43,7 @@ public class InsMain extends javax.swing.JFrame {
     ArrayList<Assignment> allSubmissionsInAsgn;
     FileInputStream fis;
     FileOutputStream fos;
+    File[] allMossFiles;
     /**
      * Creates new form InsMain
      */
@@ -40,7 +51,12 @@ public class InsMain extends javax.swing.JFrame {
         client = pclient;
         
         initComponents();
+        studentTable.setModel( new DefaultTableModel());
+        subTable.setModel(new DefaultTableModel());
+        courseTitleLabel.setText("");
+        courseTitleLabel2.setText("");
         init();
+        addedFilesArea.setText("");
         downAsgnBtn.setVisible(false);
         asgnNameLabel.setVisible(false);
         asgnDueLabel.setVisible(false);
@@ -64,6 +80,8 @@ public class InsMain extends javax.swing.JFrame {
                 downAsgnBtn.setVisible(true);
             }
         });
+        
+        
         initSubTable();
     }
 
@@ -76,38 +94,46 @@ public class InsMain extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        myCourseLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         courseList = new javax.swing.JList();
         addCourseButton = new javax.swing.JButton();
         mainTabs = new javax.swing.JTabbedPane();
         coursePanel = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        cName1Label = new javax.swing.JLabel();
         courseTitleLabel = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         studentTable = new javax.swing.JTable();
         pubAssignButton = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        courseDescLabel = new javax.swing.JLabel();
+        userNameLabel = new javax.swing.JLabel();
         assignmentPanel = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        cName2Label = new javax.swing.JLabel();
         courseTitleLabel2 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         subTable = new javax.swing.JTable();
-        courseDescLabel1 = new javax.swing.JLabel();
         asgnCombo = new javax.swing.JComboBox();
         downSubBtn = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
+        gradeLabel = new javax.swing.JLabel();
         gradeField = new javax.swing.JTextField();
         sendGradeBtn = new javax.swing.JButton();
         asgnNameLabel = new javax.swing.JLabel();
         asgnDueLabel = new javax.swing.JLabel();
         downAsgnBtn = new javax.swing.JButton();
+        refreshBtn = new javax.swing.JButton();
+        mossPanel = new javax.swing.JPanel();
+        mossToolPanel = new javax.swing.JPanel();
+        welcomeMossLabel = new javax.swing.JLabel();
+        mossPrpLabel = new javax.swing.JLabel();
+        chooseMossFileBtn = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        addedFilesArea = new javax.swing.JTextArea();
+        getMossBtn = new javax.swing.JButton();
+        mossLinkLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Instructor Control Panel");
 
-        jLabel1.setText("My Courses: ");
+        myCourseLabel.setText("My Courses: ");
 
         courseList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "CS102-02", "CS223-01", "CS319-02" };
@@ -125,7 +151,7 @@ public class InsMain extends javax.swing.JFrame {
 
         coursePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel2.setText("Course Name: ");
+        cName1Label.setText("Course Name: ");
 
         courseTitleLabel.setText("CS102-02");
 
@@ -169,9 +195,7 @@ public class InsMain extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Send E-mail");
-
-        courseDescLabel.setText("courseDesLabel");
+        userNameLabel.setText("jLabel5");
 
         javax.swing.GroupLayout coursePanelLayout = new javax.swing.GroupLayout(coursePanel);
         coursePanel.setLayout(coursePanelLayout);
@@ -180,19 +204,17 @@ public class InsMain extends javax.swing.JFrame {
             .addGroup(coursePanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(coursePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, coursePanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(pubAssignButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(coursePanelLayout.createSequentialGroup()
-                        .addComponent(jLabel2)
+                        .addComponent(cName1Label)
                         .addGap(30, 30, 30)
                         .addComponent(courseTitleLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(courseDescLabel)
-                        .addGap(0, 394, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(userNameLabel)
+                        .addGap(174, 174, 174))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 627, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, coursePanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(pubAssignButton)))
                 .addContainerGap())
         );
         coursePanelLayout.setVerticalGroup(
@@ -200,23 +222,21 @@ public class InsMain extends javax.swing.JFrame {
             .addGroup(coursePanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(coursePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
+                    .addComponent(cName1Label)
                     .addComponent(courseTitleLabel)
-                    .addComponent(courseDescLabel))
+                    .addComponent(userNameLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(coursePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(pubAssignButton)
-                    .addComponent(jButton3))
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pubAssignButton)
+                .addGap(6, 6, 6))
         );
 
         mainTabs.addTab("Courses", coursePanel);
 
         assignmentPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel3.setText("Course Name: ");
+        cName2Label.setText("Course Name: ");
 
         courseTitleLabel2.setText("CS102-02");
 
@@ -253,8 +273,6 @@ public class InsMain extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(subTable);
 
-        courseDescLabel1.setText("courseDesLabel");
-
         asgnCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         asgnCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -269,7 +287,7 @@ public class InsMain extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setText("Grade: ");
+        gradeLabel.setText("Grade: ");
 
         sendGradeBtn.setText("Send Grade");
         sendGradeBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -289,6 +307,13 @@ public class InsMain extends javax.swing.JFrame {
             }
         });
 
+        refreshBtn.setText("Refresh");
+        refreshBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout assignmentPanelLayout = new javax.swing.GroupLayout(assignmentPanel);
         assignmentPanel.setLayout(assignmentPanelLayout);
         assignmentPanelLayout.setHorizontalGroup(
@@ -297,12 +322,12 @@ public class InsMain extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(assignmentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, assignmentPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel3)
+                        .addComponent(cName2Label)
                         .addGap(30, 30, 30)
                         .addComponent(courseTitleLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(courseDescLabel1)
-                        .addGap(0, 394, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(refreshBtn)
+                        .addGap(8, 8, 8))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, assignmentPanelLayout.createSequentialGroup()
                         .addGroup(assignmentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(asgnNameLabel)
@@ -314,12 +339,12 @@ public class InsMain extends javax.swing.JFrame {
                             .addGroup(assignmentPanelLayout.createSequentialGroup()
                                 .addComponent(downSubBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel4)
+                                .addComponent(gradeLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(gradeField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(sendGradeBtn))
-                            .addComponent(jScrollPane3))))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         assignmentPanelLayout.setVerticalGroup(
@@ -327,9 +352,9 @@ public class InsMain extends javax.swing.JFrame {
             .addGroup(assignmentPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(assignmentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
+                    .addComponent(cName2Label)
                     .addComponent(courseTitleLabel2)
-                    .addComponent(courseDescLabel1))
+                    .addComponent(refreshBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(assignmentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(assignmentPanelLayout.createSequentialGroup()
@@ -340,19 +365,106 @@ public class InsMain extends javax.swing.JFrame {
                         .addComponent(asgnDueLabel)
                         .addGap(18, 18, 18)
                         .addComponent(downAsgnBtn)
-                        .addGap(0, 114, Short.MAX_VALUE))
+                        .addGap(0, 105, Short.MAX_VALUE))
                     .addGroup(assignmentPanelLayout.createSequentialGroup()
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(assignmentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(sendGradeBtn)
                             .addComponent(gradeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4)
+                            .addComponent(gradeLabel)
                             .addComponent(downSubBtn))))
                 .addContainerGap())
         );
 
         mainTabs.addTab("Assignments", assignmentPanel);
+
+        mossToolPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        welcomeMossLabel.setText("Welcome to Moss Tool");
+
+        mossPrpLabel.setText("Select the assignment zip files you want to check similarity for:");
+
+        chooseMossFileBtn.setText("Select Files");
+        chooseMossFileBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chooseMossFileBtnActionPerformed(evt);
+            }
+        });
+
+        addedFilesArea.setColumns(20);
+        addedFilesArea.setRows(5);
+        jScrollPane4.setViewportView(addedFilesArea);
+
+        getMossBtn.setText("Generate Moss Link");
+        getMossBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                getMossBtnActionPerformed(evt);
+            }
+        });
+
+        mossLinkLabel.setText("It may take a while to generate the link depending on the Moss server load.");
+        mossLinkLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                mossLinkLabelMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout mossToolPanelLayout = new javax.swing.GroupLayout(mossToolPanel);
+        mossToolPanel.setLayout(mossToolPanelLayout);
+        mossToolPanelLayout.setHorizontalGroup(
+            mossToolPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mossToolPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(mossToolPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(welcomeMossLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(mossToolPanelLayout.createSequentialGroup()
+                        .addComponent(mossPrpLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(chooseMossFileBtn))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(mossToolPanelLayout.createSequentialGroup()
+                        .addComponent(getMossBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(mossLinkLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(23, Short.MAX_VALUE))
+        );
+        mossToolPanelLayout.setVerticalGroup(
+            mossToolPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mossToolPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(welcomeMossLabel)
+                .addGap(23, 23, 23)
+                .addGroup(mossToolPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(mossPrpLabel)
+                    .addComponent(chooseMossFileBtn))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(mossToolPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(getMossBtn)
+                    .addComponent(mossLinkLabel))
+                .addContainerGap(19, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout mossPanelLayout = new javax.swing.GroupLayout(mossPanel);
+        mossPanel.setLayout(mossPanelLayout);
+        mossPanelLayout.setHorizontalGroup(
+            mossPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mossPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(mossToolPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(22, Short.MAX_VALUE))
+        );
+        mossPanelLayout.setVerticalGroup(
+            mossPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mossPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(mossToolPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        mainTabs.addTab("Moss Tool", mossPanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -363,10 +475,10 @@ public class InsMain extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(addCourseButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1)
-                    .addComponent(jLabel1))
+                    .addComponent(myCourseLabel))
                 .addGap(18, 18, 18)
                 .addComponent(mainTabs, javax.swing.GroupLayout.PREFERRED_SIZE, 654, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -375,12 +487,12 @@ public class InsMain extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(mainTabs, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(myCourseLabel)
                         .addGap(3, 3, 3)
                         .addComponent(jScrollPane1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(addCourseButton)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         pack();
@@ -411,10 +523,13 @@ public class InsMain extends javax.swing.JFrame {
         // TODO add your handling code here:
         String email = subTable.getValueAt(subTable.getSelectedRow(), 1).toString();
         int grade = Integer.parseInt(gradeField.getText());
+        int index = asgnCombo.getSelectedIndex();
         
+        Assignment asgnToGrade = allAssignments.get(index);
         client.sendUTFDataToServer("SEND_GRADE");
         client.sendUTFDataToServer(email);
         client.sendIntDataToServer(grade);
+        client.sendUTFDataToServer(asgnToGrade.getName());
         
     }//GEN-LAST:event_sendGradeBtnActionPerformed
     
@@ -457,6 +572,127 @@ public class InsMain extends javax.swing.JFrame {
         downloadFrom(asgnToDown);
     }//GEN-LAST:event_downAsgnBtnActionPerformed
 
+    private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
+        // TODO add your handling code here:
+        //JList list = (JList) evt.getSource();
+        int index = courseList.getSelectedIndex();
+        if(index != -1) {
+        //constructCoursePanel(index);
+            constuctAssignmentPanel(index);
+        }
+    }//GEN-LAST:event_refreshBtnActionPerformed
+
+    private void chooseMossFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseMossFileBtnActionPerformed
+        // TODO add your handling code here:
+        JFileChooser chooseMoss = new JFileChooser();
+        chooseMoss.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooseMoss.setMultiSelectionEnabled(true);
+        chooseMoss.showOpenDialog(this);
+        
+        allMossFiles = chooseMoss.getSelectedFiles();
+        for(File f : allMossFiles) {
+            addedFilesArea.append(f.getAbsolutePath()+"\n");
+        }
+    }//GEN-LAST:event_chooseMossFileBtnActionPerformed
+
+    private void getMossBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getMossBtnActionPerformed
+        String dest = System.getProperty("user.home") + "/Call-IDE/" + "Moss/Null";
+        File finFolder = null;
+        try {
+            for(int i = 0; i < allMossFiles.length; i++) {
+            // TODO add your handling code here:
+            ZipFile zipFile = new ZipFile(allMossFiles[i]);
+            
+            // Get the list of file headers from the zip file
+            List fileHeaderList = zipFile.getFileHeaders();
+            
+            // Loop through the file headers
+            for (int j = 0; j < fileHeaderList.size(); j++) {
+                FileHeader fileHeader = (FileHeader)fileHeaderList.get(j);
+                String fileName = fileHeader.getFileName();
+                if(fileName.endsWith(".java")){
+                    //System.out.println(dest + "/" + allMossFiles[i].getName().substring(0, allMossFiles[i].getName().length() - 4));
+                    new File(dest + "/" + allMossFiles[i].getName().substring(0, allMossFiles[i].getName().length() - 4)).mkdir();
+                    zipFile.extractFile(fileHeader, dest +  "/" +allMossFiles[i].getName().substring(0, allMossFiles[i].getName().length() - 4));
+                    
+                }
+                //System.out.println(fileHeader.getFileName());
+            }
+            if(allMossFiles[i].getAbsolutePath().contains(".zip")) {
+                String tempName = allMossFiles[i].getName().substring(0, allMossFiles[i].getName().length() - 4);
+                File tempFile = new File(dest + "/" + tempName);
+                //System.out.println(tempFile.getAbsolutePath());
+                String destName = System.getProperty("user.home") + "/Call-IDE/" + "Moss/moss-dir";
+                String destFix = System.getProperty("user.home") + "/Call-IDE/" + "Moss/moss-base-dir";
+                new File(destFix).mkdir();
+                new File(destName).mkdir();
+                finFolder = new File(destName);
+                new File(destName + "/" + tempName).mkdir();
+                File destFile = new File(destName + "/" + tempName);
+                //System.out.println(destFile);
+                walkFiles(tempFile, destFile);
+            }
+            }
+        } catch (ZipException ex) {
+            Logger.getLogger(InsMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            MossDetector detector = new MossDetector(finFolder.getParent());
+            System.out.println(detector.getMossLink());
+            mossLinkLabel.setText(detector.getMossLink().toString());
+            FileUtils.cleanDirectory(finFolder);
+            FileUtils.cleanDirectory(new File(dest));
+        } catch (MossException ex) {
+            Logger.getLogger(InsMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(InsMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_getMossBtnActionPerformed
+
+    private void mossLinkLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mossLinkLabelMouseClicked
+        try {
+            // TODO add your handling code here:
+            if(mossLinkLabel.getText().contains("moss.stanford"))
+                Desktop.getDesktop().browse(new URI(mossLinkLabel.getText()));
+        } catch (IOException ex) {
+            Logger.getLogger(InsMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(InsMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_mossLinkLabelMouseClicked
+    
+    public static void walkFiles( File folder, File dest) {
+        Queue<File> dirsq = new LinkedList<>();
+            dirsq.add(folder);
+            int files = 0;
+            int dirs = 0;
+            
+            dirs++; // to count the initial dir.
+            while (!dirsq.isEmpty()) {
+                for (File f : dirsq.poll().listFiles()) {
+                    if (f.isDirectory()) {
+                        dirsq.add(f);
+                        dirs++;
+                    } else if (f.isFile() && f.getAbsolutePath().endsWith(".java")) {
+                        files++;
+                        System.out.println(f.getAbsolutePath());
+                        try {
+                            Files.copy(f.toPath(), dest.toPath().resolve(f.toPath().getFileName()));
+                        } catch (IOException ex) {
+                            //Logger.getLogger(JavaApplication1.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+            }
+            //System.out.format("Files: %d, dirs: %d. ", files, dirs);
+            //System.out.println(dirsq);
+    
+    }
+    
+    private void exttractSoucre(File src, File dest) {
+        
+    }
     /**
      * @param args the command line arguments
      */
@@ -471,7 +707,7 @@ public class InsMain extends javax.swing.JFrame {
         });
     }
     public void init() {
-        
+        userNameLabel.setText("Welcome: " + client.getName());
         courseList.setModel(new DefaultListModel());
         client.sendUTFDataToServer("GET_COURSES");
         courseArrList = (ArrayList)client.getObjectFromServer();
@@ -527,7 +763,7 @@ public class InsMain extends javax.swing.JFrame {
     public void constuctAssignmentPanel(int index) {
         String course = (String) model.getElementAt(index);
         courseTitleLabel.setText(course);
-        // System.out.println("inside");
+        System.out.println("inside");
         client.sendUTFDataToServer("CONSTRUCT_ASSIGNMENT_PANEL");
         client.sendUTFDataToServer(course);
         allAssignments = (ArrayList<Assignment>) client.getObjectFromServer();
@@ -551,7 +787,7 @@ public class InsMain extends javax.swing.JFrame {
         public void valueChanged(ListSelectionEvent event) {
             if (subTable.getSelectedRow() > -1) {
                 // print first column value from selected row
-                // System.out.println(subTable.getValueAt(subTable.getSelectedRow(), 0).toString());
+                System.out.println(subTable.getValueAt(subTable.getSelectedRow(), 0).toString());
                 downSubBtn.setEnabled(true);
                 gradeField.setEditable(true);
                 sendGradeBtn.setEnabled(true);
@@ -571,32 +807,40 @@ public class InsMain extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addCourseButton;
+    private javax.swing.JTextArea addedFilesArea;
     private javax.swing.JComboBox asgnCombo;
     private javax.swing.JLabel asgnDueLabel;
     private javax.swing.JLabel asgnNameLabel;
     private javax.swing.JPanel assignmentPanel;
-    private javax.swing.JLabel courseDescLabel;
-    private javax.swing.JLabel courseDescLabel1;
+    private javax.swing.JLabel cName1Label;
+    private javax.swing.JLabel cName2Label;
+    private javax.swing.JButton chooseMossFileBtn;
     private javax.swing.JList courseList;
     private javax.swing.JPanel coursePanel;
     private javax.swing.JLabel courseTitleLabel;
     private javax.swing.JLabel courseTitleLabel2;
     private javax.swing.JButton downAsgnBtn;
     private javax.swing.JButton downSubBtn;
+    private javax.swing.JButton getMossBtn;
     private javax.swing.JTextField gradeField;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel gradeLabel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane mainTabs;
+    private javax.swing.JLabel mossLinkLabel;
+    private javax.swing.JPanel mossPanel;
+    private javax.swing.JLabel mossPrpLabel;
+    private javax.swing.JPanel mossToolPanel;
+    private javax.swing.JLabel myCourseLabel;
     private javax.swing.JButton pubAssignButton;
+    private javax.swing.JButton refreshBtn;
     private javax.swing.JButton sendGradeBtn;
     private javax.swing.JTable studentTable;
     private javax.swing.JTable subTable;
+    private javax.swing.JLabel userNameLabel;
+    private javax.swing.JLabel welcomeMossLabel;
     // End of variables declaration//GEN-END:variables
 
    

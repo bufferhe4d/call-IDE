@@ -59,6 +59,7 @@ public class Server {
         String courseCode;
         String courseTitle;
         String cKey;
+        String insCode = "bilkent.edu.tr";
         String mainPath = "D:/Users/abdullah.talayhan-ug/Documents/callSub";
         int check;
         public MyClientThread(Socket csocket) {
@@ -81,7 +82,7 @@ public class Server {
         @Override
         public void run() {
             try {
-                
+                while(true) {
                 
                 String regOp;
                 
@@ -91,21 +92,17 @@ public class Server {
                 if(regOp.equals("REGISTER_OPEN")) {
                     
                     String email = dis.readUTF();
-                    if( ServerSys.isValidEmailAddress(email)) {
-                        
+                    if( ServerSys.isValidEmailAddress(email, insCode)) {
+                        System.out.println("test");
                         dos.writeUTF("IS_EMAIL");
                         String code = ServerSys.sendEmail(email);
+                        System.out.println("test");
                         String userCode = dis.readUTF();
                         
                         if(code.equals(userCode)) {
                             
                             dos.writeUTF("ACCEPT_USER");
-                            if(dis.readUTF().equals("Student")) {
-                                ServerSys.registerStudent(dis.readUTF(), dis.readUTF(), dis.readUTF(), dis.readUTF());
-                            }
-                            else {
-                                ServerSys.registerInstructor(dis.readUTF(), dis.readUTF(), dis.readUTF(), dis.readUTF());
-                            }
+                            System.out.println("accept");
                             
                         }
                         else {
@@ -114,10 +111,21 @@ public class Server {
                     }
                     else {
                         dos.writeUTF("NOT_EMAIL");
+                        dos.writeUTF(insCode);
                     }
                     
                 }
-                else {
+                else if(regOp.equals("REGISTER_ATTEMPT")) {
+                    if(dis.readUTF().equals("Student")) {
+                        ServerSys.registerStudent(dis.readUTF(), dis.readUTF(), dis.readUTF(), dis.readUTF());
+                        System.out.println("regdone");
+                    }
+                    else {
+                        ServerSys.registerInstructor(dis.readUTF(), dis.readUTF(), dis.readUTF(), dis.readUTF());
+                        System.out.println("reginsdone");
+                    }
+                }
+                else if(regOp.equals("LOGIN_OPEN")){
                     String type = dis.readUTF();
                     
                     String un = dis.readUTF();
@@ -169,6 +177,9 @@ public class Server {
                                     // send result set
                                     oos.writeObject(ServerSys.getAllAssignments(un, courseCode));
                                 }
+                                else if(op.equals("GET_INS")) {
+                                    dos.writeUTF(insCode);
+                                }
                                 else if(op.equals("CREATE_COURSE")) {
                                     courseCode = dis.readUTF();
                                     courseTitle = dis.readUTF();
@@ -204,7 +215,8 @@ public class Server {
                                 else if(op.equals("SEND_GRADE")) {
                                     String email = dis.readUTF();
                                     int grade = dis.readInt();
-                                    ServerSys.setGrade(grade, email);
+                                    String asgnName = dis.readUTF();
+                                    ServerSys.setGrade(grade, email, asgnName);
                                 }
                                 else if(op.equals("PUBLISH_ASSIGNMENT")) {
                                     // get the file path
@@ -295,8 +307,8 @@ public class Server {
                                 else if(op.equals("SEND_SUBMISSION")) {
                                     Assignment subToAdd = (Assignment) ois.readObject();
                                     courseCode = dis.readUTF();
-                                    
-                                    String subPath = mainPath + "/" + courseCode + "/" +  "Submissions" + "/" + subToAdd.getName();
+                                    String asgnName = subToAdd.getName().substring(subToAdd.getName().lastIndexOf("_") + 1);
+                                    String subPath = mainPath + "/" + courseCode + "/" +  "Submissions" + "/" + asgnName;
                                     File subFolder = new File(subPath);
                                     System.out.println("start" + " " + subPath);
                                     
@@ -314,7 +326,13 @@ public class Server {
                                     fos.write(data);
                                     fos.close();
                                     
-                                    ServerSys.pushSubmission(un, subToAdd);
+                                    int check = ServerSys.pushSubmission(un, subToAdd, received.getAbsolutePath().replace('\\', '/'));
+                                    if(check != -1) {
+                                        dos.writeUTF("DONE");
+                                    }
+                                    else {
+                                        dos.writeUTF("FAIL");
+                                    }
                                 }
                                 else if(op.equals("ENROLL_COURSE")) {
                                     System.out.println("inside");
@@ -336,9 +354,9 @@ public class Server {
                         dos.writeUTF("NO");
                     }
                 }
-                
+               }
             } catch (Exception e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
     }

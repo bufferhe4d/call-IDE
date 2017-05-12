@@ -85,8 +85,9 @@ public class ServerSys {
         return DBSystem.showTables(DBSystem.executeQue(sql));
     }
     
-    public static void setGrade(int grade, String email) {
-        String sql = "update stu_assignment join stu_belongs set grade =" + grade + " where stu_belongs.email='" + email + "'";
+    public static void setGrade(int grade, String email, String asgnName) {
+        String sql = "update stu_assignment join stu_belongs set grade =" + grade + " where stu_belongs.email='" + email + 
+                "' and stu_assignment.name like '%" + asgnName + "%'";
         System.out.println(sql);
         DBSystem.executeUp(sql);
     }
@@ -104,13 +105,13 @@ public class ServerSys {
     
     
     public static void registerStudent(String stdID, String name,String pwd, String email  ) {
-        String sql = "insert into STUDENT values('" + stdID + "','" + name + "','" + generateUniqueID() +  "','" +  pwd + "','" + email + "')";
+        String sql = "insert into STUDENT values('" + stdID + "','" + name + "','" + 1 +  "','" +  pwd + "','" + email + "')";
         
         DBSystem.executeUp(sql);
     }
     
     public static void registerInstructor(String stdID, String name,String pwd, String email  ) {
-        String sql = "insert into INSTRUCTOR values('" + stdID + "','" + name + "','" + generateUniqueID() +  "','" +  pwd + "','" + email + "')";
+        String sql = "insert into INSTRUCTOR values('" + stdID + "','" + name + "','" + 1 +  "','" +  pwd + "','" + email + "')";
         
         DBSystem.executeUp(sql);
     }
@@ -223,13 +224,13 @@ public class ServerSys {
     
     public static DefaultTableModel getAllSubmissionsTable(String courseCode, String asgnName) {
         
-        /*String sql = "select name, student.email from student\n" +
-         "join stu_belongs on student.email= stu_belongs.email\n" +
-         "where path like '%" + courseCode + File.separator + asgnName + "%'";*/
+        String sql = "select name, student.email from student" +
+         " join stu_belongs on student.email= stu_belongs.email" +
+         " where path like '%" + courseCode + "/Submissions/" + asgnName + "%'";
         
-        String sql = "select name, student.email from student\n" +
+        /*String sql = "select name, student.email from student\n" +
             "join stu_belongs on student.email= stu_belongs.email\n" +
-            "where path like '%eld%'";
+            "where path like '%eld%'";*/
         
         ResultSet rs = DBSystem.executeQue(sql);
         
@@ -240,8 +241,8 @@ public class ServerSys {
     public static ArrayList<Assignment> getAllSubmissionsForAsgn(String email, String courseCode, String asgnName) {
         
         ArrayList<Assignment> submissionsForAsgn = new ArrayList<Assignment>();
-        String sql = "select name, duedate, subdate, path, grade from stu_assignment\n" +
-         "where path like '%"  + courseCode + File.separator + "Submissions" + File.separator + asgnName + "%'";
+        String sql = "select name, duedate, subdate, path, grade from stu_assignment" +
+         " where path like '%"  + courseCode + "/" + "Submissions" + "/" + asgnName + "%'";
         
         /*String sql = "select name, duedate, subdate, path, grade from stu_assignment\n" +
             "where path like '%eld%'";*/
@@ -268,8 +269,16 @@ public class ServerSys {
     public static ArrayList getSubmissions(String email, String courseCode) {
         ArrayList<Assignment> submissions = new ArrayList<Assignment>();
         
-        ResultSet rs = DBSystem.executeQue("select name, duedate, subdate, stu_assignment.path from stu_assignment where stu_assignment.path like '%" + courseCode +"%'");
+        String sql = "select stu_assignment.name, duedate, subdate, stu_assignment.path, grade" +
+        " from stu_belongs" +
+        " join student on student.email = stu_belongs.email" +
+        " join stu_assignment on stu_assignment.path = stu_belongs.path" +
+        " where stu_assignment.path like '%" + courseCode + "/Submissions%'" +
+        " and student.email='" + email + "'";
+        
+        //ResultSet rs = DBSystem.executeQue("select name, duedate, subdate, stu_assignment.path from stu_assignment where stu_assignment.path like '%" + courseCode +"%'");
         //ResultSet rs = DBSystem.executeQue("select name, duedate, subdate, stu_assignment.path from stu_assignment where stu_assignment.path like '%eld%'");
+        ResultSet rs = DBSystem.executeQue(sql);
         int columncount;
         try {
             columncount = rs.getMetaData().getColumnCount();
@@ -293,13 +302,28 @@ public class ServerSys {
         
     }
     
-    public static void pushSubmission(String email, Assignment subToAdd) {
-        String sql = "insert into stu_assignment values('" + subToAdd.getName() + "','" + subToAdd.getDuedate() + "','" + subToAdd.getSubdate() + "','" + subToAdd.getPath() + "','"+ -1 + "')";
+    public static int pushSubmission(String email, Assignment subToAdd, String path) {
+        String sql = "insert into stu_assignment values('" + subToAdd.getName() + "','" + subToAdd.getDuedate() + "','" + subToAdd.getSubdate() + "','" + path + "','"+ -1 + "')";
         //System.out.println(subDate);
         System.out.println(sql);
-        DBSystem.executeUp(sql);
-        String forSql = "insert into stu_belongs values('" + email + "','" + subToAdd.getPath() + "')"; 
-        DBSystem.executeUp(forSql);
+        String checkQuery = "select * from stu_assignment where name='" + subToAdd.getName() + "'";
+        ResultSet rs = DBSystem.executeQue(checkQuery);
+        try {
+            if(!rs.next()) {
+                DBSystem.executeUp(sql);
+                String forSql = "insert into stu_belongs values('" + email + "','" + path + "')"; 
+                DBSystem.executeUp(forSql);
+                return 0;
+            }
+            else {
+                return -1;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerSys.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return -1;
+        
     }
     
     public static String enrollCourse(String email, String cKey) {
@@ -307,15 +331,23 @@ public class ServerSys {
         
         try {
             String sqlCode = "select code from course where c_key='" + cKey +"';";
+            
             ResultSet rs = DBSystem.executeQue(sqlCode);
             String courseCode;
             //System.out.println(courseCode);
             if(rs.next()) {
                 courseCode = rs.getString(1);
-                String sql = "insert into enrollment values('" + email + "','"+ courseCode + "')";
+                String checkQuery = "select * from enrollment where email='" + email + "' and code='" + courseCode + "';";
+                ResultSet checkRes = DBSystem.executeQue(checkQuery);
+                if(!checkRes.next()) {
+                    String sql = "insert into enrollment values('" + email + "','"+ courseCode + "')";
                 
-                DBSystem.executeUp(sql);
-                return courseCode;
+                    DBSystem.executeUp(sql);
+                    return courseCode;
+                }
+                else {
+                    return "";
+                }
             }
             else {
                 courseCode = "";
@@ -328,12 +360,15 @@ public class ServerSys {
         return "";
     }
     
-    public static boolean isValidEmailAddress(String email) {
+    public static boolean isValidEmailAddress(String email, String insCode) {
         boolean result = true;
         try {
             InternetAddress emailAddr = new InternetAddress(email);
             emailAddr.validate();
         } catch (AddressException ex) {
+            result = false;
+        }
+        if(!email.endsWith(insCode)) {
             result = false;
         }
         return result;

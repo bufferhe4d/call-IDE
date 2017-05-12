@@ -1,7 +1,5 @@
 package submissionsystem.userinterface;
 
-import submissionsystem.*;
-
 import javax.swing.JOptionPane;
 
 /**
@@ -38,35 +36,35 @@ public class RegFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup = new javax.swing.ButtonGroup();
-        jLabel1 = new javax.swing.JLabel();
+        emailPrpLabel = new javax.swing.JLabel();
         emailLabel = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        namePrpLabel = new javax.swing.JLabel();
         nameField = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
+        surPrpLabel = new javax.swing.JLabel();
         surnameField = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
+        idPrpLabel = new javax.swing.JLabel();
         idField = new javax.swing.JTextField();
         regButton = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        pass1Label = new javax.swing.JLabel();
+        pass2Label = new javax.swing.JLabel();
         passField = new javax.swing.JPasswordField();
         confPassField = new javax.swing.JPasswordField();
-        jLabel8 = new javax.swing.JLabel();
+        passPrpLabel = new javax.swing.JLabel();
         stdRdButton = new javax.swing.JRadioButton();
         insRdButton = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Register");
 
-        jLabel1.setText("E-mail: ");
+        emailPrpLabel.setText("E-mail: ");
 
         emailLabel.setText("example@example.com");
 
-        jLabel3.setText("Name: ");
+        namePrpLabel.setText("Name: ");
 
-        jLabel4.setText("Surname:");
+        surPrpLabel.setText("Surname:");
 
-        jLabel5.setText("ID:");
+        idPrpLabel.setText("ID:");
 
         regButton.setText("Register");
         regButton.addActionListener(new java.awt.event.ActionListener() {
@@ -75,11 +73,11 @@ public class RegFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel6.setText("Password:");
+        pass1Label.setText("Password:");
 
-        jLabel7.setText("Confirm Password:");
+        pass2Label.setText("Confirm Password:");
 
-        jLabel8.setText("(Min. 8 characters)");
+        passPrpLabel.setText("(Min. 8 characters)");
 
         buttonGroup.add(stdRdButton);
         stdRdButton.setSelected(true);
@@ -108,12 +106,12 @@ public class RegFrame extends javax.swing.JFrame {
                         .addComponent(regButton))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel7))
+                            .addComponent(pass1Label)
+                            .addComponent(surPrpLabel)
+                            .addComponent(namePrpLabel)
+                            .addComponent(emailPrpLabel)
+                            .addComponent(idPrpLabel)
+                            .addComponent(pass2Label))
                         .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(passField)
@@ -123,7 +121,7 @@ public class RegFrame extends javax.swing.JFrame {
                             .addComponent(confPassField)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel8)
+                                    .addComponent(passPrpLabel)
                                     .addComponent(emailLabel))
                                 .addGap(0, 51, Short.MAX_VALUE)))))
                 .addContainerGap())
@@ -133,29 +131,29 @@ public class RegFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
+                    .addComponent(emailPrpLabel)
                     .addComponent(emailLabel))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
+                    .addComponent(namePrpLabel)
                     .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
+                    .addComponent(surPrpLabel)
                     .addComponent(surnameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
+                    .addComponent(idPrpLabel)
                     .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
+                    .addComponent(pass1Label)
                     .addComponent(passField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(1, 1, 1)
-                .addComponent(jLabel8)
+                .addComponent(passPrpLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
+                    .addComponent(pass2Label)
                     .addComponent(confPassField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -170,12 +168,13 @@ public class RegFrame extends javax.swing.JFrame {
 
     private void regButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regButtonActionPerformed
         // TODO add your handling code here:
+        
         String name = nameField.getText();
         String surname = surnameField.getText();
         String id = idField.getText();
         String pass = String.valueOf(passField.getPassword());
         String confPass = String.valueOf(confPassField.getPassword());
-        //System.out.println(pass + " " + confPass);
+        System.out.println(pass + " " + confPass);
         if(!pass.equals(confPass)  || pass.length() < 8) {
             if(!pass.equals(confPass) ) {
                 JOptionPane.showMessageDialog(this,"Passwords do not match","Call-IDE error",JOptionPane.ERROR_MESSAGE);
@@ -184,7 +183,11 @@ public class RegFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this,"Password length should be min. 8","Call-IDE error",JOptionPane.ERROR_MESSAGE);
             }
         }
+        else if(name.length() > 20) {
+            JOptionPane.showMessageDialog(this,"Name is too long.","Call-IDE error",JOptionPane.ERROR_MESSAGE);
+        }
         else {
+            client.sendUTFDataToServer("REGISTER_ATTEMPT");
             client.sendUTFDataToServer(buttonGroup.getSelection().getActionCommand());
             client.sendUTFDataToServer(id);
             client.sendUTFDataToServer(name + " " + surname);
@@ -247,19 +250,19 @@ public class RegFrame extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup;
     private javax.swing.JPasswordField confPassField;
     private javax.swing.JLabel emailLabel;
+    private javax.swing.JLabel emailPrpLabel;
     private javax.swing.JTextField idField;
+    private javax.swing.JLabel idPrpLabel;
     private javax.swing.JRadioButton insRdButton;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JTextField nameField;
+    private javax.swing.JLabel namePrpLabel;
+    private javax.swing.JLabel pass1Label;
+    private javax.swing.JLabel pass2Label;
     private javax.swing.JPasswordField passField;
+    private javax.swing.JLabel passPrpLabel;
     private javax.swing.JButton regButton;
     private javax.swing.JRadioButton stdRdButton;
+    private javax.swing.JLabel surPrpLabel;
     private javax.swing.JTextField surnameField;
     // End of variables declaration//GEN-END:variables
 }
