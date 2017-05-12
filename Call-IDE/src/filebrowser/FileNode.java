@@ -79,8 +79,8 @@ public class FileNode extends DefaultMutableTreeNode
         checkEmptyDir();
     }
     /**
-     * This constructor add root directoy node
-     * @param file root file as a pathed file
+     * This constructor add root directory node
+     * @param file root file as a path ed file
      */
     public FileNode( PathedFile file)
     {
@@ -113,7 +113,7 @@ public class FileNode extends DefaultMutableTreeNode
         nodesAndPaths.put( emptyParent + "<empty>", this);
     }
     
-    /** This method checks directory is empty and add emtpy child*/
+    /** This method checks directory is empty and add empty child*/
     public void checkEmptyDir()
     {
         if (this.file.isDirectory() && this.file.list() != null && this.file.list().length == 0)
@@ -256,7 +256,11 @@ public class FileNode extends DefaultMutableTreeNode
         return file;
     }
     
-    /**  This method adds a file in a node it spefied for visual root */
+    /**  
+     *   This method adds a file in a node it specified for visual root 
+     *   @param filePath path of workspace path
+     *   @param map will be construct for all workspace
+     */
     public void openFile( String filePath, HashMap map)
     {
         if( getAllowsChildren())
@@ -265,7 +269,10 @@ public class FileNode extends DefaultMutableTreeNode
         }
     }
     
-    /** This method pastes the source file into this directory */
+    /** 
+     * This method pastes the source file into this directory 
+     * @param sourceNode will be pasted on this node
+     */
     public void pasteFile( FileNode sourceNode) throws IOException
     {
         if (sourceNode != null) {
@@ -312,7 +319,7 @@ public class FileNode extends DefaultMutableTreeNode
         return file == null && isLeaf();
     }
     
-    /** This method sets root  as a broswing project */
+    /** This method sets root  as a browsing project */
     public void setIsBrowsingProjects( boolean isBrowsingProjects)
     {
         if( isRoot())
@@ -321,7 +328,7 @@ public class FileNode extends DefaultMutableTreeNode
         }
     }
     
-    /** This method gets root  is broswing project */
+    /** This method gets root  is browsing project */
     public boolean isBrowsingProjects()
     {
         return isRoot() && isBrowsingProjects;
@@ -335,7 +342,7 @@ public class FileNode extends DefaultMutableTreeNode
         return file.equals( new PathedFile( "/DEFAULT_PATH/"));
     }
     
-    /** This method clear paths and nodes releation */
+    /** This method clear paths and nodes map */
     public void clearNodesAndPaths() {
         nodesAndPaths = new HashMap();
     }
@@ -344,7 +351,7 @@ public class FileNode extends DefaultMutableTreeNode
     public void closeFile() 
     {
         if(  getAllowsChildren() )
-            for( int i = this.getChildCount() - 1 ; i >= 0  ; i--)
+            for( int i = 0 ; i < this.getChildCount() ; i++)
         {
             if( !isEmpty() )
                 ((FileNode)this.getChildAt(i)).closeFile();
@@ -354,23 +361,9 @@ public class FileNode extends DefaultMutableTreeNode
         removeFromParent();
     }
     
-    public void shallowUpdate()
-    {
-        if( isRoot() )
-        {
-            children.sort( new FileNodeComparator() );
-        }
-        else if(  !isLeaf() && file != null && children != null && file.listFiles().length != children.size() )
-        {
-            updateChildren();
-        }
-        else if ( !childrenSorted )
-        {
-            childrenSorted = true;
-            children.sort( new FileNodeComparator());
-        }
-    }
-    
+    /**
+     * This class provides comparability for file nodes
+     */
     private static class FileNodeComparator implements Comparator
     {
         

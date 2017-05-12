@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><project default="main" name="Ant-Test">
         <!-- Sets variables which can later be used. -->
         <!-- The value of a property is accessed via ${} -->
-        <property location="/Users/ATTJ/Desktop/code/joe" name="src.dir"/>
-        <property location="/Users/ATTJ/Desktop/code/joe" name="build.dir"/>
+        <property location="---" name="src.dir"/>
+        <property location="---" name="build.dir"/>
         <property name="src.name" value="hello.java"/>
         
         <!-- Compiles the java code (including the usage of library for JUnit -->

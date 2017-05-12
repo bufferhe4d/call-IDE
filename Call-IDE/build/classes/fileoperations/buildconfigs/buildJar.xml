@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><project default="main" name="Ant-Test">
         <!-- Sets variables which can later be used. -->
         <!-- The value of a property is accessed via ${} -->
-        <property location="/Users/ATTJ/Desktop/code/classes" name="build.dir"/>
-        <property location="/Users/ATTJ/Desktop/code/dist" name="dist.dir"/>
+        <property location="---" name="build.dir"/>
+        <property location="---" name="dist.dir"/>
         <property value="sa" name="jar.name"/>
         <property value="sa" name="main.name"/>
 

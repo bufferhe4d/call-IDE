@@ -73,7 +73,9 @@ public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
                         fileName = fileName + ".java";
                     file.createFile(fileName); 
                 }
-            } catch(Exception exc) {}
+            } catch(Exception exc) {
+                exc.printStackTrace();
+            }
         }
         
         else if( e.getSource() == createFolder )
@@ -91,7 +93,9 @@ public class TreeDirectoryPopupMenu extends JPopupMenu implements ActionListener
         {
             try {
                 file.pasteFile( navigator.clipboardNode);
-            } catch (Exception ex) {}
+            } catch (IOException ex) {
+                Logger.getLogger(TreeFilePopupMenu.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
         navigator.updateUI();

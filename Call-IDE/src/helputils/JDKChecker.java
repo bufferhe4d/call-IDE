@@ -15,31 +15,46 @@ public class JDKChecker
     private final String OS_NAME = System.getProperty("os.name").toLowerCase();
     private String[] pathVarPaths;
     
-    // check is os windows
+    /**
+     * Check whether the OS is Windows
+     * @return true if it is Windows; false, if not
+     */
     private boolean isWindows() 
     {
         return (OS_NAME.indexOf("win") >= 0);
     }
     
-    // check is os mac
+    /**
+     * Check whether the OS is Mac
+     * @return true if it is Mac; false, if not
+     */
     private boolean isMac() 
     {
         return (OS_NAME.indexOf("mac") >= 0);
     }
     
-    // check is os unix
+    /**
+     * Check whether the OS is Unix
+     * @return true if it is Unix; false, if not
+     */
     private boolean isUnix() 
     {
         return (OS_NAME.indexOf("nix") >= 0 || OS_NAME.indexOf("nux") >= 0 || OS_NAME.indexOf("aix") > 0 );
     }
     
-    // check is os solaris
+    /**
+     * Check whether the OS is solaris
+     * @return true if it is solaris; false, if not
+     */
     private boolean isSolaris() 
     {
         return (OS_NAME.indexOf("sunos") >= 0);
     }
     
-    // check default java path
+    /**
+     * Check the default path. If a path is found, add this path to the ArrayList
+     * @return an ArrayList of the paths of JDK's in the current system
+     */
     public ArrayList<String> checkDefaultPath()
     {
         ArrayList<String> jdkNames = new ArrayList<String>(); // jdks in default path if any
@@ -79,7 +94,10 @@ public class JDKChecker
         return jdkNames;   
     }
     
-    // check JAVA_HOME variable
+    /**
+     * Check JAVA_HOME variable by checking the name of the files 
+     * @return null, if there is no match; the name of the found file with jdk, if it is matched
+     */
     public String checkJAVA_HOME()
     {
         try {
@@ -98,7 +116,10 @@ public class JDKChecker
         return null;
     }
     
-    // check "path" variable
+    /**
+     * Check the path variable
+     * @return null, if there is no path variable; file name, if there is a file which has path variable
+     */
     public String checkPathVar()
     {
         
@@ -119,7 +140,10 @@ public class JDKChecker
         return null;
     }
     
-    // read paths in path variable
+    /**
+     * Read path variable
+     * @return if the path variable is readable, return 1; if not, return -1
+     */
     private int readPathVar()
     {
         try

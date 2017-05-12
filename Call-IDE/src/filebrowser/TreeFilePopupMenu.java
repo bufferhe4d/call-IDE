@@ -68,7 +68,9 @@ public class TreeFilePopupMenu extends JPopupMenu implements ActionListener
         {
             try {
                 ((FileNode)file.getParent()).pasteFile( navigator.clipboardNode);
-            } catch (Exception ex) {}
+            } catch (IOException ex) {
+                Logger.getLogger(TreeFilePopupMenu.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
         try {

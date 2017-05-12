@@ -40,7 +40,7 @@ public class ProjectProperties implements Serializable
     */
    protected ArrayList<File> allJavaFiles;
 
-   
+   /** Collection of external libraries */
    protected ArrayList<File> externalClassPaths;
    
 }

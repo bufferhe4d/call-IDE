@@ -12,6 +12,7 @@ import java.io.IOException;
  */
 public class ContentReader {
     
+    /** The list of all supported extensions to edit. */
     public static String[] SUPPORTED_EXTENSIONS = {".java", ".txt", ".xml", ".md"};
     
     /**

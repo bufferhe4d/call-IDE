@@ -7,6 +7,9 @@ package userinterface;
  */
 public class Launcher {
 
+    /** Creates a new launcher for the IDE.
+     * @param launchWith the path of the file to open in the IDE
+     */
     public Launcher( String launchWith ) {
         try {
             System.out.println( "Creating the main frame...");
@@ -19,6 +22,10 @@ public class Launcher {
         System.out.println( "Launcher instancination ended.");
     }
     
+    /**
+     * The main method to launch the IDE.
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
         System.out.println( "Setting look and feel...");
         MainFrame.setLookAndFeel( "Windows"); // Metal, Nimbus, CDE/Motif, Windows, Windows Classic

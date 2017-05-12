@@ -13,9 +13,14 @@ import java.io.IOException;
  */
 public class PreferencesConfigurer {
     
+    /** The name of the file to save the preferences object's data */
     public static String FILE_NAME = "preferences.dat";
     
-    /** Saves the given preferences object to the given folder path. */
+    /**
+     * Saves the given preferences object to the given folder path.
+     * @param userPath the path of the user to save the preferences
+     * @param preferences the preferences objects to save
+     */
     public static void save( String userPath, Preferences preferences) {
         try{
             FileOutputStream fileOut = new FileOutputStream( userPath + FILE_NAME); // Initialize the file stream.
@@ -26,7 +31,10 @@ public class PreferencesConfigurer {
         } catch( Exception e) {}
     }
     
-    /** Loads the preferences object that is located on the given folder path. */
+    /**
+     * Loads the preferences object that is located on the given folder path.
+     * @param userPath the path of the user to load the preferences
+     */
     public static Preferences load( String userPath) {
         Preferences preferences = null;
         try {

@@ -10,10 +10,17 @@ import java.io.Serializable;
  */
 public class Preferences implements Serializable {
     
+    /** The default font object for the editor and the console pane */
     public static final Font DEF_FONT = new Font("Consolas", Font.PLAIN, 16);
+    
+    /** The default toolbar settings for the frame */
     public static final boolean[] DEF_TOOLBAR = {true, true, true,
         true, true, true, true, true, true, true, true, true, true, true};
+    
+    /** The default theme for the editor */
     public static final String DEF_THEME = "/org/fife/ui/rsyntaxtextarea/themes/default.xml";
+    
+    /** The default preferences object for the IDE */
     public static final Preferences DEFAULT = new Preferences(false, true, true,
             true, DEF_TOOLBAR, DEF_FONT, DEF_FONT, -1, 4, DEF_THEME, null);
     

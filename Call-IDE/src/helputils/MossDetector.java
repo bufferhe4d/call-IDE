@@ -19,6 +19,12 @@ public class MossDetector {
     // PROPERTIES
     URL results;
     
+    /**
+     * Creates a MossDetector with the given lab root path.
+     * @param labRoot the root of the lab folders
+     * @throws MossException
+     * @throws IOException 
+     */
     public MossDetector( String labRoot ) throws MossException, IOException
     {
         Collection<File> files = FileUtils.listFiles( 
@@ -57,6 +63,10 @@ public class MossDetector {
         results = socketClient.getResultURL();
     }
     
+    /**
+     * Gives the link to the moss check results
+     * @return the URL to the result webpage
+     */
     public URL getMossLink()
     {
         return results;

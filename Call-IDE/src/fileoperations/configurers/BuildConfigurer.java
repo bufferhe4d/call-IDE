@@ -12,6 +12,11 @@ import java.util.Scanner;
  */
 public class BuildConfigurer {
     
+    /**
+     * Exports the configuration data files from the source files to the userpath.
+     * @param location the path of the folder to export
+     * @throws IOException 
+     */
     public void exportConfigs( String location) throws IOException {
         exportConfigData( "/fileoperations/buildconfigs/build.xml", location + "/build.xml");
         exportConfigData( "/fileoperations/buildconfigs/buildFile.xml", location + "/buildFile.xml");
@@ -22,6 +27,12 @@ public class BuildConfigurer {
         exportConfigData( "/fileoperations/buildconfigs/buildDepJar.xml", location + "/buildDepJar.xml");
     }
     
+    /**
+     * Exports a particular configuration file from the given location to the target.
+     * @param source the path of the source file to read
+     * @param target the path of the target file to write
+     * @throws IOException
+     */
     private void exportConfigData( String source, String target) throws IOException {
         Scanner reader = new Scanner( getClass().getResourceAsStream( source));
         PrintWriter writer = new PrintWriter( new File( target));

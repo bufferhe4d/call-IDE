@@ -8,7 +8,7 @@ import javax.swing.JTree;
 /**
  * A panel which contains a navigator to browse files
  * @author Mahmud Sami Aydin
- * @version 1.10 ,  29/04/2017
+ * @version 1.10 - 29/04/2017
  */
 public class FileExplorer extends JPanel
 {
@@ -42,6 +42,7 @@ public class FileExplorer extends JPanel
     }
         
     /**
+     * This method sets the explorer is browsing project
      * @param isProjectBrowser
      */
     public void setIsProjectBrowser( boolean isProjectBrowser)
@@ -50,6 +51,10 @@ public class FileExplorer extends JPanel
         navigator.updateUI();
     }
     
+    /**
+     * This method determines the explorer is browsing project 
+     * @return 
+     */
     public boolean isProjectBrowser()
     {
         return navigator.root.isBrowsingProjects();

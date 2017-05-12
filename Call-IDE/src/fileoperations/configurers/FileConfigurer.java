@@ -16,17 +16,16 @@ public class FileConfigurer {
     private String workspace;
     private File configFile;
     
+    /** Creates a file configurer which gets and saves the user home to the volatile memory. */
     public FileConfigurer() {
         String userHome = System.getProperty("user.home");
         configFile = new File( userHome + "/.callide");
     }
     
     /**
-     * This method should be called while IDE is loading.
-     * Use this method to get the save path of the properties and templates of the user.
-     * This path info is stored on a hidden file ".callide" on the user.home
-     * This path is specified as "user.home\Call-IDE" by default
-     * @return (content of .callide) + "/Call-IDE/"
+     * Checks if the configFile is existing on the disk.
+     * @return true if the configFile is on the disk, false otherways
+     * @throws IOException
      */
     public boolean configExists() throws IOException {
         if (configFile.exists()) 
@@ -35,6 +34,10 @@ public class FileConfigurer {
             return false;
     }
     
+    /**
+     * Reads the configuration data from the config file and saves it to the volatile memory.
+     * @throws IOException 
+     */
     public void readConfigs() throws IOException {
          Scanner input = new Scanner( configFile);          
          userPath = input.nextLine() + "/Call-IDE/";          
@@ -43,6 +46,10 @@ public class FileConfigurer {
          input.close();
     }
     
+    /**
+     * Checks the folders under the user's home path, creates the non-existing ones.
+     * @throws IOException 
+     */
     public void checkFolders() throws IOException {
         File mainFolder = new File(userPath);
         File templateFolder = new File(userPath + "/Templates");
@@ -60,16 +67,30 @@ public class FileConfigurer {
         }
     }
     
+    /**
+     * Reads and returns the user path.
+     * @return the path of the Call-IDE folder for the current user
+     * @throws IOException 
+     */
     public String getUserPath()throws IOException {
         readConfigs();
         return userPath; 
     }
     
+    /**
+     * Reads and returns the workspace path.
+     * @return the path of the workspace folder for the current user
+     * @throws IOException 
+     */
     public String getWorkspace() throws IOException {
         readConfigs();
         return workspace; 
     }
     
+    /**
+     * Makes the configurations as default.
+     * @throws IOException 
+     */
     public void configureDefault() throws IOException {
         String userHome = System.getProperty("user.home");
         // Setting the user's path to the default path.
@@ -84,21 +105,23 @@ public class FileConfigurer {
         (new BuildConfigurer()).exportConfigs( userHome + "/Call-IDE/BuildConfigs");
     }
     
+    /**
+     * Sets the workspace of the user.
+     * @param workspace the absolute path of the workspace folder
+     * @throws IOException 
+     */
     public void setWorkspace( String workspace) throws IOException {
-        if (!(workspace == null))
-        {
-        String userHome = System.getProperty("user.home");
-        String configPath = userHome + "/.callide";
-        File configFile = new File( configPath);
-        
-        Scanner reader = new Scanner(configFile);
-        String savedUserPath = reader.nextLine();
-        reader.close();
-        
-        PrintWriter writer = new PrintWriter( configFile);
-        writer.println(savedUserPath);
-        writer.println(workspace);
-        writer.close();
+        if (!(workspace == null)) {
+            String userHome = System.getProperty("user.home");
+            String configPath = userHome + "/.callide";
+            File configFile = new File( configPath);
+            Scanner reader = new Scanner(configFile);
+            String savedUserPath = reader.nextLine();
+            reader.close();
+            PrintWriter writer = new PrintWriter( configFile);
+            writer.println(savedUserPath);
+            writer.println(workspace);
+            writer.close();
         }
     }
     

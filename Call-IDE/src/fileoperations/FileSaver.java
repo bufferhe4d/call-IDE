@@ -43,6 +43,10 @@ public class FileSaver {
         output.close();
     }
     
+    /**
+     * Gives the file that has been assigned to this saver
+     * @return the file object of this FileSaver
+     */
     public File getFile() {
         return file;
     }

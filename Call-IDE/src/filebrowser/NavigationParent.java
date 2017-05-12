@@ -28,9 +28,20 @@ public interface NavigationParent {
      */
     void showProjectProperties( File projectRoot);
     
+    /**
+     * Compile the file which will be given from parameter as a java source file
+     * @param file the file to compile
+     */
     void compileSelectedFile( File file);
     
+    /**
+     * Run the file which will be given from parameter as a java class
+     * @param file the file to run
+     */
     void runSelectedFile( File file);
     
+    /**
+     * Updates the project files
+     */
     void updateProjects();
 }

@@ -9,6 +9,7 @@ import java.io.File;
  * @version 1.0
  */
 public interface AutosaveHandler {
+    
     /**
      * Passes the file and the saved content of it to the parent frame
      * @param file the file that has been saved

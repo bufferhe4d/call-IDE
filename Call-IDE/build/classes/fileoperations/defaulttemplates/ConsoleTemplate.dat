@@ -18,7 +18,10 @@ public class ConsoleTemplate
         
         
         // PROGRAM CODE
-        
+
+        System.out.println( "Start...");
+        // TODO LOGIC...
+        System.out.println( "End...");
         
     }
 }
