@@ -140,13 +140,14 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         projectCancelButton = new javax.swing.JButton();
         classPathScrollPane = new javax.swing.JScrollPane();
         classPathList = new javax.swing.JList<>(new DefaultListModel<String>());
-        classPathButton = new javax.swing.JButton();
+        chooseClassPathButton = new javax.swing.JButton();
         projectNameField = new javax.swing.JTextField();
         projectLocationField = new javax.swing.JTextField();
         browseLocationButton = new javax.swing.JButton();
         browseMainButton = new javax.swing.JButton();
         projectRootLabel = new javax.swing.JLabel();
         projectRootField = new javax.swing.JTextField();
+        deleteClassPathButton = new javax.swing.JButton();
         submissionButtonGroup = new javax.swing.ButtonGroup();
         mainSelectionFrame = new javax.swing.JFrame();
         mainSelectionLabel = new javax.swing.JLabel();
@@ -728,10 +729,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
 
         classPathScrollPane.setViewportView(classPathList);
 
-        classPathButton.setText("Choose Path");
-        classPathButton.addActionListener(new java.awt.event.ActionListener() {
+        chooseClassPathButton.setText("Choose Path");
+        chooseClassPathButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                classPathButtonActionPerformed(evt);
+                chooseClassPathButtonActionPerformed(evt);
             }
         });
 
@@ -756,6 +757,13 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         projectRootField.setEditable(false);
         projectRootField.setText("/MyProject");
 
+        deleteClassPathButton.setText("Delete Path");
+        deleteClassPathButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteClassPathButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout projectPanelLayout = new javax.swing.GroupLayout(projectPanel);
         projectPanel.setLayout(projectPanelLayout);
         projectPanelLayout.setHorizontalGroup(
@@ -766,7 +774,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, projectPanelLayout.createSequentialGroup()
                         .addComponent(classPathLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(classPathButton))
+                        .addComponent(chooseClassPathButton))
                     .addComponent(classPathScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, projectPanelLayout.createSequentialGroup()
                         .addGroup(projectPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -780,7 +788,8 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                                 .addComponent(browseMainButton, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(projectNameField)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, projectPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(deleteClassPathButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(projectOkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(projectCancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -821,13 +830,14 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
                 .addGap(18, 18, 18)
                 .addGroup(projectPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(classPathLabel)
-                    .addComponent(classPathButton))
+                    .addComponent(chooseClassPathButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(classPathScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(projectPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(projectCancelButton)
-                    .addComponent(projectOkButton))
+                    .addComponent(projectOkButton)
+                    .addComponent(deleteClassPathButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1111,6 +1121,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
 
         mainSplitPane.setTopComponent(topSplitPane);
 
+        statusArea.setEditable(false);
         statusArea.setColumns(20);
         statusArea.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
         statusArea.setRows(5);
@@ -1919,9 +1930,9 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         showMainSelection();
     }//GEN-LAST:event_browseMainButtonActionPerformed
 
-    private void classPathButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_classPathButtonActionPerformed
+    private void chooseClassPathButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseClassPathButtonActionPerformed
         browseClassPath();
-    }//GEN-LAST:event_classPathButtonActionPerformed
+    }//GEN-LAST:event_chooseClassPathButtonActionPerformed
 
     private void loginToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginToolActionPerformed
        loginButtonActionPerformed( evt);
@@ -1958,6 +1969,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
         registerAction();
     }//GEN-LAST:event_registerButtonActionPerformed
+
+    private void deleteClassPathButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteClassPathButtonActionPerformed
+        deleteClassPath();
+    }//GEN-LAST:event_deleteClassPathButtonActionPerformed
 
     /**
      * Sets LookAndFeel to the given name.
@@ -3014,6 +3029,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         builder.init();
         JTextPane insertedPane = builder.getOutErrConsole();
         insertedPane.setFont( preferences.getOutputFont());
+        insertedPane.setEditable( false);
         compilerOutputScrollPane.setViewportView( insertedPane);
         BuildSys.setPropsForCompileWithDepend(userPath + "/BuildConfigs/buildDeps.xml",
                                               buildFolder, srcFolder, dependencies);
@@ -3037,6 +3053,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         builder.init();
         JTextPane insertedPane = builder.getOutErrConsole();
         insertedPane.setFont( preferences.getOutputFont());
+        insertedPane.setEditable(false);
         compilerOutputScrollPane.setViewportView( insertedPane);
         BuildSys.setPropsForCompileFile(userPath + "/BuildConfigs/buildFile.xml", filePath);
         BuildSys.compile(userPath + "/BuildConfigs/buildFile.xml", stdOut, stdErr);
@@ -3168,6 +3185,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         builder.init();
         JTextPane insertedPane = builder.getOutErrConsole();
         insertedPane.setFont( preferences.getOutputFont());
+        insertedPane.setEditable( false);
         compilerOutputScrollPane.setViewportView( insertedPane);
 
         BuildSys.setPropsForJavaDoc(userPath + "/BuildConfigs/buildJavadoc.xml", 
@@ -3193,6 +3211,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         builder.init();
         JTextPane insertedPane = builder.getOutErrConsole();
         insertedPane.setFont( preferences.getOutputFont());
+        insertedPane.setEditable( false);
         compilerOutputScrollPane.setViewportView( insertedPane);
         String mainFileName = currentProject.getMainClass().getName();
         String mainClassName = mainFileName.substring(0, mainFileName.length() - 5);
@@ -3367,6 +3386,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         browseLocationButton.setEnabled(true);
         browseMainButton.setEnabled( false);
         mainClassField.setText("");
+        ((DefaultListModel) classPathList.getModel()).clear();
         projectFrame.setTitle( "Create New Project");
         projectFrame.pack();
         projectFrame.setLocationRelativeTo( this);
@@ -3638,7 +3658,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     }
 
     /** Determines what to do with the compile & run button on the frame. */
-    private void compileRunAction() {
+    private void compileRunAction() { // TODO
         if (isEditing()) {
             if (builder == null)
                 builder = new ConsoleBuilder();
@@ -3951,6 +3971,11 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private boolean currentIsRunnable()  {
         updateProjects();
         ProjectHandler activeProject = getProjectHandler( getActiveFile());
+        int index = textTabs.getSelectedIndex();
+        if ( !textAreas.get(index).getText().equals(savedContents.get(index)) ) { // todo
+            printStatus( "The file should be saved to its modified version before compiling.");
+            return false;
+        }
         if (!activeProject.getMainClass().exists()) {
             printStatus( "Please set a main class to the project.");
             return false;
@@ -4054,6 +4079,14 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             verifyEmail.setLocationRelativeTo(this);
         }
     }
+    
+    /** Deletes the selected class path from the class path list. */
+    private void deleteClassPath() {
+        // ((DefaultListModel) classPathList.getModel()).addElement(pathToAdd);
+        int selectedIndex = classPathList.getSelectedIndex();
+        if (selectedIndex != -1)
+            ((DefaultListModel) classPathList.getModel()).remove( selectedIndex);
+    }
 
     // Other Variables
     private ArrayList<RSyntaxTextArea> textAreas;
@@ -4113,7 +4146,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private javax.swing.JButton browseMainButton;
     private javax.swing.JButton browseWorkspaceButton;
     private javax.swing.JRadioButton callideSubmissionRadio;
-    private javax.swing.JButton classPathButton;
+    private javax.swing.JButton chooseClassPathButton;
     private javax.swing.JLabel classPathLabel;
     private javax.swing.JList<String> classPathList;
     private javax.swing.JScrollPane classPathScrollPane;
@@ -4130,6 +4163,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private javax.swing.JScrollPane consoleOutputScrollPane;
     private javax.swing.JMenuItem copyButton;
     private javax.swing.JMenuItem cutButton;
+    private javax.swing.JButton deleteClassPathButton;
     private javax.swing.JCheckBox detachConsoleCheck;
     private javax.swing.JLabel developerListLabel;
     private javax.swing.JMenu editMenu;

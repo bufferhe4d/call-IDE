@@ -755,7 +755,7 @@
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="classPathLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
-                              <Component id="classPathButton" min="-2" max="-2" attributes="0"/>
+                              <Component id="chooseClassPathButton" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="classPathScrollPane" alignment="0" pref="524" max="32767" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
@@ -774,7 +774,8 @@
                               </Group>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="deleteClassPathButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Component id="projectOkButton" min="-2" pref="80" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="projectCancelButton" min="-2" pref="80" max="-2" attributes="0"/>
@@ -827,7 +828,7 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="classPathLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="classPathButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="chooseClassPathButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="classPathScrollPane" min="-2" pref="113" max="-2" attributes="0"/>
@@ -835,6 +836,7 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="projectCancelButton" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="projectOkButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="deleteClassPathButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
@@ -903,12 +905,12 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JButton" name="classPathButton">
+            <Component class="javax.swing.JButton" name="chooseClassPathButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Choose Path"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="classPathButtonActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chooseClassPathButtonActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="projectNameField">
@@ -944,6 +946,14 @@
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="text" type="java.lang.String" value="/MyProject"/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="deleteClassPathButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Delete Path"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteClassPathButtonActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -1857,6 +1867,7 @@
                       <SubComponents>
                         <Component class="javax.swing.JTextArea" name="statusArea">
                           <Properties>
+                            <Property name="editable" type="boolean" value="false"/>
                             <Property name="columns" type="int" value="20"/>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                               <Font name="Monospaced" size="18" style="0"/>
