@@ -8,7 +8,7 @@ import fileoperations.projecthandling.*;
 import helputils.*;
 import methodsummary.*;
 import runutils.*;
-import submissionsystem.userinterface.*;
+import submissionsystem.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -3977,7 +3977,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             return false;
         }
         if (!activeProject.getMainClass().exists()) {
-            printStatus( "Please set a main class to the project.");
+            printStatus( "The main class could not be found on the disk. Please check the project location.");
             return false;
         }
         return hasMainMethod( activeProject.getMainClass());
