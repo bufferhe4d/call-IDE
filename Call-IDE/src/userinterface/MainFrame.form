@@ -490,8 +490,9 @@
                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                   <ComponentRef name="submissionButtonGroup"/>
                 </Property>
-                <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Default Call-IDE Submission System"/>
+                <Property name="toolTipText" type="java.lang.String" value="Call-IDE Servers are not active now."/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="callideSubmissionRadioStateChanged"/>
@@ -502,6 +503,7 @@
                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                   <ComponentRef name="submissionButtonGroup"/>
                 </Property>
+                <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="External System:"/>
               </Properties>
               <Events>
@@ -509,9 +511,6 @@
               </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="externalSubmissionField">
-              <Properties>
-                <Property name="enabled" type="boolean" value="false"/>
-              </Properties>
             </Component>
             <Component class="javax.swing.JCheckBox" name="detachConsoleCheck">
               <Properties>

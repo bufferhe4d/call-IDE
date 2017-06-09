@@ -387,8 +387,9 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         submissionSelectLabel.setText("Submission System:");
 
         submissionButtonGroup.add(callideSubmissionRadio);
-        callideSubmissionRadio.setSelected(true);
         callideSubmissionRadio.setText("Default Call-IDE Submission System");
+        callideSubmissionRadio.setToolTipText("Call-IDE Servers are not active now.");
+        callideSubmissionRadio.setEnabled(false);
         callideSubmissionRadio.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 callideSubmissionRadioStateChanged(evt);
@@ -396,14 +397,13 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         });
 
         submissionButtonGroup.add(externalSubmissionRadio);
+        externalSubmissionRadio.setSelected(true);
         externalSubmissionRadio.setText("External System:");
         externalSubmissionRadio.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 externalSubmissionRadioStateChanged(evt);
             }
         });
-
-        externalSubmissionField.setEnabled(false);
 
         detachConsoleCheck.setText("Detach console on run");
 

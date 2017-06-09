@@ -10,6 +10,9 @@ import java.io.Serializable;
  */
 public class Preferences implements Serializable {
     
+    /** The default link to the submission system */
+    public static final String DEF_LINK = "https://stars.bilkent.edu.tr/srs";
+    
     /** The default font object for the editor and the console pane */
     public static final Font DEF_FONT = new Font("Consolas", Font.PLAIN, 16);
     
@@ -22,7 +25,7 @@ public class Preferences implements Serializable {
     
     /** The default preferences object for the IDE */
     public static final Preferences DEFAULT = new Preferences(false, true, true,
-            true, DEF_TOOLBAR, DEF_FONT, DEF_FONT, -1, 4, DEF_THEME, null);
+            true, DEF_TOOLBAR, DEF_FONT, DEF_FONT, -1, 4, DEF_THEME, DEF_LINK);
     
     private boolean dispatchOnRun;
     private boolean bracketMatching;
