@@ -23,3 +23,18 @@ Ataberk Gozkaya - Help utilities and assignment submission
 Halil Sahiner - Editor functionalities and auto-complete   
 Abdullah Talayhan - Build & Run utilities and submission system   
 Emin Bahadir Tuluce - Frame integration and file systems   
+   
+## LIBRARIES & LICENSES   
+Ant Build Tool Core 3.1.200 - EPL 1.0   
+Apache Ant 1.8.2 - Apache 2.0   
+Apache Commons IO 2.5 - Apache 2.0   
+Apache Commons Lang 3.5 - Apache 2.0   
+AutoComplete 2.5.8 - BSD   
+Javaparser Core 3.1.1 - Apache 2.0  LGPL 3.0   
+JavaMail API (compat) 1.4.7 - CDDL  GPL 1.1  GPL 2.0   
+MOJI 1.0.2 - MIT   
+MySQL Connector/J 5.1.41 - GPL 2.0   
+RSyntaxTextArea 3.0.0 - BSD (modified*)   
+Zip4j 1.3.2 - Apache 2.0   
+   
+*: https://github.com/bobbylight/RSyntaxTextArea/blob/master/src/main/dist/RSyntaxTextArea.License.txt   

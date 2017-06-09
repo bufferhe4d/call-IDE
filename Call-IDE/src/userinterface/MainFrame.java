@@ -165,7 +165,7 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         developerListLabel = new javax.swing.JLabel();
         aboutSubPanel = new javax.swing.JPanel();
         aboutSubLabel = new javax.swing.JLabel();
-        licenseLabel = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         mainSplitPane = new javax.swing.JSplitPane();
         topSplitPane = new javax.swing.JSplitPane();
         editorAndMethodSummaryPanel = new javax.swing.JPanel();
@@ -938,6 +938,13 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
 
         aboutSubLabel.setText("<html>\n<u><b>Product Version:</b></u>\n%version%<br>\n<br>\n<u><b>System:</b></u>\n%system%<br>\n<br>\n<u><b>Working Path:</b></u>\n%userpath%<br>\n<br>");
 
+        jButton1.setText("License");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout aboutSubPanelLayout = new javax.swing.GroupLayout(aboutSubPanel);
         aboutSubPanel.setLayout(aboutSubPanelLayout);
         aboutSubPanelLayout.setHorizontalGroup(
@@ -945,44 +952,41 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
             .addGroup(aboutSubPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(aboutSubLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addContainerGap())
         );
         aboutSubPanelLayout.setVerticalGroup(
             aboutSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(aboutSubPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(aboutSubLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(aboutSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(aboutSubLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        licenseLabel.setText("This product has not licensed yet.");
 
         javax.swing.GroupLayout aboutFrameLayout = new javax.swing.GroupLayout(aboutFrame.getContentPane());
         aboutFrame.getContentPane().setLayout(aboutFrameLayout);
         aboutFrameLayout.setHorizontalGroup(
             aboutFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(aboutFrameLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(developerListLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addGroup(aboutFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(aboutFrameLayout.createSequentialGroup()
-                        .addComponent(licenseLabel)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(aboutSubPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-            .addGroup(aboutFrameLayout.createSequentialGroup()
-                .addGap(80, 80, 80)
-                .addComponent(logoLabel)
-                .addGap(80, 80, 80))
+                        .addContainerGap()
+                        .addComponent(developerListLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(aboutSubPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(aboutFrameLayout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addComponent(logoLabel)))
+                .addGap(10, 10, 10))
         );
         aboutFrameLayout.setVerticalGroup(
             aboutFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(aboutFrameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(logoLabel)
-                .addGap(18, 18, 18)
-                .addComponent(licenseLabel)
                 .addGap(18, 18, 18)
                 .addGroup(aboutFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(developerListLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1973,6 +1977,10 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private void deleteClassPathButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteClassPathButtonActionPerformed
         deleteClassPath();
     }//GEN-LAST:event_deleteClassPathButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        showLicense();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * Sets LookAndFeel to the given name.
@@ -4087,6 +4095,27 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
         if (selectedIndex != -1)
             ((DefaultListModel) classPathList.getModel()).remove( selectedIndex);
     }
+    
+    /** Opens a dialog to show license of the product. */
+    private void showLicense() {
+        final String license =
+"    Call-IDE, a simple Java IDE with submission system\n" +
+"    Copyright (C) 2017  Code Erat Demonstrandum\n" +
+"\n" +
+"    This program is free software: you can redistribute it and/or modify\n" +
+"    it under the terms of the GNU General Public License as published by\n" +
+"    the Free Software Foundation, either version 3 of the License, or\n" +
+"    (at your option) any later version.\n" +
+"\n" +
+"    This program is distributed in the hope that it will be useful,\n" +
+"    but WITHOUT ANY WARRANTY; without even the implied warranty of\n" +
+"    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n" +
+"    GNU General Public License for more details.\n" +
+"\n" +
+"    You should have received a copy of the GNU General Public License\n" +
+"    along with this program.  If not, see <http://www.gnu.org/licenses/>.";
+        JOptionPane.showMessageDialog(aboutFrame, license, "License", JOptionPane.PLAIN_MESSAGE);
+    }
 
     // Other Variables
     private ArrayList<RSyntaxTextArea> textAreas;
@@ -4197,13 +4226,13 @@ public class MainFrame extends JFrame implements NavigationParent, AutosaveHandl
     private javax.swing.JLabel indentLabel;
     private javax.swing.JTextField indentTextField;
     private javax.swing.JMenuItem insertJavadocButton;
+    private javax.swing.JButton jButton1;
     private javax.swing.JMenuItem jarButton;
     private javax.swing.JCheckBox jarCheck;
     private javax.swing.JButton jarTool;
     private javax.swing.JMenuItem javadocButton;
     private javax.swing.JCheckBox javadocCheck;
     private javax.swing.JButton javadocTool;
-    private javax.swing.JLabel licenseLabel;
     private javax.swing.JCheckBox lineNumbersCheck;
     private javax.swing.JMenuItem loginButton;
     private javax.swing.JCheckBox loginCheck;
