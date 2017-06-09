@@ -16,7 +16,7 @@
 
         <!-- Creates Javadoc -->
         <target name="docs">
-                <javadoc destdir="${docs.dir}" packagenames="${src.dir}" sourcepath="${src.dir}">
+                <javadoc destdir="${docs.dir}" packagenames="${src.dir}" sourcepath="${src.dir}" fork="yes">
                         <!-- Define which files / directory should get included, we include all -->
                          <fileset dir="${src.dir}">
                 <include name="**"/>
