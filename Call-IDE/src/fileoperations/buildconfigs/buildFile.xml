@@ -7,7 +7,7 @@
         
         <!-- Compiles the java code (including the usage of library for JUnit -->
         <target name="compile">
-                <javac destdir="${build.dir}" srcdir="${src.dir}" debug="true">
+                <javac destdir="${build.dir}" srcdir="${src.dir}" debug="true" fork="yes">
                     <include name="${src.name}"/>
                 </javac>
 
