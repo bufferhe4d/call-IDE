@@ -18,7 +18,7 @@
 
         <!--Creates the deployable jar file  -->
         <target name="jar">
-                <jar basedir="${build.dir}" destfile="${dist.dir}/${jar.name}">
+                <jar basedir="${build.dir}" destfile="${dist.dir}/${jar.name}" fork="yes">
                         <manifest>
                                 <attribute name="Main-Class" value="${main.name}"/>
                         </manifest>
