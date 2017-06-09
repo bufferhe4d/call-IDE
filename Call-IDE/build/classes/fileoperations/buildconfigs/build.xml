@@ -22,7 +22,7 @@
                         </fileset>
                 </copy>
 
-                <javac destdir="${build.dir}" srcdir="${src.dir}" debug="true">
+                <javac destdir="${build.dir}" srcdir="${src.dir}" debug="true" fork="yes">
                 </javac>
 
         </target>

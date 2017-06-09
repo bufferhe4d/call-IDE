@@ -18,13 +18,13 @@
 
         <!--Creates the deployable jar file  -->
         <target name="jar">
-                <jar jarfile="${dist.dir}/deps.jar">
+                <jar jarfile="${dist.dir}/deps.jar" fork="yes">
                   <zipgroupfileset dir="${dist.dir}/../lib" includes="*.jar"/>
 
                 </jar>
 
                 <sleep seconds="1"/>
-                <jar basedir="${build.dir}" jarfile="${dist.dir}/${jar.name}">
+                <jar basedir="${build.dir}" jarfile="${dist.dir}/${jar.name}" fork="yes">
                     <zipfileset excludes="META-INF/*SF" src="${dist.dir}/deps.jar"/>
                     <manifest>
                             <attribute name="Main-Class" value="userinterface.Launcher"/>
